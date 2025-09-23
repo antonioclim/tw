@@ -376,11 +376,10 @@ export const add = (a,b) => a + b;
 
 ## 11. Bibliografie (APA 7) & Standarde/Specificații
 
-### Literatură științifică (cu DOI)
+### Literatură recomandată (cu DOI)
 - Wirfs‑Brock, A., & Eich, B. (2020). *JavaScript: The first 20 years*. **Proceedings of the ACM on Programming Languages, 4**(HOPL), 1–189. https://doi.org/10.1145/3386327  
 - Maffeis, S., Mitchell, J. C., & Taly, A. (2008). *An operational semantics for JavaScript*. In **Programming Languages and Systems** (pp. 307–325). Springer. https://doi.org/10.1007/978-3-540-89330-1_22  
 - Loring, M. C., Laurenzano, M. A., Newsham, Z., Hovsmith, N., Pande, S., Barik, T., & others. (2017). *Semantics of asynchronous JavaScript*. **ACM SIGPLAN Notices, 52**(11), 51–62. https://doi.org/10.1145/3170472.3133846  
-- Michie, D. (1968). “Memo” functions and machine learning. **Nature, 218**(5136), 19–22. https://doi.org/10.1038/218019a0  
 - Ungar, D., & Smith, R. B. (1991). SELF: The power of simplicity. **Higher‑Order and Symbolic Computation, 4**(3), 171–216. https://doi.org/10.1007/BF01806105  
 - Ungar, D., & Smith, R. B. (1987). Self: The power of simplicity. In **OOPSLA ‘87**. ACM. https://doi.org/10.1145/38765.38828  
 
@@ -389,5 +388,5 @@ export const add = (a,b) => a + b;
 - HTTP/1.1 (RFC 7230+), IETF.  
 - HTML Living Standard, WHATWG.
 
-> Acest prolog pregătește terenul pentru toate cele 13 seminarii și poate fi exportat în DOCX prin `pandoc`.
+> Acest prolog pregătește terenul pentru toate cele 13 seminarii și poate fi exportat în DOCX folosind comanda `pandoc`.
 
