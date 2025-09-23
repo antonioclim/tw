@@ -474,11 +474,10 @@ mkdir tw && cd tw && npm init -y
 
 ## 10. Bibliografie scurtă & standarde (orientare)
 
-### Literatură științifică (APA 7, DOI)
+### Literatură recomandată (APA 7, DOI)
 - Wirfs‑Brock, A., & Eich, B. (2020). *JavaScript: The first 20 years*. **Proceedings of the ACM on Programming Languages, 4**(HOPL), 1–189. https://doi.org/10.1145/3386327  
 - Maffeis, S., Mitchell, J. C., & Taly, A. (2008). *An operational semantics for JavaScript*. In **Programming Languages and Systems** (pp. 307–325). Springer. https://doi.org/10.1007/978-3-540-89330-1_22  
 - Loring, M. C., Laurenzano, M. A., Newsham, Z., Hovsmith, N., Pande, S., & Barik, T. (2017). *Semantics of asynchronous JavaScript*. **ACM SIGPLAN Notices, 52**(11), 51–62. https://doi.org/10.1145/3170472.3133846  
-- Michie, D. (1968). “Memo” functions and machine learning. **Nature, 218**(5136), 19–22. https://doi.org/10.1038/218019a0  
 - Spinellis, D. (2005). *Version control systems*. **IEEE Software, 22**(5), 108–109. https://doi.org/10.1109/MS.2005.91  
 - Hilton, M., Tunnell, T., Huang, K., Marinov, D., & Dig, D. (2016). *Usage, costs, and benefits of continuous integration in open-source projects*. In **ESEC/FSE 2016** (pp. 426–437). https://doi.org/10.1145/2950290.2950358  
 
@@ -491,4 +490,4 @@ mkdir tw && cd tw && npm init -y
 
 ---
 
-> **Gata!** Ai infrastructura minimă pentru toate seminariile (0–12). Urmează să construim conținutul specific fiecărui seminar peste acest schelet: rute Express, CLI Node, module ESM, DOM/Events (Firefox), testare în oglindă (Vitest/Jest) și bune practici de calitate (ESLint/Prettier).
+> **Gata!** Urmează să construim conținutul specific fiecărui proiect peste acest schelet (orientativ): rute Express, CLI Node, module ESM, DOM/Events (Firefox), testare în oglindă (Vitest/Jest) și bune practici de calitate (ESLint/Prettier).
