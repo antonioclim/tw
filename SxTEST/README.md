@@ -100,3 +100,11 @@ DataTable + export CSV.
 ---
 
 *(Document detaliat dar în curs de revizuire, consolidat într-un fișier Markdown descărcabil. Revizuirile vor veni pas cu pas.)*
+
+# SxTEST (minilearn)
+Pornire:
+1) npm ci   # sau npm install, la prima rulare
+2) npm run dev
+Rute:
+- GET /ping → pong
+- GET /api/time → { now }
