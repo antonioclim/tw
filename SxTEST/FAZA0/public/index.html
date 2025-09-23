@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MiniLearn — Faza 0</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header role="banner">
+    <h1>MiniLearn — Faza 0</h1>
+    <p class="subtitle">Server minimal + pagină statică</p>
+  </header>
+
+  <main role="main">
+    <section aria-labelledby="sec-check">
+      <h2 id="sec-check">Verificări rapide</h2>
+      <ol>
+        <li>Consola browserului ar trebui să raporteze starea (Ctrl+Shift+K în Firefox).</li>
+        <li>Butonul de mai jos face <code>fetch('/ping')</code> și afișează răspunsul.</li>
+        <li>Stilurile de bază sunt încărcate din <code>/styles.css</code>.</li>
+      </ol>
+      <button id="btnPing" type="button">Testează /ping</button>
+      <p id="outPing" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <small>&copy; 2025 MiniLearn — Faza 0</small>
+  </footer>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
