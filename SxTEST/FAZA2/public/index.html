@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ro"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SxTEST — FAZA2 (UI listare + căutare/filtrare)</title>
+<link rel="stylesheet" href="/styles.css"/>
+</head><body>
+<header><h1>SxTEST — FAZA2</h1></header>
+<main>
+  <section>
+    <h2>Cursuri</h2>
+    <div class="controls">
+      <input id="q" placeholder="Caută titlu/etichete..." />
+      <select id="lang">
+        <option value="">(toate limbile)</option>
+        <option value="ro">ro</option>
+        <option value="en">en</option>
+      </select>
+      <button id="refresh">Reîncarcă</button>
+    </div>
+    <ul id="courses"></ul>
+  </section>
+  <section>
+    <h2>Lecții ale cursului selectat</h2>
+    <ul id="lessons"></ul>
+  </section>
+</main>
+<script type="module" src="/app.js"></script>
+</body></html>

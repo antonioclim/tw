@@ -1,0 +1,104 @@
+{
+  "1": [
+    {
+      "id": 101,
+      "courseId": 1,
+      "title": "Variabile \u0219i tipuri",
+      "lang": "ro",
+      "duration": 8,
+      "tags": [
+        "js",
+        "types"
+      ]
+    },
+    {
+      "id": 102,
+      "courseId": 1,
+      "title": "Func\u021bii \u0219i scop",
+      "lang": "ro",
+      "duration": 10,
+      "tags": [
+        "js",
+        "functions"
+      ]
+    },
+    {
+      "id": 103,
+      "courseId": 1,
+      "title": "DOM Essentials",
+      "lang": "ro",
+      "duration": 12,
+      "tags": [
+        "dom"
+      ]
+    }
+  ],
+  "2": [
+    {
+      "id": 201,
+      "courseId": 2,
+      "title": "Selectori CSS",
+      "lang": "ro",
+      "duration": 7,
+      "tags": [
+        "css"
+      ]
+    },
+    {
+      "id": 202,
+      "courseId": 2,
+      "title": "Flexbox",
+      "lang": "ro",
+      "duration": 11,
+      "tags": [
+        "css",
+        "flex"
+      ]
+    },
+    {
+      "id": 203,
+      "courseId": 2,
+      "title": "Grid layout",
+      "lang": "ro",
+      "duration": 13,
+      "tags": [
+        "css",
+        "grid"
+      ]
+    },
+    {
+      "id": 204,
+      "courseId": 2,
+      "title": "Media queries",
+      "lang": "ro",
+      "duration": 9,
+      "tags": [
+        "css",
+        "responsive"
+      ]
+    }
+  ],
+  "3": [
+    {
+      "id": 301,
+      "courseId": 3,
+      "title": "HTTP & JSON",
+      "lang": "en",
+      "duration": 9,
+      "tags": [
+        "http",
+        "json"
+      ]
+    },
+    {
+      "id": 302,
+      "courseId": 3,
+      "title": "Fetch API",
+      "lang": "en",
+      "duration": 10,
+      "tags": [
+        "api"
+      ]
+    }
+  ]
+}
