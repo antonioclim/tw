@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SxTEST — FAZA6 (Sequelize + SQLite) — API playground</title>
+  <link rel="stylesheet" href="./styles.css"/>
+</head>
+<body>
+<header>
+  <h1>SxTEST — FAZA6</h1>
+  <p class="sub">Persistență <strong>SQLite/Sequelize</strong> — playground interactiv pentru rutele API</p>
+</header>
+
+<main>
+  <section class="card" aria-labelledby="s-courses">
+    <h2 id="s-courses">1) Cursuri — <code>GET /api/courses</code> / <code>POST /api/courses</code></h2>
+    <div class="controls">
+      <button id="btnCourses">Încarcă</button>
+      <input id="q" placeholder="Caută titlu..." />
+      <select id="lang">
+        <option value="">(toate)</option>
+        <option value="ro">ro</option>
+        <option value="en">en</option>
+      </select>
+      <button id="btnNewCourse">Curs nou</button>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h3>Tabel cursuri</h3>
+        <table id="tblCourses">
+          <thead><tr><th>ID</th><th>Title</th><th>Lang</th><th>Summary</th><th>→</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="col">
+        <h3>JSON</h3>
+        <pre id="outCourses"></pre>
+      </div>
+    </div>
+    <details class="card muted"><summary>Formular curs nou</summary>
+      <form id="frmCourse" class="grid">
+        <label>Title<input id="c-title" required></label>
+        <label>Lang
+          <select id="c-lang" required>
+            <option value="ro">ro</option>
+            <option value="en">en</option>
+          </select>
+        </label>
+        <label>Summary<textarea id="c-summary" rows="3" required></textarea></label>
+        <div class="form-actions">
+          <button type="submit">Creează</button>
+          <span id="c-status" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+    </details>
+  </section>
+
+  <section class="card" aria-labelledby="s-lessons-by-course">
+    <h2 id="s-lessons-by-course">2) Lecții din curs — <code>GET /api/courses/:id/lessons</code></h2>
+    <div class="controls">
+      <label>Course ID: <input id="courseId" type="number" min="1" step="1"/></label>
+      <button id="btnLessons">Încarcă lecțiile</button>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h3>Tabel lecții</h3>
+        <table id="tblLessons">
+          <thead><tr><th>ID</th><th>Order</th><th>Title</th><th>Lang</th><th>Duration</th><th>Slug</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="col">
+        <h3>JSON</h3>
+        <pre id="outLessons"></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="s-lesson-by-slug">
+    <h2 id="s-lesson-by-slug">3) Lecție după slug — <code>GET /api/lessons/:slug</code></h2>
+    <div class="controls">
+      <label>Slug lecție: <input id="slug" placeholder="ex. tipuri-variabile"/></label>
+      <button id="btnLessonBySlug">Încarcă lecția</button>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h3>Preview conținut</h3>
+        <article id="lessonHtml" class="preview"></article>
+      </div>
+      <div class="col">
+        <h3>JSON</h3>
+        <pre id="outLesson"></pre>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <small>FAZA6 — demonstrator API pe Sequelize/SQLite. Pentru statusuri HTTP vezi <a href="https://httpstatus.es/" target="_blank" rel="noopener">httpstatus.es</a></small>
+</footer>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>
