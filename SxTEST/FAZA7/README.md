@@ -1,136 +1,37 @@
-# SxTEST — Structură multi-fază (FAZA0, FAZA1, ...)
+# FAZA7 — Patch fără inline scripts și fără CDN (React local + Vite)
 
-Acest director conține subproiecte independente pentru fiecare fază (FAZA0, FAZA1 etc.).
-Fiecare fază are propriul `package.json`, propriul server (Express) și, de la FAZA4 în sus, teste/config suplimentare.
-
-## Cum rulezi o fază
+## Rulare
 ```powershell
-cd /d Z:\tw\SxTEST\FAZA0
+cd Z:\tw\SxTEST\FAZA7   # pune aici conținutul patch-ului
 npm install
 npm run dev
 ```
-sau pentru FAZA1:
+- UI: http://localhost:5173/#/courses
+- API: http://localhost:3007/api/courses
+
+
+## Build
 ```powershell
-cd /d Z:\tw\SxTEST\FAZA1
-npm install
-npm run dev
-npm test
+npm run build
+npm run preview
 ```
 
-> Recomandare: păstrăm fiecare fază *self-contained*, ca să putem arăta/demonstra incremental progresul.
-
-
-## FAZA2
-UI listare cursuri/lecții, căutare + filtrare cu "debounce".  
-Rulare:
-```powershell
-cd /d Z:\tw\SxTEST\FAZA2
-npm install
-npm run dev
-# http://localhost:3002
-```
-
-## FAZA3
-Lecție + Quiz minimal cu API mock (Express).  
-Rulare:
-```powershell
-cd /d Z:\tw\SxTEST\FAZA3
-npm install
-npm run dev
-# http://localhost:3003
-npm test
-```
-
-
-## FAZA4
-API public minimal cu validări (Zod) și teste de contract (Vitest + Supertest).
-```powershell
-cd /d Z:\tw\SxTEST\FAZA4
-npm install
-npm run dev
-# http://localhost:3004
-npm test
-```
-
-## FAZA5
-Admin Lite CRUD pentru lecții, validat cu Zod, cu persistenta în JSON, testat cu Vitest + Supertest.
-```powershell
-cd /d Z:\tw\SxTEST\FAZA5
-npm install
-npm run dev
-# http://localhost:3005
-npm test
-```
-
-
-## FAZA6
-Persistență cu SQLite/Sequelize; modele Course/Lesson; seed automat; API REST.
-```powershell
-cd /d Z:\tw\SxTEST\FAZA6
-npm install
-npm run dev
-# http://localhost:3006
-npm test
-```
-
-## FAZA7
-Portare UI în React (CDN) cu hash routing; fetch din API mock.
+## Build 11
+# fereastra API
 ```powershell
 cd /d Z:\tw\SxTEST\FAZA7
-npm install
-npm run dev
-# http://localhost:3007
-npm test
+npm run dev:api
 ```
 
-
-## FAZA8
-React + Redux Toolkit (store: progress & prefs) cu persistență în localStorage; teste pentru reducer/selectors.
+# fereastra UI (sau rulează în paralel 'npm run dev' care le pornește pe ambele)
 ```powershell
-cd /d Z:\tw\SxTEST\FAZA8
-npm install
-npm run dev
-# http://localhost:3008
-npm test
+npm run dev:vite
 ```
 
-## FAZA9
-Raportare & export CSV/JSON (agregări pe progres) — utilitare testate cu Vitest.
-```powershell
-cd /d Z:\tw\SxTEST\FAZA9
-npm install
-npm run dev
-# http://localhost:3009
-npm test
-```
+# NOTE:
+	UI: http://localhost:5173/#/courses – linkurile ar trebui să fie vizibile (albastru deschis).
 
+	API root: http://localhost:3007/ – apare textul „[FAZA7 API] OK …” (fără erori CSP).
 
-## FAZA10
-React UI complet cu rute (react-router-dom) și split pe pagini (lazy + Suspense).
-```powershell
-cd /d Z:\tw\SxTEST\FAZA10
-npm install
-npm run dev
-# http://localhost:3010
-npm test
-```
+	API endpoints: http://localhost:3007/api/courses și …/api/courses/1/lessons răspund JSON.
 
-## FAZA11
-Redux Toolkit (de aprofundat): persista parțial pe chei (doar prefs), selectors memoizați complecși.
-```powershell
-cd /d Z:\tw\SxTEST\FAZA11
-npm install
-npm run dev
-# http://localhost:3011
-npm test
-```
-
-## FAZA12
-Tabel avansat (sort/filter/paginate) + export CSV, implementat în vanilla JS.
-```powershell
-cd /d Z:\tw\SxTEST\FAZA12
-npm install
-npm run dev
-# http://localhost:3012
-npm test
-```

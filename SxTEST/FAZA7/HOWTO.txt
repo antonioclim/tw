@@ -1,0 +1,7 @@
+HOWTO — FAZA7 Patch v1.2
+
+1) Copiază conținutul acestui pachet în Z:\tw\SxTEST\FAZA7 (peste fișierele existente).
+2) Asigură-te că src\main.jsx conține linia:  import './theme.css'
+3) Pornește API-ul:   npm run dev:api
+4) Pornește UI-ul:    npm run dev:vite
+5) UI: http://localhost:5173/#/courses   |   API: http://localhost:3007/

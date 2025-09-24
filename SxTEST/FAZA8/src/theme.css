@@ -1,0 +1,5 @@
+:root{--bg:#0b1020;--fg:#e6e9ef;--panel:#0f1530;--link:#a3c5ff}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,Arial,sans-serif}
+header{padding:1rem;background:var(--panel)}main{padding:1rem;max-width:1000px;margin:0 auto}
+button,input,select{background:#121a38;color:var(--fg);border:1px solid #2e3a66;border-radius:.5rem;padding:.5rem .7rem}
+a{color:var(--link)}.card{background:#0f1530;padding:1rem;border-radius:.75rem;margin:.75rem 0}

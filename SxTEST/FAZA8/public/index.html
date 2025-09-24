@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SxTEST — FAZA8 (React + Redux Toolkit)</title>
+  <style>
+    body{font-family:system-ui;background:#0b1020;color:#e6e9ef;margin:0}
+    header{padding:1rem;background:#0f1530}
+    main{padding:1rem;max-width:1000px;margin:0 auto}
+    button{background:#121a38;color:#e6e9ef;border:1px solid #2e3a66;border-radius:.4rem;padding:.4rem .6rem;cursor:pointer}
+    input{background:#121a38;color:#e6e9ef;border:1px solid #2e3a66;border-radius:.4rem;padding:.4rem .6rem;margin:.5rem 0}
+    .card{background:#0f1530;padding:1rem;border-radius:.5rem;margin:.75rem 0}
+  </style>
+  <script type="module">
+    import React, { useEffect, useState } from 'https://esm.sh/react@18.3.1';
+    import { createRoot } from 'https://esm.sh/react-dom@18.3.1/client';
+    import { configureStore, createSlice, createSelector } from 'https://esm.sh/@reduxjs/toolkit@2.2.5';
+    import { Provider, useDispatch, useSelector } from 'https://esm.sh/react-redux@9.1.2';
+
+    // Persist helpers
+    const LS_KEY = 'minilearn_f8';
+    const loadState = () => {
+      try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch { return {}; }
+    };
+    const saveState = (state) => {
+      try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {}
+    };
+
+    // Slice: preferences (lang, theme)
+    const prefsSlice = createSlice({
+      name: 'prefs',
+      initialState: { lang: 'ro', theme: 'dark' },
+      reducers: {
+        setLang: (s,a)=>{ s.lang = a.payload; },
+        toggleTheme: (s)=>{ s.theme = (s.theme==='dark' ? 'light' : 'dark'); }
+      }
+    });
+
+    // Slice: progress (per lesson id)
+    const progressSlice = createSlice({
+      name: 'progress',
+      initialState: { byLesson: {} },
+      reducers: {
+        markDone: (s,a)=>{ const id=a.payload; s.byLesson[id]={ status:'done', ts:Date.now() }; },
+        reset: (s)=>{ s.byLesson = {}; }
+      }
+    });
+
+    const store = configureStore({
+      reducer: { prefs: prefsSlice.reducer, progress: progressSlice.reducer },
+      preloadedState: loadState()
+    });
+    store.subscribe(()=> saveState(store.getState()));
+
+    // Selectors
+    const selectLang = s => s.prefs.lang;
+    const selectTheme = s => s.prefs.theme;
+    const selectDoneCount = createSelector(
+      s => s.progress.byLesson,
+      byLesson => Object.values(byLesson).filter(x=>x.status==='done').length
+    );
+
+    // Demo lessons
+    const lessons = [
+      {id:101, title:'Variabile', lang:'ro'}, {id:102, title:'Funcții', lang:'ro'}, {id:201, title:'HTTP', lang:'en'}
+    ];
+
+    function Controls(){
+      const dispatch = useDispatch();
+      const lang = useSelector(selectLang);
+      const theme = useSelector(selectTheme);
+      const done = useSelector(selectDoneCount);
+      return React.createElement('div', {className:'card'},
+        React.createElement('h2', null, 'Preferințe & progres'),
+        React.createElement('p', null, `Lecții finalizate: ${done}`),
+        React.createElement('label', null, 'Limbă: ',
+          React.createElement('select', {value:lang, onChange:e=>dispatch(prefsSlice.actions.setLang(e.target.value))},
+            React.createElement('option', {value:'ro'}, 'ro'),
+            React.createElement('option', {value:'en'}, 'en')
+          )
+        ),
+        React.createElement('div', null,
+          React.createElement('button', {onClick:()=>dispatch(prefsSlice.actions.toggleTheme())}, `Comută tema (${theme})`),
+          ' ',
+          React.createElement('button', {onClick:()=>dispatch(progressSlice.actions.reset())}, 'Reset progres')
+        )
+      );
+    }
+
+    function LessonList(){
+      const dispatch = useDispatch();
+      const lang = useSelector(selectLang);
+      const done = useSelector(selectDoneCount);
+      const list = lessons.filter(l => lang==='' || l.lang===lang);
+      return React.createElement('div', {className:'card'},
+        React.createElement('h2', null, 'Lecții'),
+        React.createElement('ul', null, list.map(l =>
+          React.createElement('li', {key:l.id},
+            `${l.title} [${l.lang}] `,
+            React.createElement('button', {onClick:()=>dispatch(progressSlice.actions.markDone(l.id))}, 'Marchează finalizat')
+          )
+        ))
+      );
+    }
+
+    function App(){
+      return React.createElement(React.Fragment, null,
+        React.createElement(Controls),
+        React.createElement(LessonList)
+      );
+    }
+
+    const root = createRoot(document.getElementById('root'));
+    root.render(React.createElement(Provider, {store}, React.createElement(App)));
+  </script>
+</head>
+<body>
+  <header><h1>SxTEST — FAZA8</h1></header>
+  <main><div id="root"></div></main>
+</body>
+</html>
