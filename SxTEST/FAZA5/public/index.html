@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SxTEST — FAZA5 (Admin Lite CRUD)</title>
+  <link rel="stylesheet" href="./styles.css"/>
+</head>
+<body>
+<header>
+  <h1>SxTEST — FAZA5</h1>
+  <p class="sub">Admin Lite CRUD pentru <code>/api/lessons</code></p>
+</header>
+
+<main>
+  <section class="card" aria-labelledby="s-actions">
+    <h2 id="s-actions">Acțiuni</h2>
+    <div class="controls">
+      <button id="btnLoad">Reîncarcă</button>
+      <button id="btnNew">Lecție nouă</button>
+      <span id="status" role="status" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="s-form">
+    <h2 id="s-form">Formular lecție</h2>
+    <form id="frm" class="grid" autocomplete="off">
+      <label>ID (auto la creare)<input id="f-id" type="number" min="1" step="1" placeholder="(auto)"></label>
+      <label>CourseId<input id="f-course" type="number" min="1" step="1" required></label>
+      <label>Title<input id="f-title" required></label>
+      <label>Lang
+        <select id="f-lang" required>
+          <option value="ro">ro</option>
+          <option value="en">en</option>
+        </select>
+      </label>
+      <label>Duration (min)
+        <input id="f-duration" type="number" min="1" step="1" required>
+      </label>
+      <div class="form-actions">
+        <button type="submit" id="btnSave">Salvează</button>
+        <button type="button" id="btnReset">Reset</button>
+      </div>
+    </form>
+    <details class="help"><summary>Ajutor</summary>
+      <p><strong>POST</strong> fără <em>id</em> → creează. <strong>PUT</strong> cu <em>id</em> → actualizează.</p>
+    </details>
+  </section>
+
+  <section class="card" aria-labelledby="s-table">
+    <h2 id="s-table">Lecții existente</h2>
+    <table id="tbl">
+      <thead>
+        <tr>
+          <th>ID</th><th>CourseId</th><th>Title</th><th>Lang</th><th>Duration</th><th>Acțiuni</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section class="card" aria-labelledby="s-json">
+    <h2 id="s-json">JSON răspuns</h2>
+    <pre id="out"></pre>
+  </section>
+</main>
+
+<footer>
+  <small>FAZA5 — demonstrator CRUD cu validare (Zod). Pentru statusuri HTTP vezi <a href="https://httpstatus.es/" target="_blank" rel="noopener">httpstatus.es</a></small>
+</footer>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>

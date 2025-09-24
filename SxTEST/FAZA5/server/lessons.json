@@ -1,0 +1,16 @@
+[
+  {
+    "id": 101,
+    "courseId": 1,
+    "title": "Intro",
+    "lang": "ro",
+    "duration": 8
+  },
+  {
+    "id": 102,
+    "courseId": 1,
+    "title": "Scope",
+    "lang": "ro",
+    "duration": 10
+  }
+]
