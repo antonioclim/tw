@@ -11,7 +11,5 @@ th{background:#121a38;cursor:pointer} tr:nth-child(even){background:#0f1538}
 .dropzone{border:2px dashed var(--grid);border-radius:.6rem;padding:1rem;margin:.5rem 0;color:var(--muted);text-align:center}
 .chart{border:1px solid var(--grid);border-radius:.6rem;padding:.5rem;min-height:160px}
 .charts{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.sr-only{position:absolute;left:-9999px}
 @media (max-width:900px){ .charts{grid-template-columns:1fr} }
-/* Print */
 @media print{ body{background:white;color:#111} header,.controls,.pager,.export,.dropzone{display:none!important} .table-wrap,.chart{border:1px solid #999} }

@@ -31,7 +31,7 @@ function proxy(target, res){
 }
 
 app.listen(PORT, ()=> {
-  console.log(`[FAZA9] http://localhost:${PORT}`)
+  console.log(`[FAZA9 v2] http://localhost:${PORT}`)
   console.log(`  • Serving static from: ${PUBLIC_DIR}`)
   console.log(`  • Proxy to FAZA6 at:  ${F6}`)
 })

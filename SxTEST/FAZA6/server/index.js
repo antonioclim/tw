@@ -4,11 +4,16 @@ import { fileURLToPath } from "node:url";
 import { Sequelize, DataTypes } from "sequelize";
 import { z } from "zod";
 import fs from "node:fs";
+import { csp } from './csp-middleware.js';  // fiindcă index.js și csp-middleware.js sunt în același folder
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3006;
+
+app.use(csp);
 
 app.use(express.json({ limit: "128kb" }));
 
@@ -85,6 +90,8 @@ app.get("/api/lessons/:slug", async (req,res)=>{
   if(!row) return res.status(404).json({ error:{ code:"NOT_FOUND" } });
   res.json(row.toJSON());
 });
+
+app.get('/favicon.ico', (_req, res) => res.status(204).end());
 
 // Static
 app.use(express.static(path.join(__dirname, "..", "public")));

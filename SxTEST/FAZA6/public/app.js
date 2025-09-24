@@ -1,71 +1,60 @@
 const $ = (s)=>document.querySelector(s);
+const setStatus = (m, warn=false)=> { const el=$('#status'); if(el){ el.textContent=m; el.style.color = warn? '#f7768e':'#a3c5ff'; } };
+const api = async (path, opts)=> { const r=await fetch(path, opts); const t=await r.text(); try{ return { ok:r.ok, json:JSON.parse(t) } } catch { return { ok:r.ok, text:t } } };
 
-async function api(url, options){
-  const r = await fetch(url, options);
-  const t = await r.text();
-  let j = null; try{ j = JSON.parse(t); }catch{}
-  return { ok:r.ok, status:r.status, text:t, json:j };
-}
-
-let courses = [];
 async function loadCourses(){
-  const r = await api('/api/courses');
-  courses = Array.isArray(r.json) ? r.json : [];
-  $('#outCourses').textContent = JSON.stringify(courses, null, 2);
-  renderCourses();
+  setStatus('Se încarcă /api/courses...');
+  const res = await api('/api/courses');
+  if(!res.ok){ setStatus('Eroare /api/courses', true); return; }
+  renderCourses(res.json); setStatus('OK');
+  const json=$('#json'); if(json) json.textContent = JSON.stringify(res.json, null, 2);
 }
-function renderCourses(){
-  const q = $('#q').value.trim().toLowerCase();
-  const lang = $('#lang').value;
-  const rows = courses
-    .filter(c => (!q || c.title.toLowerCase().includes(q)) && (!lang || c.lang===lang))
-    .map(c => `<tr>
-      <td>${c.id}</td><td>${c.title}</td><td>${c.lang}</td><td>${c.summary}</td>
-      <td><a href="#" class="btn-lessons" data-id="${c.id}">lecții »</a></td></tr>`).join('');
-  $('#tblCourses tbody').innerHTML = rows || '<tr><td colspan="5"><em>nimic</em></td></tr>';
+function renderCourses(list){
+  const q = $('#q')?.value.trim().toLowerCase() || '';
+  const lang = $('#lang')?.value || '';
+  const filtered = (list||[]).filter(c => (!q || c.title.toLowerCase().includes(q)) && (!lang || c.lang===lang));
+  const tb = $('#tbl tbody'); if(!tb) return;
+  tb.innerHTML = filtered.map(c => `<tr>
+    <td>${c.id}</td><td>${c.title}</td><td>${c.lang}</td><td>${c.summary||''}</td>
+    <td><a href="#" class="less" data-id="${c.id}">lecții »</a></td>
+  </tr>`).join('');
 }
-$('#btnCourses').addEventListener('click', loadCourses);
-$('#q').addEventListener('input', ()=> setTimeout(renderCourses, 150));
-$('#lang').addEventListener('change', renderCourses);
-$('#tblCourses').addEventListener('click', (e)=>{
-  const a = e.target.closest('.btn-lessons'); if(!a) return;
-  e.preventDefault();
-  $('#courseId').value = a.dataset.id;
-  loadLessonsByCourse();
-});
 
-$('#btnNewCourse').addEventListener('click', ()=>{
-  document.querySelector('details[open]')?.removeAttribute('open');
-  document.querySelector('details').setAttribute('open','true');
-  $('#c-title').focus();
-});
-$('#frmCourse').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const payload = { title: $('#c-title').value.trim(), lang: $('#c-lang').value, summary: $('#c-summary').value.trim() };
-  $('#c-status').textContent = 'Se salvează...';
-  const r = await api('/api/courses', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-  $('#c-status').textContent = r.ok ? 'Creat' : ('Eroare ('+r.status+')');
-  await loadCourses();
-});
-
-async function loadLessonsByCourse(){
-  const id = $('#courseId').value;
-  if(!id){ $('#outLessons').textContent='Introduceți un ID de curs.'; return; }
-  const r = await api(`/api/courses/${id}/lessons`);
-  const arr = Array.isArray(r.json) ? r.json : [];
-  $('#outLessons').textContent = JSON.stringify(arr, null, 2);
-  $('#tblLessons tbody').innerHTML = arr.map(l => `<tr>
-    <td>${l.id}</td><td>${l.order}</td><td>${l.title}</td><td>${l.lang}</td><td>${l.duration}</td><td>${l.slug}</td>
-  </tr>`).join('') || '<tr><td colspan="6"><em>nimic</em></td></tr>';
+async function createCourse(){
+  const title=$('#fTitle')?.value||''; const lang=$('#fLang')?.value||'ro'; const summary=$('#fSummary')?.value||'';
+  if(!title){ setStatus('Title obligatoriu', true); return; }
+  const res = await api('/api/courses', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({title,lang,summary}) });
+  if(!res.ok){ setStatus('Eroare creare curs', true); return; }
+  setStatus('Curs creat'); loadCourses();
 }
-$('#btnLessons').addEventListener('click', loadLessonsByCourse);
 
-$('#btnLessonBySlug').addEventListener('click', async ()=>{
-  const slug = $('#slug').value.trim();
-  if(!slug){ $('#outLesson').textContent='Introduceți un slug.'; return;}
-  const r = await api('/api/lessons/'+encodeURIComponent(slug));
-  $('#outLesson').textContent = JSON.stringify(r.json ?? r.text, null, 2);
-  $('#lessonHtml').innerHTML = (r.json && r.json.html) ? r.json.html : '<em>fără conținut</em>';
-});
+async function loadLessons(){
+  const id = Number($('#cid')?.value||0); if(!id){ setStatus('ID invalid', true); return; }
+  const res = await api(`/api/courses/${id}/lessons`);
+  if(!res.ok){ setStatus('Eroare la /lessons', true); return; }
+  const ltb = $('#ltbl tbody'); if(ltb) ltb.innerHTML = res.json.map(l=> `<tr>
+    <td>${l.id}</td><td>${l.order??''}</td><td>${l.title}</td><td>${l.lang}</td><td>${l.duration}</td><td>${l.slug||''}</td>
+  </tr>`).join('');
+  const lj = $('#ljson'); if(lj) lj.textContent = JSON.stringify(res.json, null, 2);
+}
 
-loadCourses().catch(console.error);
+async function loadBySlug(){
+  const slug = $('#slug')?.value.trim(); if(!slug){ setStatus('Slug lipsă', true); return; }
+  const res = await api(`/api/lessons/${encodeURIComponent(slug)}`);
+  if(!res.ok){ setStatus('Eroare la /lessons/:slug', true); return; }
+  const pv = $('#preview'); if(pv){ pv.innerHTML = res.json.html || '(fără HTML)'; }
+  const sj = $('#sjson'); if(sj) sj.textContent = JSON.stringify(res.json, null, 2);
+}
+
+// Wiring (cu gărzi)
+$('#load')?.addEventListener('click', loadCourses);
+$('#q')?.addEventListener('input', loadCourses);
+$('#lang')?.addEventListener('change', loadCourses);
+$('#newCourse')?.addEventListener('click', ()=>{ const d=document.querySelector('.form'); if(d) d.open = true; });
+$('#create')?.addEventListener('click', createCourse);
+$('#loadLessons')?.addEventListener('click', loadLessons);
+$('#loadBySlug')?.addEventListener('click', loadBySlug);
+$('#tbl')?.addEventListener('click', (e)=>{ const a=e.target.closest('a.less'); if(!a)return; e.preventDefault(); const id=a.getAttribute('data-id'); if(id){ $('#cid').value=id; loadLessons(); } });
+
+// Auto-load
+loadCourses().catch(()=> setStatus('Nu se poate încărca /api/courses', true));
