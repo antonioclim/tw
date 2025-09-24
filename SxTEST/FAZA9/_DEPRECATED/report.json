@@ -1,0 +1,120 @@
+{
+  "meta": {
+    "generatedAt": "2025-09-24T16:06:58.442Z",
+    "schema": "lesson-report@1"
+  },
+  "rows": [
+    {
+      "lessonId": 5042,
+      "title": "CSS Animations",
+      "lang": "en",
+      "duration": 9,
+      "avgScore": 90
+    },
+    {
+      "lessonId": 5024,
+      "title": "Error Handling",
+      "lang": "en",
+      "duration": 9,
+      "avgScore": 90
+    },
+    {
+      "lessonId": 5015,
+      "title": "Fetch API & JSON",
+      "lang": "en",
+      "duration": 14,
+      "avgScore": 58
+    },
+    {
+      "lessonId": 5003,
+      "title": "Forms & Validation",
+      "lang": "en",
+      "duration": 8,
+      "avgScore": 59
+    },
+    {
+      "lessonId": 5006,
+      "title": "Grid Layout",
+      "lang": "en",
+      "duration": 8,
+      "avgScore": 87
+    },
+    {
+      "lessonId": 5045,
+      "title": "Input Validation",
+      "lang": "en",
+      "duration": 15,
+      "avgScore": 92
+    },
+    {
+      "lessonId": 5039,
+      "title": "Internationalization (i18n)",
+      "lang": "en",
+      "duration": 10,
+      "avgScore": 76
+    },
+    {
+      "lessonId": 5009,
+      "title": "JavaScript Basics",
+      "lang": "en",
+      "duration": 14,
+      "avgScore": 59
+    },
+    {
+      "lessonId": 5018,
+      "title": "NPM & Scripts",
+      "lang": "en",
+      "duration": 12,
+      "avgScore": 81
+    },
+    {
+      "lessonId": 5021,
+      "title": "Node.js Runtime",
+      "lang": "en",
+      "duration": 12,
+      "avgScore": 90
+    },
+    {
+      "lessonId": 5012,
+      "title": "Objects & Prototypes",
+      "lang": "en",
+      "duration": 8,
+      "avgScore": 91
+    },
+    {
+      "lessonId": 5027,
+      "title": "React Basics",
+      "lang": "en",
+      "duration": 11,
+      "avgScore": 86
+    },
+    {
+      "lessonId": 5030,
+      "title": "Routing (React Router)",
+      "lang": "en",
+      "duration": 15,
+      "avgScore": 78
+    },
+    {
+      "lessonId": 5033,
+      "title": "Testing React (Vitest/Jest)",
+      "lang": "en",
+      "duration": 9,
+      "avgScore": 91
+    },
+    {
+      "lessonId": 5036,
+      "title": "WebSockets",
+      "lang": "en",
+      "duration": 15,
+      "avgScore": 73
+    },
+    {
+      "lessonId": 5048,
+      "title": "Workers & Parallelism",
+      "lang": "en",
+      "duration": 15,
+      "avgScore": 59
+    }
+  ]
+}

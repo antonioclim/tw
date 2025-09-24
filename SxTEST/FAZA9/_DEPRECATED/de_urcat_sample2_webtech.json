@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "generatedAt": "2025-09-24T15:56:56.520525Z",
+    "schema": "lesson-report@1",
+    "count": 49,
+    "course": "Tehnologii Web — curs & seminarii (structură exemplificativă)"
+  },
+  "rows": [
+    {
+      "lessonId": 5001,
+      "title": "HTML Fundamentals",
+      "lang": "ro",
+      "duration": 13,
+      "avgScore": 64
+    },
+    {
+      "lessonId": 5002,
+      "title": "Semantic HTML",
+      "lang": "ro",
+      "duration": 14,
+      "avgScore": 96
+    },
+    {
+      "lessonId": 5003,
+      "title": "Forms & Validation",
+      "lang": "en",
+      "duration": 8,
+      "avgScore": 59
+    },
+    {
+      "lessonId": 5004,
+      "title": "CSS Selectors",
+      "lang": "ro",
+      "duration": 16,
+      "avgScore": 61
+    },
+    {
+      "lessonId": 5005,
+      "title": "Flexbox",
+      "lang": "ro",
+      "duration": 13,
+      "avgScore": 92
+    },
+    {
+      "lessonId": 5006,
+      "title": "Grid Layout",
+      "lang": "en",
+      "duration": 8,
+      "avgScore": 87
+    },
+    {
+      "lessonId": 5007,
+      "title": "Responsive Design",
+      "lang": "ro",
+      "duration": 11,
+      "avgScore": 57
+    },
+    {
+      "lessonId": 5008,
+      "title": "Accessibility (a11y)",
+      "lang": "ro",
+      "duration": 9,
+      "avgScore": 82
+    },
+    {
+      "lessonId": 5009,
+      "title": "JavaScript Basics",
+      "lang": "en",
+      "duration": 14,
+      "avgScore": 59
+    },
+    {
+      "lessonId": 5010,
+      "title": "Types & Coercion",
+      "lang": "ro",
+      "duration": 11,
+      "avgScore": 60
+    },
+    {
+      "lessonId": 5011,
+      "title": "Functions & Scope",
+      "lang": "ro",
+      "duration": 16,
+      "avgScore": 82
+    },
+    {
+      "lessonId": 5012,
+      "title": "Objects & Prototypes",
+      "lang": "en",
+      "duration": 8,
+      "avgScore": 91
+    },
+    {
+      "lessonId": 5013,
+      "title": "Modules (ESM)",
+      "lang": "ro",
+      "duration": 9,
+      "avgScore": 69
+    },
+    {
+      "lessonId": 5014,
+      "title": "DOM & Events",
+      "lang": "ro",
+      "duration": 8,
+      "avgScore": 91
+    },
+    {
+      "lessonId": 5015,
+      "title": "Fetch API & JSON",
+      "lang": "en",
+      "duration": 14,
+      "avgScore": 58
+    },
+    {
+      "lessonId": 5016,
+      "title": "Async/Await & Promises",
+      "lang": "ro",
+      "duration": 11,
+      "avgScore": 57
+    },
+    {
+      "lessonId": 5017,
+      "title": "Git & GitHub",
+      "lang": "ro",
+      "duration": 16,
+      "avgScore": 63
+    },
+    {
+      "lessonId": 5018,
+      "title": "NPM & Scripts",
+      "lang": "en",
+      "duration": 12,
+      "avgScore": 81
+    },
+    {
+      "lessonId": 5019,
+      "title": "Vite & Bundling",
+      "lang": "ro",
+      "duration": 10,
+      "avgScore": 89
+    },
+    {
+      "lessonId": 5020,
+      "title": "ESLint & Prettier",
+      "lang": "ro",
+      "duration": 9,
+      "avgScore": 91
+    },
+    {
+      "lessonId": 5021,
+      "title": "Node.js Runtime",
+      "lang": "en",
+      "duration": 12,
+      "avgScore": 90
+    },
+    {
+      "lessonId": 5022,
+      "title": "Express Basics",
+      "lang": "ro",
+      "duration": 10,
+      "avgScore": 61
+    },
+    {
+      "lessonId": 5023,
+      "title": "REST API Design",
+      "lang": "ro",
+      "duration": 11,
+      "avgScore": 78
+    },
+    {
+      "lessonId": 5024,
+      "title": "Error Handling",
+      "lang": "en",
+      "duration": 9,
+      "avgScore": 90
+    },
+    {
+      "lessonId": 5025,
+      "title": "SQLite & Sequelize",
+      "lang": "ro",
+      "duration": 9,
+      "avgScore": 91
+    },
+    {
+      "lessonId": 5026,
+      "title": "Auth & Security Basics",
+      "lang": "ro",
+      "duration": 8,
+      "avgScore": 94
+    },
+    {
+      "lessonId": 5027,
+      "title": "React Basics",
+      "lang": "en",
+      "duration": 11,
+      "avgScore": 86
+    },
+    {
+      "lessonId": 5028,
+      "title": "Components & Props",
+      "lang": "ro",
+      "duration": 16,
+      "avgScore": 82
+    },
+    {
+      "lessonId": 5029,
+      "title": "State & Effects",
+      "lang": "ro",
+      "duration": 13,
+      "avgScore": 84
+    },
+    {
+      "lessonId": 5030,
+      "title": "Routing (React Router)",
+      "lang": "en",
+      "duration": 15,
+      "avgScore": 78
+    },
+    {
+      "lessonId": 5031,
+      "title": "Redux Toolkit",
+      "lang": "ro",
+      "duration": 12,
+      "avgScore": 70
+    },
+    {
+      "lessonId": 5032,
+      "title": "Forms in React",
+      "lang": "ro",
+      "duration": 10,
+      "avgScore": 70
+    },
+    {
+      "lessonId": 5033,
+      "title": "Testing React (Vitest/Jest)",
+      "lang": "en",
+      "duration": 9,
+      "avgScore": 91
+    },
+    {
+      "lessonId": 5034,
+      "title": "Performance & Lighthouse",
+      "lang": "ro",
+      "duration": 12,
+      "avgScore": 88
+    },
+    {
+      "lessonId": 5035,
+      "title": "PWAs & Service Workers",
+      "lang": "ro",
+      "duration": 15,
+      "avgScore": 76
+    },
+    {
+      "lessonId": 5036,
+      "title": "WebSockets",
+      "lang": "en",
+      "duration": 15,
+      "avgScore": 73
+    },
+    {
+      "lessonId": 5037,
+      "title": "SVG & Canvas",
+      "lang": "ro",
+      "duration": 9,
+      "avgScore": 62
+    },
+    {
+      "lessonId": 5038,
+      "title": "Charts & DataViz",
+      "lang": "ro",
+      "duration": 16,
+      "avgScore": 81
+    },
+    {
+      "lessonId": 5039,
+      "title": "Internationalization (i18n)",
+      "lang": "en",
+      "duration": 10,
+      "avgScore": 76
+    },
+    {
+      "lessonId": 5040,
+      "title": "Deployment & CI",
+      "lang": "ro",
+      "duration": 10,
+      "avgScore": 86
+    },
+    {
+      "lessonId": 5041,
+      "title": "Monitoring & Logging",
+      "lang": "ro",
+      "duration": 14,
+      "avgScore": 57
+    },
+    {
+      "lessonId": 5042,
+      "title": "CSS Animations",
+      "lang": "en",
+      "duration": 9,
+      "avgScore": 90
+    },
+    {
+      "lessonId": 5043,
+      "title": "Media Queries Advanced",
+      "lang": "ro",
+      "duration": 13,
+      "avgScore": 76
+    },
+    {
+      "lessonId": 5044,
+      "title": "ARIA Patterns",
+      "lang": "ro",
+      "duration": 13,
+      "avgScore": 93
+    },
+    {
+      "lessonId": 5045,
+      "title": "Input Validation",
+      "lang": "en",
+      "duration": 15,
+      "avgScore": 92
+    },
+    {
+      "lessonId": 5046,
+      "title": "Browser Storage APIs",
+      "lang": "ro",
+      "duration": 15,
+      "avgScore": 59
+    },
+    {
+      "lessonId": 5047,
+      "title": "IndexedDB",
+      "lang": "ro",
+      "duration": 9,
+      "avgScore": 72
+    },
+    {
+      "lessonId": 5048,
+      "title": "Workers & Parallelism",
+      "lang": "en",
+      "duration": 15,
+      "avgScore": 59
+    },
+    {
+      "lessonId": 5049,
+      "title": "Security Headers",
+      "lang": "ro",
+      "duration": 8,
+      "avgScore": 74
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SxTEST — FAZA9 (Raportare avansată)</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23121a38'/%3E%3Ctext x='32' y='42' font-size='36' text-anchor='middle' fill='%23a3c5ff'%3E9%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="/public/styles.css"/>
+</head>
+<body>
+  <header><h1>SxTEST — FAZA9</h1></header>
+  <main>
+    <section class="controls" aria-labelledby="filters">
+      <h2 id="filters">Filtre</h2>
+      <input id="q" placeholder="Caută..." aria-label="Caută în titluri și limbă"/>
+      <select id="lang" aria-label="Filtru limbă">
+        <option value="">(toate limbile)</option>
+        <option value="ro">ro</option>
+        <option value="en">en</option>
+      </select>
+      <label>Scor minim: <input id="minScore" type="number" min="0" max="100" value="0" style="width:5rem"/></label>
+      <label>Per pagină: <select id="perPage"><option>5</option><option>10</option><option selected>20</option></select></label>
+      <label class="mode">Sursă date:
+        <select id="mode"><option value="sample" selected>Sample (intern)</option><option value="api">Load from API (FAZA6)</option></select>
+      </label>
+      <button id="reset">Reset filtre</button>
+      <button id="clear" title="Golește toate rândurile din tabel">Golește tabel</button>
+      <span class="hint" id="status" aria-live="polite"></span>
+    </section>
+
+    <section class="dropzone" id="drop" aria-label="Import JSON prin drag&drop">
+      Trage aici un fișier <code>report.json</code> pentru a reîncărca un raport anterior.
+    </section>
+
+    <section>
+      <h2>Tabel</h2>
+      <div class="table-wrap" id="tableWrap">
+        <table id="tbl" role="table" aria-describedby="tbl-desc">
+          <caption id="tbl-desc" class="sr-only">Lecții, limbă, durată și scor mediu</caption>
+          <thead>
+            <tr>
+              <th data-key="title">Lesson</th>
+              <th data-key="lang">Lang</th>
+              <th data-key="duration">Duration (m)</th>
+              <th data-key="avgScore">Avg score</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="pager">
+        <button id="prev">⟨ Prev</button><span id="pageInfo"></span><button id="next">Next ⟩</button>
+      </div>
+      <p id="total"></p>
+      <div class="export">
+        <button id="csv">Export CSV</button>
+        <button id="json">Export JSON</button>
+        <button id="xls">Export Excel</button>
+        <button id="pdf">Export PDF</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Grafice</h2>
+      <div class="charts" id="chartsWrap">
+        <div>
+          <h3>Donut (lecții per limbă)</h3>
+          <div id="donut" class="chart"></div>
+        </div>
+        <div>
+          <h3>Stacked bars (duration vs. avgScore)</h3>
+          <div id="stacked" class="chart"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="/public/main.js"></script>
+</body>
+</html>
