@@ -12,15 +12,15 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware de sănătate minimal
+// Middleware (minimal)
 app.get("/ping", (req, res) => {
   res.type("text/plain").send("pong");
 });
 
-// Servire fișiere statice din /public
+// Livrare fișiere statice din /public
 app.use(express.static(path.join(__dirname, "..", "public")));
 
-// Fallback: dacă se cere rădăcina, servim index.html
+// Fallback: dacă se cere rădăcina, livrăm index.html
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
