@@ -17,10 +17,17 @@ app.get("/ping", (req, res) => {
   res.type("text/plain").send("pong");
 });
 
+<<<<<<< HEAD
 // Livrare fișiere statice din /public
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 // Fallback: dacă se cere rădăcina, livrăm index.html
+=======
+// Accesare fișiere statice din /public
+app.use(express.static(path.join(__dirname, "..", "public")));
+
+// Fallback: dacă se cere rădăcina -> index.html
+>>>>>>> ae9969216a9b9be281a652dc78b99df35f0f258c
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
