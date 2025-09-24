@@ -1,0 +1,7 @@
+{
+  "id": 101,
+  "title": "Introducere \u00een variabile",
+  "html": "<h2>Variabile</h2><p>\u00cen JavaScript, variabilele se declar\u0103 cu <code>let</code>, <code>const</code> sau <code>var</code>.</p>",
+  "duration": 8,
+  "lang": "ro"
+}

@@ -1,0 +1,19 @@
+/* FAZA4 API playground — stil minimal accesibil */
+:root{
+  --bg:#0b1020; --panel:#0f1530; --fg:#e6e9ef; --muted:#9aa5b1; --acc:#7aa2f7; --ring:#ffe08a; --grid:#2e3a66;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,Arial,sans-serif}
+header,footer{padding:1rem 1.25rem;background:#0e1430}
+h1{margin:0} .sub{margin:.25rem 0 0;color:var(--muted)}
+main{padding:1rem;max-width:1200px;margin:0 auto}
+.card{background:var(--panel);padding:1rem;border-radius:.75rem;margin:1rem 0;border:1px solid var(--grid)}
+.controls{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin:.5rem 0}
+input,select,button{background:#121a38;color:var(--fg);border:1px solid var(--grid);border-radius:.5rem;padding:.5rem .7rem}
+button{cursor:pointer} button:focus{outline:2px solid var(--ring);outline-offset:3px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.col pre{background:#121a38;padding:.75rem;border-radius:.5rem;min-height:3rem;overflow:auto}
+table{width:100%;border-collapse:collapse;background:#121a38;border:1px solid var(--grid)}
+th,td{border-bottom:1px solid var(--grid);padding:.4rem .5rem;text-align:left}
+a.btn{color:var(--acc);text-decoration:none}
+@media (max-width:900px){ .row{grid-template-columns:1fr} }

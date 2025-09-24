@@ -1,0 +1,27 @@
+{
+  "1": [
+    {
+      "id": 11,
+      "courseId": 1,
+      "title": "Tipuri & variabile",
+      "lang": "ro",
+      "duration": 8
+    },
+    {
+      "id": 12,
+      "courseId": 1,
+      "title": "Func\u021bii & scope",
+      "lang": "ro",
+      "duration": 10
+    }
+  ],
+  "2": [
+    {
+      "id": 21,
+      "courseId": 2,
+      "title": "HTTP Semantics",
+      "lang": "en",
+      "duration": 12
+    }
+  ]
+}

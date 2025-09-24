@@ -1,0 +1,42 @@
+{
+  "lessonId": 101,
+  "items": [
+    {
+      "id": "q1",
+      "type": "single",
+      "stem": "Ce cuv\u00e2nt cheie define\u0219te o variabil\u0103 re-asignabil\u0103, scope de bloc?",
+      "options": [
+        "const",
+        "let",
+        "var"
+      ],
+      "correct": [
+        1
+      ],
+      "feedback": [
+        "Const creeaz\u0103 binding constant.",
+        "Corect: let este re-asignabil, scope de bloc.",
+        "var este function-scope."
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multiple",
+      "stem": "Selecteaz\u0103 declara\u021biile adev\u0103rate",
+      "options": [
+        "typeof null === 'object'",
+        "0.1+0.2===0.3",
+        "=== nu face conversie"
+      ],
+      "correct": [
+        0,
+        2
+      ],
+      "feedback": [
+        "Istoric, typeof null e 'object'.",
+        "Fals datorit\u0103 IEEE-754.",
+        "Adev\u0103rat, === e strict (f\u0103r\u0103 conversie)."
+      ]
+    }
+  ]
+}
