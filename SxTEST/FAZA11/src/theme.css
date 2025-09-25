@@ -1,0 +1,16 @@
+:root{
+  --bg:#0b1020; --fg:#e6e9ef; --panel:#0f1530; --grid:#2e3a66; --accent:#a3c5ff;
+  --bg-light:#f5f7fb; --fg-light:#0c1020; --panel-light:#e8ecf5;
+}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,Segoe UI,Arial,sans-serif}
+header{background:var(--panel);padding:1rem}
+main{padding:1rem;max-width:1100px;margin:0 auto}
+.card{background:#0f1530;border-radius:.75rem;padding:1rem;margin:.75rem 0}
+button,input,select{background:#121a38;color:var(--fg);border:1px solid var(--grid);border-radius:.5rem;padding:.45rem .6rem}
+a{color:var(--accent);text-decoration:underline}
+.controls{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin:.5rem 0}
+.chart{border:1px solid var(--grid);border-radius:.6rem;padding:.5rem;min-height:140px}
+.bar-label{fill:var(--fg);font-size:12px;text-anchor:middle}
+header.light, main.light{ background:var(--bg-light); color:var(--fg-light) }
+main.light .card{ background:var(--panel-light) }
+main.light .chart{ border-color:#cbd5e1 }

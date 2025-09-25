@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SxTEST — FAZA12 (DataTable avansat)</title>
+  <style>
+    body{font-family:system-ui;background:#0b1020;color:#e6e9ef;margin:0}
+    header{padding:1rem;background:#0f1530}
+    main{padding:1rem;max-width:1100px;margin:0 auto}
+    table{border-collapse:collapse;width:100%}
+    th,td{border:1px solid #2e3a66;padding:.5rem;text-align:left}
+    th{background:#121a38;cursor:pointer}
+    input,select,button{background:#121a38;color:#e6e9ef;border:1px solid #2e3a66;border-radius:.4rem;padding:.4rem .6rem;margin:.25rem}
+  </style>
+  <script type="module">
+    // Data mock
+    const rows = Array.from({length: 57}, (_,i)=> ({
+      id: i+1, title: 'Lecția '+(i+1), lang: (i%3?'ro':'en'), duration: 5 + (i%10)
+    }));
+
+    // State
+    let state = { q:'', lang:'', sort:{key:'id', dir:'asc'}, page:1, perPage:10 };
+
+    // Utils
+    const cmp = (a,b)=> a<b?-1:a>b?1:0;
+    function sortRows(arr,{key,dir}){
+      const s = [...arr].sort((x,y)=> cmp(x[key], y[key]));
+      return dir==='asc'? s : s.reverse();
+    }
+    function filterRows(arr,{q,lang}){
+      return arr.filter(r=> (!q || (r.title+' '+r.lang).toLowerCase().includes(q.toLowerCase())) && (!lang || r.lang===lang));
+    }
+    function paginate(arr,{page,perPage}){
+      const start = (page-1)*perPage; return arr.slice(start, start+perPage);
+    }
+    function toCSV(rows){
+      const header = ['id','title','lang','duration'];
+      const esc = v=>`"${String(v).replace(/"/g,'""')}"`;
+      return [header.join(','), ...rows.map(r=> header.map(h=>esc(r[h])).join(','))].join('\n');
+    }
+    function download(name, text){
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
+      a.download = name; document.body.appendChild(a); a.click(); URL.revokeObjectURL(a.href); a.remove();
+    }
+
+    // Render
+    const root = document.getElementById('root');
+    const controls = document.createElement('div');
+    const q = document.createElement('input'); q.placeholder='Caută...'; q.addEventListener('input', ()=>{ state.q=q.value; state.page=1; render(); });
+    const lang = document.createElement('select'); lang.innerHTML = '<option value="">(toate)</option><option value="ro">ro</option><option value="en">en</option>'; lang.addEventListener('change', ()=>{ state.lang=lang.value; state.page=1; render(); });
+    const btnCsv = document.createElement('button'); btnCsv.textContent='Export CSV'; btnCsv.addEventListener('click', ()=> download('datatable.csv', toCSV(applyAll(rows,state))));
+    controls.append(q, lang, btnCsv);
+
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const headers = ['id','title','lang','duration'];
+    thead.innerHTML = '<tr>'+ headers.map(h=>`<th data-key="${h}">${h}</th>`).join('') + '</tr>';
+    thead.addEventListener('click', (e)=>{
+      const th = e.target.closest('th'); if(!th) return;
+      const k = th.dataset.key;
+      state.sort = { key:k, dir: (state.sort.key===k && state.sort.dir==='asc') ? 'desc' : 'asc' };
+      render();
+    });
+    const tbody = document.createElement('tbody');
+    table.append(thead, tbody);
+
+    const pager = document.createElement('div');
+    const prev = document.createElement('button'); prev.textContent='⟨ Prev';
+    const next = document.createElement('button'); next.textContent='Next ⟩';
+    const info = document.createElement('span');
+    prev.addEventListener('click', ()=>{ if(state.page>1){ state.page--; render(); } });
+    next.addEventListener('click', ()=>{ if(state.page<pages){ state.page++; render(); } });
+    pager.append(prev, info, next);
+
+    root.append(controls, table, pager);
+
+    let pages = 1;
+    function applyAll(data, st){
+      const f = filterRows(data, st);
+      const s = sortRows(f, st.sort);
+      pages = Math.max(1, Math.ceil(s.length / st.perPage));
+      const p = paginate(s, st);
+      return p;
+    }
+
+    function render(){
+      const data = applyAll(rows, state);
+      tbody.innerHTML = data.map(r=> `<tr><td>${r.id}</td><td>${r.title}</td><td>${r.lang}</td><td>${r.duration}</td></tr>`).join('');
+      info.textContent = ` Pagina ${state.page}/${pages} `;
+    }
+    render();
+  </script>
+</head>
+<body>
+  <header><h1>SxTEST — FAZA12</h1></header>
+  <main><div id="root"></div></main>
+</body>
+</html>
