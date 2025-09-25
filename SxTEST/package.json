@@ -18,5 +18,8 @@
   "private": "true",
   "workspaces": [
     "SxTEST"
-  ]
+  ],
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }
