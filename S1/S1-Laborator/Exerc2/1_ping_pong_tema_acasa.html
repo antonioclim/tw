@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Tema: Ping → Pong</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2em;
+      background: #f5f6fa;
+      color: #2c3e50;
+    }
+    h1 {
+      color: #2980b9;
+    }
+    button {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      padding: 0.8em 1.2em;
+      margin-top: 1em;
+      font-size: 1em;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #219150;
+    }
+    #result {
+      margin-top: 1em;
+      font-weight: bold;
+      color: #8e44ad;
+    }
+    pre {
+      background: #ecf0f1;
+      padding: 1em;
+      border-left: 4px solid #2980b9;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tema: Implementarea unui Ping → Pong minimal</h1>
+  <p>
+    În cadrul acestui exercițiu, veți învăța cum să comunicați cu un server printr-un 
+    request de tip <code>GET</code>. Avem două moduri de testare:
+  </p>
+
+  <h2>1. Interfață cu buton</h2>
+  <p>Dă click pe butonul de mai jos. Browserul va trimite un request <code>GET</code> către <code>/ping</code>, iar serverul va răspunde cu <code>pong</code>.</p>
+
+  <button onclick="ping()">Ping</button>
+  <p id="result"></p>
+
+  <script>
+    async function ping() {
+      try {
+        const res = await fetch('/ping');
+        const text = await res.text();
+        document.getElementById('result').innerText = text;
+      } catch (err) {
+        document.getElementById('result').innerText = 'Eroare: serverul nu răspunde!';
+      }
+    }
+  </script>
+
+  <h2>2. Test din Consola Developer</h2>
+  <p>
+    Deschide <strong>Developer Tools</strong> (tasta <kbd>F12</kbd> sau <kbd>Ctrl+Shift+I</kbd>), mergi în tab-ul <strong>Console</strong> 
+    și rulează următorul cod:
+  </p>
+
+  <pre><code class="language-js">
+fetch("/ping")
+  .then(r => r.text())
+  .then(console.log);
+  </code></pre>
+
+  <p>Ar trebui să vezi în consolă: <code>pong</code>.</p>
+
+  <h2>Instrucțiuni pentru server</h2>
+  <p>Pentru ca acest exemplu să funcționeze, ai nevoie de un server Node.js simplu cu Express:</p>
+  <pre><code class="language-js">
+// Salvează ca server.js
+import express from "express";
+const app = express();
+const port = 3000;
+
+app.get("/ping", (req, res) => {
+  res.send("pong");
+});
+
+app.listen(port, () => {
+  console.log(`Server pornit la http://localhost:${port}`);
+});
+  </code></pre>
+
+  <p>
+    Rulează serverul cu comenzile:
+    <br><code>npm install express</code>
+    <br><code>node server.js</code>
+  </p>
+</body>
+</html>

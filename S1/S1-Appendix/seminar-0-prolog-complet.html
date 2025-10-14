@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S0. SEMINAR - Prolog & Setup Complet</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            color: #1a5490;
+            border-bottom: 3px solid #1a5490;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        
+        h2 {
+            color: #2c5aa0;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        
+        h3 {
+            color: #3a6bb0;
+            margin-top: 25px;
+        }
+        
+        /* Cod generic */
+        .code {
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        /* Stil pentru comenzi Bash/Linux */
+        .bash-code {
+            background-color: #2e3440;
+            color: #88c0d0;
+            border-left: 4px solid #5e81ac;
+        }
+        
+        /* Stil pentru PowerShell/Windows */
+        .powershell-code {
+            background-color: #012456;
+            color: #eeedf0;
+            border-left: 4px solid #0078d4;
+        }
+        
+        /* Stil pentru JavaScript */
+        .js-code {
+            background-color: #fff3cd;
+            color: #000;
+            border-left: 4px solid #ffc107;
+        }
+        
+        /* Stil pentru JSON */
+        .json-code {
+            background-color: #e8f4ff;
+            color: #000;
+            border-left: 4px solid #292929;
+        }
+        
+        /* Stil pentru cod inline */
+        code {
+            background-color: #e8f4ff;
+            color: #d73a49;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            background-color: white;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #1a5490;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ff6b6b;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        
+        .info {
+            background-color: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        
+        .tip {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 10px;
+            margin: 15px 0;
+        }
+
+        .important {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        
+        .meta-info {
+            background-color: #e8e8e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+        }
+        
+        .toc {
+            background-color: white;
+            border: 2px solid #1a5490;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        
+        .toc h2 {
+            margin-top: 0;
+            color: #1a5490;
+            border-bottom: none;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        
+        .toc a {
+            color: #2c5aa0;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        .os-specific {
+            background-color: #f0f8ff;
+            border: 2px solid #1a5490;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .os-specific h4 {
+            margin-top: 0;
+            color: #1a5490;
+        }
+
+        .checklist {
+            background-color: #e7f3ff;
+            border: 2px solid #0078d4;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .checklist ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .checklist li::before {
+            content: "☐ ";
+            color: #0078d4;
+            font-weight: bold;
+        }
+
+        .rubric {
+            background-color: #fff;
+            border: 2px solid #1a5490;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .rubric h3 {
+            color: #1a5490;
+            margin-top: 0;
+        }
+
+        .glosar {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .glosar dt {
+            font-weight: bold;
+            color: #1a5490;
+            margin-top: 10px;
+        }
+
+        .glosar dd {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        .columns {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .column {
+            flex: 1;
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<h1>Tehnologii Web – Seminarul 0 (PROLOG)</h1>
+<h2 style="text-align: center;">Ghid complet de instalare & configurare a mediului de lucru (Linux/Windows)</h2>
+
+<div class="meta-info">
+    <strong>Autor:</strong> Antonio Clim<br>
+    <strong>Afiliere:</strong> ASE – Facultatea de Cibernetică, Statistică și Informatică Economică<br>
+    <strong>Data:</strong> 22 Septembrie 2025<br>
+    <strong>Durată țintă:</strong> 2–4 ore (seminar) + timp individual (temă, lecturi)<br>
+    <strong>Format:</strong> Document integrat, structurat pe secțiuni și anexe<br>
+    <strong>Sisteme suportate:</strong> Ubuntu Desktop 25.04 LTS și Windows 11 (64-bit)
+</div>
+
+<div class="toc">
+    <h2>Cuprins</h2>
+    <ul>
+        <li>📋 <a href="#rezumat">1. Rezumat executiv</a></li>
+        <li>🎯 <a href="#obiective">2. Obiective de învățare & rezultate așteptate</a></li>
+        <li>👥 <a href="#public">3. Public țintă, precondiții & metodologie</a></li>
+        <li>⚡ <a href="#mediu">4. Mediul de lucru & reflexul de testare rapidă</a></li>
+        <li>🐧 <a href="#ubuntu">5. Setări de sistem – Ubuntu Desktop 25.04 LTS</a></li>
+        <li>🪟 <a href="#windows">6. Setări de sistem – Windows 11 (PowerShell)</a></li>
+        <li>🔑 <a href="#git">7. Git & GitHub: de la configurare la politici de chei</a></li>
+        <li>📦 <a href="#node">8. Node.js & NPM: versiuni, pachete, bune practici</a></li>
+        <li>💻 <a href="#vscode">9. Editorul VS Code: preseturi, extensii, productivitate</a></li>
+        <li>🦊 <a href="#firefox">10. Browserul Firefox: DevTools, rețea, stocare</a></li>
+        <li>🚀 <a href="#proiect">11. Proiect minim „Hello Web" (Express)</a></li>
+        <li>✅ <a href="#calitate">12. Controlul calității: ESLint, Prettier</a></li>
+        <li>🧪 <a href="#testare">13. Testare dublă: Vitest și Jest</a></li>
+        <li>🔒 <a href="#securitate">14. Securitate operațională</a></li>
+        <li>📚 <a href="#git-avansat">15. Git avansat</a></li>
+        <li>📄 <a href="#gitignore">16. .gitignore inteligent</a></li>
+        <li>📤 <a href="#export">17. Exportul livrabilelor</a></li>
+        <li>✏️ <a href="#evaluare">18. Evaluare formativă – mini-quiz</a></li>
+        <li>🔬 <a href="#laborator">19. Mini-laborator progresiv</a></li>
+        <li>📊 <a href="#rubrica">20. Rubrică de evaluare & DoD</a></li>
+        <li>✔️ <a href="#dor">21. Definition of Ready (DoR)</a></li>
+        <li>⚠️ <a href="#antipatterns">22. Anti-patterns & troubleshooting</a></li>
+        <li>❓ <a href="#faq">23. FAQ</a></li>
+        <li>📖 <a href="#glosar">24. Glosar de termeni</a></li>
+        <li>📚 <a href="#bibliografie">25. Bibliografie</a></li>
+        <li>📎 <a href="#anexe">26. Anexe</a></li>
+    </ul>
+</div>
+
+<!-- REZUMAT EXECUTIV -->
+<h1 id="rezumat">1. Rezumat executiv</h1>
+
+<div class="info">
+    <p>Uniformizăm mediul pentru întregul curs: <strong>Node.js LTS</strong>, <strong>Git+GitHub</strong> (SSH), <strong>VS Code</strong> și <strong>Firefox</strong>. După fiecare instalare, aplicăm <em>reflexul</em> de testare rapidă: probe de 10–30 s în <code>node</code> REPL, în Firefox Console și în shell-ul Git.</p>
+    <p>Ne asigurăm că putem crea un repo, adăuga un fișier și efectua un <code>push</code> prin SSH. Implementăm un proiect minim <strong>Express</strong> cu resurse statice și două rute (<code>/ping</code>, <code>/api/time</code>), îl supunem lintării și dublăm testarea cu <strong>Vitest</strong> și <strong>Jest</strong>.</p>
+    <p>Stabilim politici de chei separate pentru stația personală și stația de laborator (chei efemere, fără cache de credențiale, curățare la final). Livrabilele sunt documentate în README și exportate în <strong>DOCX</strong>.</p>
+</div>
+
+<!-- OBIECTIVE -->
+<h1 id="obiective">2. Obiective de învățare & rezultate așteptate</h1>
+
+<ul>
+    <li>Instalarea și verificarea instrumentelor (Git, Node, VS Code, Firefox) pe Linux/Windows</li>
+    <li>Inițializarea și configurarea unui depozit Git <em>curat</em> (identitate, ramură implicită, <code>.gitignore</code>, remote prin SSH)</li>
+    <li>Proiect minim Express, <em>lint-free</em> și testat</li>
+    <li>Politici operaționale de securitate: chei, secrete, curățare, revocare</li>
+    <li>Documentare reproductibilă și export a livrabilelor</li>
+</ul>
+
+<!-- PUBLIC ȚINTĂ -->
+<h1 id="public">3. Public țintă, precondiții & metodologie</h1>
+
+<p>Publicul este format din studenți de anul 3 care au lucrat cu cel puțin un limbaj imperativ și au folosit linia de comandă. Metodologia balansează teoria (motivația și standardele) cu practica (comenzi, code-along, exerciții), folosind exemple <em>rulabile imediat</em> și articulate prin <em>micro-probe</em>.</p>
+
+<!-- MEDIUL DE LUCRU -->
+<h1 id="mediu">4. Mediul de lucru & reflexul de testare rapidă</h1>
+
+<p>Reflexul de testare presupune verificări scurte:</p>
+<ul>
+    <li><code>node -v && npm -v</code></li>
+    <li>Două expresii în REPL</li>
+    <li>Două expresii în Consola Firefox (F12)</li>
+    <li><code>git --version</code></li>
+    <li>O clonare rapidă peste SSH (la nevoie)</li>
+</ul>
+
+<div class="tip">
+    <strong>💡 Principiu:</strong> După fiecare instalare, aplicăm o probă de 10-30 secunde pentru confirmare imediată.
+</div>
+
+<!-- UBUNTU -->
+<h1 id="ubuntu">5. Setări de sistem – Ubuntu Desktop 25.04 LTS</h1>
+
+<h2>5.1 Pachete de bază</h2>
+
+<pre class="code bash-code">$ sudo apt update && sudo apt -y upgrade
+$ sudo apt -y install build-essential curl wget ca-certificates gnupg git unzip zip sqlite3 pandoc</pre>
+
+<h2>5.2 Git & identitate</h2>
+
+<pre class="code bash-code">$ git config --global user.name "Prenume Nume"
+$ git config --global user.email "prenume.nume@stud.ase.ro"
+$ ssh-keygen -t ed25519 -C "prenume.nume@stud.ase.ro"
+$ ssh -T git@github.com</pre>
+
+<h2>5.3 Node prin nvm (izolare pe utilizator)</h2>
+
+<pre class="code bash-code">$ curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+# Reîncarcă shell-ul, apoi:
+$ nvm install --lts
+$ node -v && npm -v</pre>
+
+<h2>5.4 Probe rapide & capcane</h2>
+
+<div class="warning">
+    <strong>⚠️ Probleme comune:</strong>
+    <ul>
+        <li>Dacă <code>node</code> nu este găsit după instalare, reîncarcă shell-ul (sau <code>source ~/.bashrc</code>)</li>
+        <li>Dacă <code>ssh -T</code> eșuează, verifică <em>public key</em> în GitHub, permisiunile <code>~/.ssh</code>, agentul SSH</li>
+    </ul>
+</div>
+
+<h2>5.5 Firefox & DevTools</h2>
+
+<p>Activăm <em>Network</em>, <em>Storage</em>, <em>Console</em> și folosim profiluri curate în testele de rețea.</p>
+
+<h2>5.6 Export DOCX</h2>
+
+<pre class="code bash-code">$ pandoc README.md -o README.docx</pre>
+
+<!-- WINDOWS -->
+<h1 id="windows">6. Setări de sistem – Windows 11 (PowerShell)</h1>
+
+<h2>6.1 Instalări prin winget</h2>
+
+<pre class="code powershell-code">PS C:\> winget install --id Git.Git -e
+PS C:\> winget install --id OpenJS.NodeJS.LTS -e
+PS C:\> winget install --id Microsoft.VisualStudioCode -e
+PS C:\> winget install --id Mozilla.Firefox -e</pre>
+
+<p>Verificări:</p>
+<pre class="code powershell-code">PS C:\> where git
+PS C:\> node -v
+PS C:\> npm -v</pre>
+
+<h2>6.2 PATH & remedieri</h2>
+
+<div class="warning">
+    <strong>⚠️ Problemă frecventă:</strong> Dacă <code>git is not recognized</code>, repornește shell-ul sau reinstalează Git cu <em>Add to PATH</em>.
+</div>
+
+<h2>6.3 SSH & GitHub</h2>
+
+<pre class="code powershell-code">PS C:\> ssh-keygen -t ed25519 -C "prenume.nume@stud.ase.ro"
+PS C:\> ssh -T git@github.com</pre>
+
+<p>Evităm PAT la push; preferăm SSH, în special pe stații publice.</p>
+
+<!-- GIT & GITHUB -->
+<h1 id="git">7. Git & GitHub: configurare, flux, politici de chei</h1>
+
+<div class="columns">
+    <div class="column">
+        <h4>🔑 Stația personală</h4>
+        <ul>
+            <li>Chei <strong>ed25519</strong> cu passphrase</li>
+            <li>Memorate în agent SSH</li>
+            <li>Backup securizat</li>
+        </ul>
+    </div>
+    <div class="column">
+        <h4>🏫 Stația de laborator</h4>
+        <ul>
+            <li>Chei efemere</li>
+            <li><em>Deploy keys</em> limitate</li>
+            <li>Fork-uri temporare</li>
+            <li><strong>Curățare obligatorie</strong> la final</li>
+        </ul>
+    </div>
+</div>
+
+<p>Adoptăm ramura implicită <code>main</code>, mesajele <em>semantic commit</em>, și <code>.gitignore</code> adecvat.</p>
+
+<!-- NODE.JS -->
+<h1 id="node">8. Node.js & NPM – versiuni, pachete, bune practici</h1>
+
+<table>
+    <tr>
+        <th>Sistem</th>
+        <th>Metodă recomandată</th>
+        <th>Avantaje</th>
+    </tr>
+    <tr>
+        <td>Ubuntu/Linux</td>
+        <td><code>nvm</code></td>
+        <td>Izolare versiuni, switch rapid</td>
+    </tr>
+    <tr>
+        <td>Windows 11</td>
+        <td><code>winget</code> LTS</td>
+        <td>Integrare sistem, update automat</td>
+    </tr>
+</table>
+
+<p>Scripturile NPM (<code>start</code>, <code>dev</code>, <code>lint</code>, <code>format</code>, <code>test</code>) uniformizează rularea pe toate OS-urile. Evităm dependențele globale; menținem <code>package.json</code> autoexplicativ.</p>
+
+<!-- VS CODE -->
+<h1 id="vscode">9. VS Code – preseturi, extensii, productivitate</h1>
+
+<h2>Extensii esențiale</h2>
+<ul>
+    <li><strong>ESLint</strong> (Microsoft)</li>
+    <li><strong>Prettier</strong> (Prettier)</li>
+    <li><strong>GitHub Copilot</strong> (opțional)</li>
+    <li><strong>Error Lens</strong> (vizualizare inline)</li>
+</ul>
+
+<h2>Configurare workspace</h2>
+
+<pre class="code json-code">{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.validate": ["javascript"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}</pre>
+
+<!-- FIREFOX -->
+<h1 id="firefox">10. Firefox – DevTools & profilare</h1>
+
+<div class="info">
+    <strong>🦊 Panouri importante:</strong>
+    <ul>
+        <li><strong>Network:</strong> observăm <em>status</em>, <em>content-type</em>, <em>cache</em></li>
+        <li><strong>Storage:</strong> inspectăm <code>localStorage</code>/<code>sessionStorage</code></li>
+        <li><strong>Console:</strong> testare rapidă JavaScript</li>
+    </ul>
+</div>
+
+<p>Pentru testare curată, folosim <em>Private Window</em> sau profiluri separate.</p>
+
+<!-- PROIECT MINIM -->
+<h1 id="proiect">11. Proiect minim „Hello Web" (Express)</h1>
+
+<h2>11.1 Specificație</h2>
+
+<ul>
+    <li>Servește <code>public/</code> ca <em>static files</em></li>
+    <li><code>/ping</code> → <code>text/plain: pong</code></li>
+    <li><code>/api/time</code> → JSON ISO-8601</li>
+</ul>
+
+<h2>11.2 Cod</h2>
+
+<pre class="code js-code">import express from 'express';
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(express.static('public'));
+
+app.get('/ping', (_req, res) => {
+    res.type('text/plain').send('pong');
+});
+
+app.get('/api/time', (_req, res) => {
+    res.json({ now: new Date().toISOString() });
+});
+
+app.listen(PORT, () => {
+    console.log(`http://localhost:${PORT}`);
+});</pre>
+
+<h2>11.3 Inițializare rapidă (ambele OS)</h2>
+
+<div class="os-specific">
+    <h4>🐧 Linux/Ubuntu:</h4>
+    <pre class="code bash-code">$ mkdir tw-seminar-0 && cd tw-seminar-0
+$ npm init -y
+$ npm i express
+$ npm i -D nodemon eslint prettier</pre>
+</div>
+
+<div class="os-specific">
+    <h4>🪟 Windows 11:</h4>
+    <pre class="code powershell-code">PS C:\> mkdir tw-seminar-0; cd tw-seminar-0
+PS C:\tw-seminar-0> npm init -y
+PS C:\tw-seminar-0> npm i express
+PS C:\tw-seminar-0> npm i -D nodemon eslint prettier</pre>
+</div>
+
+<!-- CALITATE -->
+<h1 id="calitate">12. Controlul calității – ESLint & Prettier</h1>
+
+<h2>ESLint config (flat)</h2>
+
+<pre class="code js-code">// eslint.config.js
+export default [
+    {
+        files: ["**/*.js"],
+        languageOptions: {
+            ecmaVersion: "latest",
+            sourceType: "module"
+        },
+        rules: {
+            "no-unused-vars": "warn",
+            "no-console": "off"
+        }
+    }
+];</pre>
+
+<h2>Prettier config</h2>
+
+<pre class="code json-code">{
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "printWidth": 100
+}</pre>
+
+<!-- TESTARE -->
+<h1 id="testare">13. Testare dublă – Vitest și Jest</h1>
+
+<div class="info">
+    <p><strong>De ce două suite?</strong> Pentru portabilitate și familiarizare cu ecosisteme diferite.</p>
+    <ul>
+        <li><strong>Vitest:</strong> execuție rapidă, compatibil cu Vite</li>
+        <li><strong>Jest:</strong> ecosistem matur, suport larg</li>
+    </ul>
+</div>
+
+<h2>Test simplu pentru ambele</h2>
+
+<pre class="code js-code">// tests/add.test.js
+export function add(a, b) {
+    return a + b;
+}
+
+describe('add function', () => {
+    it('should add two numbers', () => {
+        expect(add(2, 3)).toBe(5);
+    });
+});</pre>
+
+<!-- SECURITATE -->
+<h1 id="securitate">14. Securitate operațională</h1>
+
+<div class="important">
+    <strong>🔒 Reguli critice:</strong>
+    <ul>
+        <li>Nu commităm secrete niciodată</li>
+        <li><code>.env</code> este exclus, păstrăm un <code>.env.example</code></li>
+        <li>Revocăm cheile efemere la finalul laboratorului</li>
+        <li>Validăm configurația prin auditul cheilor SSH în GitHub</li>
+    </ul>
+</div>
+
+<!-- GIT AVANSAT -->
+<h1 id="git-avansat">15. Git avansat</h1>
+
+<table>
+    <tr>
+        <th>Comandă</th>
+        <th>Scop</th>
+        <th>Când folosim</th>
+    </tr>
+    <tr>
+        <td><code>git merge</code></td>
+        <td>Integrare explicită</td>
+        <td>Pentru ramuri de feature</td>
+    </tr>
+    <tr>
+        <td><code>git rebase</code></td>
+        <td>Istoric liniar</td>
+        <td>În ramuri personale</td>
+    </tr>
+    <tr>
+        <td><code>git stash</code></td>
+        <td>Salvare temporară</td>
+        <td>Schimbări neterminate</td>
+    </tr>
+    <tr>
+        <td><code>git reflog</code></td>
+        <td>Recuperări</td>
+        <td>Plasă de siguranță</td>
+    </tr>
+</table>
+
+<!-- GITIGNORE -->
+<h1 id="gitignore">16. .gitignore pe OS/IDE</h1>
+
+<pre class="code bash-code"># Dependencies
+node_modules/
+package-lock.json
+
+# Build
+dist/
+build/
+*.min.js
+*.min.css
+
+# Testing
+coverage/
+.nyc_output/
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Logs
+*.log
+npm-debug.log*</pre>
+
+<!-- EXPORT -->
+<h1 id="export">17. Exportul livrabilelor</h1>
+
+<div class="columns">
+    <div class="column">
+        <h4>📄 Markdown → DOCX</h4>
+        <pre class="code bash-code">$ pandoc README.md -o README.docx</pre>
+    </div>
+    <div class="column">
+        <h4>📑 Markdown → PDF</h4>
+        <pre class="code bash-code">$ pandoc README.md -o README.pdf</pre>
+    </div>
+</div>
+
+<!-- EVALUARE -->
+<h1 id="evaluare">18. Evaluare formativă – mini-quiz</h1>
+
+<ol>
+    <li>Enumerați pașii reflexului de 10–30 s după instalare.</li>
+    <li>De ce recomandăm <code>nvm</code> pe Linux și nu <code>apt install nodejs</code>?</li>
+    <li>Ce diferențe are SSH față de HTTPS la <em>push</em>?</li>
+    <li>Cum testați rapid ruta <code>/api/time</code> fără browser?</li>
+    <li>Ce face <code>eslint</code> diferit față de <code>prettier</code>?</li>
+    <li>În ce situații preferăm <code>rebase</code> în loc de <code>merge</code>?</li>
+    <li>Ce exclude <code>.gitignore</code> și de ce nu ar trebui să includem fișiere de build?</li>
+    <li>Cum documentăm reproducibil pașii în README?</li>
+</ol>
+
+<!-- LABORATOR -->
+<h1 id="laborator">19. Mini-laborator progresiv L1→L3</h1>
+
+<div class="checklist">
+    <h3>📋 L1: Proiect minimal funcțional</h3>
+    <ul>
+        <li>Server Express pornit</li>
+        <li>Rute /ping și /api/time funcționale</li>
+        <li>Fișiere statice servite din public/</li>
+    </ul>
+</div>
+
+<div class="checklist">
+    <h3>📋 L2: Calitate cod</h3>
+    <ul>
+        <li>ESLint configurate</li>
+        <li>Prettier aplicat</li>
+        <li>Teste Vitest/Jest verzi</li>
+    </ul>
+</div>
+
+<div class="checklist">
+    <h3>📋 L3: Robustețe și documentare</h3>
+    <ul>
+        <li>Timeouts pentru operații async</li>
+        <li>Logging structurat</li>
+        <li>README complet</li>
+        <li>Export DOCX</li>
+    </ul>
+</div>
+
+<!-- RUBRICA -->
+<h1 id="rubrica">20. Rubrică de evaluare & DoD</h1>
+
+<div class="rubric">
+    <h3>Rubrică pe 100 puncte</h3>
+    <table>
+        <tr>
+            <th>Criteriu</th>
+            <th>Puncte</th>
+            <th>Descriere</th>
+        </tr>
+        <tr>
+            <td>Setup mediu</td>
+            <td>20</td>
+            <td>Toate uneltele instalate și verificate</td>
+        </tr>
+        <tr>
+            <td>Server Express</td>
+            <td>25</td>
+            <td>Funcțional cu toate rutele</td>
+        </tr>
+        <tr>
+            <td>Calitate cod</td>
+            <td>20</td>
+            <td>ESLint și Prettier fără erori</td>
+        </tr>
+        <tr>
+            <td>Teste</td>
+            <td>15</td>
+            <td>Vitest și Jest verzi</td>
+        </tr>
+        <tr>
+            <td>Git & Securitate</td>
+            <td>10</td>
+            <td>Repo curat, fără secrete</td>
+        </tr>
+        <tr>
+            <td>Documentare</td>
+            <td>10</td>
+            <td>README complet, export DOCX</td>
+        </tr>
+    </table>
+</div>
+
+<div class="info">
+    <strong>✅ Definition of Done:</strong> rute OK, calitate OK, teste OK, README & DOCX livrate, push pe GitHub.
+</div>
+
+<!-- DoR -->
+<h1 id="dor">21. Definition of Ready (DoR) pentru S1+</h1>
+
+<p>Toți studenții au:</p>
+<ul>
+    <li>✔️ Toolchain complet instalat</li>
+    <li>✔️ Repo cu starter funcțional</li>
+    <li>✔️ Calitate/teste verzi</li>
+    <li>✔️ Identitate Git corectă</li>
+</ul>
+
+<!-- ANTI-PATTERNS -->
+<h1 id="antipatterns">22. Anti-patterns & troubleshooting</h1>
+
+<table>
+    <tr>
+        <th>Anti-pattern</th>
+        <th>Problemă</th>
+        <th>Soluție</th>
+    </tr>
+    <tr>
+        <td>One-file server</td>
+        <td>Cod nemaintainabil</td>
+        <td>Separă codul pe module</td>
+    </tr>
+    <tr>
+        <td>Secrete în repo</td>
+        <td>Risc de securitate</td>
+        <td>Folosește .env + .gitignore</td>
+    </tr>
+    <tr>
+        <td>Niciun script NPM</td>
+        <td>Comenzi greu de reținut</td>
+        <td>Adaugă start/dev/lint/test</td>
+    </tr>
+    <tr>
+        <td>PATH corupt (Win)</td>
+        <td>Comenzi nerecunoscute</td>
+        <td>Reinstalare cu Add to PATH</td>
+    </tr>
+    <tr>
+        <td>ESM + Jest eșuează</td>
+        <td>Module nerecunoscute</td>
+        <td>babel-jest + config</td>
+    </tr>
+    <tr>
+        <td>Port ocupat</td>
+        <td>Server nu pornește</td>
+        <td>Schimbă PORT sau eliberează</td>
+    </tr>
+</table>
+
+<!-- FAQ -->
+<h1 id="faq">23. FAQ</h1>
+
+<div class="info">
+    <p><strong>Î: Pot folosi alt editor?</strong><br>
+    R: Da, dar proiectul conține preseturi VS Code pentru coerență; păstrează regulile ESLint/Prettier.</p>
+    
+    <p><strong>Î: De ce două suite de testare?</strong><br>
+    R: Pentru portabilitate și familiarizare cu ecosisteme diferite.</p>
+    
+    <p><strong>Î: Ce fac dacă nu am drepturi de instalare?</strong><br>
+    R: Folosește VM (VirtualBox) cu Ubuntu Desktop; toate uneltele sunt <em>free</em>.</p>
+
+    <p><strong>Î: Care e diferența între Ubuntu și Windows pentru acest curs?</strong><br>
+    R: Comenzile diferă (bash vs PowerShell), dar codul JavaScript rămâne identic.</p>
+</div>
+
+<!-- GLOSAR -->
+<h1 id="glosar">24. Glosar (EN → RO)</h1>
+
+<div class="glosar">
+    <dl>
+        <dt>rebase</dt>
+        <dd>rescriere a bazei istoricului (repoziționarea commit-urilor)</dd>
+        
+        <dt>lint</dt>
+        <dd>analiză statică a codului pentru stil/erori</dd>
+        
+        <dt>deploy key</dt>
+        <dd>cheie SSH asociată unui repo cu permisiuni limitate</dd>
+        
+        <dt>agent</dt>
+        <dd>componentă care ține chei în memorie pentru sesiune</dd>
+        
+        <dt>stash</dt>
+        <dd>depozitare temporară a schimbărilor nefinalizate</dd>
+        
+        <dt>reflog</dt>
+        <dd>jurnal al referințelor Git pentru recuperări</dd>
+    </dl>
+</div>
+
+<!-- BIBLIOGRAFIE -->
+<h1 id="bibliografie">25. Bibliografie (APA 7; DOIs reale)</h1>
+
+<ul>
+    <li>Fielding, R. T., & Reschke, J. (2014). <em>Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing</em> (RFC 7230). IETF. https://doi.org/10.17487/RFC7230</li>
+    
+    <li>Thompson, T., Kyzivat, P., & Bray, T. (2017). <em>The JavaScript Object Notation (JSON) Data Interchange Format</em> (RFC 8259). IETF. https://doi.org/10.17487/RFC8259</li>
+    
+    <li>Thomson, M., Rescorla, E., et al. (2018). <em>The Transport Layer Security (TLS) Protocol Version 1.3</em> (RFC 8446). IETF. https://doi.org/10.17487/RFC8446</li>
+    
+    <li>Wirfs-Brock, A., & Eich, B. (2020). JavaScript: The first 20 years. <em>Proceedings of the ACM on Programming Languages, 4</em>(HOPL), 1–189. https://doi.org/10.1145/3386327</li>
+</ul>
+
+<!-- ANEXE -->
+<h1 id="anexe">26. Anexe</h1>
+
+<h2>Anexa A: Răspunsuri sintetice la mini-quiz</h2>
+
+<ol>
+    <li><strong>Reflexul:</strong> verificări Node/Git/Firefox Console; motiv: detectare imediată a problemelor de mediu</li>
+    <li><strong>nvm:</strong> izolare versiunilor și control granular fără a afecta OS-ul</li>
+    <li><strong>SSH vs. HTTPS:</strong> fără PAT, chei efemere revocabile rapid, convenabil în laborator</li>
+    <li><strong>Test /api/time:</strong> <code>curl http://localhost:3000/api/time</code> sau <code>Invoke-WebRequest</code> în PowerShell</li>
+    <li><strong>ESLint vs. Prettier:</strong> calitate semantică vs. formatare; se completează</li>
+    <li><strong>Rebase vs. Merge:</strong> istoric liniar vs. păstrare ramuri; context dependent</li>
+    <li><strong>.gitignore:</strong> exclude build artifacts pentru repo curat și dimensiune redusă</li>
+    <li><strong>Documentare:</strong> pași clari, comenzi complete, output așteptat, troubleshooting</li>
+</ol>
+
+<h2>Anexa B: Checklist complet de verificare</h2>
+
+<div class="checklist">
+    <h3>✅ Verificare finală</h3>
+    <ul>
+        <li>Git configurare globală completă</li>
+        <li>SSH key adăugat în GitHub</li>
+        <li>Node.js și npm versiuni corecte</li>
+        <li>VS Code cu extensii instalate</li>
+        <li>Firefox DevTools funcțional</li>
+        <li>Proiect Express pornește fără erori</li>
+        <li>Rutele răspund corect (test curl/browser)</li>
+        <li>ESLint și Prettier fără warnings</li>
+        <li>Teste Vitest și Jest toate verzi</li>
+        <li>README.md documentat complet</li>
+        <li>Export DOCX reușit</li>
+        <li>Repository GitHub actualizat</li>
+        <li>.env.example prezent, .env exclus</li>
+        <li>Niciun secret în istoric Git</li>
+        <li>Toate dependențele la zi</li>
+    </ul>
+</div>
+
+<div class="meta-info" style="margin-top: 50px; text-align: center;">
+    <strong>© 2025 ASE - Facultatea de Cibernetică, Statistică și Informatică Economică</strong><br>
+    Material didactic pentru uzul studenților<br>
+    <em>Document integrat pentru sisteme Linux și Windows</em>
+</div>
+
+</body>
+</html>

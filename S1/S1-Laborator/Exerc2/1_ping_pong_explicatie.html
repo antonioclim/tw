@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explicație detaliată: Express Ping → Pong</title>
+<style>
+  :root { --ink:#1e293b; --muted:#475569; --accent:#2563eb; --bg:#f8fafc; --codebg:#0f172a; --codefg:#e5e7eb; --kbd:#111827; }
+  html,body { margin:0; padding:0; }
+  body { font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif;
+         line-height:1.6; color:var(--ink); background:var(--bg); }
+  header { padding:2rem 1.25rem; background:white; border-bottom:1px solid #e5e7eb; }
+  h1 { margin:0; color:var(--accent); font-size:1.9rem; }
+  main { max-width:920px; margin:0 auto; padding:2rem 1.25rem; }
+  h2 { margin-top:2rem; color:#0f172a; }
+  h3 { margin-top:1.5rem; color:#0f172a; }
+  p, li { color:var(--muted); }
+  .lead { font-size:1.05rem; }
+  .card { background:white; border:1px solid #e5e7eb; border-radius:12px; padding:1rem 1.25rem; box-shadow: 0 2px 6px rgba(15,23,42,.04); }
+  pre { background:var(--codebg); color:var(--codefg); padding:1rem; border-radius:10px; overflow:auto; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  .toc { background:white; border:1px solid #e5e7eb; border-radius:12px; padding:1rem 1.25rem; }
+  .toc a { color:var(--accent); text-decoration:none; }
+  .toc a:hover { text-decoration:underline; }
+  kbd { background:#e5e7eb; color:var(--kbd); padding:.15rem .35rem; border-radius:6px; border:1px solid #d1d5db; font-size:.85em; }
+  footer { margin:3rem 0 2rem; text-align:center; color:#64748b; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Explicație detaliată (linie cu linie) — Express Ping → Pong</h1>
+  <p class="lead">Document didactic: fiecare linie, fiecare simbol și fiecare cuvânt compus explicate fără „magie”.</p>
+</header>
+
+<main>
+  <section class="toc card">
+    <h2>Cuprins</h2>
+    <ol>
+      <li><a href="#cod-complet">Cod complet</a></li>
+      <li><a href="#explicatii">Explicații linie cu linie</a></li>
+      <li><a href="#rezultat">Rezultat & rulare</a></li>
+    </ol>
+  </section>
+
+  <section id="cod-complet">
+    <h2>Cod complet</h2>
+    <div class="card">
+<pre><code>import express from "express";
+const app = express();
+const port = 3000;
+
+// Servim un HTML cu un buton
+app.get("/", (req, res) =&gt; {
+  res.send(`
+    &lt;!DOCTYPE html&gt;
+    &lt;html lang="en"&gt;
+    &lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;title&gt;Ping-Pong&lt;/title&gt;&lt;/head&gt;
+    &lt;body&gt;
+      &lt;button onclick="ping()"&gt;Ping&lt;/button&gt;
+      &lt;p id="result"&gt;&lt;/p&gt;
+      &lt;script&gt;
+        async function ping() {
+          const res = await fetch('/ping');
+          const text = await res.text();
+          document.getElementById('result').innerText = text;
+        }
+      &lt;/script&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+  `);
+});
+
+// Endpointul „/ping”
+app.get("/ping", (req, res) =&gt; {
+  res.send("pong");
+});
+
+app.listen(port, () =&gt; {
+  console.log(`Server running at http://localhost:${port}`);
+});</code></pre>
+    </div>
+  </section>
+
+  <section id="explicatii">
+    <h2>Explicații linie cu linie</h2>
+
+    <h3><code>import express from "express";</code></h3>
+    <ul>
+      <li><code>import</code> — cuvânt-cheie ESM pentru importul unui modul.</li>
+      <li><code>express</code> (alias local) — numele simbolului local; îl poți denumi oricum.</li>
+      <li><code>from</code> — indică sursa importului.</li>
+      <li><code>"express"</code> — numele pachetului instalat prin <code>npm install express</code>.</li>
+    </ul>
+
+    <h3><code>const app = express();</code></h3>
+    <ul>
+      <li><code>const</code> — declară o constantă (nu se reasignează).</li>
+      <li><code>app</code> — obiectul aplicației Express (convenție).</li>
+      <li><code>=</code> — operator de atribuire.</li>
+      <li><code>express()</code> — apelul care creează instanța aplicației.</li>
+    </ul>
+
+    <h3><code>const port = 3000;</code></h3>
+    <ul>
+      <li><code>port</code> — variabilă numerică pentru portul TCP.</li>
+    </ul>
+
+    <h3><code>// Servim un HTML cu un buton</code></h3>
+    <p>Comentariu pentru cititor, ignorat de motorul JS.</p>
+
+    <h3><code>app.get("/", (req, res) =&gt; { ... })</code></h3>
+    <ul>
+      <li><code>app</code> — instanța Express.</li>
+      <li><code>.get</code> — metodă pentru definirea unui handler de cereri HTTP <code>GET</code>.</li>
+      <li><code>"/"</code> — ruta (path) rădăcină.</li>
+      <li><code>(req, res)</code> — parametrii callback-ului: obiectele cerere și răspuns.</li>
+      <li><code>=&gt;</code> — sintaxa <em>arrow function</em>.</li>
+    </ul>
+
+    <h3><code>res.send(` ... `)</code></h3>
+    <ul>
+      <li><code>res</code> — obiectul răspuns.</li>
+      <li><code>.send</code> — trimite conținut către client.</li>
+      <li><code>`...`</code> — <em>template literal</em> (permite HTML pe mai multe linii).</li>
+    </ul>
+
+    <h3>Blocul HTML returnat pentru ruta <code>/</code></h3>
+    <ul>
+      <li><code>&lt;!DOCTYPE html&gt;</code> — document HTML5.</li>
+      <li><code>&lt;html lang="en"&gt;</code> — element rădăcină, limba setată la engleză.</li>
+      <li><code>&lt;meta charset="UTF-8"&gt;</code> — codificare UTF‑8.</li>
+      <li><code>&lt;title&gt;</code> — titlul tab-ului.</li>
+      <li><code>&lt;button onclick="ping()"&gt;</code> — buton care apelează funcția <code>ping()</code>.</li>
+      <li><code>&lt;p id="result"&gt;</code> — container pentru afișarea răspunsului.</li>
+      <li><code>&lt;script&gt;...&lt;/script&gt;</code> — cod JS rulat în browser.</li>
+    </ul>
+
+    <h3>Scriptul din pagină</h3>
+    <div class="card">
+<pre><code>async function ping() {
+  const res = await fetch('/ping');
+  const text = await res.text();
+  document.getElementById('result').innerText = text;
+}</code></pre>
+    </div>
+    <ul>
+      <li><code>async</code> — funcție asincronă (permite <code>await</code>).</li>
+      <li><code>await fetch('/ping')</code> — cere resursa prin <code>GET</code>.</li>
+      <li><code>await res.text()</code> — convertește răspunsul în text.</li>
+      <li><code>document.getElementById('result')</code> — selectează elementul țintă.</li>
+      <li><code>.innerText = text</code> — inserează textul primit (de așteptat: <code>pong</code>).</li>
+    </ul>
+
+    <h3><code>app.get("/ping", (req, res) =&gt; { res.send("pong"); })</code></h3>
+    <ul>
+      <li>Definește endpointul <code>/ping</code> pentru cereri <code>GET</code>.</li>
+      <li>Răspunde cu șirul de caractere <code>"pong"</code>.</li>
+    </ul>
+
+    <h3><code>app.listen(port, () =&gt; { console.log(`Server running at http://localhost:${port}`); })</code></h3>
+    <ul>
+      <li><code>.listen(port, ...)</code> — pornește serverul pe portul specificat.</li>
+      <li><code>console.log(...)</code> — mesaj informativ în terminal.</li>
+      <li><code>`...${port}`</code> — <em>template literal</em> cu interpolare.</li>
+    </ul>
+  </section>
+
+  <section id="rezultat">
+    <h2>Rezultat &amp; rulare</h2>
+    <div class="card">
+      <p><strong>Pas 1:</strong> Instalează Express:</p>
+      <pre><code>npm install express</code></pre>
+      <p><strong>Pas 2:</strong> Rulează serverul:</p>
+      <pre><code>node server.js</code></pre>
+      <p><strong>Pas 3:</strong> Deschide în browser <a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a> și apasă butonul <em>Ping</em>, sau testează direct <a href="http://localhost:3000/ping" target="_blank" rel="noopener">/ping</a>.</p>
+      <p><em>Sfat:</em> Poți verifica în <kbd>F12</kbd> → <strong>Console</strong> cu:</p>
+      <pre><code>fetch("/ping").then(r =&gt; r.text()).then(console.log);</code></pre>
+    </div>
+  </section>
+</main>
+
+<footer>
+  &copy; 2025 — Material didactic pentru seminarii de Tehnologii Web
+</footer>
+</body>
+</html>
