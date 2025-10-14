@@ -1,0 +1,401 @@
+<!doctype html><html><head><meta charset="utf-8"><title>1wordsfilter Analysis</title>
+<style>body{font-family:Georgia,serif;max-width:900px;margin:40px auto;line-height:1.6}
+pre{background:#f6f8fa;padding:12px;overflow:auto;border:1px solid #e1e4e8}
+code{font-family:ui-monospace,Consolas,monospace}
+h1,h2,h3{font-family:Cambria,Georgia,serif}
+hr{border:none;border-top:1px solid #ccc;margin:2em 0}
+ul{margin-left:1.2em}
+a{color:inherit;text-decoration:underline}
+</style></head><body>
+<h1>1wordsfilter (A–F): analiză tehnică și comentarii didactice</h1>
+<p></p>
+<p>_Generat: 2025-10-13T09:56:57_</p>
+<p></p>
+<h2>Context</h2>
+<p>Setul de fișiere **A–F** ilustrează tehnici idiomatice de filtrare în JavaScript/Node.js asupra unui tablou de cuvinte, sub constrângeri simple (un **cuvânt interzis** și o **lungime minimă**). Scopul didactic este familiarizarea cu `Array.prototype.filter`, cu stilurile **ES6 (funcții săgeată)** și **ES5 (funcții clasice)**, cu ergonomia CLI și cu analiza complexității.</p>
+<p></p>
+<h3>1wordsfilterB.js</h3>
+<p></p>
+<p>**Variantă B.** Implementare „clară” cu predicate explicite într-o funcție săgeată; creează variabila `result` pentru lizibilitate, apoi o returnează.</p>
+<p></p>
+<p>**Stiluri și API-uri folosite:** use strict, arrow functions (ES6), Array.prototype.filter.</p>
+<p></p>
+<p>**Măsuri sumare:** linii de cod (excluzând comentarii/blank) ≈ `14`, complexitate ciclomatică aproximată ≈ `6`.</p>
+<p></p>
+<p>**Complexitate asimptotică:** timp `O(n)` (parcurgere liniară a celor `n` cuvinte), spațiu `O(n)` pentru rezultatul filtrat (cel mult `n`).</p>
+<p></p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>`filter((word) => word !== forbiddenWord && word.length >= minLength)` păstrează exact cuvintele care **nu coincid** cu `forbiddenWord` și au **lungimea minimă** solicitată; `filter` nu modifică `words`, ci returnează un **tablou nou**.</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 1wordsfilterB.js
+</code></pre>
+<p></p>
+<p>**Utilitate aplicativă:** şablon de prelucrare text pentru filtrări de lexeme (de ex., eliminarea termenilor interzişi, prefiltrarea tokenilor pentru NLP, filtrarea listelor de taguri în UI).</p>
+<p></p>
+<p>**Observaţii didactice:** preferaţi `filter` pentru expresivitate; `for` este util când doriţi **control fin** (contorizări, întreruperi, profile de performanţă).</p>
+<p></p>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+//Aici avem partea &quot;lucrata&quot;/functionala - sectiunea 1 a seminarului 3 (functii si array-uri)
+// Parte prezentata in students.nextlab.tech
+// Varianta B — variantă „inline” (fără helper), care face direct const result = words.filter(...); console.log(result)
+&quot;use strict&quot;;
+
+const words = [&quot;fox&quot;,&quot;wolf&quot;,&quot;snake&quot;,&quot;crocodile&quot;,&quot;lion&quot;,&quot;cat&quot;,&quot;crocodile&quot;,&quot;horse&quot;];
+const forbiddenWord = &quot;crocodile&quot;;
+const minLength = 4;
+
+/**
+ * Filtrare în doi pași: predicat cu if/return și returnarea lui `result`.
+ */
+const filterWords = (words, forbiddenWord, minLength) =&gt; {
+  const result = words.filter((word) =&gt; {
+    if (word !== forbiddenWord &amp;&amp; word.length &gt;= minLength) {
+      return true;  // păstrăm elementul
+    }
+    return false;   // îl eliminăm (elementul)
+  });
+  return result;
+};
+
+console.log(filterWords(words, forbiddenWord, minLength));
+
+// =&gt; [ &#x27;wolf&#x27;, &#x27;snake&#x27;, &#x27;lion&#x27;, &#x27;horse&#x27; ]
+
+// TRIVIA: Historically, the JS language was prototyped as Mocha and then LiveScript before being renamed JavaScript in 1995. 
+// Those are historical names, not current synonyms. Still can be funny to say &quot;Mocha&quot; instead of &quot;JavaScript&quot; in a conversation.
+// The name &quot;JavaScript&quot; was chosen for marketing reasons, to capitalize on the popularity of Java (JSE) at the time,
+// even though the two languages are quite different in design and purpose.
+// The language has evolved significantly since its inception, with major updates like ES6 (ECMAScript 2015) introducing many modern features.
+// Today, JavaScript is a versatile language used for both client-side and server-side development, as well as in various frameworks and libraries.
+</code></pre>
+<p></p>
+<h3>1wordsfilterC.js</h3>
+<p></p>
+<p>**Variantă C.** Formă concisă: funcție săgeată de o singură expresie, predicatul plasat direct în `filter`.</p>
+<p></p>
+<p>**Stiluri și API-uri folosite:** use strict, arrow functions (ES6), Array.prototype.filter.</p>
+<p></p>
+<p>**Măsuri sumare:** linii de cod (excluzând comentarii/blank) ≈ `7`, complexitate ciclomatică aproximată ≈ `2`.</p>
+<p></p>
+<p>**Complexitate asimptotică:** timp `O(n)` (parcurgere liniară a celor `n` cuvinte), spațiu `O(n)` pentru rezultatul filtrat (cel mult `n`).</p>
+<p></p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>`filter((word) => word !== forbiddenWord && word.length >= minLength)` păstrează exact cuvintele care **nu coincid** cu `forbiddenWord` și au **lungimea minimă** solicitată; `filter` nu modifică `words`, ci returnează un **tablou nou**.</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 1wordsfilterC.js
+</code></pre>
+<p></p>
+<p>**Utilitate aplicativă:** şablon de prelucrare text pentru filtrări de lexeme (de ex., eliminarea termenilor interzişi, prefiltrarea tokenilor pentru NLP, filtrarea listelor de taguri în UI).</p>
+<p></p>
+<p>**Observaţii didactice:** preferaţi `filter` pentru expresivitate; `for` este util când doriţi **control fin** (contorizări, întreruperi, profile de performanţă).</p>
+<p></p>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+//Varianta C — funcție săgeată concisă (o singură expresie)
+// Sintaxa ES6 pentru funcții săgeată
+
+&quot;use strict&quot;;
+
+const words = [&quot;fox&quot;,&quot;wolf&quot;,&quot;snake&quot;,&quot;crocodile&quot;,&quot;lion&quot;,&quot;cat&quot;,&quot;crocodile&quot;,&quot;horse&quot;];
+const forbiddenWord = &quot;crocodile&quot;;
+const minLength = 4;
+
+/**
+ * o singură expresie; predicatul direct în filter.
+ */
+const filterWords = (words, forbiddenWord, minLength) =&gt;
+  words.filter((word) =&gt; word !== forbiddenWord &amp;&amp; word.length &gt;= minLength);
+
+console.log(filterWords(words, forbiddenWord, minLength));
+
+// =&gt; [ &#x27;wolf&#x27;, &#x27;snake&#x27;, &#x27;lion&#x27;, &#x27;horse&#x27; ]
+</code></pre>
+<p></p>
+<h3>1wordsfilterD.js</h3>
+<p></p>
+<p>**Variantă D.** Echivalentă logic cu C, dar utilizează **funcție clasică** (ES5) pentru `filterWords`. Utilă pentru a ilustra două stiluri sintactice.</p>
+<p></p>
+<p>**Stiluri și API-uri folosite:** use strict, arrow functions (ES6), traditional functions (ES5), Array.prototype.filter.</p>
+<p></p>
+<p>**Măsuri sumare:** linii de cod (excluzând comentarii/blank) ≈ `8`, complexitate ciclomatică aproximată ≈ `3`.</p>
+<p></p>
+<p>**Complexitate asimptotică:** timp `O(n)` (parcurgere liniară a celor `n` cuvinte), spațiu `O(n)` pentru rezultatul filtrat (cel mult `n`).</p>
+<p></p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>`filter((word) => word !== forbiddenWord && word.length >= minLength)` păstrează exact cuvintele care **nu coincid** cu `forbiddenWord` și au **lungimea minimă** solicitată; `filter` nu modifică `words`, ci returnează un **tablou nou**.</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 1wordsfilterD.js
+</code></pre>
+<p></p>
+<p>**Utilitate aplicativă:** şablon de prelucrare text pentru filtrări de lexeme (de ex., eliminarea termenilor interzişi, prefiltrarea tokenilor pentru NLP, filtrarea listelor de taguri în UI).</p>
+<p></p>
+<p>**Observaţii didactice:** preferaţi `filter` pentru expresivitate; `for` este util când doriţi **control fin** (contorizări, întreruperi, profile de performanţă).</p>
+<p></p>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+// Varianta D — seamana cu varianta C, dar folosind o funcție normală în loc de funcție săgeată
+// Sintaxa ES5 pentru funcții normale
+// Prima parte ramane la fel cu varianta C
+&quot;use strict&quot;;
+
+const words = [&quot;fox&quot;,&quot;wolf&quot;,&quot;snake&quot;,&quot;crocodile&quot;,&quot;lion&quot;,&quot;cat&quot;,&quot;crocodile&quot;,&quot;horse&quot;];
+const forbiddenWord = &quot;crocodile&quot;;
+const minLength = 4;
+
+// Inlocuim constanta filterWords cu o functie normala filterWords
+
+//DEL:  const filterWords = (words, forbiddenWord, minLength) =&gt;
+//DEL:    words.filter((word) =&gt; word !== forbiddenWord &amp;&amp; word.length &gt;= minLength);
+// construim o functie filterWords care sa primeasca 3 parametrii: words, forbiddenWord, minLength
+// si sa returneze un array cu cuvintele care nu sunt egale cu forbiddenWord si au lungimea mai mare sau egala cu minLength
+function filterWords(words, forbiddenWord, minLength) {
+  return words.filter((word) =&gt; word !== forbiddenWord &amp;&amp; word.length &gt;= minLength);
+}
+
+//Evident, apelam functia cu cei 3 parametri in final (la fel ca inainte)
+console.log(filterWords(words, forbiddenWord, minLength));
+
+// =&gt; [ &#x27;wolf&#x27;, &#x27;snake&#x27;, &#x27;lion&#x27;, &#x27;horse&#x27; ]
+</code></pre>
+<p></p>
+<h3>1wordsfilterE.js</h3>
+<p></p>
+<p>**Variantă E.** Elimină helper-ul și face totul *inline*; aceeași logică cu B, dar fără variabilă intermediară, destinată conciziei.</p>
+<p></p>
+<p>**Stiluri și API-uri folosite:** use strict, arrow functions (ES6), Array.prototype.filter.</p>
+<p></p>
+<p>**Măsuri sumare:** linii de cod (excluzând comentarii/blank) ≈ `6`, complexitate ciclomatică aproximată ≈ `2`.</p>
+<p></p>
+<p>**Complexitate asimptotică:** timp `O(n)` (parcurgere liniară a celor `n` cuvinte), spațiu `O(n)` pentru rezultatul filtrat (cel mult `n`).</p>
+<p></p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>`filter((word) => word !== forbiddenWord && word.length >= minLength)` păstrează exact cuvintele care **nu coincid** cu `forbiddenWord` și au **lungimea minimă** solicitată; `filter` nu modifică `words`, ci returnează un **tablou nou**.</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 1wordsfilterE.js
+</code></pre>
+<p></p>
+<p>**Utilitate aplicativă:** şablon de prelucrare text pentru filtrări de lexeme (de ex., eliminarea termenilor interzişi, prefiltrarea tokenilor pentru NLP, filtrarea listelor de taguri în UI).</p>
+<p></p>
+<p>**Observaţii didactice:** preferaţi `filter` pentru expresivitate; `for` este util când doriţi **control fin** (contorizări, întreruperi, profile de performanţă).</p>
+<p></p>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+// variatiune din B - Variantă E — inline (fără helper), exact ca porțiunea de final din fișier
+// Sintaxa ES6 pentru funcții săgeată
+// B ≡ E ca logică/rezultat; B e mai &quot;verbos&quot; pentru a explica, E e mai concis pentru producție.
+&quot;use strict&quot;;
+
+const words = [&quot;fox&quot;,&quot;wolf&quot;,&quot;snake&quot;,&quot;crocodile&quot;,&quot;lion&quot;,&quot;cat&quot;,&quot;crocodile&quot;,&quot;horse&quot;];
+const forbiddenWord = &quot;crocodile&quot;;
+const minLength = 4;
+
+// direct mapăm predicatul în `filter` și afișăm
+const result = words.filter((word) =&gt; word !== forbiddenWord &amp;&amp; word.length &gt;= minLength);
+console.log(result);
+// =&gt; [ &#x27;wolf&#x27;, &#x27;snake&#x27;, &#x27;lion&#x27;, &#x27;horse&#x27; ]
+</code></pre>
+<p></p>
+<h3>1wordsfilterF.js</h3>
+<p></p>
+<p>**Variantă F.** Introduce o **interfață CLI minimală** și o implementare cu **buclă `for`** (ES5), utilă pentru control explicit al fluxului și pentru scenarii fără `filter`.</p>
+<p></p>
+<p>**Stiluri și API-uri folosite:** arrow functions (ES6), traditional functions (ES5), Array.prototype.filter, Array.prototype.map, for-loop iteration.</p>
+<p></p>
+<p>**Măsuri sumare:** linii de cod (excluzând comentarii/blank) ≈ `15`, complexitate ciclomatică aproximată ≈ `12`.</p>
+<p></p>
+<p>**Complexitate asimptotică:** timp `O(n)` (parcurgere liniară a celor `n` cuvinte), spațiu `O(n)` pentru rezultatul filtrat (cel mult `n`).</p>
+<p></p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>`filter((word) => word !== forbiddenWord && word.length >= minLength)` păstrează exact cuvintele care **nu coincid** cu `forbiddenWord` și au **lungimea minimă** solicitată; `filter` nu modifică `words`, ci returnează un **tablou nou**.</li>
+<li>`parseArgs` construiește o hartă simplă din argumentele CLI de forma `--cheie=valoare`; permite rulările reproduse mai jos.</li>
+<li>Implementarea cu `for` inițializează un rezultat gol și adaugă elementele care satisfac **predicatul conjunctiv** (condiții cu `&&`).</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 1wordsfilterF.js
+</code></pre>
+<p></p>
+<p>**Exemple CLI (comenzi compuse):**</p>
+<pre><code>
+node 1wordsfilterF.js --words=&quot;fox,wolf,snake,crocodile,lioness,lynx&quot; --forbidden=crocodile --minLength=4
+node 1wordsfilterF.js --words=&quot;FOX,Wolf,Snake&quot; --forbidden=fox --minLength=3
+</code></pre>
+<p></p>
+<p>**Utilitate aplicativă:** şablon de prelucrare text pentru filtrări de lexeme (de ex., eliminarea termenilor interzişi, prefiltrarea tokenilor pentru NLP, filtrarea listelor de taguri în UI).</p>
+<p></p>
+<p>**Observaţii didactice:** preferaţi `filter` pentru expresivitate; `for` este util când doriţi **control fin** (contorizări, întreruperi, profile de performanţă).</p>
+<p></p>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+// Varianta clasica, folosind iteratii for
+// Sintaxa ES5 pentru funcții normale
+/**
+ * Ce se vede în fișier:
+ *   Un parseArgs minimalist (--words=... --forbidden=... --minLength=...);
+ *   Un &quot;constructor&quot; words din argumente (sau fallback la lista implicită);
+ *   Calculează result cu același predicat și îl afișează.
+ */
+
+
+function parseArgs(argv) {
+  const args = {};
+  for (let i = 2; i &lt; argv.length; i++) {
+    const [k, v] = argv[i].split(&quot;=&quot;);
+    if (k &amp;&amp; k.startsWith(&quot;--&quot;)) args[k.slice(2)] = v ?? true;
+  }
+  return args;
+}
+
+const args = parseArgs(process.argv);
+const words = (args.words ? String(args.words).split(&quot;,&quot;) :
+  [&quot;fox&quot;,&quot;wolf&quot;,&quot;snake&quot;,&quot;crocodile&quot;,&quot;lion&quot;,&quot;cat&quot;,&quot;crocodile&quot;,&quot;horse&quot;]).map(s =&gt; s.trim());
+
+const forbiddenWord = args.forbidden ?? &quot;crocodile&quot;;
+const minLength = Number.isFinite(Number(args.minLength)) ? Number(args.minLength) : 4;
+
+const result = words.filter((word) =&gt; word !== forbiddenWord &amp;&amp; word.length &gt;= minLength);
+console.log(result);
+
+
+/**
+ * Exemple de rulare:
+ *   node script.js (implicit (folosește datasetul din fișier))
+ *   node script.js --words=&quot;bear,ant,crocodile,lioness,lynx&quot; --forbidden=crocodile --minLength=4
+ */
+</code></pre>
+<p></p>
+<h3>1wordsfiltersA.js</h3>
+<p></p>
+<p>**Rol didactic.** Schemă de lucru inițială / șablon: definește setul comun de date și parametrii și invită completarea predicatului `filter`.</p>
+<p></p>
+<p>**Stiluri și API-uri folosite:** arrow functions (ES6).</p>
+<p></p>
+<p>**Măsuri sumare:** linii de cod (excluzând comentarii/blank) ≈ `15`, complexitate ciclomatică aproximată ≈ `1`.</p>
+<p></p>
+<p>**Complexitate asimptotică:** timp `O(n)` (parcurgere liniară a celor `n` cuvinte), spațiu `O(n)` pentru rezultatul filtrat (cel mult `n`).</p>
+<p></p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>`filter((word) => word !== forbiddenWord && word.length >= minLength)` păstrează exact cuvintele care **nu coincid** cu `forbiddenWord` și au **lungimea minimă** solicitată; `filter` nu modifică `words`, ci returnează un **tablou nou**.</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 1wordsfiltersA.js
+</code></pre>
+<p></p>
+<p>**Utilitate aplicativă:** şablon de prelucrare text pentru filtrări de lexeme (de ex., eliminarea termenilor interzişi, prefiltrarea tokenilor pentru NLP, filtrarea listelor de taguri în UI).</p>
+<p></p>
+<p>**Observaţii didactice:** preferaţi `filter` pentru expresivitate; `for` este util când doriţi **control fin** (contorizări, întreruperi, profile de performanţă).</p>
+<p></p>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+//Aici avem partea de baza, de la care pornim sectiunea 1 a seminarului 3 (functii si array-uri)
+// Parte prezentata in students.nextlab.tech
+// Setul de date comun: un array de cuvinte [&quot;fox&quot;,&quot;wolf&quot;,&quot;snake&quot;,&quot;crocodile&quot;,&quot;lion&quot;,&quot;cat&quot;,&quot;crocodile&quot;,&quot;horse&quot;]
+// Criterii comune: forbiddenWord = &quot;crocodile&quot;, minLength = 4
+// Cerinta: sa se scrie o functie care sa returneze un array nou, care sa contina: 
+// doar cuvintele care nu sunt egale cu forbiddenWord si care au lungimea mai mare sau egala decat minLength
+const words = [
+  &quot;fox&quot;,
+  &quot;wolf&quot;,
+  &quot;snake&quot;,
+  &quot;crocodile&quot;,
+  &quot;lion&quot;,
+  &quot;cat&quot;,
+  &quot;crocodile&quot;,
+  &quot;horse&quot;
+];
+
+const forbiddenWord = &quot;crocodile&quot;;
+const minLength = 4;
+/**
+ * Păstrează doar cuvintele diferite de `forbiddenWord` și cu lungime ≥ `minLength`.
+ * Notă: `filter` NU modifică `words`, ci creează un tablou nou (immutabil).
+ */
+
+const filterWords = (words, forbiddenWord, minLength) =&gt; {
+   //pas 1:  filter parcurge fiecare word din words;
+   //pas 2: Predicatul conjunctiv: (word !== forbiddenWord) și (word.length &gt;= minLength);
+   //ppas 3: Doar elementele pentru care predicatul este true rămân în rezultat; ordinea elementelor este păstrată.
+};
+
+console.log(filterWords(words, forbiddenWord, minLength));
+</code></pre>
+<p></p>
+<hr/>
+<h2>Discuție transversală</h2>
+<ul>
+<li>**Expresivitate vs control.** `filter` evidențiază „*ce*” trebuie păstrat, nu „*cum*”; bucla `for` oferă control pentru profilare, contorizări, ieșire anticipată.</li>
+<li>**Corectitudine.** Predicatul este **conjunctiv**: ne dorim elementele pentru care **ambele** condiții sunt adevărate (`!==` și `length ≥`).</li>
+<li>**Stabilitate ordinii.** `filter` păstrează ordinea elementelor; rezultatul este un **subtablou**.</li>
+<li>**Imutabilitate.** `filter` nu modifică taboul sursă – proprietate utilă pentru programare funcțională și testare.</li>
+<li>**Testare minimă.** Cazuri de utilitate: listă vidă; `minLength` = 0; `forbiddenWord` absent; sensibilitate la majuscule/minuscule.</li>
+</ul>
+<p></p>
+<h2>Lansări rapide (toate scripturile)</h2>
+<pre><code>
+# rulează pe rând fiecare variantă din director
+for f in 1wordsfilter*.js; do echo &quot;== $f ==&quot;; node &quot;$f&quot;; done
+</code></pre>
+<p></p>
+<h2>Variațiuni didactice suplimentare (G–L)</h2>
+<p>Vom include implementări complementare: sensibilitate la majuscule/minuscule, normalizare Unicode, generalizare la **liste** de termeni interziși, variantă **CLI** mai bogată, **streaming** din fișier/STDIN și o versiune **TypeScript** tipizată.</p>
+<p></p>
+<hr/>
+<h2>Addendum: Variațiuni didactice (G–L)</h2>
+<p></p>
+<h3>1wordsfilterG_ignoreCase.js</h3>
+<p>**Idee-cheie.** Normalizare Unicode (NFD) + eliminarea diacriticelor și comparare insensibilă la majuscule/minuscule.</p>
+<p></p>
+<h3>1wordsfilterH_forbiddenSet.js</h3>
+<p>**Idee-cheie.** Generalizare la o **mulțime** de termeni interziși (Set), păstrând criteriul de lungime.</p>
+<p></p>
+<h3>1wordsfilterI_stream.js</h3>
+<p>**Idee-cheie.** Procesare **streaming** din fișier sau STDIN; tokenizare tolerantă (whitespace/CSV) și emiterea rezultatului ca JSON.</p>
+<p></p>
+<h3>1wordsfilterJ.ts</h3>
+<p>**Idee-cheie.** Tipuri explicite (TypeScript) pentru contracte clare: `string[] × string × number → string[]`.</p>
+<p></p>
+<h3>1wordsfilterK_reduce.js</h3>
+<p>**Idee-cheie.** Folosirea `reduce` pentru a evita o trecere separată cu `filter` (deși tot un tablou rezultat este materializat).</p>
+<p></p>
+<h3>1wordsfilterL_composition.js</h3>
+<p>**Idee-cheie.** Compunere funcțională: funcții mici `notEq`, `minLen`, combinate prin `and`.</p>
+<p></p>
+<p>**Complexitate.** Toate păstrează `O(n)` timp; spațiul este `O(n)` pentru rezultatul filtrat. Variantele I (streaming) mențin `O(1)` memorie suplimentară pentru citire incrementală.</p>
+<p></p>
+<hr/>
+<h2>Referințe (APA, ediția a 7-a)</h2>
+<p></p>
+<ul>
+<li>Backus, J. (1978). Can programming be liberated from the von Neumann style? A functional style and its algebra of programs. *Communications of the ACM, 21*(8), 613–641. https://doi.org/10.1145/359576.359579</li>
+<li>Hughes, J. (1989). Why functional programming matters. *The Computer Journal, 32*(2), 98–107. https://doi.org/10.1093/comjnl/32.2.98</li>
+<li>Cormen, T. H., Leiserson, C. E., Rivest, R. L., & Stein, C. (2022). *Introduction to algorithms* (4th ed.). MIT Press. https://doi.org/10.7551/mitpress/11838.001.0001</li>
+</ul>
+</body></html>

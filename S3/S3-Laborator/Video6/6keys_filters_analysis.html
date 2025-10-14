@@ -1,0 +1,397 @@
+<!doctype html><html><head><meta charset="utf-8"><title>6keys&filters Analysis</title>
+<style>body{font-family:Georgia,serif;max-width:900px;margin:40px auto;line-height:1.6}
+pre{background:#f6f8fa;padding:12px;overflow:auto;border:1px solid #e1e4e8}
+code{font-family:ui-monospace,Consolas,monospace}
+h1,h2,h3{font-family:Cambria,Georgia,serif}
+hr{border:none;border-top:1px solid #ccc;margin:2em 0}
+ul{margin-left:1.2em}
+a{color:inherit;text-decoration:underline}
+</style></head><body>
+<h1>6keys&amp;filters (A–H): analiză tehnică și comentarii didactice</h1>
+<p></p>
+<p>_Generat: 2025-10-13T14:40:44_</p>
+<p></p>
+<h2>Context</h2>
+<p>Setul **6keys&amp;filtersA–H** ilustrează filtrarea tablourilor de **obiecte** în JavaScript/Node.js, folosind criterii date ca perechi `cheie: valoare` (și, în variante avansate, **predicate**). Sunt acoperite stiluri funcționale (cu `filter`+`every`), bucle explicite (pentru depănare), insensibilitate la majuscule pentru string‑uri, CLI minim, abordări defensive și formulări concis‑idiomatice.</p>
+<p></p>
+<h3>6keys&amp;filtersA.js</h3>
+<p>**Varianta A — filtru generic (egalitate strictă).** Predicat construit cu `Object.keys(...).every(...)`; soluție idiomatică, lizibilă.</p>
+<p>**Stil &amp; API‑uri:** funcții săgeată (ES6), Array.prototype.filter, Array.prototype.every, Object.keys, &quot;use strict&quot;.</p>
+<p>**Măsuri:** linii de cod (fără comentarii/blank) ≈ `15`, complexitate ciclomatică (aprox.) ≈ `1`.</p>
+<p>**Complexitate asimptotică:** pentru `n` obiecte și `k` chei în criteriu, timpul este `O(n·k)`; spațiul suplimentar este `O(1)` (în afara rezultatului, care poate avea până la `n` elemente).</p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>`array.filter(...)` **nu modifică** tabloul sursă; construiește un **tablou nou** cu elementele care satisfac predicatul.</li>
+<li>`Object.keys(criteria).every(k =&gt; obj[k] === criteria[k])` verifică **conjunctiv** toate cheile: fiecare pereche cheie–valoare din criteriu trebuie satisfăcută.</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 6keys&amp;filtersA.js
+</code></pre>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+&quot;use strict&quot;;
+/**
+ * 6keys&amp;filtersA — filtru generic: egalitate strictă pe fiecare cheie din criteriu.
+ * T(n) = O(n * k), n = #obiecte, k = #chei; S(n) = O(1) adițional.
+ */
+const getFilteredObjects = (array, criteria) =&gt; {
+  return array.filter((obj) =&gt;
+    Object.keys(criteria).every((k) =&gt; obj[k] === criteria[k])
+  );
+};
+
+const laptops = [
+  { brand: &quot;HP&quot;,     processor: &quot;i5&quot;, ram: 8 },
+  { brand: &quot;Dell&quot;,   processor: &quot;i5&quot;, ram: 16 },
+  { brand: &quot;Asus&quot;,   processor: &quot;i7&quot;, ram: 8 },
+  { brand: &quot;Acer&quot;,   processor: &quot;i3&quot;, ram: 4 },
+  { brand: &quot;Lenovo&quot;, processor: &quot;i5&quot;, ram: 8 }
+];
+
+const result = getFilteredObjects(laptops, { processor: &quot;i5&quot;, ram: 8 });
+console.log(&quot;result:&quot;, result);
+</code></pre>
+<p></p>
+<h3>6keys&amp;filtersB.js</h3>
+<p>**Varianta B — bucle explicite (didactic).** Echivalent logic cu A, utilă pentru *debugging* cu breakpoints și control fin.</p>
+<p>**Stil &amp; API‑uri:** funcții săgeată (ES6), Object.keys, &quot;use strict&quot;.</p>
+<p>**Măsuri:** linii de cod (fără comentarii/blank) ≈ `20`, complexitate ciclomatică (aprox.) ≈ `5`.</p>
+<p>**Complexitate asimptotică:** pentru `n` obiecte și `k` chei în criteriu, timpul este `O(n·k)`; spațiul suplimentar este `O(1)` (în afara rezultatului, care poate avea până la `n` elemente).</p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>`array.filter(...)` **nu modifică** tabloul sursă; construiește un **tablou nou** cu elementele care satisfac predicatul.</li>
+<li>`Object.keys(criteria).every(k =&gt; obj[k] === criteria[k])` verifică **conjunctiv** toate cheile: fiecare pereche cheie–valoare din criteriu trebuie satisfăcută.</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 6keys&amp;filtersB.js
+</code></pre>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+&quot;use strict&quot;;
+/**
+ * 6keys&amp;filtersB — bucle explicite (didactic).
+ * Echivalent logic cu A, util pentru depănare cu breakpoints.
+ */
+const getFilteredObjects = (array, criteria) =&gt; {
+  const out = [];
+  for (const obj of array) {
+    let ok = true;
+    for (const k of Object.keys(criteria)) {
+      if (obj[k] !== criteria[k]) { ok = false; break; }
+    }
+    if (ok) out.push(obj);
+  }
+  return out;
+};
+
+const laptops = [
+  { brand: &quot;HP&quot;,     processor: &quot;i5&quot;, ram: 8 },
+  { brand: &quot;Dell&quot;,   processor: &quot;i5&quot;, ram: 16 },
+  { brand: &quot;Asus&quot;,   processor: &quot;i7&quot;, ram: 8 },
+  { brand: &quot;Acer&quot;,   processor: &quot;i3&quot;, ram: 4 },
+  { brand: &quot;Lenovo&quot;, processor: &quot;i5&quot;, ram: 8 }
+];
+
+console.log(&quot;result:&quot;, getFilteredObjects(laptops, { processor: &quot;i5&quot;, ram: 8 }));
+</code></pre>
+<p></p>
+<h3>6keys&amp;filtersC.js</h3>
+<p>**Varianta C — insensibil la majuscule pentru string‑uri.** Păstrează egalitatea strictă pentru non‑string.</p>
+<p>**Stil &amp; API‑uri:** funcții săgeată (ES6), Array.prototype.filter, Array.prototype.every, Object.keys, &quot;use strict&quot;.</p>
+<p>**Măsuri:** linii de cod (fără comentarii/blank) ≈ `17`, complexitate ciclomatică (aprox.) ≈ `3`.</p>
+<p>**Complexitate asimptotică:** pentru `n` obiecte și `k` chei în criteriu, timpul este `O(n·k)`; spațiul suplimentar este `O(1)` (în afara rezultatului, care poate avea până la `n` elemente).</p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>`array.filter(...)` **nu modifică** tabloul sursă; construiește un **tablou nou** cu elementele care satisfac predicatul.</li>
+<li>`Object.keys(criteria).every(k =&gt; obj[k] === criteria[k])` verifică **conjunctiv** toate cheile: fiecare pereche cheie–valoare din criteriu trebuie satisfăcută.</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 6keys&amp;filtersC.js
+</code></pre>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+&quot;use strict&quot;;
+/**
+ * 6keys&amp;filtersC — comparație insensibilă la majuscule pentru string‑uri.
+ * Menține egalitatea strictă pentru tipurile non‑string.
+ */
+const eq = (a, b) =&gt; (typeof a === &quot;string&quot; &amp;&amp; typeof b === &quot;string&quot;)
+  ? a.toLowerCase() === b.toLowerCase()
+  : a === b;
+
+const getFilteredObjects = (array, criteria) =&gt; {
+  return array.filter((obj) =&gt;
+    Object.keys(criteria).every((k) =&gt; eq(obj[k], criteria[k]))
+  );
+};
+
+const laptops = [
+  { brand: &quot;HP&quot;,     processor: &quot;i5&quot;, ram: 8 },
+  { brand: &quot;Dell&quot;,   processor: &quot;i5&quot;, ram: 16 },
+  { brand: &quot;Asus&quot;,   processor: &quot;i7&quot;, ram: 8 },
+  { brand: &quot;Acer&quot;,   processor: &quot;i3&quot;, ram: 4 },
+  { brand: &quot;Lenovo&quot;, processor: &quot;i5&quot;, ram: 8 }
+];
+
+console.log(&quot;result:&quot;, getFilteredObjects(laptops, { processor: &quot;i5&quot;, ram: 8 }));
+</code></pre>
+<p></p>
+<h3>6keys&amp;filtersD.js</h3>
+<p>**Varianta D — criterii ca **valori** sau **predicat** (funcție).** Ex.: `{ ram: v =&gt; v &gt;= 8, processor: &quot;i5&quot; }`.</p>
+<p>**Stil &amp; API‑uri:** funcții săgeată (ES6), funcții clasice (ES5), Array.prototype.filter, Object.keys, &quot;use strict&quot;.</p>
+<p>**Măsuri:** linii de cod (fără comentarii/blank) ≈ `19`, complexitate ciclomatică (aprox.) ≈ `4`.</p>
+<p>**Complexitate asimptotică:** pentru `n` obiecte și `k` chei în criteriu, timpul este `O(n·k)`; spațiul suplimentar este `O(1)` (în afara rezultatului, care poate avea până la `n` elemente).</p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>`array.filter(...)` **nu modifică** tabloul sursă; construiește un **tablou nou** cu elementele care satisfac predicatul.</li>
+<li>`Object.keys(criteria).every(k =&gt; obj[k] === criteria[k])` verifică **conjunctiv** toate cheile: fiecare pereche cheie–valoare din criteriu trebuie satisfăcută.</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 6keys&amp;filtersD.js
+</code></pre>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+&quot;use strict&quot;;
+/**
+ * 6keys&amp;filtersD — criterii ca valori sau funcții‑predicat.
+ * Ex.: { ram: v =&gt; v &gt;= 8, processor: &quot;i5&quot; }
+ */
+const match = (obj, criteria) =&gt; {
+  for (const key of Object.keys(criteria)) {
+    const expected = criteria[key];
+    const actual = obj[key];
+    const ok = (typeof expected === &quot;function&quot;) ? expected(actual) : actual === expected;
+    if (!ok) return false;
+  }
+  return true;
+};
+
+const getFilteredObjects = (array, criteria) =&gt; array.filter(o =&gt; match(o, criteria));
+
+const laptops = [
+  { brand: &quot;HP&quot;,     processor: &quot;i5&quot;, ram: 8 },
+  { brand: &quot;Dell&quot;,   processor: &quot;i5&quot;, ram: 16 },
+  { brand: &quot;Asus&quot;,   processor: &quot;i7&quot;, ram: 8 },
+  { brand: &quot;Acer&quot;,   processor: &quot;i3&quot;, ram: 4 },
+  { brand: &quot;Lenovo&quot;, processor: &quot;i5&quot;, ram: 8 }
+];
+
+console.log(&quot;result:&quot;, getFilteredObjects(laptops, { processor: &quot;i5&quot;, ram: v =&gt; v &gt;= 8 }));
+</code></pre>
+<p></p>
+<h3>6keys&amp;filtersE.js</h3>
+<p>**Varianta E — CLI minimalist.** Construiește `criteria` din argumente `--brand=... --processor=... --ram=...`.</p>
+<p>**Stil &amp; API‑uri:** funcții săgeată (ES6), funcții clasice (ES5), Array.prototype.filter, Array.prototype.every, Object.keys, CLI Node.js, &quot;use strict&quot;.</p>
+<p>**Măsuri:** linii de cod (fără comentarii/blank) ≈ `25`, complexitate ciclomatică (aprox.) ≈ `11`.</p>
+<p>**Complexitate asimptotică:** pentru `n` obiecte și `k` chei în criteriu, timpul este `O(n·k)`; spațiul suplimentar este `O(1)` (în afara rezultatului, care poate avea până la `n` elemente).</p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>`array.filter(...)` **nu modifică** tabloul sursă; construiește un **tablou nou** cu elementele care satisfac predicatul.</li>
+<li>`Object.keys(criteria).every(k =&gt; obj[k] === criteria[k])` verifică **conjunctiv** toate cheile: fiecare pereche cheie–valoare din criteriu trebuie satisfăcută.</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 6keys&amp;filtersE.js
+</code></pre>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+&quot;use strict&quot;;
+/**
+ * 6keys&amp;filtersE — CLI minimalist: node &quot;6keys&amp;filtersE.js&quot; --processor=i5 --ram=8 --brand=HP
+ */
+function parseArgs(argv) {
+  const args = {};
+  for (let i = 2; i &lt; argv.length; i++) {
+    const [k, v] = argv[i].split(&quot;=&quot;);
+    if (k &amp;&amp; k.startsWith(&quot;--&quot;)) args[k.slice(2)] = v ?? &quot;&quot;;
+  }
+  return args;
+}
+
+const args = parseArgs(process.argv);
+
+const laptops = [
+  { brand: &quot;HP&quot;,     processor: &quot;i5&quot;, ram: 8 },
+  { brand: &quot;Dell&quot;,   processor: &quot;i5&quot;, ram: 16 },
+  { brand: &quot;Asus&quot;,   processor: &quot;i7&quot;, ram: 8 },
+  { brand: &quot;Acer&quot;,   processor: &quot;i3&quot;, ram: 4 },
+  { brand: &quot;Lenovo&quot;, processor: &quot;i5&quot;, ram: 8 }
+];
+
+const criteria = {};
+if (args.brand) criteria.brand = args.brand;
+if (args.processor) criteria.processor = args.processor;
+if (args.ram &amp;&amp; Number.isFinite(Number(args.ram))) criteria.ram = Number(args.ram);
+
+const result = Object.keys(criteria).length
+  ? laptops.filter((o) =&gt; Object.keys(criteria).every((k) =&gt; o[k] === criteria[k]))
+  : laptops;
+
+console.log(&quot;result:&quot;, result);
+</code></pre>
+<p></p>
+<h3>6keys&amp;filtersF.js</h3>
+<p>**Varianta F — defensivă.** Respinge obiectele care **nu au** cheile din criteriu (`k in obj`) înainte de comparație.</p>
+<p>**Stil &amp; API‑uri:** funcții săgeată (ES6), Array.prototype.filter, Object.keys, &quot;use strict&quot;.</p>
+<p>**Măsuri:** linii de cod (fără comentarii/blank) ≈ `19`, complexitate ciclomatică (aprox.) ≈ `4`.</p>
+<p>**Complexitate asimptotică:** pentru `n` obiecte și `k` chei în criteriu, timpul este `O(n·k)`; spațiul suplimentar este `O(1)` (în afara rezultatului, care poate avea până la `n` elemente).</p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>`array.filter(...)` **nu modifică** tabloul sursă; construiește un **tablou nou** cu elementele care satisfac predicatul.</li>
+<li>`Object.keys(criteria).every(k =&gt; obj[k] === criteria[k])` verifică **conjunctiv** toate cheile: fiecare pereche cheie–valoare din criteriu trebuie satisfăcută.</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 6keys&amp;filtersF.js
+</code></pre>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+&quot;use strict&quot;;
+/**
+ * 6keys&amp;filtersF — defensiv: respinge obiectele fără cheile din criteriu.
+ */
+const getFilteredObjects = (array, criteria) =&gt; {
+  return array.filter((obj) =&gt; {
+    for (const k of Object.keys(criteria)) {
+      if (!(k in obj)) return false;
+      if (obj[k] !== criteria[k]) return false;
+    }
+    return true;
+  });
+};
+
+const laptops = [
+  { brand: &quot;HP&quot;,     processor: &quot;i5&quot;, ram: 8 },
+  { brand: &quot;Dell&quot;,   processor: &quot;i5&quot;, ram: 16 },
+  { brand: &quot;Asus&quot;,   processor: &quot;i7&quot;, ram: 8 },
+  { brand: &quot;Acer&quot;,   processor: &quot;i3&quot;, ram: 4 },
+  { brand: &quot;Lenovo&quot;, processor: &quot;i5&quot;, ram: 8 }
+];
+
+const extended = laptops.concat([{ brand: &quot;Other&quot;, cpu: &quot;i5&quot;, memory: 8 }]);
+console.log(&quot;result:&quot;, getFilteredObjects(extended, { processor: &quot;i5&quot;, ram: 8 }));
+</code></pre>
+<p></p>
+<h3>6keys&amp;filtersG.js</h3>
+<p>**Varianta G — stil funcțional cu `Object.entries`.** Precomputează perechile `[k,v]` și le verifică prin `every`.</p>
+<p>**Stil &amp; API‑uri:** funcții săgeată (ES6), Array.prototype.filter, Array.prototype.every, Object.entries, &quot;use strict&quot;.</p>
+<p>**Măsuri:** linii de cod (fără comentarii/blank) ≈ `13`, complexitate ciclomatică (aprox.) ≈ `1`.</p>
+<p>**Complexitate asimptotică:** pentru `n` obiecte și `k` chei în criteriu, timpul este `O(n·k)`; spațiul suplimentar este `O(1)` (în afara rezultatului, care poate avea până la `n` elemente).</p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>`array.filter(...)` **nu modifică** tabloul sursă; construiește un **tablou nou** cu elementele care satisfac predicatul.</li>
+<li>`Object.keys(criteria).every(k =&gt; obj[k] === criteria[k])` verifică **conjunctiv** toate cheile: fiecare pereche cheie–valoare din criteriu trebuie satisfăcută.</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 6keys&amp;filtersG.js
+</code></pre>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+&quot;use strict&quot;;
+/**
+ * 6keys&amp;filtersG — stil funcțional cu Object.entries(...).every(...).
+ */
+const getFilteredObjects = (array, criteria) =&gt; {
+  const entries = Object.entries(criteria);
+  return array.filter((obj) =&gt; entries.every(([k, v]) =&gt; obj[k] === v));
+};
+
+const laptops = [
+  { brand: &quot;HP&quot;,     processor: &quot;i5&quot;, ram: 8 },
+  { brand: &quot;Dell&quot;,   processor: &quot;i5&quot;, ram: 16 },
+  { brand: &quot;Asus&quot;,   processor: &quot;i7&quot;, ram: 8 },
+  { brand: &quot;Acer&quot;,   processor: &quot;i3&quot;, ram: 4 },
+  { brand: &quot;Lenovo&quot;, processor: &quot;i5&quot;, ram: 8 }
+];
+
+console.log(&quot;result:&quot;, getFilteredObjects(laptops, { processor: &quot;i5&quot;, ram: 8 }));
+</code></pre>
+<p></p>
+<h3>6keys&amp;filtersH.js</h3>
+<p>**Varianta H — one‑liner concis.** Echivalent cu A, prezentat compact.</p>
+<p>**Stil &amp; API‑uri:** funcții săgeată (ES6), Array.prototype.filter, Array.prototype.every, Object.keys, &quot;use strict&quot;.</p>
+<p>**Măsuri:** linii de cod (fără comentarii/blank) ≈ `11`, complexitate ciclomatică (aprox.) ≈ `1`.</p>
+<p>**Complexitate asimptotică:** pentru `n` obiecte și `k` chei în criteriu, timpul este `O(n·k)`; spațiul suplimentar este `O(1)` (în afara rezultatului, care poate avea până la `n` elemente).</p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>`array.filter(...)` **nu modifică** tabloul sursă; construiește un **tablou nou** cu elementele care satisfac predicatul.</li>
+<li>`Object.keys(criteria).every(k =&gt; obj[k] === criteria[k])` verifică **conjunctiv** toate cheile: fiecare pereche cheie–valoare din criteriu trebuie satisfăcută.</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 6keys&amp;filtersH.js
+</code></pre>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+&quot;use strict&quot;;
+/**
+ * 6keys&amp;filtersH — one‑liner concis.
+ */
+const getFilteredObjects = (array, criteria) =&gt;
+  array.filter((obj) =&gt; Object.keys(criteria).every((k) =&gt; obj[k] === criteria[k]));
+
+const laptops = [
+  { brand: &quot;HP&quot;,     processor: &quot;i5&quot;, ram: 8 },
+  { brand: &quot;Dell&quot;,   processor: &quot;i5&quot;, ram: 16 },
+  { brand: &quot;Asus&quot;,   processor: &quot;i7&quot;, ram: 8 },
+  { brand: &quot;Acer&quot;,   processor: &quot;i3&quot;, ram: 4 },
+  { brand: &quot;Lenovo&quot;, processor: &quot;i5&quot;, ram: 8 }
+];
+
+console.log(&quot;result:&quot;, getFilteredObjects(laptops, { processor: &quot;i5&quot;, ram: 8 }));
+</code></pre>
+<p></p>
+<hr/>
+<h2>Discuție transversală</h2>
+<ul>
+<li>**Expresiv vs. imperativ.** Variantele cu `filter(...every...)` declară *ce* condiție trebuie satisfăcută; buclele din B controlează *cum* se parcurge și se întrerupe (posibil mai clar în depanare).</li>
+<li>**Egalitate strictă și tipuri.** `===` evită coercițiile neașteptate; pentru stringuri insensibile la caz/diacritice, normalizați (variațiunea **J**).</li>
+<li>**Predicate în criteriu.** Varianta D arată cum extindem expresivitatea: fiecare valoare din criteriu poate fi fie o **valoare**, fie o **funcție** `expected(actual) → boolean`.</li>
+<li>**Complexitate.** Toate variantele corecte au timp `O(n·k)` (n = #obiecte, k = #chei verificate). Spațiul extra e `O(1)` în afara rezultatului (până la `n`).</li>
+<li>**Aplicații.** Filtrarea de colecții JSON (rezultate API), liste de produse/entități, pre‑filtrare în UI/ETL, validare rapidă prin predicate locale.</li>
+<h2>Lansări rapide (toate scripturile)</h2>
+<pre><code>
+for f in 6keys\&amp;filters*.js; do echo &quot;== $f ==&quot;; node &quot;$f&quot;; done
+</code></pre>
+</ul>
+<p></p>
+<h2>Variațiuni didactice propuse (I–N)</h2>
+<ul>
+<li>`6keys&amp;filtersI_path.js` — **chei compuse** cu *dot‑path* (`&quot;specs.cpu&quot;`), prin helper `getByPath`.</li>
+<li>`6keys&amp;filtersJ_locale.js` — **comparare insensibilă la majuscule** + **NFD** (eliminare diacritice) pentru limbile cu diacritice.</li>
+<li>`6keys&amp;filtersK_in_or.js` — criterii cu **mulțimi**/`OR`: `{ brand: [&quot;HP&quot;,&quot;Lenovo&quot;], ram: v=&gt;v&gt;=8 }`.</li>
+<li>`6keys&amp;filtersL_regex.js` — criterii cu **RegExp**: `{ brand: /^H.*/i }`.</li>
+<li>`6keys&amp;filtersM.ts` — variantă **TypeScript** cu tipuri explicite pentru criterii.</li>
+<li>`6keys&amp;filtersN_stream_ndjson.js` — procesare **NDJSON** (un obiect JSON pe linie) din fișier/STDIN, filtrare incrementală.</li>
+</ul>
+<p></p>
+<hr/>
+<h2>Referințe (APA, ediția a 7‑a)</h2>
+<ul>
+<li>Bray, T. (2017). The JavaScript Object Notation (JSON) Data Interchange Format (RFC 8259). RFC Editor. https://doi.org/10.17487/RFC8259</li>
+<li>Backus, J. (1978). Can programming be liberated from the von Neumann style? A functional style and its algebra of programs. *Communications of the ACM, 21*(8), 613–641. https://doi.org/10.1145/359576.359579</li>
+<li>Hughes, J. (1989). Why functional programming matters. *The Computer Journal, 32*(2), 98–107. https://doi.org/10.1093/comjnl/32.2.98</li>
+<li>Cormen, T. H., Leiserson, C. E., Rivest, R. L., &amp; Stein, C. (2022). *Introduction to algorithms* (4th ed.). MIT Press. https://doi.org/10.7551/mitpress/11838.001.0001</li>
+</ul>
+</body></html>

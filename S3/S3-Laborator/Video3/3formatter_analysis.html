@@ -1,0 +1,327 @@
+<!doctype html><html><head><meta charset="utf-8"><title>3formatter Analysis</title>
+<style>body{font-family:Georgia,serif;max-width:900px;margin:40px auto;line-height:1.6}
+pre{background:#f6f8fa;padding:12px;overflow:auto;border:1px solid #e1e4e8}
+code{font-family:ui-monospace,Consolas,monospace}
+h1,h2,h3{font-family:Cambria,Georgia,serif}
+hr{border:none;border-top:1px solid #ccc;margin:2em 0}
+ul{margin-left:1.2em}
+a{color:inherit;text-decoration:underline}
+</style></head><body>
+<h1>3formatter (A–F): analiză tehnică și comentarii didactice</h1>
+<p></p>
+<p>_Generat: 2025-10-13T13:10:33_</p>
+<p></p>
+<h2>Context</h2>
+<p>Aceste scripturi implementează o funcție `format` de **substituție a placeholder‑elor numerice** în șabloane de șir (`{0}`, `{1}`, …), ilustrând două strategii: (1) **iterare pe indici** (A) și (2) **regex global cu funcție de înlocuire** (B–E), plus o **interfață CLI** (F). Scopul didactic: regular expressions, `String.prototype.replace`, semnături alternative și politici de eroare (tolerantă vs strictă).</p>
+<p></p>
+<h3>3formatterA.js</h3>
+<p>**Varianta A — pas‑cu‑pas.** Construiește regex‑ul pentru fiecare index și aplică `replace` iterativ (buclă peste indici). Avantaj: simplitate; Dezavantaj: multiple treceri peste șir (câte una per indice).</p>
+<p>**Stil &amp; API-uri:** arrow functions (ES6), rest/spread (`...args`), regular expressions, String.prototype.replace with callback, console I/O.</p>
+<p>**Măsuri:** linii de cod (fără comentarii/blank) ≈ `9`, complexitate ciclomatică (aprox.) ≈ `2`.</p>
+<p>**Complexitate asimptotică:** timpul de formatat este `O(|s| + m)` unde `|s|` = lungimea șablonului, `m` = numărul de înlocuiri; spațiul suplimentar este `O(|s|)` pentru șirul rezultat.</p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>Modelul de substituție folosește **placeholdere** `{i}` cu indici zecimali.</li>
+<li>`String.prototype.replace` cu regex global `/\{(\d+)\}/g` și funcție de înlocuire oferă acces la **captura** `(\d+)` (`index`).</li>
+<li>Conversia la număr (`Number(index)`) evită accesul textual; se validează limitele (`i &lt; args.length`).</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 3formatterA.js
+</code></pre>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+/**
+ * Varianta A — pas‑cu‑pas: iterează indiciile și înlocuiește toate aparițiile {i}.
+ * Sintaxa ES6 pentru funcții săgeată
+ * Explicație:
+ *   - s este șirul de formatat, cu {0}, {1}, ...
+ *   - ...args este un array cu argumentele suplimentare (de la 1 încolo)
+ *   - pentru fiecare argument, se construiește un RegExp care să găsească toate aparițiile {i}
+ */
+const format = (s, ...args) =&gt; {
+  let out = String(s);
+  for (let i = 0; i &lt; args.length; i++) {
+    const re = new RegExp(&quot;\\{&quot; + i + &quot;\\}&quot;, &quot;g&quot;); // /{i}/g
+    out = out.replace(re, String(args[i]));
+  }
+  return out;
+};
+
+console.log(format(&quot;this is a {0} string and we&#x27;ve {1} it&quot;, &quot;nice&quot;, &quot;formatted&quot;));
+// -&gt; this is a nice string and we&#x27;ve formatted it
+</code></pre>
+<p></p>
+<h3>3formatterB.js</h3>
+<p>**Varianta B — regex unic + callback.** O singură trecere globală cu `/\{(\d+)\}/g`; dacă indicele depășește numărul de argumente, **păstrează** tokenul original (comportament tolerant).</p>
+<p>**Stil &amp; API-uri:** arrow functions (ES6), rest/spread (`...args`), regular expressions, String.prototype.replace with callback, console I/O.</p>
+<p>**Măsuri:** linii de cod (fără comentarii/blank) ≈ `6`, complexitate ciclomatică (aprox.) ≈ `2`.</p>
+<p>**Complexitate asimptotică:** timpul de formatat este `O(|s| + m)` unde `|s|` = lungimea șablonului, `m` = numărul de înlocuiri; spațiul suplimentar este `O(|s|)` pentru șirul rezultat.</p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>Modelul de substituție folosește **placeholdere** `{i}` cu indici zecimali.</li>
+<li>`String.prototype.replace` cu regex global `/\{(\d+)\}/g` și funcție de înlocuire oferă acces la **captura** `(\d+)` (`index`).</li>
+<li>Conversia la număr (`Number(index)`) evită accesul textual; se validează limitele (`i &lt; args.length`).</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 3formatterB.js
+</code></pre>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+/**
+ * Varianta B — regex unic + funcție de înlocuire.
+ * Sintaxa ES6 pentru funcții săgeată
+ * Explicație:
+ *   - s este șirul de formatat, cu {0}, {1}, ...
+ *   - ...args este un array cu argumentele suplimentare (de la 1 încolo)
+ *   - se folosește un singur RegExp care să găsească toate aparițiile {i}
+ *   - funcția de înlocuire primește ca parametri match (ce s-a găsit) și index (captura din paranteze)
+ *   - index este convertit în număr și folosit pentru a accesa args[i]
+ *   - dacă i e în afara limitelor, se returnează match (adică nu se înlocuiește)
+ */
+
+
+const format = (s, ...args) =&gt;
+  String(s).replace(/\{(\d+)\}/g, (match, index) =&gt; {
+    const i = Number(index);
+    return i &lt; args.length ? String(args[i]) : match;
+  });
+
+console.log(format(&quot;this is a {0} string and we&#x27;ve {1} it&quot;, &quot;nice&quot;, &quot;formatted&quot;));
+
+// -&gt; this is a nice string and we&#x27;ve formatted it
+</code></pre>
+<p></p>
+<h3>3formatterC.js</h3>
+<p>**Varianta C — argumente sub formă de vector.** Semnătura `format(s, arr)` separă clar *șablonul* de *colectia de valori* (util pentru surse externe/JSON).</p>
+<p>**Stil &amp; API-uri:** arrow functions (ES6), rest/spread (`...args`), regular expressions, String.prototype.replace with callback, console I/O.</p>
+<p>**Măsuri:** linii de cod (fără comentarii/blank) ≈ `6`, complexitate ciclomatică (aprox.) ≈ `3`.</p>
+<p>**Complexitate asimptotică:** timpul de formatat este `O(|s| + m)` unde `|s|` = lungimea șablonului, `m` = numărul de înlocuiri; spațiul suplimentar este `O(|s|)` pentru șirul rezultat.</p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>Modelul de substituție folosește **placeholdere** `{i}` cu indici zecimali.</li>
+<li>`String.prototype.replace` cu regex global `/\{(\d+)\}/g` și funcție de înlocuire oferă acces la **captura** `(\d+)` (`index`).</li>
+<li>Conversia la număr (`Number(index)`) evită accesul textual; se validează limitele (`i &lt; args.length`).</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 3formatterC.js
+</code></pre>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+/**
+ * Varianta C — primește argumentele sub formă de vector.
+ * Sintaxa ES6 pentru funcții săgeată
+ * Explicație:
+ *   - s este șirul de formatat, cu {0}, {1}, ...
+ *   - arr este un array cu argumentele (de la 0 încolo)
+ *   - se folosește un singur RegExp care să găsească toate aparițiile {i}
+ *   - funcția de înlocuire primește ca parametri match (ce s-a găsit) și index (captura din paranteze)
+ *   - index este convertit în număr și folosit pentru a accesa arr[i]
+ *   - dacă i e în afara limitelor, se returnează match (adică nu se înlocuiește)
+ */
+const format = (s, arr) =&gt;
+  String(s).replace(/\{(\d+)\}/g, (match, index) =&gt; {
+    const i = Number(index);
+    return Array.isArray(arr) &amp;&amp; i &lt; arr.length ? String(arr[i]) : match;
+  });
+
+console.log(format(&quot;this is a {0} string and we&#x27;ve {1} it&quot;, [&quot;nice&quot;, &quot;formatted&quot;]));
+
+// -&gt; this is a nice string and we&#x27;ve formatted it
+
+
+// Exemplu cu array vid:
+// console.log(format(&quot;this is a {0} string and we&#x27;ve {1} it&quot;, []));
+</code></pre>
+<p></p>
+<h3>3formatterD.js</h3>
+<p>**Varianta D — strictă.** Dacă lipsește un argument pentru un placeholder, aruncă **eroare** (fail‑fast). Bună pentru detectarea timpurie a incongruențelor.</p>
+<p>**Stil &amp; API-uri:** arrow functions (ES6), rest/spread (`...args`), regular expressions, String.prototype.replace with callback, console I/O.</p>
+<p>**Măsuri:** linii de cod (fără comentarii/blank) ≈ `7`, complexitate ciclomatică (aprox.) ≈ `3`.</p>
+<p>**Complexitate asimptotică:** timpul de formatat este `O(|s| + m)` unde `|s|` = lungimea șablonului, `m` = numărul de înlocuiri; spațiul suplimentar este `O(|s|)` pentru șirul rezultat.</p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>Modelul de substituție folosește **placeholdere** `{i}` cu indici zecimali.</li>
+<li>`String.prototype.replace` cu regex global `/\{(\d+)\}/g` și funcție de înlocuire oferă acces la **captura** `(\d+)` (`index`).</li>
+<li>Conversia la număr (`Number(index)`) evită accesul textual; se validează limitele (`i &lt; args.length`).</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 3formatterD.js
+</code></pre>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+/**
+ * Varianta D — strictă: lipsește un argument -&gt; eroare.
+ * Sintaxa ES6 pentru funcții săgeată
+ * Explicație:
+ *   - s este șirul de formatat, cu {0}, {1}, ...
+ *   - ...args este un array cu argumentele suplimentare (de la 1 încolo)
+ *   - se folosește un singur RegExp care să găsească toate aparițiile {i}
+ *   - funcția de înlocuire primește ca parametri match (ce s-a găsit) și index (captura din paranteze)
+ *   - index este convertit în număr și folosit pentru a accesa args[i]
+ *   - dacă i e în afara limitelor, se aruncă o eroare (adică nu se înlocuiește)
+ * (/\{(\d+)\}/g unde:
+ *       / este delimitatorul, \{ scăpat, (\d+) captura, \} scăpat, g global)
+ *       \ este caracter de evadare (escape character)
+ *       d+ înseamnă cifre (digit) una sau mai multe (+)
+ *       g înseamnă global (toate aparițiile, nu doar prima)
+ */
+const format = (s, ...args) =&gt;
+  String(s).replace(/\{(\d+)\}/g, (match, index) =&gt; {
+    const i = Number(index);
+    if (i &gt;= args.length) throw new Error(`Missing argument for placeholder {${i}}`);
+    return String(args[i]);
+  });
+
+console.log(format(&quot;this is a {0} string and we&#x27;ve {1} it&quot;, &quot;nice&quot;, &quot;formatted&quot;));
+
+// -&gt; this is a nice string and we&#x27;ve formatted it
+</code></pre>
+<p></p>
+<h3>3formatterE.js</h3>
+<p>**Varianta E — funcție declarată (ES5).** Identic logic cu B, dar ca funcție numită; util pentru debugging și vizibilitate în stack traces.</p>
+<p>**Stil &amp; API-uri:** arrow functions (ES6), traditional functions (ES5), rest/spread (`...args`), regular expressions, String.prototype.replace with callback, console I/O.</p>
+<p>**Măsuri:** linii de cod (fără comentarii/blank) ≈ `7`, complexitate ciclomatică (aprox.) ≈ `2`.</p>
+<p>**Complexitate asimptotică:** timpul de formatat este `O(|s| + m)` unde `|s|` = lungimea șablonului, `m` = numărul de înlocuiri; spațiul suplimentar este `O(|s|)` pentru șirul rezultat.</p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>Modelul de substituție folosește **placeholdere** `{i}` cu indici zecimali.</li>
+<li>`String.prototype.replace` cu regex global `/\{(\d+)\}/g` și funcție de înlocuire oferă acces la **captura** `(\d+)` (`index`).</li>
+<li>Conversia la număr (`Number(index)`) evită accesul textual; se validează limitele (`i &lt; args.length`).</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 3formatterE.js
+</code></pre>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+/**
+ * Varianta E — funcție declarată (non‑arrow), aceeași logică ca B.
+ * Explicație:
+ *   - s este șirul de formatat, cu {0}, {1}, ...
+ *   - ...args este un array cu argumentele suplimentare (de la 1 încolo)
+ *   - se folosește un singur RegExp care să găsească toate aparițiile {i}
+ *   - funcția de înlocuire primește ca parametri match (ce s-a găsit) și index (captura din paranteze)
+ *   - index este convertit în număr și folosit pentru a accesa args[i]
+ *   - dacă i e în afara limitelor, se returnează match (adică nu se înlocuiește)
+ * (/\{(\d+)\}/g unde:
+ *       / este delimitatorul, \{ scăpat, (\d+) captura, \} scăpat, g global)
+ *       \ este caracter de evadare (escape character)
+ *       d+ înseamnă cifre (digit) una sau mai multe (+)
+ *       g înseamnă global (toate aparițiile, nu doar prima)    
+ */
+function format(s, ...args) {
+  return String(s).replace(/\{(\d+)\}/g, (match, index) =&gt; {
+    const i = Number(index);
+    return i &lt; args.length ? String(args[i]) : match;
+  });
+}
+
+console.log(format(&quot;this is a {0} string and we&#x27;ve {1} it&quot;, &quot;nice&quot;, &quot;formatted&quot;));
+
+// -&gt; this is a nice string and we&#x27;ve formatted it
+</code></pre>
+<p></p>
+<h3>3formatterF.js</h3>
+<p>**Varianta F — CLI minimal.** `parseArgs` extrage `--tpl=&quot;...&quot;` și `--args=&quot;a,b&quot;`; rulează `format` și afișează rezultatul. Potrivit pentru *batch processing* sau integrare în scripturi.</p>
+<p>**Stil &amp; API-uri:** arrow functions (ES6), traditional functions (ES5), rest/spread (`...args`), regular expressions, String.prototype.replace with callback, console I/O, CLI arguments (Node.js).</p>
+<p>**Măsuri:** linii de cod (fără comentarii/blank) ≈ `18`, complexitate ciclomatică (aprox.) ≈ `11`.</p>
+<p>**Complexitate asimptotică:** timpul de formatat este `O(|s| + m)` unde `|s|` = lungimea șablonului, `m` = numărul de înlocuiri; spațiul suplimentar este `O(|s|)` pentru șirul rezultat.</p>
+<p>**Explicații pe cod (esențial):**</p>
+<ul>
+<li>Modelul de substituție folosește **placeholdere** `{i}` cu indici zecimali.</li>
+<li>`String.prototype.replace` cu regex global `/\{(\d+)\}/g` și funcție de înlocuire oferă acces la **captura** `(\d+)` (`index`).</li>
+<li>Conversia la număr (`Number(index)`) evită accesul textual; se validează limitele (`i &lt; args.length`).</li>
+</ul>
+<p></p>
+<p>**Rulare în Node.js:**</p>
+<pre><code>
+node 3formatterF.js
+</code></pre>
+<p></p>
+<p>**Cod sursă (extras):**</p>
+<pre><code>
+/**
+ * Varianta F — CLI: node 3formatterF.js --tpl=&quot;...&quot; --args=&quot;a,b&quot;
+ * Explicație:
+ *   - parseArgs: parsează argumentele din linia de comandă în obiect
+ *   - tpl: șablonul (template) cu {0}, {1}, ...
+ * Utilitate practică: permite reutilizarea scriptului cu diferite șabloane și liste de valori.
+ *   - args: șir cu argumentele separate prin virgulă, de exemplu &quot;nice,formatted&quot;
+ *   - list: vectorul cu argumentele, obținut prin split + trim
+ */
+function parseArgs(argv) {
+  const out = {};
+  for (let i = 2; i &lt; argv.length; i++) {
+    const [k, v] = argv[i].split(&quot;=&quot;);
+    if (k &amp;&amp; k.startsWith(&quot;--&quot;)) out[k.slice(2)] = v ?? &quot;&quot;;
+  }
+  return out;
+}
+
+const { tpl, args } = parseArgs(process.argv);
+const list = (args ? args.split(&quot;,&quot;) : []).map(s =&gt; s.trim());
+
+const format = (s, ...rest) =&gt;
+  String(s).replace(/\{(\d+)\}/g, (m, index) =&gt; {
+    const i = Number(index);
+    return i &lt; rest.length ? String(rest[i]) : m;
+  });
+
+const template = tpl ?? &quot;this is a {0} string and we&#x27;ve {1} it&quot;;
+const values   = list.length ? list : [&quot;nice&quot;, &quot;formatted&quot;];
+
+console.log(format(template, ...values));
+
+
+// Exemplu de rulare:
+//   node formatter_F_cli.js --tpl=&quot;this is a {0} string and we&#x27;ve {1} it&quot; --args=&quot;nice,formatted&quot;
+//   node formatter_F_cli.js --args=&quot;nice,formatted&quot;
+</code></pre>
+<p></p>
+<hr/>
+<h2>Discuție transversală</h2>
+<ul>
+<li>**Designul API‑ului.** `format(s, ...args)` este ergonomic pentru apeluri directe; `format(s, arr)` e mai potrivit când valorile vin din surse externe (JSON, CLI).</li>
+<li>**Politica de eroare.** Variantele **tolerante** (B, C, E) păstrează tokenul `{i}` dacă lipsește un argument; varianta **strictă** (D) aruncă excepție. Alegeți în funcție de necesarul de robustețe.</li>
+<li>**Complexitate.** O singură trecere cu regex global are, în practică, cost liniar în funcție de numărul potrivirilor; varianta A creează un regex per indice (mai multe treceri).</li>
+<li>**Escapare.** Pentru a include acolade literale, o tehnică este transformarea `{{`→`{` și `}}`→`}` **înainte** de substituție (vezi variațiunea I).</li>
+<li>**Internaționalizare.** Pentru numerice și date, folosiți `Intl.NumberFormat` și `Intl.DateTimeFormat` (vezi variațiunea L); specificarea localelor urmează etichetele BCP‑47 (ex. `en‑GB`).</li>
+<h2>Lansări rapide (toate scripturile)</h2>
+<pre><code>
+for f in 3formatter*.js; do echo &quot;== $f ==&quot;; node &quot;$f&quot;; done
+</code></pre>
+</ul>
+<p></p>
+<h2>Variațiuni didactice propuse (G–L)</h2>
+<ul>
+<li>`3formatterG_named.js` — **placeholdere denumite** (`{name}`) și numerice; acceptă obiect sau vector.</li>
+<li>`3formatterH_padAlign.js` — mini‑specificatori `:{align}{width}` (ex. `{0:&gt;8}`, `{1:^10}`) pentru aliniere/padding.</li>
+<li>`3formatterI_escapeBraces.js` — **escapare** `{{`/`}}` pentru acolade literale.</li>
+<li>`3formatterJ_cli.js` — CLI robust: `--tpl`, `--argsJson` (vector JSON) sau `--namedJson` (obiect JSON); ieșire JSON.</li>
+<li>`3formatterK.ts` — versiune TypeScript cu tipare explicite.</li>
+<li>`3formatterL_intl.js` — hook‑uri cu `Intl.NumberFormat` / `Intl.DateTimeFormat` pentru numere/date/lb. britanică (`en‑GB`).</li>
+</ul>
+<p></p>
+<hr/>
+<h2>Referințe (APA, ediția a 7‑a)</h2>
+<ul>
+<li>Thompson, K. (1968). Regular expression search algorithm. *Communications of the ACM, 11*(6), 419–422. https://doi.org/10.1145/363347.363387</li>
+<li>Bray, T. (2017). The JavaScript Object Notation (JSON) Data Interchange Format (RFC 8259). RFC Editor. https://doi.org/10.17487/RFC8259</li>
+<li>Phillips, A., &amp; Davis, M. (2009). Tags for Identifying Languages (BCP 47, RFC 5646). RFC Editor. https://doi.org/10.17487/RFC5646</li>
+<li>Cormen, T. H., Leiserson, C. E., Rivest, R. L., &amp; Stein, C. (2022). *Introduction to algorithms* (4th ed.). MIT Press. https://doi.org/10.7551/mitpress/11838.001.0001</li>
+</ul>
+</body></html>

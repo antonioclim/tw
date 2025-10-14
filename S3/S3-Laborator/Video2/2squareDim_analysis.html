@@ -1,0 +1,270 @@
+<!doctype html><html><head><meta charset="utf-8"><title>2squareDim Analysis</title>
+<style>body{font-family:Georgia,serif;max-width:900px;margin:40px auto;line-height:1.6}
+pre{background:#f6f8fa;padding:12px;overflow:auto;border:1px solid #e1e4e8}
+code{font-family:ui-monospace,Consolas,monospace}
+h1,h2,h3{font-family:Cambria,Georgia,serif}
+hr{border:none;border-top:1px solid #ccc;margin:2em 0}
+ul{margin-left:1.2em}
+a{color:inherit;text-decoration:underline}
+</style></head><body>
+<h1>2squareDim (A–E): analiză tehnică și comentarii didactice</h1>
+<p></p>
+<p>_Generat: 2025-10-13T12:58:48_</p>
+<p></p>
+<h2>Context</h2>
+<p>Seria **2squareDim A–E** explorează calculul ariilor pătratelor dintr-o listă de laturi și, în unele variante, **suma** acestor arii. Se compară stiluri (funcțional vs. imperativ), API‑uri (`map`, `reduce`), igiena datelor și comportamentul pe cazuri‑limită.</p>
+<p></p>
+<hr/>
+<h3>2squareDimA.js</h3>
+<p></p>
+<p>**Scop.** Listează **ariile** fiecărei laturi cu `map` (nu agregă). Rezultatul este un tablou de arii.</p>
+<p></p>
+<p></p>
+<p>**Măsuri sumare.** LoC≈`8`, complexitate (aprox.)≈`1`, funcții detectate: getTotalArea.</p>
+<p></p>
+<p></p>
+<p>**Rulare în Node.js.**</p>
+<pre><code>
+node 2squareDimA.js
+</code></pre>
+<p></p>
+<p></p>
+<p>**Fragment de cod.**</p>
+<pre><code>
+/**
+ * Varianta A — doar transformare cu `map` (listează ariile fiecărui pătrat).
+ * Sintaxa ES6 pentru funcții săgeată
+ */
+
+
+const getTotalArea = (squareDimensions) =&gt; {
+  return squareDimensions.map((side) =&gt; {
+    return side * side;
+  });
+};
+
+const squareDimensions = [3, 5, 12, 3, 5, 3];
+const result = getTotalArea(squareDimensions);
+console.log(&quot;result: &quot;, result);
+
+
+// =&gt; [ 9, 25, 144, 9, 25, 9 ]
+</code></pre>
+<p></p>
+<p></p>
+<p>**Complexitate.** Toate variantele: timp `O(n)`. Spațiu: `O(n)` pentru A (creează listă de arii), respectiv `O(n)` dacă `map` este materializat în B–D; `E` poate evita valori invalide și returnează `0` pe listă vidă.</p>
+<p></p>
+<p></p>
+<p>**Utilitate aplicativă.** Pattern general pentru **agregări**: energie totală, costuri, pixeli, histogramare. Pe seturi mari, folosiți o singură trecere (`reduce`) sau streaming.</p>
+<p></p>
+<hr/>
+<h3>2squareDimB.js</h3>
+<p></p>
+<p>**Scop.** `map` + `reduce` pentru **suma ariilor**; `reduce` primește valoare inițială `0` (sigur pe tablouri vide).</p>
+<p></p>
+<p></p>
+<p>**Măsuri sumare.** LoC≈`12`, complexitate (aprox.)≈`1`, funcții detectate: getTotalArea.</p>
+<p></p>
+<p></p>
+<p>**Rulare în Node.js.**</p>
+<pre><code>
+node 2squareDimB.js
+</code></pre>
+<p></p>
+<p></p>
+<p>**Fragment de cod.**</p>
+<pre><code>
+/**
+ * Varianta B — `map` + `reduce` (suma ariilor).
+ * Sintaxa ES6 pentru funcții săgeată
+ */
+
+
+const getTotalArea = (squareDimensions) =&gt; {
+  return squareDimensions
+    .map((side) =&gt; {
+      return side * side;
+    })
+    .reduce((prev, current) =&gt; {
+      return prev + current;
+    }, 0);
+};
+
+const squareDimensions = [3, 5, 12, 3, 5, 3];
+const result = getTotalArea(squareDimensions);
+console.log(&quot;result: &quot;, result);
+
+
+// =&gt; 221
+</code></pre>
+<p></p>
+<p></p>
+<p>**Complexitate.** Toate variantele: timp `O(n)`. Spațiu: `O(n)` pentru A (creează listă de arii), respectiv `O(n)` dacă `map` este materializat în B–D; `E` poate evita valori invalide și returnează `0` pe listă vidă.</p>
+<p></p>
+<p></p>
+<p>**Utilitate aplicativă.** Pattern general pentru **agregări**: energie totală, costuri, pixeli, histogramare. Pe seturi mari, folosiți o singură trecere (`reduce`) sau streaming.</p>
+<p></p>
+<hr/>
+<h3>2squareDimC.js</h3>
+<p></p>
+<p>**Scop.** Echivalent cu B dar în stil **concis** (funcții săgeată fără acolade, o singură expresie pe etapă).</p>
+<p></p>
+<p></p>
+<p>**Măsuri sumare.** LoC≈`7`, complexitate (aprox.)≈`1`, funcții detectate: getTotalArea.</p>
+<p></p>
+<p></p>
+<p>**Rulare în Node.js.**</p>
+<pre><code>
+node 2squareDimC.js
+</code></pre>
+<p></p>
+<p></p>
+<p>**Fragment de cod.**</p>
+<pre><code>
+/**
+ * Varianta C — concisă (arrow fără acolade).
+ * Sintaxa ES6 pentru funcții săgeată
+ */
+
+
+const getTotalArea = (squareDimensions) =&gt;
+  squareDimensions
+    .map((side) =&gt; side * side)
+    .reduce((prev, current) =&gt; prev + current, 0);
+
+
+const squareDimensions = [3, 5, 12, 3, 5, 3];
+const result = getTotalArea(squareDimensions);
+console.log(&quot;result: &quot;, result);
+
+
+// =&gt; 221
+</code></pre>
+<p></p>
+<p></p>
+<p>**Complexitate.** Toate variantele: timp `O(n)`. Spațiu: `O(n)` pentru A (creează listă de arii), respectiv `O(n)` dacă `map` este materializat în B–D; `E` poate evita valori invalide și returnează `0` pe listă vidă.</p>
+<p></p>
+<p></p>
+<p>**Utilitate aplicativă.** Pattern general pentru **agregări**: energie totală, costuri, pixeli, histogramare. Pe seturi mari, folosiți o singură trecere (`reduce`) sau streaming.</p>
+<p></p>
+<hr/>
+<h3>2squareDimD.js</h3>
+<p></p>
+<p>**Scop.** `reduce` **fără valoare inițială** (primul element devine acumulator). Didactic: arată capcana pentru tabloul vid (`TypeError`).</p>
+<p></p>
+<p></p>
+<p>**Măsuri sumare.** LoC≈`7`, complexitate (aprox.)≈`1`, funcții detectate: getTotalArea.</p>
+<p></p>
+<p></p>
+<p>**Rulare în Node.js.**</p>
+<pre><code>
+node 2squareDimD.js
+</code></pre>
+<p></p>
+<p></p>
+<p>**Fragment de cod.**</p>
+<pre><code>
+/**
+ * Varianta D — `reduce` fără valoare inițială (funcționează doar pe vector ne‑vid).
+ * Sintaxa ES6 pentru funcții săgeată
+ * Atenție: pe [] ar arunca eroare — în cod real preferați varianta cu „, 0”.
+ * De exemplu, dacă inputul ar fi fost []
+ *  const squareDimensions = [];
+ * atunci ar fi apărut eroarea: TypeError: Reduce of empty array with no initial value
+ * Dar cu , 0 adica reduce((prev, current) =&gt; prev + current, 0) ar fi returnat 0.
+ */
+
+
+
+const getTotalArea = (squareDimensions) =&gt;
+  squareDimensions
+    .map((side) =&gt; side * side)
+    .reduce((prev, current) =&gt; prev + current); // ideal ar tb. să fie , prev + current, 0 pt. cazul []
+
+const squareDimensions = [3, 5, 12, 3, 5, 3];
+const result = getTotalArea(squareDimensions);
+console.log(&quot;result: &quot;, result);
+
+
+// =&gt; 221
+</code></pre>
+<p></p>
+<p></p>
+<p>**Complexitate.** Toate variantele: timp `O(n)`. Spațiu: `O(n)` pentru A (creează listă de arii), respectiv `O(n)` dacă `map` este materializat în B–D; `E` poate evita valori invalide și returnează `0` pe listă vidă.</p>
+<p></p>
+<p></p>
+<p>**Utilitate aplicativă.** Pattern general pentru **agregări**: energie totală, costuri, pixeli, histogramare. Pe seturi mari, folosiți o singură trecere (`reduce`) sau streaming.</p>
+<p></p>
+<hr/>
+<h3>2squareDimE.js</h3>
+<p></p>
+<p>**Scop.** **Igienă minimă a datelor** (convertiri, filtrare `NaN`/∞) și protecție la intrări goale (`0`).</p>
+<p></p>
+<p></p>
+<p>**Măsuri sumare.** LoC≈`10`, complexitate (aprox.)≈`1`, funcții detectate: getTotalAreaSafe.</p>
+<p></p>
+<p></p>
+<p>**Rulare în Node.js.**</p>
+<pre><code>
+node 2squareDimE.js
+</code></pre>
+<p></p>
+<p></p>
+<p>**Fragment de cod.**</p>
+<pre><code>
+/**
+ * Varianta E (opțional) — igienă minimă a datelor (convertire la număr + filtrare finite),
+ * apoi `map` + `reduce`.
+ * Exemple:
+ *  - set curat:        [3, 5, 12, 3, 5, 3]         -&gt; 221
+ *  - set „murdar”:     [3, &quot;5&quot;, 12, null, 3, 5, 3] -&gt; 221 (null -&gt; 0; totalul rămâne 221)
+ * Acesta este o variantă robustă, care poate prelucra și date „murdare”!!!
+ */
+const getTotalAreaSafe = (squareDimensions) =&gt;
+  squareDimensions
+    .map(Number)               // conversie numerică
+    .filter(Number.isFinite)   // elimină NaN / ±Infinity (păstrează 0)
+    .map((side) =&gt; side * side)
+    .reduce((sum, a) =&gt; sum + a, 0);
+
+// Demonstrație:
+const clean = [3, 5, 12, 3, 5, 3];
+const dirty = [3, &quot;5&quot;, 12, null, 3, 5, 3];
+
+console.log(&quot;result clean: &quot;, getTotalAreaSafe(clean)); // 221
+console.log(&quot;result dirty: &quot;, getTotalAreaSafe(dirty)); // 221
+
+// Exemplu cu set vid:
+// console.log(&quot;result empty: &quot;, getTotalAreaSafe([]));     // 0
+</code></pre>
+<p></p>
+<p></p>
+<p>**Complexitate.** Toate variantele: timp `O(n)`. Spațiu: `O(n)` pentru A (creează listă de arii), respectiv `O(n)` dacă `map` este materializat în B–D; `E` poate evita valori invalide și returnează `0` pe listă vidă.</p>
+<p></p>
+<p></p>
+<p>**Utilitate aplicativă.** Pattern general pentru **agregări**: energie totală, costuri, pixeli, histogramare. Pe seturi mari, folosiți o singură trecere (`reduce`) sau streaming.</p>
+<p></p>
+<hr/>
+<h2>Discuție transversală</h2>
+<ul>
+<li>**Funcțional vs. imperativ.** `map→reduce` declară *ce* calculăm, în timp ce un `for` precizează *cum*. Ambele rămân `O(n)`.</li>
+<li>**Numerice.** Pătratul numerelor mari într‑un `double` poate produce erori de rotunjire; dacă domeniul e extrem, luați în calcul **BigInt** sau metode de sumare compensată.</li>
+<li>**Testare.** Acoperiți: lista vidă, valori nevalide, stringuri numerice, outliers.</li>
+</ul>
+<p></p>
+<h2>Lansare rapidă (toate variantele)</h2>
+<pre><code>
+for f in 2squareDim*.js; do echo &quot;== $f ==&quot;; node &quot;$f&quot;; done
+</code></pre>
+<p></p>
+<hr/>
+<h2>Referințe (APA, ediția a 7‑a)</h2>
+<p></p>
+<ul>
+<li>Dean, J., & Ghemawat, S. (2008). MapReduce: Simplified data processing on large clusters. *Communications of the ACM, 51*(1), 107–113. https://doi.org/10.1145/1327452.1327492</li>
+<li>IEEE. (2019). *IEEE Standard for Floating-Point Arithmetic (IEEE Std 754‑2019).* IEEE. https://doi.org/10.1109/IEEESTD.2019.8766229</li>
+<li>Goldberg, D. (1991). What every computer scientist should know about floating‑point arithmetic. *ACM Computing Surveys, 23*(1), 5–48. https://doi.org/10.1145/103162.103163</li>
+<li>Higham, N. J. (2002). *Accuracy and stability of numerical algorithms* (2nd ed.). SIAM. https://doi.org/10.1137/1.9780898718027</li>
+<li>Cormen, T. H., Leiserson, C. E., Rivest, R. L., & Stein, C. (2022). *Introduction to algorithms* (4th ed.). MIT Press. https://doi.org/10.7551/mitpress/11838.001.0001</li>
+</ul>
+</body></html>
