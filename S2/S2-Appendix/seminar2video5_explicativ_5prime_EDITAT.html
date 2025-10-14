@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Introducere în JS — VIDEO 5</title>
+<style>
+/* Conform cerințelor: TNR 11 pt, spacing 1.0, A4/1 cm, numerotare H1/H2/H3, blocuri CodeBlue/CommandBlack, tabele */
+@page {
+  size: A4;
+  margin: 1cm;
+  @bottom-center {
+    content: "Pagina " counter(page) " din " counter(pages);
+    font-family: "Times New Roman", Times, serif;
+    font-size: 11pt;
+    color: #000;
+  }
+}
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 11pt;
+  line-height: 1.0;
+  color: #000;
+  background: #fff;
+}
+main { padding: 0; }
+p, ul, ol, li { margin: 0; }
+ul, ol { margin-left: 1.2em; }
+h1, h2, h3 { color: #000; background: #fff; margin: 0.4em 0 0.2em 0; font-weight: bold; }
+/* Numerotare automată: 1., 1.1., 1.1.1. */
+body { counter-reset: h1; }
+h1 { counter-reset: h2; }
+h2 { counter-reset: h3; }
+h1::before { counter-increment: h1; content: counter(h1) ". "; }
+h2::before { counter-increment: h2; content: counter(h1) "." counter(h2) ". "; }
+h3::before { counter-increment: h3; content: counter(h1) "." counter(h2) "." counter(h3) ". "; }
+/* Stiluri pentru blocuri de cod și comenzi */
+:root { --indent: 0.63cm; }
+pre, code, kbd, samp {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 11pt;
+}
+pre.codeblue {
+  background: #DDEBF7; /* bleu deschis */
+  color: #000;         /* text negru */
+  padding: 3pt 4pt;
+  margin-left: var(--indent);
+  white-space: pre;
+  page-break-inside: avoid;
+  border: none;
+}
+pre.commandblack {
+  background: #000000; /* fundal negru */
+  color: #ffffff;      /* text alb */
+  padding: 3pt 4pt;    /* margini interne 3–4 pt */
+  margin-left: var(--indent);
+  white-space: pre;
+  page-break-inside: avoid;
+  border: none;
+}
+/* Tabele (cheat‑sheet/glosar): linii subțiri, antet bold, aliniere stânga, wrap text */
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 0.5pt solid #666; text-align: left; vertical-align: top; padding: 2pt 4pt; }
+th { font-weight: bold; }
+.smallnote { font-style: italic; }
+</style>
+</head>
+<body>
+<main>
+<div style="font-weight:bold; font-size:11pt; margin:0 0 0.4em 0;">Introducere în JS — VIDEO 5
+Recursie, obiecte globale, CLI (Node.js) — Numere prime &amp; Fibonacci</div>
+<h1>Context general al lecției</h1>
+<p>Această secțiune din „Introducere în JS” (VIDEO 5) focalizează trei direcții complementare: (i) citirea parametrilor din linia de comandă în mediul Node.js, (ii) recursia ca mecanism de definire a algoritmilor, și (iii) utilizarea obiectelor globale uzuale (`process`, `Math`, `console`). Studiul de caz principal este detecția numerelor prime; sarcina aplicativă este calculul elementului de ordin *n* al șirului Fibonacci, *n* fiind citit din linia de comandă.</p>
+<h1>Obiective de învățare</h1>
+<ul><li>Înțelegerea structurii `process.argv` și integrarea parametrilor CLI în scripturi Node.js.</li><li>Aplicarea corectă a buclelor și evitarea erorilor logice (ex.: „return prea devreme”).</li><li>Înțelegerea noțiunilor de bază despre numere prime și complexitate O(√n).</li><li>Utilizarea recursiei pe exemplul șirului Fibonacci; compararea variantelor: naivă, iterativă, fast doubling.</li><li>Conștientizarea limitelor numerice (IEEE‑754 `Number` vs `BigInt`) și a efectelor asupra performanței/rezultatelor.</li></ul>
+<h1>Fundamente: obiecte globale Node, CLI și bune practici</h1>
+<p>`process.argv` este un tablou: `[0]=node`, `[1]=script`, `[2+]` = argumentele reale. Pentru text multi‑cuvânt: `process.argv.slice(2).join(&quot; &quot;)`. Pentru numere: conversie explicită cu `Number(...)` sau coerciție `+arg`, urmată de `Number.isInteger(...)`. Folosiți `console.error` pentru erori și afișați un mesaj de utilizare când lipsesc parametri.[^1]</p>
+<p>`Math` oferă operații matematice (ex.: `Math.sqrt`). În testarea primalității, calculați limita o singură dată și iterați divizorii între 2 și `⌊√n⌋`. Tratați separat cazul `2` și săriți peste perechile pare pentru eficiență.</p>
+<h1>Studiu de caz: numere prime — de la erori tipice la variante robuste</h1>
+<h2>Var 1 — 5primeA.js (verificare parametri CLI)</h2>
+<pre class="codeblue"><code>// 5primeA.js — verificare parametri CLI
+if (process.argv.length &lt; 3) {
+  console.log(&#x27;not enough params&#x27;);
+} else {
+  console.log(&#x27;fine&#x27;);
+}</code></pre>
+<p><strong>Rol:</strong> asigură prezența argumentului. Bază pentru variantele următoare.</p>
+<h2>Var 2 — 5primeB.js (versiune greșită; „return prea devreme”)</h2>
+<pre class="codeblue"><code>// 5primeB.js — G R E Ș I T (return prea devreme)
+const checkPrime = (n) =&gt; {
+  for (let i = 2; i &lt;= Math.sqrt(n); i++) {
+    if (!(n % i)) return false;
+    return true; // ✗ iese la prima iterație în care n%2 != 0; nu mai testează 3,5,7...
+  }
+};
+// CLI
+process.argv.length &lt; 3
+  ? console.log(&#x27;not enough params&#x27;)
+  : console.log(checkPrime(parseInt(process.argv[2])));</code></pre>
+<p><strong>Diagnostic:</strong> pentru <code>n=21</code>, la <code>i=2</code> nu se găsește divizor, funcția întoarce <code>true</code> imediat, fără a mai testa <code>i=3</code> (divizor valid).</p>
+<h2>Var 3 — 5primeC.js (corectarea logicii)</h2>
+<pre class="codeblue"><code>// 5primeC.js — corectarea logicii
+const checkPrime = (n) =&gt; {
+  for (let i = 2; i &lt;= Math.sqrt(n); i++) {
+    if (n % i === 0) return false;
+  }
+  return true; // ✓ după epuizarea tuturor divizorilor posibili
+};
+process.argv.length &lt; 3
+  ? console.log(&#x27;not enough params&#x27;)
+  : console.log(checkPrime(parseInt(process.argv[2])));</code></pre>
+<h2>Var 4 — 5primeD.js (ES6+ minimală, corectă)</h2>
+<pre class="codeblue"><code>// 5primeD.js — ES6+ minimală, corectă
+const isPrime = n =&gt; { n = Math.trunc(+n); if (n &lt; 2) return false;
+  for (let i = 2, L = Math.floor(Math.sqrt(n)); i &lt;= L; i++) if (n % i === 0) return false;
+  return true; };
+process.argv[2] ? console.log(isPrime(process.argv[2])) : console.log(&#x27;not enough params&#x27;);</code></pre>
+<h2>Var 5 — 5primeE.js (ES6+ cu optimizare pe impari)</h2>
+<pre class="codeblue"><code>// 5primeE.js — ES6+ cu optimizare pe impari
+const isPrime = n =&gt; { n = Math.trunc(+n); if (n &lt; 2) return false;
+  if (n % 2 === 0) return n === 2;
+  for (let i = 3, L = Math.floor(Math.sqrt(n)); i &lt;= L; i += 2) if (n % i === 0) return false;
+  return true; };
+process.argv[2] ? console.log(isPrime(process.argv[2])) : console.log(&#x27;not enough params&#x27;);</code></pre>
+<h2>Var 6 — 5primeF.js (one‑liner dens; alocă un array)</h2>
+<pre class="codeblue"><code>// 5primeF.js — one‑liner dens (construcție de array a divizorilor)
+const isPrime = n =&gt; (n = Math.trunc(+n)) &gt; 1 &amp;&amp;
+  !Array.from({length: Math.max(0, Math.floor(Math.sqrt(n)) - 1)}, (_, i) =&gt; i + 2)
+   .some(d =&gt; n % d === 0);
+process.argv[2] ? console.log(isPrime(process.argv[2])) : console.log(&#x27;not enough params&#x27;);</code></pre>
+<p><strong>Trade‑off:</strong> elegant ca expresie, dar mai costisitor (creează un array al divizorilor). Pentru uz real, preferați <strong>D</strong> sau <strong>E</strong>.</p>
+<h1>Sarcina aplicativă: șirul lui Fibonacci (CLI + <code>BigInt</code>)</h1>
+<h2>Variantă naiv recursivă (doar pentru n mic)</h2>
+<pre class="codeblue"><code>// fib_naiv.js — (exemplu didactic; cost exponențial)
+function fibNaiv(n) {
+  if (n &lt;= 1) return n;
+  return fibNaiv(n-1) + fibNaiv(n-2);
+}
+// Doar pentru n mic (ex.: n ≤ 35)</code></pre>
+<p>Complexitate: O(φ^n) apeluri; doar pentru n mic (ex.: n ≤ 35).</p>
+<h2>Variantă iterativă (O(n), <code>BigInt</code>)</h2>
+<pre class="codeblue"><code>// fib_iter.js — iterativ, O(n), BigInt
+function fibIter(n) {
+  n = Number(n);
+  if (!Number.isFinite(n) || n &lt; 0 || !Number.isInteger(n)) throw new Error(&quot;n trebuie să fie întreg nenegativ&quot;);
+  let a = 0n, b = 1n;
+  for (let i = 0; i &lt; n; i++) [a, b] = [b, a + b];
+  return a;
+}</code></pre>
+<h2>„Fast doubling” (O(log n), <code>BigInt</code>)</h2>
+<pre class="codeblue"><code>// fib_fast.js — fast doubling (O(log n)), BigInt
+function fibPair(n) {
+  if (n === 0n) return [0n, 1n];
+  const [a, b] = fibPair(n &gt;&gt; 1n);
+  const c = a * (2n * b - a);      // F(2k)
+  const d = a * a + b * b;         // F(2k+1)
+  return (n &amp; 1n) ? [d, c + d] : [c, d];
+}
+function fibFast(n) {
+  n = BigInt(n);
+  if (n &lt; 0n) throw new Error(&quot;n trebuie să fie nenegativ&quot;);
+  return fibPair(n)[0];
+}</code></pre>
+<h2>Variantă CLI (Node.js)</h2>
+<pre class="codeblue"><code>// fib_cli.js — integrare CLI
+&quot;use strict&quot;;
+const [,, arg] = process.argv;
+if (arg === undefined) {
+  console.error(&quot;Utilizare: node fib_cli.js &lt;n&gt;&quot;);
+  process.exit(1);
+}
+try {
+  const n = BigInt(arg);                 // permite n mare; respinge non-numerice
+  if (n &lt; 0n) throw new Error(&quot;n negativ&quot;);
+  // Alegeți metoda în funcție de mărime
+  const res = (n &lt; 1_000n)
+    ? (() =&gt; { let a=0n,b=1n; for (let i=0n;i&lt;n;i++) [a,b]=[b,a+b]; return a; })()
+    : fibFast(n);
+  console.log(res.toString());
+} catch (e) {
+  console.error(&quot;Eroare: n trebuie să fie un întreg nenegativ (ex.: 10, 1000).&quot;);
+  process.exit(1);
+}</code></pre>
+<p><strong>Exemplu de rulare:</strong></p>
+<pre class="commandblack"><code>node fib_cli.js 1000
+# → valoarea F(1000) ca BigInt (zeci de cifre)</code></pre>
+<h1>Teorie vs practică — recomandări</h1>
+<ul><li>Pentru *prime*: preferați 5primeD (clar) sau 5primeE (ușor mai eficient). Pentru n foarte mari, considerați teste probabilistice (Miller–Rabin).</li><li>Pentru *Fibonacci*: evitați recursia naivă; folosiți varianta **iterativă** sau **fast doubling** cu `BigInt`.</li><li>Validați intrarea (CLI): mesaje de utilizare clare; `process.exit(1)` la erori.</li><li>Nu amestecați `Number` cu `BigInt` în aceeași expresie; convertiți coerent tipurile.[^2]</li><li>Node.js nu garantează optimizarea recursiei în coadă (TCO); evitați recursia profundă pe input mare.[^3]</li></ul>
+<h1>Tabel comparativ — variante pentru primalitate</h1>
+<table><thead><tr><th>Variantă</th><th>Descriere</th><th>Avantaje</th><th>Limitări</th><th>Complexitate (timp/memorie)</th></tr></thead><tbody>
+<tr><td>5primeB.js</td><td>Gresit (return prea devreme)</td><td>Ușor de sesizat în lecții</td><td>Rezultat fals pozitiv</td><td>O(√n) / O(1)</td></tr>
+<tr><td>5primeC.js</td><td>Corect (buclă + `return` după buclă)</td><td>Claritate didactică</td><td>Ușor mai verbos</td><td>O(√n) / O(1)</td></tr>
+<tr><td>5primeD.js</td><td>Corect minimal ES6+</td><td>Concis, limită calculată o dată</td><td>—</td><td>O(√n) / O(1)</td></tr>
+<tr><td>5primeE.js</td><td>Corect + optimizare impari</td><td>Mai puține iterații</td><td>Complexitate ușor crescută a codului</td><td>O(√n/2) / O(1)</td></tr>
+<tr><td>5primeF.js</td><td>One‑liner cu array</td><td>Expresiv, demonstrativ</td><td>Alocă array; overhead</td><td>O(√n) / O(√n)</td></tr>
+</tbody></table>
+<h1>Exerciții pentru studenți</h1>
+<ul><li>Extindeți testul de primalitate pentru a respinge intrările non‑întregi și negative (mesaje clare).</li><li>Implementați `fibMemo(n)` (memoizare) și comparați timpii cu `fibIter` și `fibFast`.</li><li>Construiți `prime_cli.js` cu opțiunea `--list &lt;N&gt;` pentru a afișa toate numerele prime ≤ N (sita lui Eratostene, O(n log log n)).</li><li>Scrieți teste automate (cu `node:test` + `assert`) pentru 5primeD/E și `fibFast`, incluzând cazuri‑limită și valori mari.</li></ul>
+<h1>Concluzii</h1>
+<p>Am abordat cap‑coadă integrarea parametrilor de linie de comandă în Node.js, detecția numerelor prime (cu erori tipice și corecții), și calculul șirului Fibonacci prin metode adecvate scalării (iterativ și fast doubling), însoțite de considerații privind numericile (<code>Number</code> vs <code>BigInt</code>). Exemplele și exercițiile propuse conectează teoria cu practica reală în dezvoltarea de utilitare CLI robuste.</p>
+<hr/>
+<section aria-label="Note de subsol">
+<ol>
+<li><code>process.argv</code> (Node.js) expune argumentele CLI; <code>[2+]</code> reprezintă argumentele reale. Afișați mesaje de utilizare și cod de ieșire nenul la erori.</li>
+<li>În JavaScript nu se pot amesteca <code>Number</code> și <code>BigInt</code> în aceeași expresie; convertiți coerent tipurile.</li>
+<li>JavaScript (V8/Node) nu garantează optimizarea recursiei în coadă (TCO) — recursia adâncă poate depăși stiva.</li>
+</ol>
+</section>
+</main>
+</body>
+</html>

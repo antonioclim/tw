@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Introducere în JS — VIDEO 6</title>
+<style>
+/* Conform cerințelor: TNR 11 pt, spacing 1.0, A4/1 cm, numerotare H1/H2/H3, stiluri CodeBlue/CommandBlack */
+@page {
+  size: A4;
+  margin: 1cm;
+  @bottom-center {
+    content: "Pagina " counter(page) " din " counter(pages);
+    font-family: "Times New Roman", Times, serif;
+    font-size: 11pt;
+    color: #000;
+  }
+}
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 11pt;
+  line-height: 1.0;
+  color: #000;
+  background: #fff;
+}
+main { padding: 0; }
+p, ul, ol, li { margin: 0; }
+ul, ol { margin-left: 1.2em; }
+h1, h2, h3 { color: #000; background: #fff; margin: 0.4em 0 0.2em 0; font-weight: bold; }
+/* Numerotare automată: 1., 1.1., 1.1.1. */
+body { counter-reset: h1; }
+h1 { counter-reset: h2; }
+h2 { counter-reset: h3; }
+h1::before { counter-increment: h1; content: counter(h1) ". "; }
+h2::before { counter-increment: h2; content: counter(h1) "." counter(h2) ". "; }
+h3::before { counter-increment: h3; content: counter(h1) "." counter(h2) "." counter(h3) ". "; }
+/* Stiluri pentru blocuri de cod și comenzi */
+:root { --indent: 0.63cm; }
+pre, code, kbd, samp {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 11pt;
+}
+pre.codeblue {
+  background: #DDEBF7; /* bleu deschis */
+  color: #000;         /* text negru */
+  padding: 3pt 4pt;
+  margin-left: var(--indent);
+  white-space: pre;
+  page-break-inside: avoid;
+  border: none;
+}
+pre.commandblack {
+  background: #000000; /* fundal negru */
+  color: #ffffff;      /* text alb */
+  padding: 3pt 4pt;    /* margini interne 3–4 pt */
+  margin-left: var(--indent);
+  white-space: pre;
+  page-break-inside: avoid;
+  border: none;
+}
+/* Tabele: linii subțiri, antet bold, aliniere stânga, wrap text */
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 0.5pt solid #666; text-align: left; vertical-align: top; padding: 2pt 4pt; }
+th { font-weight: bold; }
+.smallnote { font-style: italic; }
+</style>
+</head>
+<body>
+<main>
+<div style="font-weight:bold; font-size:11pt; margin:0 0 0.4em 0;">Introducere în JS — VIDEO 6
+(Pasul 7: Structuri de control) Frecvențe relative ale literelor într-un text</div>
+<h1>Context general al lecției</h1>
+<p>Acest material continuă firul didactic din „Introducere în JS” și este aliniat cu VIDEO 6: Pasul 7 — Structuri de control. Exersăm parcurgerea colecțiilor (șiruri, tablouri, obiecte) pentru a calcula frecvențele relative ale literelor într‑un text, excluzând spațiul. Comparam soluții imperative cu soluții funcționale (ES6+), cu accent pe Unicode (diacritice), normalizare și integrare CLI (Node.js).</p>
+<h1>Obiective de învățare</h1>
+<ul><li>Utilizarea structurilor de control `for`, `for...of`, `for...in` și a `Object.keys/Object.entries` pentru iterare.</li><li>Înțelegerea diferențelor dintre „caracter”, „unitate de cod” (UTF‑16) și „punct de cod” (Unicode).</li><li>Aplicarea abordărilor imperative și funcționale pentru a construi o distribuție de frecvențe relative.</li><li>Normalizarea și uniformizarea cazului (majuscule/minuscule) pentru texte cu diacritice românești.</li><li>Integrarea cu CLI (Node.js) și evaluarea complexității (timp/memorie).</li></ul>
+<h1>Fundamente teoretice (șiruri, Unicode, iterare)</h1>
+<ul><li>În JavaScript, un șir este o secvență de **unități de cod** UTF‑16. Indexarea (`text[i]`, `charAt`) lucrează pe unități de cod; în schimb, `for...of` iterează pe **puncte de cod** (caractere Unicode).</li><li>„Literă” vs „caracter”: folosim `\p{L}` (Unicode property escapes, cu flagul `u`) pentru a selecta **literele**, necesitând Node 12+ (recomandat 18/20/22).</li><li>Normalizare și caz: aplicați `normalize(&#x27;NFC&#x27;)` și `toLocaleLowerCase(&#x27;ro-RO&#x27;)` pentru a uniformiza diacriticele și majusculele.</li><li>Frecvență relativă: `freq(x) = apariții(x) / total_litere`. Suma valorilor este 1 (în limitele erorilor de reprezentare).</li></ul>
+<h1>Recapitulare: distribuție pe cuvinte (Variante A/B/C)</h1>
+<h2>Var. A — 6freqA.js (imperativ, două treceri)</h2>
+<pre class="codeblue"><code>// 6freqA.js — pe cuvinte (imperativ, două treceri)
+const sampleString = &#x27;azi e o zi ploioasa si zile ca aceastea vor mai fi de azi incolo&#x27;;
+
+const getCounts = (text) =&gt; {
+  const words = text.split(&#x27; &#x27;);
+  const result = Object.create(null);
+  for (const w of words) result[w] = (result[w] || 0) + 1; // numărări
+  for (const k in result) result[k] /= words.length;       // normalizare
+  return result;
+};
+
+console.log(getCounts(sampleString));</code></pre>
+<p><strong>Comentarii:</strong> <code>split(' ')</code> nu gestionează punctuația și spațiile multiple; pentru cuvinte reale, preferați <code>text.match(/\p{L}+/gu)</code> și <code>toLocaleLowerCase('ro-RO')</code>.</p>
+<h2>Var. B — 6freqB.js (funcțional, o trecere, Unicode corect)</h2>
+<pre class="codeblue"><code>// 6freqB.js — pe cuvinte (funcțional, o trecere, Unicode corect)
+const getCounts = (text) =&gt; {
+  const words = (text.match(/\p{L}+/gu) || []).map(w =&gt; w.toLocaleLowerCase(&#x27;ro-RO&#x27;));
+  const n = words.length || 1;
+  return words.reduce((acc, w) =&gt; (acc[w] = (acc[w] || 0) + 1/n, acc), Object.create(null));
+};
+
+const sampleString = &#x27;azi e o zi ploioasă și zile ca acestea vor mai fi de azi încolo&#x27;;
+console.log(getCounts(sampleString));</code></pre>
+<h2>Var. C — 6freqC.js (one‑liner, funcțional, Unicode)</h2>
+<pre class="codeblue"><code>// 6freqC.js — one-liner pe cuvinte (funcțional, Unicode)
+const getCounts = t =&gt;
+  (t.match(/\p{L}+/gu) || [])
+    .map(x =&gt; x.toLocaleLowerCase(&#x27;ro-RO&#x27;))
+    .reduce((a, x, _, arr) =&gt; (a[x] = (a[x] || 0) + 1/arr.length, a), {});
+
+console.log(getCounts(&#x27;azi e o zi ploioasă și zile ca acestea vor mai fi de azi încolo&#x27;));</code></pre>
+<h1>Frecvențe pe <em>litere</em> (excluzând spațiul)</h1>
+<h2>Varianta L‑A — Imperativ (clară, Unicode corect)</h2>
+<pre class="codeblue"><code>// 6freqL_A.js — literă cu literă (imperativ, două treceri)
+const letterFreq = (text) =&gt; {
+  const letters = (text.normalize(&#x27;NFC&#x27;).match(/\p{L}/gu) || [])
+                   .map(ch =&gt; ch.toLocaleLowerCase(&#x27;ro-RO&#x27;));
+  const n = letters.length || 1;
+  const counts = Object.create(null);
+  for (const ch of letters) counts[ch] = (counts[ch] || 0) + 1;
+  for (const k in counts) counts[k] /= n;
+  return counts;
+};
+
+console.log(letterFreq(&#x27;Azi e o zi ploioasă și zile ca acestea...&#x27;));</code></pre>
+<h2>Varianta L‑B — Funcțional (o trecere, adunăm direct 1/n)</h2>
+<pre class="codeblue"><code>// 6freqL_B.js — literă cu literă (funcțional, o trecere)
+const letterFreq = (text) =&gt; {
+  const letters = (text.normalize(&#x27;NFC&#x27;).match(/\p{L}/gu) || [])
+                   .map(ch =&gt; ch.toLocaleLowerCase(&#x27;ro-RO&#x27;));
+  const n = letters.length || 1;
+  return letters.reduce((acc, ch) =&gt; (acc[ch] = (acc[ch] || 0) + 1/n, acc), {});
+};
+
+console.log(letterFreq(&#x27;Azi e o zi ploioasă și zile ca acestea...&#x27;));</code></pre>
+<h2>Varianta L‑C — One‑liner (dens, Unicode corect)</h2>
+<pre class="codeblue"><code>// 6freqL_C.js — literă cu literă (one-liner, Unicode corect)
+const letterFreq = t =&gt;
+  ((a = (t.normalize(&#x27;NFC&#x27;).match(/\p{L}/gu) || []).map(x =&gt; x.toLocaleLowerCase(&#x27;ro-RO&#x27;))),
+   a.reduce((acc, x, _, arr) =&gt; (acc[x] = (acc[x] || 0) + 1/arr.length, acc), {}));
+
+console.log(letterFreq(&#x27;Azi e o zi ploioasă și zile ca acestea...&#x27;));</code></pre>
+<h1>Variantă CLI (Node.js) — preia textul din linia de comandă</h1>
+<pre class="codeblue"><code>// 6freq_cli_letters.js — variantă CLI (Node.js)
+const letterFreq = t =&gt;
+  ((a = (t.normalize(&#x27;NFC&#x27;).match(/\p{L}/gu) || []).map(x =&gt; x.toLocaleLowerCase(&#x27;ro-RO&#x27;))),
+   a.reduce((acc, x, _, arr) =&gt; (acc[x] = (acc[x] || 0) + 1/arr.length, acc), {}));
+
+const text = process.argv.slice(2).join(&#x27; &#x27;);
+if (!text) { console.error(&#x27;Utilizare: node 6freq_cli_letters.js &lt;text...&gt;&#x27;); process.exit(1); }
+console.log(letterFreq(text));</code></pre>
+<p><strong>Exemplu:</strong></p>
+<pre class="commandblack"><code>node 6freq_cli_letters.js &quot;Azi e o zi ploioasă și zile ca acestea...&quot;</code></pre>
+<h1>Structuri de control: <code>for</code>, <code>for...of</code>, <code>for...in</code>, <code>Object.entries</code></h1>
+<ul><li>`for (let i = 0; i &lt; n; i++)` — control clasic, eficient; potrivit pentru acces indexat.</li><li>`for...of` — iterează elementele colecțiilor; pe șir, iterează **puncte de cod Unicode**.</li><li>`for...in` — iterează cheile unui obiect; pentru perechi [cheie, valoare] folosiți `Object.entries(obj)`.</li><li>În stil funcțional, `Array.prototype.reduce` acumulează frecvențe într‑o singură trecere.</li></ul>
+<h1>Complexitate și „cazuri reale”</h1>
+<ul><li>Timp: **O(n)**, n = numărul de litere extrase. Memorie: **O(U)**, U = numărul de litere distincte.</li><li>Unicode: pentru ăâîșț folosiți `normalize(&#x27;NFC&#x27;)` + `toLocaleLowerCase(&#x27;ro-RO&#x27;)`. `\p{L}` necesită flagul `u` și Node 12+.</li><li>Obiect vs Map: `Object.create(null)` evită coliziuni pe prototip. `Map` e robust pentru chei arbitrare, dar necesită `.get/.set`.</li><li>Afișare ordonată: folosiți sortarea perechilor `[literă, frecvență]` și, la nevoie, afișați doar top‑k.</li></ul>
+<p><strong>Sortarea frecvențelor și afișarea top‑k:</strong></p>
+<pre class="codeblue"><code>// Ordonare descrescător și afișare top‑k perechi [literă, frecvență]
+const sortTop = (freq, k=5) =&gt;
+  Object.fromEntries(Object.entries(freq).sort((a,b) =&gt; b[1]-a[1]).slice(0, k));
+
+const f = ((t) =&gt; {
+  const a = (t.normalize(&#x27;NFC&#x27;).match(/\p{L}/gu) || []).map(x =&gt; x.toLocaleLowerCase(&#x27;ro-RO&#x27;));
+  return a.reduce((acc, x, _, arr) =&gt; (acc[x] = (acc[x] || 0) + 1/arr.length, acc), {});
+})(&#x27;Azi e o zi ploioasă și zile ca acestea...&#x27;);
+
+console.log(sortTop(f, 5));</code></pre>
+<h1>Exerciții pentru studenți</h1>
+<ul><li>Implementați `letterFreqForOf(text)` folosind strict `for...of` pe șir (după normalizare), fără `match`.</li><li>Adăugați opțiune CLI `--top=K` pentru a afișa doar primele `K` litere după frecvență.</li><li>Comparați runtime‑ul între varianta imperativă și cea funcțională pentru texte lungi (`console.time`).</li><li>Extindeți la bigrame și trigrame; discutați utilitatea în preprocesarea limbajului natural.</li><li>Adăugați `--ignore=â,î` etc. și analizați impactul asupra distribuției.</li></ul>
+<h1>Tabel comparativ (Var. L‑A / L‑B / L‑C)</h1>
+<table><thead><tr><th>Variantă</th><th>Paradigmă</th><th>Avantaje</th><th>Limitări</th><th>Complexitate (timp/memorie)</th></tr></thead><tbody>
+<tr><td>6freqL_A.js</td><td>Imperativă, două treceri</td><td>Claritate, control fin</td><td>Două treceri; cod mai lung</td><td>O(n) / O(U)</td></tr>
+<tr><td>6freqL_B.js</td><td>Funcțională, o trecere</td><td>Concis, compozițional</td><td>Necesită `reduce`; atenție la lizibilitate</td><td>O(n) / O(U)</td></tr>
+<tr><td>6freqL_C.js</td><td>Funcțională, one‑liner</td><td>Dens, expresiv</td><td>Mai greu de întreținut</td><td>O(n) / O(U)</td></tr>
+</tbody></table>
+<h1>Concluzii</h1>
+<p>Am văzut cum aceleași principii de iterare și agregare se aplică atât pentru frecvențe pe cuvinte, cât și — mai potrivit scopului VIDEO 6 — pe litere. Abordarea imperativă este predictibilă și eficientă, iar stilul funcțional oferă concizie și claritate compozițională. Gestionarea corectă a Unicode și a normalizării este esențială în limba română. Integrarea cu CLI transformă aceste funcții în instrumente utile în practică.</p>
+<hr/>
+<section aria-label="Note de subsol">
+<ol>
+<li><code>\p{L}</code> (Unicode property escapes) necesită flagul <code>u</code> și suport runtime (Node 12+; recomandat 18/20/22). În lipsa suportului, folosiți o listă explicită de litere sau biblioteci dedicate.</li>
+<li><code>toLocaleLowerCase('ro-RO')</code> ajută la uniformizarea cazului pentru diacritice românești; aplicați <code>normalize('NFC')</code> pentru a evita discrepanțe între forme compuse/precompuse.</li>
+</ol>
+</section>
+</main>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Explicații detaliate — 4 faze ale codului (Node.js)</title>
+<style>
+/* Conform cerințelor: font Times New Roman 11 pt, spacing 1.0, margini 1 cm, A4 */
+@page {
+  size: A4;
+  margin: 1cm;
+  @bottom-center {
+    content: "Pagina " counter(page) " din " counter(pages);
+    font-family: "Times New Roman", Times, serif;
+    font-size: 11pt;
+    color: #000;
+  }
+}
+html, body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 11pt;
+  line-height: 1.0;
+  color: #000;
+  background: #fff;
+}
+main { padding: 0; }
+p { margin: 0; }
+ul, ol { margin: 0 0 0 1.2em; padding: 0; }
+li { margin: 0; }
+h1, h2, h3 {
+  color: #000;
+  background: #fff;
+  margin: 0.4em 0 0.2em 0;
+  font-weight: bold;
+}
+/* Numerotare automată pentru Heading 1/2/3: 1., 1.1., 1.1.1. */
+body { counter-reset: h1; }
+h1 { counter-reset: h2; }
+h2 { counter-reset: h3; }
+h1::before {
+  counter-increment: h1;
+  content: counter(h1) ". ";
+}
+h2::before {
+  counter-increment: h2;
+  content: counter(h1) "." counter(h2) ". ";
+}
+h3::before {
+  counter-increment: h3;
+  content: counter(h1) "." counter(h2) "." counter(h3) ". ";
+}
+/* Stiluri pentru blocuri de cod și comenzi */
+:root { --indent: 0.63cm; }
+pre, code, kbd, samp {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 11pt;
+}
+pre.codeblue {
+  background: #DDEBF7; /* bleu deschis */
+  color: #000;         /* text negru */
+  padding: 3pt 4pt;
+  margin-left: var(--indent);
+  white-space: pre;
+  page-break-inside: avoid;
+  border: none;
+}
+pre.commandblack {
+  background: #000000; /* fundal negru */
+  color: #ffffff;      /* text alb */
+  padding: 3pt 4pt;    /* margini interne 3–4 pt */
+  margin-left: var(--indent);
+  white-space: pre;
+  page-break-inside: avoid;
+  border: none;
+}
+/* Tabele (cheat‑sheet/glosar): linii subțiri, antet bold, aliniere stânga, wrap text */
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 0.5pt solid #666; text-align: left; vertical-align: top; padding: 2pt 4pt; }
+th { font-weight: bold; }
+/* Notă: pentru printare, numerotarea paginilor se face jos-centru via @page/@bottom-center */
+</style>
+</head>
+<body>
+<main>
+<div style="font-weight:bold; font-size:11pt; margin:0 0 0.4em 0;">Explicații detaliate — 4 faze ale codului (Node.js)
+„sayHello” și `process.argv` — ghid pentru studenți</div>
+<h1>Context general (ideea exercițiului)</h1>
+<p>Scopul este să definim o funcție `sayHello(name)` care întoarce un mesaj de salut și să alimentăm funcția cu argumente din linia de comandă (CLI), folosind Node.js. În timp ce codul evoluează prin 4 faze, observăm cum trecem de la o funcție goală, la o funcție corectă și cum incorporăm corect argumentele din linia de comandă.</p>
+<h1>Fundamente: ce este <code>process.argv</code></h1>
+<p>În Node.js, variabila globală `process` descrie procesul curent (instanța programului). Proprietatea `process.argv` conține lista (array) de argumente cu care a fost lansat programul.[^1]</p>
+<pre class="codeblue"><code>[
+  'C:\\Program Files\\nodejs\\node.exe',  // [0] executabilul Node
+  'Z:\\tw\\SxTEST\\FAZA1\\src\\hello.js', // [1] calea către scriptul tău
+  'arg1', // [2] primul argument real introdus de utilizator
+  'arg2', // [3] al doilea argument real
+  // ... etc.
+]</code></pre>
+<p>De aceea, <strong><code>process.argv[2]</code></strong> este primul argument util. Pentru toate cuvintele introduse după script, folosiți <code>process.argv.slice(2)</code>; iar pentru un singur șir cu spații între cuvinte, adăugați <code>.join(" ")</code>.</p>
+<h1>Faza 1</h1>
+<p><strong>Cod inițial:</strong></p>
+<pre class="codeblue"><code>let sayHello = function (name) {
+
+}</code></pre>
+<p><strong>Explicație:</strong> A fost definită o function expression, dar corpul este gol — apelul ar întoarce <code>undefined</code>. Nu există nici <code>console.log</code>.</p>
+<p><strong>Versiune minimă corectată pentru test intern:</strong></p>
+<pre class="codeblue"><code>let sayHello = function (name) {
+  return `Hello, ${name}!`;
+};
+
+console.log(sayHello("world")); // probă locală</code></pre>
+<h1>Faza 2</h1>
+<p><strong>Cod dat:</strong></p>
+<pre class="codeblue"><code>let sayHello => (name) {
+return `Hello, ${name}!`;
+}
+
+console.log(sayHello(process.argv[0]));</code></pre>
+<p><strong>Probleme:</strong> (1) Sintaxa arrow function este greșită; (2) <code>process.argv[0]</code> indică executabilul Node, nu argumentul utilizatorului.</p>
+<p><strong>Corectare minimă:</strong></p>
+<pre class="codeblue"><code>let sayHello = (name) => {
+  return `Hello, ${name}!`;
+};
+
+console.log(sayHello(process.argv[2]));</code></pre>
+<p><strong>Exemplu de rulare:</strong></p>
+<pre class="commandblack"><code>node hello.js Ana
+# → Hello, Ana!</code></pre>
+<h1>Faza 3</h1>
+<p><strong>Cod dat:</strong></p>
+<pre class="codeblue"><code>let sayHello = (name) => `Hello, ${name}!`;
+
+console.log(sayHello(process.argv[0]));</code></pre>
+<p><strong>Ce s-a îmbunătățit:</strong> formă concisă (implicit return). <strong>Ce rămâne greșit:</strong> încă se folosește <code>process.argv[0]</code>.</p>
+<p><strong>Corectare:</strong></p>
+<pre class="codeblue"><code>let sayHello = (name) => `Hello, ${name}!`;
+
+console.log(sayHello(process.argv[2]));</code></pre>
+<p><strong>Exemplu:</strong></p>
+<pre class="commandblack"><code>node hello.js Maria
+# → Hello, Maria!</code></pre>
+<h1>Faza 4</h1>
+<p><strong>Cod dat (final):</strong></p>
+<pre class="codeblue"><code>let sayHello = (name) => `Hello, ${name}!`;
+
+console.log(sayHello(process.argv.slice(2).join(" ")));</code></pre>
+<p><strong>Exemple:</strong></p>
+<pre class="commandblack"><code>node hello.js Ana
+# → Hello, Ana!</code></pre>
+<pre class="commandblack"><code>node hello.js Ana Maria
+# → Hello, Ana Maria!</code></pre>
+<pre class="commandblack"><code>node hello.js buna dimineata tuturor
+# → Hello, buna dimineata tuturor!</code></pre>
+<p><strong>Îmbunătățire recomandată (fallback implicit):</strong></p>
+<pre class="codeblue"><code>let sayHello = (name) => `Hello, ${name || "world"}!`;
+
+console.log(sayHello(process.argv.slice(2).join(" ")));</code></pre>
+<h1>Sinteză conceptuală (pe scurt)</h1>
+<ul><li>Function expression vs. function declaration; **arrow functions** (corp bloc vs. formă concisă).</li><li>Template literals și interpolare: `` `Hello, ${name}!` ``.</li><li>`process.argv`: `[0]` executabilul Node, `[1]` scriptul, `[2+]` argumentele reale.</li><li>Pentru un singur cuvânt: `process.argv[2]`. Pentru mai multe cuvinte: `process.argv.slice(2).join(" ")`.</li></ul>
+<h1>Erori tipice și cum le eviți</h1>
+<ul><li>Sintaxa greșită pentru arrow function: `let f => (x) { ... }` — corect: `let f = (x) => { ... }` sau `let f = (x) => expresie;`.</li><li>Index nepotrivit: folosirea `process.argv[0]` în loc de `process.argv[2]` sau `slice(2)`.</li><li>Uitarea `return` atunci când corpul arrow function are acolade.</li><li>Fișiere nesalvate/zero bytes în editor — verificați mereu salvarea.</li></ul>
+<h1>Bune practici</h1>
+<ul><li>Folosește `console.log` pentru a inspecta rapid `process.argv` când depanezi.</li><li>Adaugă un comportament implicit (`name || "world"`) pentru robustețe.</li><li>Păstrează lizibilitatea: nume explicite (`sayHello`), structură concisă.</li><li>Menține consistența: alege un stil și aplică-l corect (arrow function sau function expression).</li></ul>
+<h1>Tabel comparativ (evoluția pe faze)</h1>
+<table><thead><tr><th>Fază</th><th>Cod (rezumat)</th><th>Problemă principală</th><th>Corectare / efect</th></tr></thead><tbody>
+<tr><td>Faza 1</td><td>funcție goală</td><td>nu există `return` / nici afișare</td><td>adăugăm `return` și un `console.log` de test</td></tr>
+<tr><td>Faza 2</td><td>arrow function (greșită) + argv[0]</td><td>sintaxă incorectă + index greșit</td><td>corectăm sintaxa; folosim `argv[2]`</td></tr>
+<tr><td>Faza 3</td><td>arrow concisă + argv[0]</td><td>index greșit (calea Node)</td><td>folosim `argv[2]` (primul argument real)</td></tr>
+<tr><td>Faza 4</td><td>arrow concisă + slice(2).join(" ")</td><td>—</td><td>gestionăm mai multe cuvinte; opțional fallback `world`</td></tr>
+</tbody></table>
+<h1>Versiune finală robustă (2 linii)</h1>
+<pre class="codeblue"><code>let sayHello = (name) => `Hello, ${name || "world"}!`;
+console.log(sayHello(process.argv.slice(2).join(" ")));</code></pre>
+<h1>Teste rapide</h1>
+<pre class="commandblack"><code>node hello.js
+# Hello, world!</code></pre>
+<pre class="commandblack"><code>node hello.js Ana
+# Hello, Ana!</code></pre>
+<pre class="commandblack"><code>node hello.js Ana Maria
+# Hello, Ana Maria!</code></pre>
+<h1>Exerciții sugerate pentru studenți</h1>
+<ul><li>Modificați scriptul astfel încât `--uppercase` să afișeze mesajul cu litere mari (ex.: `HELLO, ANA MARIA!`).</li><li>Adăugați o opțiune `--prefix "Salut"` pentru a personaliza cuvântul de început (`Salut, Ana!`).</li><li>Gestionați cazurile fără argumente, afișând un mesaj de utilizare (`Usage: node hello.js <nume...>`).</li><li>Experimentați cu `process.argv` afișând toate elementele și observând indexarea pe diverse platforme (Windows/macOS/Linux).</li></ul>
+<hr/>
+<section aria-label="Note de subsol">
+<ol>
+<li><code>process.argv</code> este specific <strong>Node.js</strong> (nu face parte din standardul ECMAScript) și este disponibil doar în aplicații rulate în runtime-ul Node.</li>
+</ol>
+</section>
+</main>
+</body>
+</html>

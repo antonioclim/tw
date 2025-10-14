@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Anexă — Teste automate (VIDEO 4)</title>
+<style>
+/* Conform cerințelor: TNR 11 pt, spacing 1.0, A4/1 cm, numerotare H1/H2/H3, stiluri CodeBlue/CommandBlack */
+@page {
+  size: A4;
+  margin: 1cm;
+  @bottom-center {
+    content: "Pagina " counter(page) " din " counter(pages);
+    font-family: "Times New Roman", Times, serif;
+    font-size: 11pt;
+    color: #000;
+  }
+}
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 11pt;
+  line-height: 1.0;
+  color: #000;
+  background: #fff;
+}
+main { padding: 0; }
+p, ul, ol, li { margin: 0; }
+ul, ol { margin-left: 1.2em; }
+h1, h2, h3 { color: #000; background: #fff; margin: 0.4em 0 0.2em 0; font-weight: bold; }
+/* Numerotare automată: 1., 1.1., 1.1.1. */
+body { counter-reset: h1; }
+h1 { counter-reset: h2; }
+h2 { counter-reset: h3; }
+h1::before { counter-increment: h1; content: counter(h1) ". "; }
+h2::before { counter-increment: h2; content: counter(h1) "." counter(h2) ". "; }
+h3::before { counter-increment: h3; content: counter(h1) "." counter(h2) "." counter(h3) ". "; }
+/* Stiluri pentru blocuri de cod și comenzi */
+:root { --indent: 0.63cm; }
+pre, code, kbd, samp {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 11pt;
+}
+pre.codeblue {
+  background: #DDEBF7; /* bleu deschis */
+  color: #000;         /* text negru */
+  padding: 3pt 4pt;
+  margin-left: var(--indent);
+  white-space: pre;
+  page-break-inside: avoid;
+  border: none;
+}
+pre.commandblack {
+  background: #000000; /* fundal negru */
+  color: #ffffff;      /* text alb */
+  padding: 3pt 4pt;    /* margini interne 3–4 pt */
+  margin-left: var(--indent);
+  white-space: pre;
+  page-break-inside: avoid;
+  border: none;
+}
+/* Tabele: linii subțiri, antet bold, aliniere stânga, wrap text */
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 0.5pt solid #666; text-align: left; vertical-align: top; padding: 2pt 4pt; }
+th { font-weight: bold; }
+.smallnote { font-style: italic; }
+</style>
+</head>
+<body>
+<main>
+<div style="font-weight:bold; font-size:11pt; margin:0 0 0.4em 0;">Anexă — Teste automate pentru intercalarea a două (și N) array‑uri
+„Introducere în JS” — VIDEO 4</div>
+<h1>Scopul anexei și acoperirea testelor</h1>
+<p>Această anexă oferă o baterie de **teste automatizate** ce pot fi rulate local cu runner‑ul integrat din Node.js (`node:test`). Testele acoperă: (i) cazuri pozitive (lungimi egale; elemente string/number), (ii) cazuri‑limită (array‑uri goale), (iii) validări de intrare (non‑array → `TypeError`), (iv) **politici diferite** pentru nepotriviri de lungime (returnare `-1` vs **aruncare** de eroare) și (v) **generalizarea** pentru **N** array‑uri (`interleaveN`).</p>
+<h1>Instrucțiuni de rulare</h1>
+<p>Asigurați‑vă că aveți <strong>Node.js v18+</strong> (ideal v20+):</p>
+<pre class="commandblack"><code>node --version</code></pre>
+<p>Descărcați arhiva ZIP, dezarhivați într‑un folder local.</p>
+<p>În terminal, navigați în folder și rulați suita de teste:</p>
+<pre class="commandblack"><code>node --test</code></pre>
+<pre class="commandblack"><code>node --test interleave.test.js   # rulează doar fișierul de test</code></pre>
+<pre class="commandblack"><code>npm test                         # dacă există script aferent în package.json</code></pre>
+<h1>Fișiere incluse</h1>
+<table><thead><tr><th>Fișier</th><th>Conținut</th></tr></thead><tbody>
+<tr><td>interleave.js</td><td>implementări: imperativ, funcțional, strict, generalizare la N</td></tr>
+<tr><td>interleave.test.js</td><td>bateria de teste `node:test` + `assert`</td></tr>
+<tr><td>package.json</td><td>script convenabil de test (opțional)</td></tr>
+<tr><td>README_TESTE.md</td><td>instrucțiuni rapide, observații</td></tr>
+</tbody></table>
+<h1>Implementări ilustrative (<code>interleave.js</code>)</h1>
+<pre class="codeblue"><code>// interleave.js — variante ilustrative
+function assertIsArray(a, name) {
+  if (!Array.isArray(a)) throw new TypeError(`${name} trebuie să fie array`);
+}
+
+// 1) Varianta „imperativă” (2 array‑uri), politică LOOSENED: întoarce -1 la lungimi diferite
+function interleaveLoose(a, b) {
+  assertIsArray(a, &#x27;a&#x27;); assertIsArray(b, &#x27;b&#x27;);
+  if (a.length !== b.length) return -1;
+  const out = [];
+  for (let i = 0; i &lt; a.length; i++) {
+    out.push(a[i], b[i]);
+  }
+  return out;
+}
+
+// 2) Varianta STRICTĂ: aruncă eroare la lungimi diferite
+function interleaveStrict(a, b) {
+  assertIsArray(a, &#x27;a&#x27;); assertIsArray(b, &#x27;b&#x27;);
+  if (a.length !== b.length) {
+    throw new Error(&#x27;Lungimi diferite&#x27;);
+  }
+  return a.flatMap((x, i) =&gt; [x, b[i]]);
+}
+
+// 3) Generalizare la N array‑uri (STRICTĂ): toate lungimi identice
+function interleaveN(...arrays) {
+  if (arrays.length === 0) return [];
+  const lens = arrays.map(a =&gt; {
+    assertIsArray(a, &#x27;argument&#x27;);
+    return a.length;
+  });
+  if (!lens.every(L =&gt; L === lens[0])) {
+    throw new Error(&#x27;Toate array‑urile trebuie să aibă aceeași lungime&#x27;);
+  }
+  const n = lens[0];
+  const out = [];
+  for (let i = 0; i &lt; n; i++) {
+    for (const arr of arrays) out.push(arr[i]);
+  }
+  return out;
+}
+
+module.exports = { interleaveLoose, interleaveStrict, interleaveN };</code></pre>
+<h1>Fragment din test (<code>interleave.test.js</code>)</h1>
+<pre class="codeblue"><code>// interleave.test.js — fragment ilustrativ
+const assert = require(&#x27;assert&#x27;);
+const { test, describe } = require(&#x27;node:test&#x27;);
+const { interleaveLoose, interleaveStrict, interleaveN } = require(&#x27;./interleave&#x27;);
+
+describe(&#x27;interleaveStrict (aruncă la lungimi diferite)&#x27;, () =&gt; {
+  test(&#x27;basic&#x27;, () =&gt; {
+    assert.deepStrictEqual(interleaveStrict([1,2], [3,4]), [1,3,2,4]);
+  });
+  test(&#x27;mismatch -&gt; Error&#x27;, () =&gt; {
+    assert.throws(() =&gt; interleaveStrict([1,2], [3]), /Lungimi diferite/);
+  });
+});
+
+describe(&#x27;interleaveLoose (–1 la lungimi diferite)&#x27;, () =&gt; {
+  test(&#x27;arrayuri egale&#x27;, () =&gt; {
+    assert.deepStrictEqual(interleaveLoose([&#x27;a&#x27;,&#x27;b&#x27;], [&#x27;x&#x27;,&#x27;y&#x27;]), [&#x27;a&#x27;,&#x27;x&#x27;,&#x27;b&#x27;,&#x27;y&#x27;]);
+  });
+  test(&#x27;mismatch -&gt; –1&#x27;, () =&gt; {
+    assert.strictEqual(interleaveLoose([1], [2,3]), -1);
+  });
+});
+
+describe(&#x27;interleaveN (generalizare la N array‑uri)&#x27;, () =&gt; {
+  test(&#x27;3 array‑uri (lungimi egale)&#x27;, () =&gt; {
+    assert.deepStrictEqual(interleaveN([1,2], [&#x27;a&#x27;,&#x27;b&#x27;], [true,false]), [1,&#x27;a&#x27;,true, 2,&#x27;b&#x27;,false]);
+  });
+});</code></pre>
+<h1>Politici la nepotriviri de lungime</h1>
+<table><thead><tr><th>API</th><th>Politică</th><th>Observații</th></tr></thead><tbody>
+<tr><td>interleaveLoose(a, b)</td><td>returnează `-1`</td><td>Validări tip pentru non‑array, returnează –1 dacă `a.length !== b.length`</td></tr>
+<tr><td>interleaveStrict(a, b)</td><td>aruncă `Error`</td><td>Validări tip și mesaj explicit „Lungimi diferite”</td></tr>
+<tr><td>interleaveN(...arrays)</td><td>aruncă `Error`</td><td>Toate array‑urile trebuie să aibă aceeași lungime</td></tr>
+</tbody></table>
+<h1>Checklist de acoperire</h1>
+<ul><li>Testați cu elemente de tip diferit (numere, șiruri, booleeni).</li><li>Adăugați cazuri cu array‑uri goale (a=[], b=[]).</li><li>Verificați că non‑array (ex.: `interleaveLoose(3, [])`) aruncă `TypeError`.</li><li>Pentru `interleaveN`, testați 2, 3 și 4 array‑uri cu aceeași lungime.</li><li>Introduceți și cazuri negative la `interleaveN` (lungimi diferite).</li></ul>
+<h1>Observații finale</h1>
+<p>Păstrați aceeași <strong>politică</strong> în toată aplicația și documentați‑o clar în README și în capul fișierelor de test. Recomandăm, în scop didactic, menținerea ambelor variante (Loose/Strict) pentru a evidenția diferența de design API.</p>
+<hr/>
+<section aria-label="Note de subsol">
+<ol>
+<li>Modulele de testare `node:test` și `assert` sunt disponibile nativ în Node.js v18+; nu necesită instalare separată.</li>
+<li>Exemplul de test pentru `interleaveStrict` este prelucrat conform anexei originale; păstrați mesajul de eroare pentru a potrivi expresia regulată.</li>
+<li>În proiecte reale, documentați clar politica la nepotriviri (–1 vs Error) și păstrați-o consecventă în API și în teste.</li>
+</ol>
+</section>
+</main>
+</body>
+</html>

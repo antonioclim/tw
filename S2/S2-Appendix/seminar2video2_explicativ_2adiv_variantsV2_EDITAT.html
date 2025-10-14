@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Introducere în JS — VIDEO 2</title>
+<style>
+/* Conform cerințelor: TNR 11 pt, spacing 1.0, A4/1 cm, numerotare H1/H2/H3, stiluri CodeBlue/CommandBlack */
+@page {
+  size: A4;
+  margin: 1cm;
+  @bottom-center {
+    content: "Pagina " counter(page) " din " counter(pages);
+    font-family: "Times New Roman", Times, serif;
+    font-size: 11pt;
+    color: #000;
+  }
+}
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 11pt;
+  line-height: 1.0;
+  color: #000;
+  background: #fff;
+}
+main { padding: 0; }
+p, ul, ol, li { margin: 0; }
+ul, ol { margin-left: 1.2em; }
+h1, h2, h3 { color: #000; background: #fff; margin: 0.4em 0 0.2em 0; font-weight: bold; }
+/* Numerotare automată: 1., 1.1., 1.1.1. */
+body { counter-reset: h1; }
+h1 { counter-reset: h2; }
+h2 { counter-reset: h3; }
+h1::before { counter-increment: h1; content: counter(h1) ". "; }
+h2::before { counter-increment: h2; content: counter(h1) "." counter(h2) ". "; }
+h3::before { counter-increment: h3; content: counter(h1) "." counter(h2) "." counter(h3) ". "; }
+/* Stiluri pentru blocuri de cod și comenzi */
+:root { --indent: 0.63cm; }
+pre, code, kbd, samp {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 11pt;
+}
+pre.codeblue {
+  background: #DDEBF7; /* bleu deschis */
+  color: #000;         /* text negru */
+  padding: 3pt 4pt;
+  margin-left: var(--indent);
+  white-space: pre;
+  page-break-inside: avoid;
+  border: none;
+}
+pre.commandblack {
+  background: #000000; /* fundal negru */
+  color: #ffffff;      /* text alb */
+  padding: 3pt 4pt;    /* margini interne 3–4 pt */
+  margin-left: var(--indent);
+  white-space: pre;
+  page-break-inside: avoid;
+  border: none;
+}
+/* Tabele: linii subțiri, antet bold, aliniere stânga, wrap text */
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 0.5pt solid #666; text-align: left; vertical-align: top; padding: 2pt 4pt; }
+th { font-weight: bold; }
+.smallnote { font-style: italic; }
+</style>
+</head>
+<body>
+<main>
+<div style="font-weight:bold; font-size:11pt; margin:0 0 0.4em 0;">Introducere în JS — VIDEO 2
+Paradigme (imperativ vs funcțional), Node.js CLI și verificarea divizibilității</div>
+<p class="smallnote">Notă de editare: această versiune urmează cerințele de formatare (TNR 11 pt, spațiere 1.0, A4/1 cm, headinguri numerotate, stiluri pentru cod și comenzi, tabele cu linii subțiri).</p>
+<h1>Context general al lecției</h1>
+<p>Acest material face parte din lecția „Introducere în JS” (VIDEO 2) și clarifică principiile de bază ale limbajului JavaScript, modul de lucru cu Node.js în linia de comandă (CLI), trei variante de scripturi pentru verificarea divizibilității și decizii de proiectare între stiluri imperative și funcționale. La final, este propus un exercițiu aplicat: calculul numărului de caractere diferite între două șiruri.</p>
+<h1>Obiective de învățare</h1>
+<ul><li>Înțelegerea diferențelor dintre stilul imperativ și cel funcțional în JavaScript.</li><li>Utilizarea argumentelor din linia de comandă în Node.js (`process.argv`).</li><li>Aplicarea operatorului modulo (%) și a coerciției numerice.</li><li>Analiza compromisurilor concizie–lizibilitate–robustețe.</li><li>Proiectarea unei funcții pure pentru o sarcină algoritmică (număr de caractere diferite).</li></ul>
+<h1>Precondiții și mediu de lucru</h1>
+<ul><li>Node.js instalat și acces la un terminal (PowerShell/CMD/macOS Terminal).</li><li>Editor de cod (ex.: Visual Studio Code); salvați explicit fișierele înainte de rulare.</li><li>Cunoștințe de bază: variabile, funcții, operatori, șiruri, `console.log`.</li></ul>
+<h1>Fundamente teoretice</h1>
+<h2>Argumente CLI (<code>process.argv</code>)</h2>
+<p>`process.argv` este un tablou de șiruri care conține executabilul Node, calea scriptului și argumentele reale (începând cu indexul `2`).[^1]</p>
+<pre class="codeblue"><code>// Exemplu: node 2adiv.js 10 2
+[
+  &#x27;C:\\Program Files\\nodejs\\node.exe&#x27;,  // [0] executabilul Node
+  &#x27;Z:\\...\\2adiv.js&#x27;,                    // [1] scriptul
+  &#x27;10&#x27;,                                     // [2] primul argument real (n)
+  &#x27;2&#x27;                                       // [3] al doilea argument real (d)
+]</code></pre>
+<h2>Operatorul <code>%</code> (modulo)</h2>
+<p>Operatorul `%` întoarce restul împărțirii. În JavaScript, tipul numeric este IEEE‑754 (double). Rețineți că `-10 % 2 === -0`, iar `-0 === 0` este `true`.[^2]</p>
+<h2>Coerciția numerică (unary <code>+</code>)</h2>
+<p>Coerciția numerică: `+'10'` → `10`. Unary `+` convertește șirul în număr (`NaN` dacă nu reușește).</p>
+<h2>Paradigme (imperativ vs funcțional)</h2>
+<ul><li>**Imperativ:** accent pe pași și ramificări (`if/else`), claritate structurală.</li><li>**Funcțional:** accent pe expresii, compoziție și imutabilitate; concizie cu arrow functions și destructurare.</li></ul>
+<h1>Var. 1 — 2adiv.js (imperativ, „Varianta 1 video 2”)</h1>
+<pre class="codeblue"><code>// 2adiv.js — Varianta 1 (imperativă)
+function checkDivisible(n, divisor) {
+  if (n % divisor === 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+console.log(checkDivisible(10, 2));  // true
+console.log(checkDivisible(10, 3));  // false</code></pre>
+<p><strong>Analiză:</strong> funcția <code>checkDivisible</code> folosește ramificare <code>if/else</code> pentru a întoarce explicit <code>true</code>/<code>false</code>. Forma poate fi comprimată la <code>return n % divisor === 0;</code>, fără a schimba semantica.</p>
+<p><strong>Extensie CLI (aceeași paradigmă):</strong></p>
+<pre class="codeblue"><code>// Extensie CLI (imperativ, aceeași paradigmă)
+function checkDivisible(n, d) { return d !== 0 &amp;&amp; (n % d === 0); }
+
+const [,, nStr, dStr] = process.argv;
+console.log(checkDivisible(+nStr, +dStr));</code></pre>
+<h1>Var. 2 — 2adivshort.js (funcțional, concis ES6, „tema acasă”)</h1>
+<pre class="codeblue"><code>// 2adivshort.js — Varianta 2 (funcțional, one‑liner ES6)
+console.log((+process.argv[2] % +process.argv[3]) === 0);</code></pre>
+<p><strong>Analiză:</strong> one‑liner funcțional care convertește argumentele la numere, aplică <code>%</code> și compară cu <code>0</code>. Adecvat pentru utilitare minimale, acceptând lipsa validărilor explicite.</p>
+<p><strong>Cazuri reale:</strong></p>
+<pre class="commandblack"><code>node 2adivshort.js 10 2   # true</code></pre>
+<pre class="commandblack"><code>node 2adivshort.js 10 3   # false</code></pre>
+<pre class="commandblack"><code>node 2adivshort.js 10 0   # false (NaN % 0 → NaN; comparația dă false; nu există mesaj explicit)</code></pre>
+<pre class="commandblack"><code>node 2adivshort.js 10 2.5 # true (divizibilitate în reals; poate fi indezirabil dacă vizați doar întregi)</code></pre>
+<h1>Var. 3 — 2adivno0.js (funcțional + protecție la d=0)</h1>
+<pre class="codeblue"><code>// 2adivno0.js — Varianta 3 (funcțional + protecție la d=0)
+const [,, n, d] = process.argv;
+console.log(+d !== 0 &amp;&amp; (+n % +d === 0));</code></pre>
+<p><strong>Analiză:</strong> destructurare pentru extragerea rapidă a argumentelor și <strong>guard</strong> (<code>+d !== 0</code>) pentru a evita împărțirea la zero.</p>
+<p><strong>Cazuri reale:</strong></p>
+<pre class="commandblack"><code>node 2adivno0.js 10 2   # true</code></pre>
+<pre class="commandblack"><code>node 2adivno0.js 10 3   # false</code></pre>
+<pre class="commandblack"><code>node 2adivno0.js 10 0   # false (protejare explicită)</code></pre>
+<h1>Teorie vs practică — decizii de proiectare</h1>
+<ul><li>**Lizibilitate vs concizie:** pentru materiale didactice, începeți cu varianta explicită; treceți treptat la una concisă.</li><li>**Întregi vs zecimale:** decideți dacă impuneți întregi (`Number.isInteger(+n) && Number.isInteger(+d)`); documentați clar.</li><li>**Mesaje de eroare/UX CLI:** pentru utilizatori finali, una‑două linii nu ajung; e util un `--help` și validări explicite.</li><li>**Edge cases:** `-0`, numere foarte mari (posibile erori IEEE‑754), `NaN`, șiruri ne‑numerice.</li></ul>
+<h1>Exercițiu aplicat: numărul de caractere diferite (șiruri egale ca lungime)</h1>
+<h2>Variantă imperativă (clară și eficientă, O(n))</h2>
+<pre class="codeblue"><code>function countDiffChars(s1, s2) {
+  if (typeof s1 !== &#x27;string&#x27; || typeof s2 !== &#x27;string&#x27;) return -1;
+  if (s1.length !== s2.length) return -1;
+  let count = 0;
+  for (let i = 0; i &lt; s1.length; i++) {
+    if (s1[i] !== s2[i]) count++;
+  }
+  return count;
+}
+
+// Teste
+console.log(countDiffChars(&quot;ana&quot;, &quot;ana&quot;)); // 0
+console.log(countDiffChars(&quot;ana&quot;, &quot;are&quot;)); // 2
+console.log(countDiffChars(&quot;abc&quot;, &quot;abcd&quot;)); // -1</code></pre>
+<h2>Variantă funcțională (cu <code>Array.from</code> pentru code points)</h2>
+<pre class="codeblue"><code>function countDiffCharsF(s1, s2) {
+  if (typeof s1 !== &#x27;string&#x27; || typeof s2 !== &#x27;string&#x27;) return -1;
+  const a = Array.from(s1); // code points corecte
+  const b = Array.from(s2);
+  if (a.length !== b.length) return -1;
+  return a.reduce((acc, ch, i) =&gt; acc + (ch !== b[i] ? 1 : 0), 0);
+}
+
+// Teste
+console.log(countDiffCharsF(&quot;măr&quot;, &quot;mar&quot;)); // 1 (diacritice diferite)
+console.log(countDiffCharsF(&quot;ana&quot;, &quot;are&quot;)); // 2</code></pre>
+<p><strong>Observații didactice:</strong> normalizați diacriticele dacă e nevoie și decideți dacă faceți compararea case‑insensitive; utilizați <code>normalize('NFC')</code>/<code>normalize('NFD')</code> consecvent pe ambele șiruri.[3]</p>
+<h2>Variantă CLI (rulare din terminal)</h2>
+<pre class="codeblue"><code>// hamming.js
+function countDiffChars(s1, s2) {
+  if (typeof s1 !== &#x27;string&#x27; || typeof s2 !== &#x27;string&#x27;) return -1;
+  if (s1.length !== s2.length) return -1;
+  let c = 0;
+  for (let i = 0; i &lt; s1.length; i++) if (s1[i] != s2[i]) c++;
+  return c;
+}
+
+const [,, s1, s2] = process.argv;
+console.log(countDiffChars(s1, s2));
+
+// Ex.: node hamming.js &quot;ana&quot; &quot;are&quot;   → 2</code></pre>
+<pre class="commandblack"><code>node hamming.js &quot;ana&quot; &quot;are&quot;   # 2</code></pre>
+<h1>Tabel comparativ (Var. 1 / Var. 2 / Var. 3)</h1>
+<table><thead><tr><th>Variantă</th><th>Paradigmă</th><th>Pro</th><th>Contra</th><th>Caz tipic de utilizare</th></tr></thead><tbody>
+<tr><td>2adiv.js</td><td>Imperativă</td><td>Lizibilitate, ușor de extins/testat</td><td>Mai mult cod; inițial fără argv</td><td>Material didactic, cod demonstrativ simplu</td></tr>
+<tr><td>2adivshort.js</td><td>Funcțională (one‑liner)</td><td>Ultra‑concis</td><td>Fără validări; zero/NaN/zecimale surprind</td><td>Script utilitar rapid, prototipare</td></tr>
+<tr><td>2adivno0.js</td><td>Funcțională + guard</td><td>Scurt + protecție la d=0</td><td>Nu validează întregi/mesaje de eroare</td><td>Utilitar scurt cu minimă robustețe</td></tr>
+</tbody></table>
+<h1>Checklist pentru studenți</h1>
+<ul><li>Rulează fiecare variantă cu un set de exemple: (10,2), (10,3), (10,0), (10,2.5) și notează diferențele.</li><li>Scrie 3–5 rânduri despre imperativ vs funcțional în contextul acestor scripturi.</li><li>Implementează funcția de diferențe de caractere (ambele variante) și testează cu șiruri cu diacritice și majuscule.</li><li>Opțional: creează o versiune robustă CLI cu `--help` și validări (mesaje clare; `process.exit(1)` la input invalid).</li></ul>
+<h1>Concluzii</h1>
+<p>Cele trei variante prezintă un arc pedagogic: de la claritatea imperativă la concizia funcțională și apoi la un minim de robustețe. Exercițiul cu numărul de caractere diferite conectează teoria cu practica algoritmică.</p>
+<hr/>
+<section aria-label="Note de subsol">
+<ol>
+<li><code>process.argv</code> este specific <strong>Node.js</strong> (nu face parte din standardul ECMAScript) și este disponibil doar în runtime‑ul Node.</li>
+<li>În JavaScript, <code>-0</code> compară egal cu <code>0</code> (adică <code>-0 === 0</code> este <code>true</code>), însă <code>1 / -0</code> produce <code>-Infinity</code>.</li>
+<li><code>Array.from</code> iterează pe <em>code points</em>, fiind mai corect pentru Unicode decât indexarea pe unități de cod.</li>
+</ol>
+</section>
+</main>
+</body>
+</html>

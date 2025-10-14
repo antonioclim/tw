@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Introducere în JS — VIDEO 3</title>
+<style>
+/* Conform cerințelor: TNR 11 pt, spacing 1.0, A4/1 cm, numerotare H1/H2/H3, stiluri CodeBlue/CommandBlack */
+@page {
+  size: A4;
+  margin: 1cm;
+  @bottom-center {
+    content: "Pagina " counter(page) " din " counter(pages);
+    font-family: "Times New Roman", Times, serif;
+    font-size: 11pt;
+    color: #000;
+  }
+}
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 11pt;
+  line-height: 1.0;
+  color: #000;
+  background: #fff;
+}
+main { padding: 0; }
+p, ul, ol, li { margin: 0; }
+ul, ol { margin-left: 1.2em; }
+h1, h2, h3 { color: #000; background: #fff; margin: 0.4em 0 0.2em 0; font-weight: bold; }
+/* Numerotare automată: 1., 1.1., 1.1.1. */
+body { counter-reset: h1; }
+h1 { counter-reset: h2; }
+h2 { counter-reset: h3; }
+h1::before { counter-increment: h1; content: counter(h1) ". "; }
+h2::before { counter-increment: h2; content: counter(h1) "." counter(h2) ". "; }
+h3::before { counter-increment: h3; content: counter(h1) "." counter(h2) "." counter(h3) ". "; }
+/* Stiluri pentru blocuri de cod și comenzi */
+:root { --indent: 0.63cm; }
+pre, code, kbd, samp {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 11pt;
+}
+pre.codeblue {
+  background: #DDEBF7; /* bleu deschis */
+  color: #000;         /* text negru */
+  padding: 3pt 4pt;
+  margin-left: var(--indent);
+  white-space: pre;
+  page-break-inside: avoid;
+  border: none;
+}
+pre.commandblack {
+  background: #000000; /* fundal negru */
+  color: #ffffff;      /* text alb */
+  padding: 3pt 4pt;    /* margini interne 3–4 pt */
+  margin-left: var(--indent);
+  white-space: pre;
+  page-break-inside: avoid;
+  border: none;
+}
+/* Tabele: linii subțiri, antet bold, aliniere stânga, wrap text */
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 0.5pt solid #666; text-align: left; vertical-align: top; padding: 2pt 4pt; }
+th { font-weight: bold; }
+.smallnote { font-style: italic; }
+</style>
+</head>
+<body>
+<main>
+<div style="font-weight:bold; font-size:11pt; margin:0 0 0.4em 0;">Introducere în JS — VIDEO 3
+Pasul 4: Structuri de control — bucla for &amp; numărarea aparițiilor de caractere</div>
+<h1>Context general al lecției</h1>
+<p>Acest material aparține cursului „Introducere în JS”, VIDEO 3, și vizează consolidarea înțelegerii structurilor de control (în mod special bucla `for`), precum și manipularea de șiruri în JavaScript. Sunt prezentate patru variante de scripturi pentru numărarea aparițiilor unui caracter într‑un text, de la abordarea imperativă clasică până la variante concise și integrarea argumentelor CLI în Node.js.</p>
+<h1>Obiective de învățare</h1>
+<ul><li>Aplicarea buclei `for` pentru parcurgerea caracter cu caracter a unui șir.</li><li>Înțelegerea diferențelor dintre abordarea imperativă și cea funcțională în JavaScript.</li><li>Utilizarea metodelor de șir (`charAt`, `split`) și înțelegerea diferențelor conceptuale/performanțiale.</li><li>Integrarea argumentelor externe (CLI) folosind `process.argv` în Node.js.</li><li>Analiza complexității, memoriei alocate și a cazurilor limită (diacritice, majuscule, normalizare).</li></ul>
+<h1>Precondiții și mediu</h1>
+<ul><li>Node.js instalat; rulare din terminal (PowerShell/CMD/macOS Terminal).</li><li>Editor (VS Code). Atenție la salvarea fișierelor înainte de rulare.</li><li>Cunoștințe de bază: tipuri, șiruri, funcții, operatori, `console.log`.</li></ul>
+<h1>Fundamente teoretice (șiruri, bucle, CLI)</h1>
+<h2>Șiruri în JavaScript</h2>
+<p>Șiruri în JavaScript: `text.length` indică numărul de **unități de cod** (UTF‑16 code units), nu neapărat numărul de caractere Unicode. Metodele `charAt(i)`/indexarea `text[i]` operează pe unități de cod. Pentru emoji/diacritice compuse, folosiți la nevoie `Array.from(text)` (iterare pe code points).[^1]</p>
+<h2>Bucle <code>for</code></h2>
+<p>Buclele `for`: forma tradițională `for (init; condiție; pas)` este utilă pentru parcurgeri indexate. Complexitatea tipică a unei treceri pe șir: **O(n)** timp, **O(1)** memorie (dacă nu alocăm colecții auxiliare).</p>
+<h2><code>split</code> pentru numărare</h2>
+<p>`split` pentru numărare: `text.split(token).length - 1` oferă numărul de apariții **ne‑suprapuse** ale unui subșir `token`. Pentru un **singur caracter**, rezultatul este intuitiv. Pentru subșiruri mai lungi, aparițiile suprapuse nu sunt numărate.[^2]</p>
+<h2>CLI (Node.js)</h2>
+<p>CLI (Node.js): `process.argv` conține argumentele comenzii; `process.argv[0]` este `node`, `process.argv[1]` este scriptul, iar de la `process.argv[2]` încolo avem argumentele reale. `process.argv.slice(2).join(&quot; &quot;)` reface textul dacă a fost introdus ca o secvență de cuvinte separate.[^3]</p>
+<h1>Var. 1 — 3occurencesA.js (imperativ, for tradițional)</h1>
+<pre class="codeblue"><code>// 3occurencesA.js — imperativ, for tradițional
+function occurences(text, character) {
+  let count = 0;
+  for (let i = 0; i &lt; text.length; i++) {
+    if (text.charAt(i) === character) {
+      count++;
+    }
+  }
+  return count;
+}
+
+console.log(occurences(&quot;an apple a day keeps the doctor away&quot;, &quot;e&quot;));</code></pre>
+<p>Se parcurge șirul cu un `for` indexat, se extrage fiecare unitate de cod cu `charAt(i)` și se compară strict (`===`) cu caracterul țintă; la egalitate, incrementăm `count`. Avantaje: control fin; claritate didactică; **O(1)** memorie. Limitări: mai mult cod; atenție la Unicode.</p>
+<h1>Var. 2 — 3occurencesB.js (funcțional prin split)</h1>
+<pre class="codeblue"><code>// 3occurencesB.js — funcțional prin split
+function occurences(text, character) {
+  return text.split(character).length - 1;
+}
+
+console.log(occurences(&quot;an apple a day keeps the doctor away&quot;, &quot;e&quot;));</code></pre>
+<p>`split` împarte textul în bucăți folosind delimitatorul `character`; numărul de apariții este cu unu mai mic decât numărul de bucăți. Avantaje: concizie; evită bucla explicită. Limitări: alocă un array (O(n) memorie); pentru subșiruri mai lungi nu numără apariții suprapuse; `character === &quot;&quot;` este caz de evitat.</p>
+<h1>Var. 3 — 3occurencesC.js (arrow function, concis)</h1>
+<pre class="codeblue"><code>// 3occurencesC.js — arrow function, concis
+let occurences = (text, character) =&gt; text.split(character).length - 1;
+
+console.log(occurences(&quot;an apple a day keeps the doctor away&quot;, &quot;e&quot;));</code></pre>
+<p>Identică logic cu Varianta 2, dar folosind sintaxa **arrow function** (ES6), cu return implicit. Avantaje: concizie/stil modern; Limitări: ca la Varianta 2.</p>
+<h1>Var. 4 — 3occurencesD.js (integrare CLI, implicit <code>e</code>)</h1>
+<pre class="codeblue"><code>// 3occurencesD.js — integrare CLI, implicit &#x27;e&#x27;
+let occurences = (text, character) =&gt; text.split(character).length - 1;
+
+console.log(process.argv.slice(2).join(&quot; &quot;).split(&quot;e&quot;).length - 1);</code></pre>
+<p><strong>Exemplu de rulare:</strong></p>
+<pre class="commandblack"><code>node 3occurencesD.js an apple a day keeps the doctor away
+# → 4</code></pre>
+<p>Exemplul fixează caracterul căutat la `e`. Pentru o variantă mai generală, ultimul argument poate fi tratat ca „caracter” dacă are lungime 1; restul argumentelor compun textul.</p>
+<pre class="codeblue"><code>// 3occurencesD2.js — ultimul argument poate fi caracterul; altfel implicit &#x27;e&#x27;
+const a = process.argv.slice(2);
+const token = (a.length &gt; 1 &amp;&amp; a.at(-1).length === 1) ? a.pop() : &quot;e&quot;;
+console.log(a.join(&quot; &quot;).split(token).length - 1);</code></pre>
+<h1>Teorie vs practică — decizii de proiectare</h1>
+<ul><li>Sensibilitate la majuscule/minuscule: utilizați `toLowerCase()`/`toLocaleLowerCase(&#x27;ro-RO&#x27;)` pe text și caracter, dacă doriți insensibilitate la caz.</li><li>Diacritice și normalizare Unicode: pentru texte cu diacritice compuse/precompuse, folosiți `normalize(&#x27;NFC&#x27;)` sau `normalize(&#x27;NFD&#x27;)` consecvent.</li><li>Subșiruri mai lungi vs apariții suprapuse: `split` numără apariții ne‑suprapuse; pentru suprapuse utilizați expresii regulate cu lookahead.[^4]</li><li>Performanță și memorie: varianta cu buclă `for` este O(1) memorie; `split` creează un array și implică alocări suplimentare.</li><li>CLI UX: adăugați mesaje de utilizare și validări (ex.: caracter lipsă, text gol).</li></ul>
+<h1>Sarcină practică (după video): funcție cu listă de numere → array</h1>
+<h2>Parametrul este șir cu numere separate prin spații</h2>
+<pre class="codeblue"><code>function toNumberArray(listStr) {
+  if (typeof listStr !== &#x27;string&#x27;) return [];
+  return listStr.trim().split(/\s+/).map(Number).filter(Number.isFinite);
+}
+
+console.log(toNumberArray(&quot;1 2 3.5 4&quot;)); // [1, 2, 3.5, 4]</code></pre>
+<h2>Parametrul este deja un array</h2>
+<pre class="codeblue"><code>function toNumberArrayFromArray(arr) {
+  if (!Array.isArray(arr)) return [];
+  return arr.map(Number).filter(Number.isFinite);
+}
+
+console.log(toNumberArrayFromArray([1, &quot;2&quot;, &quot;x&quot;, 3])); // [1, 2, 3]</code></pre>
+<h2>Variantă CLI</h2>
+<pre class="codeblue"><code>// toNumbers.js
+const nums = process.argv.slice(2).map(Number).filter(Number.isFinite);
+console.log(JSON.stringify(nums));
+
+// Exemplu: node toNumbers.js 1 2 3.5 4 → [1,2,3.5,4]</code></pre>
+<h1>Exemplu pentru apariții suprapuse (subșiruri)</h1>
+<pre class="codeblue"><code>// numără apariții suprapuse ale subșirului `pat` în `text`
+function countOverlapping(text, pat) {
+  if (!pat) return 0;
+  const re = new RegExp(`(?=${pat.replace(/[.*+?^${}()|[\]\\]/g, &#x27;\\$&amp;&#x27;)})`, &#x27;g&#x27;);
+  return (text.match(re) || []).length;
+}
+
+console.log(countOverlapping(&quot;aaaa&quot;, &quot;aa&quot;)); // 3 (suprapuse)</code></pre>
+<h1>Tabel comparativ (Var. 1–4)</h1>
+<table><thead><tr><th>Variantă</th><th>Paradigmă</th><th>Avantaje</th><th>Limitări</th><th>Complexitate (timp/memorie)</th></tr></thead><tbody>
+<tr><td>3occurencesA.js</td><td>Imperativă (for)</td><td>Clar, O(1) memorie</td><td>Mai mult cod; atenție la Unicode</td><td>O(n) / O(1)</td></tr>
+<tr><td>3occurencesB.js</td><td>Funcțională (split)</td><td>Concis, expresiv</td><td>Alocă array; non‑overlapping</td><td>O(n) / O(n)</td></tr>
+<tr><td>3occurencesC.js</td><td>Funcțională (arrow)</td><td>Concis + stil modern</td><td>Limitări identice cu split</td><td>O(n) / O(n)</td></tr>
+<tr><td>3occurencesD.js</td><td>CLI (join+split)</td><td>Integrare cu argv, utilitar</td><td>Implicit fix &#x27;e&#x27;; lipsă validări</td><td>O(n) / O(n)</td></tr>
+</tbody></table>
+<h1>Checklist pentru studenți</h1>
+<ul><li>Rulați fiecare variantă și notați diferențele de ieșire pentru litere diferite (ex.: &#x27;a&#x27;, &#x27;e&#x27;, &#x27;p&#x27;).</li><li>Testați cazuri cu diacritice și majuscule; decideți dacă doriți insensibilitate la caz + normalizare.</li><li>Implementați numărarea aparițiilor suprapuse pentru subșiruri (ex.: &#x27;aaaa&#x27; și &#x27;aa&#x27;).</li><li>Finalizați sarcina „listă de numere → array”; adăugați 3–5 teste proprii.</li></ul>
+<h1>Concluzii</h1>
+<p>Cele patru variante conturează trecerea de la control explicit cu `for` la concizie funcțională și integrare CLI. În aplicații reale, alegeți între claritate, performanță și memorie în funcție de dimensiunea datelor și cerințele aplicației.</p>
+<hr/>
+<section aria-label="Note de subsol">
+<ol>
+<li>Diferența dintre <strong>code units</strong> și <strong>code points</strong> poate afecta manipularea caracterelor cu diacritice/emoji; <code>Array.from</code> iterează pe code points.</li>
+<li><code>split</code> numără apariții <em>ne‑suprapuse</em>; pentru suprapuse folosiți lookahead în expresii regulate.</li>
+<li><code>process.argv</code> este specific <strong>Node.js</strong> și expune argumentele CLI începând de la indexul 2.</li>
+<li>Lookahead (ex.: <code>(?=pat)</code>) permite potriviri suprapuse fără a consuma caractere.</li>
+</ol>
+</section>
+</main>
+</body>
+</html>
