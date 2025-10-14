@@ -1,1 +1,0 @@
-// Please use the previous patch archive for full content; this temp confirms write permissions.

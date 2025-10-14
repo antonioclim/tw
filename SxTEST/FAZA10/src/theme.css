@@ -1,7 +1,0 @@
-:root{--bg:#0b1020;--fg:#e6e9ef;--panel:#0f1530;--link:#a3c5ff}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,Segoe UI,Arial,sans-serif}
-header{background:var(--panel);padding:1rem}
-main{padding:1rem;max-width:1100px;margin:0 auto}
-a{color:var(--link);text-decoration:underline} nav a{margin-right:1rem}
-.card{background:#0f1530;border-radius:.75rem;padding:1rem;margin:.75rem 0}
-table{width:100%;border-collapse:collapse} th,td{border:1px solid #2e3a66;padding:.5rem .6rem;text-align:left} th{background:#121a38}

@@ -1,9 +1,0 @@
-FAZA8 — Polish patch
-
-1) Copiază `server.index.js` peste `Z:\tw\SxTEST\FAZA8\server\index.js`.
-2) Repornește helper-ul (dacă îl rulezi): `npm run dev:api` (sau doar `npm run dev` dacă folosești run-p).
-3) Verifică http://localhost:3008 — nu mai apare 404 la /favicon.ico, iar răspunsul e text simplu.
-
-Note:
-- Pentru a expune Vite în rețea: `npm run dev -- --host` (sau setează `"dev:vite": "vite --host"`).
-- Persistența temei/limbii e în localStorage. Dacă vrei reset complet: `localStorage.removeItem('minilearn_f8')` în consola browserului.

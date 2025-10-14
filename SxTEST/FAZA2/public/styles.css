@@ -1,7 +1,0 @@
-body{font-family:system-ui;background:#0b1020;color:#e6e9ef;margin:0}
-header{padding:1rem;background:#0f1530} main{padding:1rem;max-width:1000px;margin:0 auto}
-.controls{display:flex;gap:.5rem;align-items:center;margin:.5rem 0}
-input,select,button{background:#121a38;color:#e6e9ef;border:1px solid #2e3a66;border-radius:.4rem;padding:.4rem .6rem}
-ul{list-style:none;padding:0} li{padding:.3rem 0;border-bottom:1px solid #2e3a66}
-mark{background:#ffe08a;color:#000;padding:0 .2rem;border-radius:.2rem}
-a{color:#7aa2f7;text-decoration:none} a:hover{text-decoration:underline}
