@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ro"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Prezentare animată — S4v01stream.js</title>
+<style>
+:root { --bg:#0b1021; --fg:#ffffff; --acc:#8ab4f8; --mut:#a0a8c0; --tok:rgba(255,205,86,.35); --tokb:rgba(255,205,86,.6);
+        --notesW: 560px; --splitW: 6px; }
+html,body { height:100%; margin:0; background:var(--bg); color:var(--fg); font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+.wrap { display:grid; grid-template-rows:auto 1fr auto; height:100%; grid-template-columns: 1fr var(--splitW) var(--notesW); position:relative; }
+header,footer { grid-column: 1 / span 3; padding:.6rem 1rem; background:rgba(255,255,255,0.04); }
+#meta { font-size:.9rem; color:var(--mut); }
+#codebox { padding:1rem; overflow:auto; white-space:pre; tab-size:2; line-height:1.35; font-size:15px; }
+#splitter { cursor:col-resize; background:rgba(255,255,255,0.06); } #splitter:hover { background:rgba(255,255,255,0.15); }
+#notes { padding:1rem; border-left:1px solid rgba(255,255,255,0.08); overflow:auto; font-size:13px; background:rgba(255,255,255,0.02); }
+.controls { display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; }
+button, input[type=range], select { accent-color:var(--acc); }
+.stepTitle { color:var(--acc); font-weight:600; } .rationale { color:var(--mut); font-size:.95rem; }
+.bar { width:100%; height:4px; background:rgba(255,255,255,.1); position:relative; margin-top:.5rem; } .prog { position:absolute; left:0; top:0; bottom:0; width:0%; background:var(--acc); }
+.line { display:block; } .dim { opacity:.35; } .tok { color:#ffd54f; background:var(--tok); outline:1px solid var(--tokb); }
+.noteTitle { font-weight:700; margin:.4rem 0 .2rem 0; } .small { font-size:12px; color:var(--mut); }
+.box { border:1px solid rgba(255,255,255,.08); padding:.5rem; border-radius:6px; background:rgba(255,255,255,.03); margin-bottom:.6rem; }
+.box .hdr { display:flex; gap:.6rem; align-items:center; margin-bottom:.4rem; }
+kbd { font-family:inherit; background:rgba(255,255,255,.06); padding:.1rem .3rem; border-radius:4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Prezentare animată — S4v01stream.js</h1>
+    <div id="meta"></div>
+  </header>
+
+  <main id="codebox"></main>
+  <div id="splitter" title="Trage pentru a redimensiona panoul de notițe"></div>
+  <aside id="notes">
+    <div class="box">
+      <div class="hdr small">
+        <div class="noteTitle">Notițe BLOC</div>
+        <span id="keyBlock" class="small"></span>
+        <span style="flex:1"></span>
+        Sursă: <label><input type="radio" name="srcBlock" id="srcBlockAuto" checked> Auto</label>
+               <label><input type="radio" name="srcBlock" id="srcBlockLLM"> LLM</label>
+        <label style="margin-left:.8rem"><input type="checkbox" id="lockAll"> Blochează</label>
+        <label style="margin-left:.8rem">Hold: <input id="hold" type="range" min="0" max="3" step="0.1" value="1.0"> <span id="holdV">1.0s</span></label>
+        <label style="margin-left:.8rem"><input type="checkbox" id="asciiFallback"> ASCII fallback</label>
+      </div>
+      <div id="noteBlock" style="white-space:pre-wrap"></div>
+    </div>
+
+    <div class="box">
+      <div class="hdr small">
+        <div class="noteTitle">Notițe ETAPĂ</div>
+        <span id="keyMicro" class="small"></span>
+        <span style="flex:1"></span>
+        Sursă: <label><input type="radio" name="srcMicro" id="srcMicroAuto" checked> Auto</label>
+               <label><input type="radio" name="srcMicro" id="srcMicroLLM"> LLM</label>
+      </div>
+      <div id="noteMicro" style="white-space:pre-wrap"></div>
+    </div>
+  </aside>
+
+  <footer>
+    <div class="controls">
+      <button id="btnPlay">▶︎ Play</button>
+      <button id="btnPrev">⟨ Pas</button>
+      <button id="btnNext">Pas ⟩</button>
+      Mod: <select id="gran"><option value="token" selected>token</option><option value="char">caracter</option></select>
+      Viteză: <input id="speed" type="range" min="0.01" max="5" step="0.01" value="0.02"/> <span id="speedv">0.02 tps</span>
+      <label style="margin-left:1rem"><input type="checkbox" id="toggleDim" checked/> Dim context</label>
+    </div>
+    <div class="bar"><div class="prog" id="prog"></div></div>
+    <div class="stepTitle" id="title"></div>
+    <div class="rationale" id="rat"></div>
+  </footer>
+</div>
+
+<!-- Payload Base64 pe UTF‑8: păstrează diacriticele -->
+<script id="payload_b64" type="text/plain"></script><script>fetch('frames.json').then(r=>r.text()).then(t=>{const bytes=new TextEncoder().encode(t);let bin='';bytes.forEach(b=>bin+=String.fromCharCode(b));document.getElementById('payload_b64').textContent=btoa(bin);});</script>
+
+<script>
+function b64ToUtf8(b64){
+  const bin = atob(b64.trim());
+  const bytes = new Uint8Array(bin.length);
+  for (let i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder('utf-8').decode(bytes);
+}
+const text = b64ToUtf8(document.getElementById('payload_b64').textContent);
+const data = JSON.parse(text);
+const FNAME = 'S4v01stream.js';
+
+let frames=data.frames, patches=data.patches, steps=data.steps, style=data.style;
+let llmBlock = (data.llm && data.llm.notes) ? data.llm.notes : {};
+let llmMicro = (data.llm && data.llm.micro) ? data.llm.micro : {};
+let autoBlock = data.auto_notes || {};
+let autoMicro = data.micro_auto || {};
+
+let cps=0.02, playing=false, frameIdx=0, hunkIdx=0, cursor=0;
+let uTok=0, uChar=0;   // acumulatoare reale
+let cooldown=0;
+let lines=[]; let tokMap={}; let focusStart=1, focusEnd=0, scrollTarget=null;
+let curBlkId="", curHId="";
+const codebox=document.getElementById('codebox'), meta=document.getElementById('meta'),
+      title=document.getElementById('title'), rat=document.getElementById('rat'),
+      prog=document.getElementById('prog'), speed=document.getElementById('speed'),
+      speedv=document.getElementById('speedv'), gran=document.getElementById('gran'),
+      keyBlock=document.getElementById('keyBlock'), keyMicro=document.getElementById('keyMicro'),
+      noteBlock=document.getElementById('noteBlock'), noteMicro=document.getElementById('noteMicro'),
+      srcBlockAuto=document.getElementById('srcBlockAuto'), srcBlockLLM=document.getElementById('srcBlockLLM'),
+      srcMicroAuto=document.getElementById('srcMicroAuto'), srcMicroLLM=document.getElementById('srcMicroLLM'),
+      lockAll=document.getElementById('lockAll'), hold=document.getElementById('hold'), holdV=document.getElementById('holdV'),
+      toggleDim=document.getElementById('toggleDim'), asciiFallback=document.getElementById('asciiFallback');
+
+(function(){ const w = localStorage.getItem('notesW'); if(w){ document.documentElement.style.setProperty('--notesW', w); } })();
+(function(){
+  const sp = document.getElementById('splitter'); let drag=false;
+  function onMove(e){ if(!drag) return; const wrap=document.querySelector('.wrap').getBoundingClientRect();
+    const x=(e.touches&&e.touches[0])?e.touches[0].clientX:e.clientX; let newW=Math.round(wrap.right-x);
+    newW=Math.max(360,Math.min(900,newW)); document.documentElement.style.setProperty('--notesW',newW+'px'); }
+  function stop(){ if(!drag) return; drag=false; const w=getComputedStyle(document.documentElement).getPropertyValue('--notesW').trim();
+    try{ localStorage.setItem('notesW',w);}catch(_){}
+    document.removeEventListener('mousemove',onMove); document.removeEventListener('touchmove',onMove);
+    document.removeEventListener('mouseup',stop); document.removeEventListener('touchend',stop); }
+  function start(e){ e.preventDefault(); drag=true; document.addEventListener('mousemove',onMove);
+    document.addEventListener('touchmove',onMove,{passive:false}); document.addEventListener('mouseup',stop); document.addEventListener('touchend',stop); }
+  sp.addEventListener('mousedown',start); sp.addEventListener('touchstart',start,{passive:false});
+  sp.addEventListener('dblclick',()=>{ const cur=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--notesW'));
+    const target=(cur<600?760:520); document.documentElement.style.setProperty('--notesW',target+'px'); localStorage.setItem('notesW',target+'px'); });
+})();
+
+let dimOn=true; toggleDim.onchange=()=>{ dimOn=toggleDim.checked; render(); };
+let holdSec=parseFloat(hold.value); hold.oninput=()=>{ holdSec=parseFloat(hold.value); holdV.textContent=holdSec.toFixed(1)+"s"; };
+
+srcBlockLLM.checked = Object.keys(llmBlock).length>0; srcBlockAuto.checked = !srcBlockLLM.checked;
+srcMicroLLM.checked = Object.keys(llmMicro).length>0; srcMicroAuto.checked = !srcMicroLLM.checked;
+
+function _ascii(s){
+  try { return s.normalize('NFD').replace(/\p{Diacritic}/gu,''); } catch(_){ return s; }
+}
+function _renderNote(targetEl, text){
+  targetEl.innerHTML = asciiFallback.checked ? _ascii(text) : text;
+}
+
+function mapBlock(){ return (srcBlockLLM.checked && Object.keys(llmBlock).length>0) ? llmBlock : autoBlock; }
+function mapMicro(){ return (srcMicroLLM.checked && Object.keys(llmMicro).length>0) ? llmMicro : autoMicro; }
+asciiFallback.onchange = ()=>{ if(curBlkId){ showBlock(curBlkId, true); } if(curHId){ showMicro(curHId, true); } };
+srcBlockAuto.onchange = srcBlockLLM.onchange = ()=>{ if(curBlkId){ showBlock(curBlkId, true); } };
+srcMicroAuto.onchange = srcMicroLLM.onchange = ()=>{ if(curHId){ showMicro(curHId, true); } };
+
+function esc(s){ s = (s==null ? '' : String(s)); return s.replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function render(){
+  let html="";
+  for(let i=0;i<lines.length;i++){
+    const ln=i+1, dim = dimOn && (focusEnd>=focusStart) && (ln<focusStart || ln>focusEnd);
+    const cls = dim? 'line dim':'line';
+    const t = tokMap[i];
+    const L = (lines[i]==null ? '' : String(lines[i]));
+    if(t){
+      const s=Math.max(0,Math.min(L.length,t.s));
+      const e=Math.max(s,Math.min(L.length,t.e));
+      html += `<div class="${cls}" data-idx="${i}">${esc(L.slice(0,s))}<span class="tok">${esc(L.slice(s,e))}</span>${esc(L.slice(e))}</div>`;
+    } else {
+      html += `<div class="${cls}" data-idx="${i}">${esc(L)}</div>`;
+    }
+  }
+  codebox.innerHTML = html;
+  if(scrollTarget !== null){
+    const el = codebox.querySelector(`.line[data-idx="${scrollTarget-1}"]`);
+    if(el){ el.scrollIntoView({block:'center'}); }
+    scrollTarget = null;
+  }
+  prog.style.width = ((frameIdx)/(frames.length-1)*100).toFixed(1)+"%";
+}
+
+function updateMeta(){
+  meta.textContent = `Stil detectat: ${style} · Pași: ${steps.length}`;
+  const sIdx=Math.min(frameIdx, Math.max(0,steps.length-1));
+  if(steps[sIdx]){ title.textContent = `${sIdx+1}/${steps.length} — ${steps[sIdx].title}`; rat.textContent = steps[sIdx].rationale; }
+  document.title = `${sIdx+1}/${steps.length} — ${FNAME}`;
+  const s = (cps < 1 ? cps.toFixed(2) : cps.toFixed(1));
+  speedv.textContent = s + (gran.value==='token' ? " tps" : " cps");
+}
+
+function resetFrame(i){
+  frameIdx=i; hunkIdx=0; cursor=0; cooldown=0; tokMap={}; uTok=0; uChar=0; focusStart=1; focusEnd=0; scrollTarget=null;
+  lines = (frames[i] ? frames[i].split('\n') : []);
+  if(lines.length && lines[lines.length-1]==="") lines.pop();
+  render(); updateMeta();
+}
+function applyDelete(s,e){ lines.splice(s,e-s); }
+
+function isWS(ch){ return ch===' ' || ch==='\t' || ch==='\r' || ch==='\n'; }
+function tokeniseJS(src){
+  const toks=[]; const n=src.length; let i=0;
+  const push=(s,e,end)=>toks.push({tStart:s,tEnd:e,end:end});
+  while(i<n){
+    if(isWS(src[i])){ let j=i; while(j<n && isWS(src[j])) j++; if(toks.length) toks[toks.length-1].end = j; i=j; continue; }
+    if(src[i]=='/' && i+1<n){
+      if(src[i+1]=='/'){ let j=i+2; while(j<n && src[j] !== '\n') j++; let endTok=(j<n && src[j]=='\n')?j+1:j; push(i,j,endTok); i=endTok; continue; }
+      if(src[i+1]=='*'){ let j=i+2; while(j<n && !(src[j]=='*' && j+1<n && src[j+1]=='/')) j++; j=Math.min(n,j+2); push(i,j,j); i=j; continue; }
+    }
+    if(src[i]=="'" || src[i]=='"' || src[i]=='`'){
+      const q=src[i]; let j=i+1; const tpl=(q=='`'); let depth=0;
+      while(j<n){
+        const ch=src[j];
+        if(ch=='\\'){ j+=2; continue; }
+        if(tpl && ch=='$' && j+1<n && src[j+1]=='{'){
+          j+=2; depth=1;
+          while(j<n && depth>0){
+            const c2=src[j];
+            if(c2=='\\'){ j+=2; continue; }
+            if(c2=='{') depth++; else if(c2=='}') depth--; j++;
+          }
+          continue;
+        }
+        if(ch==q){ j++; break; }
+        j++;
+      }
+      let k=j; while(k<n && isWS(src[k])) k++;
+      push(i,j,k); i=k; continue;
+    }
+    let m;
+    if(m = src.slice(i).match(/^(0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+|(?:\d*\.\d+|\d+\.?\d*)(?:[eE][+-]?\d+)?)/)){
+      let j=i+m[0].length; let k=j; while(k<n && isWS(src[k])) k++; push(i,j,k); i=k; continue;
+    }
+    if(m = src.slice(i).match(/^[$A-Za-z_][$\w]*/)){
+      let j=i+m[0].length; if(j<n && src[j]=='('){ j++; } let k=j; while(k<n && isWS(src[k])) k++; push(i,j,k); i=k; continue;
+    }
+    if(m = src.slice(i).match(/^(===|!==|>>>=|>>>|>>=|<<=|\+\+|--|=>|<=|>=|&&|\|\||\.\.\.|[+\-*/%&|^]=|[=!<>]=)/)){
+      let j=i+m[0].length; let k=j; while(k<n && isWS(src[k])) k++; push(i,j,k); i=k; continue;
+    }
+    if(m = src.slice(i).match(/^([{}()[\],.;:?])/)){
+      let j=i+m[0].length; let k=j; while(k<n && isWS(src[k])) k++; push(i,j,k); i=k; continue;
+    }
+    let j=i+1; let k=j; while(k<n && isWS(src[k])) k++; push(i,j,k); i=k;
+  }
+  return toks;
+}
+
+function showBlock(key, force=false){ const m = (srcBlockLLM.checked && Object.keys(llmBlock).length>0) ? llmBlock : autoBlock; if(!m[key]) return; curBlkId=key; keyBlock.textContent = "Bloc: " + key; _renderNote(noteBlock, m[key]); }
+function showMicro(key, force=false){ const m = (srcMicroLLM.checked && Object.keys(llmMicro).length>0) ? llmMicro : autoMicro; if(!m[key]) return; curHId = key; keyMicro.textContent = "Etapă: " + key; _renderNote(noteMicro, m[key]); }
+
+let lastBlockTs=0;
+function maybeShowNotes(h){
+  if(lockAll.checked) return;
+  const blkKey = h.blkId || `${h.kind||'func'}:${h.name||''}@${h.focusStart||0}-${h.focusEnd||0}`;
+  const hKey   = h.hId || "";
+  const mapB = (srcBlockLLM.checked && Object.keys(llmBlock).length>0) ? llmBlock : autoBlock;
+  const mapM = (srcMicroLLM.checked && Object.keys(llmMicro).length>0) ? llmMicro : autoMicro;
+  if(!curBlkId || curBlkId.split('@')[0] !== blkKey.split('@')[0]){ if(mapB[blkKey]){ showBlock(blkKey, true); } lastBlockTs = performance.now();
+  }else{ const now=performance.now(); if(now - lastBlockTs >= holdSec*1000){ if(mapB[blkKey]){ showBlock(blkKey); lastBlockTs=now; } } }
+  if(hKey && mapM[hKey]){ showMicro(hKey, true); }
+}
+
+function tick(dt){
+  if(!playing) return;
+  if(cooldown>0){ cooldown=Math.max(0,cooldown-dt); return; }
+  if(frameIdx >= patches.length){ playing=false; btnPlay.textContent="▶︎ Play"; return; }
+  const step=patches[frameIdx]||[];
+  if(step.length===0){ nextUnit(); return; }
+  if(hunkIdx >= step.length){ nextUnit(); return; }
+  const h=step[hunkIdx]; if(!h){ nextUnit(); return; }
+  if(h.op==='delete'){ applyDelete(h.start,h.end); tokMap={}; render(); nextUnit(); return; }
+
+  if(h.op==='insert'){
+    if(cursor===0){
+      const N=h.text.split('\n').length; lines.splice(h.start,0,...Array(N).fill(""));
+      if(h.focusStart && h.focusEnd){ focusStart=h.focusStart; focusEnd=h.focusEnd; }
+      if(h.scrollLine){ scrollTarget=h.scrollLine; }
+      maybeShowNotes(h);
+      if(!h._chunks) h._chunks = tokeniseJS(h.text);
+      h._tokIdx = 0;
+    }
+    if(gran.value==='token'){
+      uTok += cps*dt;
+      let advanced=false;
+      while(uTok>=1 && h._tokIdx < h._chunks.length){
+        const t = h._chunks[h._tokIdx];
+        const end = t.end;
+        const full = h.text.slice(0,end).split('\n');
+        const N = h.text.split('\n').length;
+        for(let i=0;i<N;i++){ lines[h.start+i] = (i<full.length ? full[i] : ""); }
+        tokMap={};
+        const linesBefore=h.text.slice(0,t.tStart).split('\n');
+        let baseLine=h.start+(linesBefore.length-1), baseCol=linesBefore[linesBefore.length-1].length;
+        let lenTok = t.tEnd - t.tStart;
+        tokMap[baseLine] = {s:baseCol, e:baseCol+lenTok};
+        cursor = end;
+        h._tokIdx++; uTok -= 1; advanced=true;
+      }
+      render();
+      if(h._tokIdx >= h._chunks.length){ nextUnit(); }
+      else if(!advanced){ return; }
+      return;
+    } else {
+      uChar += cps*dt;
+      const stepAmt = Math.floor(uChar);
+      if(stepAmt <= 0){ return; }
+      uChar -= stepAmt;
+      const end = Math.min(h.text.length, cursor + stepAmt);
+      const full = h.text.slice(0,end).split('\n');
+      const N = h.text.split('\n').length;
+      for(let i=0;i<N;i++){ lines[h.start+i] = (i<full.length ? full[i] : ""); }
+      tokMap={};
+      const already=h.text.slice(0,cursor), delta=h.text.slice(cursor,end);
+      const linesBefore=already.split('\n');
+      let baseLine=h.start+(linesBefore.length-1), baseCol=linesBefore[linesBefore.length-1].length;
+      tokMap[baseLine] = {s:baseCol, e:baseCol+delta.length};
+      cursor=end; render();
+      if(cursor>=h.text.length){ nextUnit(); }
+      return;
+    }
+  }
+}
+
+function nextUnit(){ cooldown=0.20;
+  const step=patches[frameIdx]||[];
+  if(hunkIdx < step.length-1){ hunkIdx++; cursor=0; tokMap={}; uTok=0; uChar=0; return true; }
+  if(hunkIdx < step.length){ hunkIdx++; cursor=0; tokMap={}; uTok=0; uChar=0; }
+  if(frameIdx < frames.length-1){
+    frameIdx++; hunkIdx=0; cursor=0; tokMap={}; uTok=0; uChar=0;
+    while(frameIdx < patches.length && (!patches[frameIdx] || patches[frameIdx].length===0)){ frameIdx++; }
+    if(frameIdx >= frames.length){ frameIdx=frames.length-1; render(); updateMeta(); return false; }
+    lines = (frames[frameIdx] ? frames[frameIdx].split('\n') : []);
+    if(lines.length && lines[lines.length-1]==="") lines.pop();
+    render(); updateMeta(); return true;
+  } return false;
+}
+
+let lastTs=null; function raf(ts){ if(lastTs===null) lastTs=ts; const dt=Math.max(0,(ts-lastTs)/1000.0); lastTs=ts; tick(dt); requestAnimationFrame(raf);} requestAnimationFrame(raf);
+const btnPlay=document.getElementById('btnPlay'), btnPrev=document.getElementById('btnPrev'), btnNext=document.getElementById('btnNext');
+btnPlay.onclick=()=>{ playing=!playing; btnPlay.textContent=playing?"❚❚ Pause":"▶︎ Play"; if(playing){ while(frameIdx < patches.length && (!patches[frameIdx] || patches[frameIdx].length===0)){ frameIdx++; } } };
+btnPrev.onclick=()=>{ playing=false; btnPlay.textContent="▶︎ Play"; resetFrame(Math.max(0,frameIdx-1)); };
+btnNext.onclick=()=>{ playing=false; btnPlay.textContent="▶︎ Play"; resetFrame(Math.min(frames.length-1,frameIdx+1)); };
+
+function updateSpeedLabel(){
+  const s = (cps < 1 ? cps.toFixed(2) : cps.toFixed(1));
+  speedv.textContent = s + (gran.value==='token' ? ' tps' : ' cps');
+}
+speed.oninput=e=>{ cps=parseFloat(speed.value); updateSpeedLabel(); };
+gran.onchange=e=>{
+  if(gran.value==='token'){ speed.min='0.01'; speed.max='5';  speed.step='0.01'; if(cps<0.01||cps>5){ cps=0.02; speed.value='0.02'; } }
+  else                    { speed.min='0.5';  speed.max='60'; speed.step='0.5';  if(cps<0.5){ cps=5;    speed.value='5';    } }
+  updateSpeedLabel();
+};
+resetFrame(0);
+</script>
+</body></html>

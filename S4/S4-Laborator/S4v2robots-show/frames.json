@@ -1,0 +1,1419 @@
+{
+  "frames": [
+    "",
+    "\n",
+    "\n\n",
+    "\n\n\n",
+    "\nconst r0 = new Robot('some robot')\n\n\n",
+    "\nconst r0 = new Robot('some robot')\n\nconst w0 = new Weapon('pew pew laser')\n\n",
+    "\nconst r0 = new Robot('some robot')\n\nconst w0 = new Weapon('pew pew laser')\n\nconst r1 = new CombatRobot('some combat robot')\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nconst w0 = new Weapon('pew pew laser')\n\nconst r1 = new CombatRobot('some combat robot')\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nconst r1 = new CombatRobot('some combat robot')\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\n  constructor (name) {\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\n  constructor (name) {\n\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\n  constructor (name) {\n\n    this.name = name\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\n  constructor (name) {\n\n    this.name = name\n\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\n  constructor (name) {\n\n    this.name = name\n\n  }\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\n  constructor (name) {\n\n    this.name = name\n\n  }\n\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\n  constructor (name) {\n\n    this.name = name\n\n  }\n\n  move () {\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\n  constructor (name) {\n\n    this.name = name\n\n  }\n\n  move () {\n\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\n  constructor (name) {\n\n    this.name = name\n\n  }\n\n  move () {\n\n    console.log(`${this.name} is moving`)\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\n  constructor (name) {\n\n    this.name = name\n\n  }\n\n  move () {\n\n    console.log(`${this.name} is moving`)\n\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\n  constructor (name) {\n\n    this.name = name\n\n  }\n\n  move () {\n\n    console.log(`${this.name} is moving`)\n\n  }\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\n  constructor (name) {\n\n    this.name = name\n\n  }\n\n  move () {\n\n    console.log(`${this.name} is moving`)\n\n  }\n\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "\nclass Robot {\n\n  constructor (name) {\n\n    this.name = name\n\n  }\n\n  move () {\n\n    console.log(`${this.name} is moving`)\n\n  }\n\n}\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n",
+    "/**\n* 2 - Urmăriți videoclipul S4v2.mp4 pentru a vedea cum se moștenește un tip obiectual în Javascript și cum se compun tipurile obiectuale.\n* După ce ați testat exemplul, implementați următoarea structură de tipuri.\n* Software este un tip care are metoda 'run'.\n* Browser moștenește Software și poate adăuga și instala Plugin.\n* Un Browser poate avea multiple Plugin.\n*\n*/\n\nclass Robot {\n\n  constructor (name) {\n\n    this.name = name\n\n  }\n\n  move () {\n\n    console.log(`${this.name} is moving`)\n\n  }\n\n}\n\nconst r0 = new Robot('some robot')\nr0.move()\n\nclass Weapon {\n\n  constructor (description) {\n\n    this.description = description\n\n  }\n\n  fire () {\n\n    console.log(`${this.description} is firing`)\n\n  }\n\n}\n\nconst w0 = new Weapon('pew pew laser')\nw0.fire()\n\nclass CombatRobot extends Robot {\n\n  constructor (name) {\n\n    super(name)\n    this.weapons = []\n\n  }\n\n  addWeapon (w) {\n\n    this.weapons.push(w)\n\n  }\n\n  fire () {\n\n    console.log('firing all weapons')\n    for (const w of this.weapons) {\n\n      w.fire()\n\n    }\n\n  }\n\n}\n\nconst r1 = new CombatRobot('some combat robot')\nr1.addWeapon(w0)\nr1.fire()\n\nRobot.prototype.fly = function () {\n\n  console.log(`${this.name} is flying`)\n}\n\nr1.fly()\n"
+  ],
+  "style": "imperative",
+  "steps": [
+    {
+      "title": "Importuri și constante",
+      "rationale": "Gestionarea dependențelor și a configurărilor globale.",
+      "blocks": [
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 25,
+          "end": 43
+        },
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 44,
+          "end": 74
+        },
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 75,
+          "end": 83
+        }
+      ]
+    },
+    {
+      "title": "Definirea claselor și prototipurilor",
+      "rationale": "Modelarea datelor și a comportamentelor prin programare orientată pe obiecte.",
+      "blocks": [
+        {
+          "name": "Robot",
+          "kind": "class",
+          "start": 9,
+          "end": 24
+        },
+        {
+          "name": "Weapon",
+          "kind": "class",
+          "start": 28,
+          "end": 43
+        },
+        {
+          "name": "CombatRobot",
+          "kind": "class",
+          "start": 47,
+          "end": 74
+        }
+      ]
+    }
+  ],
+  "patches": [
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 25,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 1,
+        "end": 1,
+        "text": "",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 44,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 2,
+        "end": 2,
+        "text": "",
+        "focusStart": 75,
+        "focusEnd": 83,
+        "scrollLine": 75,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@75-83",
+        "hId": "hunk:const:var@75-83:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "\nconst r0 = new Robot('some robot')",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 26,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:2"
+      },
+      {
+        "op": "delete",
+        "start": 2,
+        "end": 3,
+        "text": ""
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 3,
+        "end": 3,
+        "text": "const w0 = new Weapon('pew pew laser')",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 45,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 5,
+        "end": 5,
+        "text": "const r1 = new CombatRobot('some combat robot')",
+        "focusStart": 75,
+        "focusEnd": 83,
+        "scrollLine": 76,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@75-83",
+        "hId": "hunk:const:var@75-83:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 2,
+        "end": 2,
+        "text": "r0.move()",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 27,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:3"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 5,
+        "end": 5,
+        "text": "w0.fire()",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 46,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:3"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 8,
+        "end": 8,
+        "text": "r1.addWeapon(w0)",
+        "focusStart": 75,
+        "focusEnd": 83,
+        "scrollLine": 77,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@75-83",
+        "hId": "hunk:const:var@75-83:3"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 3,
+        "end": 3,
+        "text": "",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 28,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:4"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 8,
+        "end": 8,
+        "text": "",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 47,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:4"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 11,
+        "end": 11,
+        "text": "r1.fire()",
+        "focusStart": 75,
+        "focusEnd": 83,
+        "scrollLine": 78,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@75-83",
+        "hId": "hunk:const:var@75-83:4"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 4,
+        "end": 4,
+        "text": "class Weapon {",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 29,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:5"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 9,
+        "end": 9,
+        "text": "class CombatRobot extends Robot {",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 48,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:5"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 14,
+        "end": 14,
+        "text": "",
+        "focusStart": 75,
+        "focusEnd": 83,
+        "scrollLine": 79,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@75-83",
+        "hId": "hunk:const:var@75-83:5"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 5,
+        "end": 5,
+        "text": "",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 30,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:6"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 12,
+        "end": 12,
+        "text": "",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 49,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:6"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 17,
+        "end": 17,
+        "text": "Robot.prototype.fly = function () {",
+        "focusStart": 75,
+        "focusEnd": 83,
+        "scrollLine": 80,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@75-83",
+        "hId": "hunk:const:var@75-83:6"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 6,
+        "end": 6,
+        "text": "  constructor (description) {",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 31,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:7"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 13,
+        "end": 13,
+        "text": "  constructor (name) {",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 50,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:7"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 20,
+        "end": 20,
+        "text": "",
+        "focusStart": 75,
+        "focusEnd": 83,
+        "scrollLine": 81,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@75-83",
+        "hId": "hunk:const:var@75-83:7"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 7,
+        "end": 7,
+        "text": "",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 32,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:8"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 16,
+        "end": 16,
+        "text": "",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 51,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:8"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 23,
+        "end": 23,
+        "text": "  console.log(`${this.name} is flying`)",
+        "focusStart": 75,
+        "focusEnd": 83,
+        "scrollLine": 82,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@75-83",
+        "hId": "hunk:const:var@75-83:8"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 8,
+        "end": 8,
+        "text": "    this.description = description",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 33,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:9"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 17,
+        "end": 17,
+        "text": "    super(name)",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 52,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:9"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 26,
+        "end": 26,
+        "text": "}",
+        "focusStart": 75,
+        "focusEnd": 83,
+        "scrollLine": 83,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@75-83",
+        "hId": "hunk:const:var@75-83:9"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 9,
+        "end": 9,
+        "text": "",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 34,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:10"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 19,
+        "end": 19,
+        "text": "    this.weapons = []",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 53,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:10"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 10,
+        "end": 10,
+        "text": "  }",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 35,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:11"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 22,
+        "end": 22,
+        "text": "",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 54,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:11"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 11,
+        "end": 11,
+        "text": "",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 36,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:12"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 23,
+        "end": 23,
+        "text": "  }",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 55,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:12"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 12,
+        "end": 12,
+        "text": "  fire () {",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 37,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:13"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 26,
+        "end": 26,
+        "text": "",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 56,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:13"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 13,
+        "end": 13,
+        "text": "",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 38,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:14"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 27,
+        "end": 27,
+        "text": "  addWeapon (w) {",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 57,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:14"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 14,
+        "end": 14,
+        "text": "    console.log(`${this.description} is firing`)",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 39,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:15"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 30,
+        "end": 30,
+        "text": "",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 58,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:15"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 15,
+        "end": 15,
+        "text": "",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 40,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:16"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 31,
+        "end": 31,
+        "text": "    this.weapons.push(w)",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 59,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:16"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 16,
+        "end": 16,
+        "text": "  }",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 41,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:17"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 34,
+        "end": 34,
+        "text": "",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 60,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:17"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 17,
+        "end": 17,
+        "text": "",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 42,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:18"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 35,
+        "end": 35,
+        "text": "  }",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 61,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:18"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 18,
+        "end": 18,
+        "text": "}",
+        "focusStart": 25,
+        "focusEnd": 43,
+        "scrollLine": 43,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@25-43",
+        "hId": "hunk:const:var@25-43:19"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 38,
+        "end": 38,
+        "text": "",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 62,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:19"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 38,
+        "end": 38,
+        "text": "  fire () {",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 63,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:20"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 40,
+        "end": 40,
+        "text": "",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 64,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:21"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 40,
+        "end": 40,
+        "text": "    console.log('firing all weapons')",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 65,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:22"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 41,
+        "end": 41,
+        "text": "    for (const w of this.weapons) {",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 66,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:23"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 43,
+        "end": 43,
+        "text": "",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 67,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:24"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 43,
+        "end": 43,
+        "text": "      w.fire()",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 68,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:25"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 45,
+        "end": 45,
+        "text": "",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 69,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:26"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 45,
+        "end": 45,
+        "text": "    }",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 70,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:27"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 47,
+        "end": 47,
+        "text": "",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 71,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:28"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 47,
+        "end": 47,
+        "text": "  }",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 72,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:29"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 49,
+        "end": 49,
+        "text": "",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 73,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:30"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 49,
+        "end": 49,
+        "text": "}",
+        "focusStart": 44,
+        "focusEnd": 74,
+        "scrollLine": 74,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@44-74",
+        "hId": "hunk:const:var@44-74:31"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 9,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 1,
+        "end": 1,
+        "text": "class Robot {",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 10,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 2,
+        "end": 2,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 11,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:3"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 3,
+        "end": 3,
+        "text": "  constructor (name) {",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 12,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:4"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 4,
+        "end": 4,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 13,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:5"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 5,
+        "end": 5,
+        "text": "    this.name = name",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 14,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:6"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 6,
+        "end": 6,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 15,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:7"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 7,
+        "end": 7,
+        "text": "  }",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 16,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:8"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 8,
+        "end": 8,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 17,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:9"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 9,
+        "end": 9,
+        "text": "  move () {",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 18,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:10"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 10,
+        "end": 10,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 19,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:11"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 11,
+        "end": 11,
+        "text": "    console.log(`${this.name} is moving`)",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 20,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:12"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 12,
+        "end": 12,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 21,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:13"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 13,
+        "end": 13,
+        "text": "  }",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 22,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:14"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 14,
+        "end": 14,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 23,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:15"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 15,
+        "end": 15,
+        "text": "}",
+        "focusStart": 9,
+        "focusEnd": 24,
+        "scrollLine": 24,
+        "name": "Robot",
+        "kind": "class",
+        "blkId": "class:Robot@9-24",
+        "hId": "hunk:class:Robot@9-24:16"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "/**\n* 2 - Urmăriți videoclipul S4v2.mp4 pentru a vedea cum se moștenește un tip obiectual în Javascript și cum se compun tipurile obiectuale.\n* După ce ați testat exemplul, implementați următoarea structură de tipuri.\n* Software este un tip care are metoda 'run'.\n* Browser moștenește Software și poate adăuga și instala Plugin.\n* Un Browser poate avea multiple Plugin.\n*\n*/"
+      },
+      {
+        "op": "insert",
+        "start": 75,
+        "end": 75,
+        "text": "\nr1.fly()"
+      }
+    ]
+  ],
+  "llm": {
+    "provider": "Mistral Codestral",
+    "model": "codestral-latest",
+    "notes": {
+      "const:var@25-43": "### Bullets Didactice\n\n- **Rol**:\n  - `Robot` este o clasă care reprezintă un robot cu un nume specificat.\n  - `Weapon` este o clasă care reprezintă o armă cu o descriere specificată.\n\n- **Intrări/Ieșiri**:\n  - **Robot**:\n    - **Intrări**: Numele robotului (în constructor).\n    - **Ieșiri**: Metoda `move()` nu are ieșiri specifice, dar poate fi extinsă pentru a returna acțiuni sau stări.\n  - **Weapon**:\n    - **Intrări**: Descrierea armei (în constructor).\n    - **Ieșiri**: Metoda `fire()` afișează un mesaj în consolă, indicând că arma este în curs de tragere.\n\n- **Efecte**:\n  - **Robot**:\n    - Crearea unei instanțe a clasei `Robot` inițializează un obiect robot cu numele specificat.\n    - Apelarea metodei `move()` poate iniția o acțiune de mișcare a robotului, dar efectul exact depinde de implementarea suplimentară.\n  - **Weapon**:\n    - Crearea unei instanțe a clasei `Weapon` inițializează un obiect armă cu descrierea specificată.\n    - Apelarea metodei `fire()` afișează un mesaj în consolă, indicând că arma este în curs de tragere.\n\n- **Exemplu de Utilizare**:\n  ```js\n  const r0 = new Robot('some robot');\n  r0.move(); // Poate iniția o acțiune de mișcare a robotului\n\n  const w0 = new Weapon('laser');\n  w0.fire(); // Afișează: \"laser is firing\"\n  ```\n\n- **Extensibilitate**:\n  - Clasele `Robot` și `Weapon` pot fi extinse pentru a include funcționalități suplimentare, cum ar fi mișcarea robotului sau adăugarea de arme la robot.\n  - Metodele `move()` și `fire()` pot fi modificate pentru a returna valori sau a iniția alte acțiuni în funcție de necesități.",
+      "const:var@44-74": "### Bullet 1: Rolul clasei `CombatRobot`\n\n- **Rol**: Clasa `CombatRobot` este o clasă derivată care extinde funcționalitatea clasei `Robot` pentru a include capacitatea de a purta și folosi arme.\n- **Intrări**: Constructorul primește un parametru `name` pentru a seta numele robotului.\n- **Ieșiri**: Obiectul `CombatRobot` creat are proprietatea `weapons` inițializată ca un array gol.\n- **Efecte**: Permite adăugarea de arme și declanșarea lor simultan prin metoda `fire`.\n\n### Bullet 2: Metoda `addWeapon`\n\n- **Rol**: Metoda `addWeapon` adaugă un obiect de tip `Weapon` în array-ul `weapons` al robotului.\n- **Intrări**: Un obiect de tip `Weapon` (ex: `w0`).\n- **Ieșiri**: Array-ul `weapons` al robotului este actualizat cu noua armă.\n- **Efecte**: Permite robotului să aibă mai multe arme disponibile pentru a fi folosite.\n\n### Bullet 3: Metoda `fire`\n\n- **Rol**: Metoda `fire` declanșează toate armele disponibile ale robotului.\n- **Intrări**: Nu primește parametri.\n- **Ieșiri**: Afișează mesajul \"firing all weapons\" și declanșează metoda `fire` pentru fiecare armă din array-ul `weapons`.\n- **Efecte**: Simulează acțiunea de a trage cu toate armele robotului, afișând efectele fiecărei arme.\n\n### Bullet 4: Interacțiunea cu clasa `Weapon`\n\n- **Rol**: Clasa `CombatRobot` interacționează cu clasa `Weapon` prin a adăuga obiecte de tip `Weapon` în array-ul `weapons` și prin a apela metoda `fire` a fiecărei arme.\n- **Intrări**: Obiecte de tip `Weapon` (ex: `w0`).\n- **Ieșiri**: Efectele declanșate de metoda `fire` a fiecărei arme.\n- **Efecte**: Permite robotului să folosească armele pentru a efectua acțiuni de luptă.\n\n### Bullet 5: Mostenirea de la clasa `Robot`\n\n- **Rol**: Clasa `CombatRobot` moștenește proprietățile și metodele clasei `Robot`.\n- **Intrări**: Parametrul `name` transmis constructorului clasei `Robot`.\n- **Ieșiri**: Obiectul `CombatRobot` creat are toate proprietățile și metodele clasei `Robot`.\n- **Efecte**: Permite robotului să aibă un nume și să poată efectua acțiuni de bază, precum cele definite în clasa `Robot`.\n\n### Bullet 6: Utilizarea array-ului `weapons`\n\n- **Rol**: Array-ul `weapons` stochează toate armele disponibile ale robotului.\n- **Intrări**: Obiecte de tip `Weapon` adăugate prin metoda `addWeapon`.\n- **Ieșiri**: Array-ul `weapons` este utilizat în metoda `fire` pentru a itera și a declanșa fiecare armă.\n- **Efecte**: Permite robotului să gestioneze și să utilizeze mai multe arme în mod eficient.",
+      "const:var@75-83": "### Bullets Didactice\n\n- **Rol**:\n  - `CombatRobot` este o clasă care reprezintă un robot de luptă.\n  - `addWeapon` este o metodă care adaugă o armă robotului.\n  - `fire` este o metodă care face robotul să tragă cu arma adăugată.\n  - `fly` este o metodă adăugată la prototipul `Robot`, permițând robotului să zboare.\n\n- **Intrări/Ieșiri**:\n  - `new CombatRobot('some combat robot')`: Intră: numele robotului (șir de caractere). Ieșire: un nou obiect `CombatRobot`.\n  - `r1.addWeapon(w0)`: Intră: un obiect `Weapon`. Ieșire: robotul are arma adăugată.\n  - `r1.fire()`: Intră: niciuna. Ieșire: robotul trage cu arma adăugată.\n  - `Robot.prototype.fly`: Intră: niciuna. Ieșire: metoda `fly` este adăugată la prototipul `Robot`.\n\n- **Efecte**:\n  - `new CombatRobot('some combat robot')`: Creează un nou obiect `CombatRobot` cu numele specificat.\n  - `r1.addWeapon(w0)`: Adaugă arma specificată robotului.\n  - `r1.fire()`: Robotul trage cu arma adăugată, afișând un mesaj în consolă.\n  - `Robot.prototype.fly`: Adaugă metoda `fly` la prototipul `Robot`, permițând oricărui obiect `Robot` să zboare.",
+      "class:Robot@9-24": "### Bullets Didactice pentru Clasa `Robot`\n\n- **Rol**: Clasa `Robot` este un model simplu care reprezintă un robot cu un nume și o capacitate de a se mișca. Este folosită pentru a înțelege conceptul de clase și obiecte în programare.\n\n- **Intrări/ieșiri**:\n  - **Intrări**: Constructorul primește un parametru `name` care este utilizat pentru a seta numele robotului.\n  - **Ieșiri**: Metoda `move()` afișează un mesaj în consolă care indică că robotul cu numele specificat se mișcă.\n\n- **Efecte**:\n  - **Instantație**: Crearea unui obiect `Robot` permite stocarea și manipularea datelor specifice acelui robot.\n  - **Comportament**: Metoda `move()` demonstrează capacitatea robotului de a efectua o acțiune specifică (mișcare), ceea ce este esențial pentru a înțelege conceptul de metode în programare orientată pe obiecte.\n\n- **Exemplu de Utilizare**:\n  ```js\n  const myRobot = new Robot(\"Robo\");\n  myRobot.move(); // Afișează: \"Robo is moving\"\n  ```\n\n- **Extensibilitate**: Clasa `Robot` poate fi extinsă pentru a include noi proprietăți și metode, cum ar fi `speak()` sau `charge()`, pentru a modela funcționalități suplimentare ale unui robot.\n\n- **Abstraction**: Clasa `Robot` abstractizează conceptul de robot, permițând programatorilor să lucreze cu o reprezentare simplificată a unui robot fără a se preocupa de detaliile de implementare interne.",
+      "class:Weapon@28-43": "### Bullets Didactice pentru Clasa `Weapon`\n\n- **Rol**: Clasa `Weapon` este un model simplu care reprezintă o armă. Ea este utilizată pentru a crea obiecte care pot simula acțiunea de \"tragere\" a unei arme.\n\n- **Intrări/Parametri**:\n  - **`description`**: Un parametru de intrare în constructor, care este o șir de caractere (string) care descrie arma. Acest parametru este stocat în proprietatea `description` a obiectului.\n\n- **Ieșiri/Metode**:\n  - **`fire()`**: O metodă care afișează un mesaj în consolă care indică că arma descrisă de `this.description` este în proces de \"tragere\".\n\n- **Efecte**:\n  - **Creare de obiecte**: Clasa `Weapon` permite crearea de obiecte care pot fi utilizate pentru a simula diferite tipuri de arme.\n  - **Afișare de mesaje**: Metoda `fire()` afișează un mesaj în consolă care poate fi utilizat pentru a verifica funcționalitatea codului sau pentru a oferi feedback utilizatorului.\n\n- **Exemplu de Utilizare**:\n  ```js\n  const pistol = new Weapon(\"Pistol\");\n  pistol.fire(); // Afișează: \"Pistol is firing\"\n  ```\n\n- **Extensibilitate**: Clasa `Weapon` poate fi extinsă pentru a include mai multe proprietăți și metode, cum ar fi `reload()`, `aim()`, sau `damage`, pentru a simula funcționalități mai complexe ale unei arme.",
+      "class:CombatRobot@47-74": "### Bullets Didactice pentru Clasa `CombatRobot`\n\n- **Rol**: Clasa `CombatRobot` este o extensie a clasei `Robot` și reprezintă un robot de luptă capabil să poarte și să folosească arme.\n- **Intrări/ieșiri**:\n  - **Intrări**: Constructorul primește un parametru `name` care este transmis clasei părinte `Robot`.\n  - **Ieșiri**: Metoda `fire()` afișează un mesaj în consolă și apelează metoda `fire()` pentru fiecare armă din lista `weapons`.\n- **Efecte**:\n  - **Constructor**: Inițializează proprietatea `weapons` ca un array gol.\n  - **Metoda `addWeapon(w)`**: Adaugă un obiect de tip armă (`w`) în array-ul `weapons`.\n  - **Metoda `fire()`**: Iteratează prin toate armele din `weapons` și apelează metoda `fire()` pentru fiecare armă, afișând un mesaj în consolă înainte de a începe procesul de tragere."
+    },
+    "micro": {
+      "hunk:const:var@25-43:2": "- **Inițializare obiect**: Această inserție creează o nouă instanță a clasei `Robot` și o atribuie variabilei `r0`.\n- **Parametrizare**: Variabila `r0` este inițializată cu un obiect `Robot` care primește parametrul `'some robot'`.\n- **Contextualizare**: Această linie de cod este utilizată pentru a seta starea inițială a unui robot în cadrul aplicației.",
+      "hunk:const:var@44-74:2": "- **Adaugă o nouă armă** în joc, specificând numele ei (\"pew pew laser\").\n- **Extinde funcționalitatea** a jocului prin introducerea unui nou obiect de tip `Weapon`.\n- **Permite personalizarea** a jocului, deoarece utilizatorul poate crea și adăuga noi arme.\n- **Contribuie la diversitatea** a jocului, oferind mai multe opțiuni de arme pentru jucători.",
+      "hunk:const:var@75-83:2": "- **Inițializare obiect**: Această inserție creează un nou obiect `CombatRobot` și îl atribuie variabilei `r1`.\n- **Parametrizare**: Obiectul este inițializat cu parametrul `'some combat robot'`, care poate fi folosit în constructorul clasei `CombatRobot`.\n- **Accesibilitate**: Variabila `r1` poate fi utilizată ulterior pentru a accesa metodele și proprietățile obiectului `CombatRobot` creat.",
+      "hunk:const:var@25-43:3": "- **Adaugă funcționalitate de mișcare**: Inserția `r0.move()` permite obiectului `r0` să se miște, extinzând capacitățile funcționale ale codului curent.\n- **Interacțiune cu alte obiecte**: Această funcție poate fi utilizată pentru a interacționa cu alte obiecte din mediul de execuție, facilitând astfel o mai complexă logică de joc sau aplicație.\n- **Posibilitate de personalizare**: Funcția `move()` poate fi personalizată pentru a include parametri specifici, cum ar fi direcția sau viteza, oferind astfel mai multă flexibilitate în utilizare.",
+      "hunk:const:var@44-74:3": "- **Declanșează evenimentul**: Această inserție declanșează evenimentul asociat cu `w0`, permițând executarea codului atașat acestui eveniment.\n- **Interacțiune cu alte componente**: Poate iniția o interacțiune între componentele aplicației, dacă `w0` este legat de alte elemente sau funcții.\n- **Posibilitate de erori**: Dacă `w0` nu este definit sau nu are un eveniment atașat, inserția poate duce la erori în execuție.\n- **Dependență de context**: Funcționalitatea inserției depinde de contextul în care este utilizată, inclusiv de cum este definit `w0` și de evenimentele atașate acestuia.",
+      "hunk:const:var@75-83:3": "- **Adaugă o armă nouă** în inventarul personajului `r1`.\n- **Extinde capacitatea de luptă** a personajului prin introducerea unei noi arme.\n- **Modifică dinamica jocului** prin adăugarea unui nou element de strategie sau tactică.\n- **Îmbogățește experiența de joc** prin introducerea de noi posibilități de interacțiune.",
+      "hunk:const:var@75-83:4": "- **Adaugă o acțiune imediată**: Inserția `r1.fire()` declanșează o funcție sau o metodă imediat, fără a aștepta alte operații.\n- **Modifică starea obiectului**: Această acțiune poate schimba starea obiectului `r1`, de exemplu, prin activarea unei funcționalități sau a unui comportament.\n- **Poate declanșa efecte secundare**: Executarea metodei `fire()` poate avea efecte secundare, cum ar fi modificarea altor obiecte sau a mediului de execuție.\n- **Este utilă pentru inițializare rapidă**: Această inserție poate fi folosită pentru a inițializa rapid un obiect sau pentru a porni un proces imediat.",
+      "hunk:const:var@25-43:5": "- **Extinderea funcționalității**: Această inserție permite adăugarea de noi metode și proprietăți în clasa `Weapon`, extinzând astfel funcționalitățile sale.\n- **Modularizarea codului**: Clasele ajută la organizarea codului într-o structură mai clară și modulară, facilitând întreținerea și scalabilitatea.\n- **Encapsularea datelor**: Clasele permit ascunderea detaliilor interne și expunerea doar a interfeței necesare, promovând principiul de incapsulare.\n- **Reutilizarea codului**: Clasele pot fi extinse sau reutilizate în alte părți ale aplicației, reducând duplicarea codului.",
+      "hunk:const:var@44-74:5": "- **Extinde funcționalitatea**: Clasa `CombatRobot` moștenește toate proprietățile și metodele clasei `Robot`, permițând adăugarea de funcții specifice luptelor.\n- **Personalizează comportamentul**: Permite definirea de metode și proprietăți specifice robotilor de luptă, cum ar fi atacuri, apărare sau strategii de luptă.\n- **Reutilizează codul**: Evită duplicarea codului prin moștenirea caracteristicilor comune din clasa `Robot`, concentrându-se doar pe aspectele unice ale robotului de luptă.\n- **Flexibilitate și scalabilitate**: Ușurează adăugarea de noi tipuri de roboti de luptă în viitor, prin extinderea clasei `CombatRobot` sau a altor clase derivate.",
+      "hunk:const:var@75-83:6": "- **Extinde funcționalitatea clasei Robot**: Adaugă o nouă metodă `fly` la prototipul clasei Robot, permițând instanțelor să zboare.\n- **Modularizare**: Permite adăugarea de noi comportamente fără a modifica direct clasa sau instanțele existente.\n- **Reutilizabilitate**: Metoda `fly` poate fi apelată de orice instanță a clasei Robot, facilitând reutilizarea codului.\n- **Flexibilitate**: Permite personalizarea comportamentului de zbor pentru fiecare instanță prin modificarea metodei sau a proprietăților asociate.",
+      "hunk:const:var@25-43:7": "- **Inițializare obiect**: Această inserție adaugă un constructor în clasa sau obiectul curent, permițând inițializarea proprietăților obiectului la momentul creării unei instanțe.\n- **Parametrizare**: Constructorul permite transmiterea unui parametru, în acest caz `description`, care poate fi folosit pentru a seta proprietăți ale obiectului.\n- **Extensibilitate**: Această adăugare face obiectul mai flexibil și mai ușor de personalizat, deoarece proprietățile pot fi inițializate cu valori diferite pentru fiecare instanță.",
+      "hunk:const:var@44-74:7": "- **Inițializare proprietăți**: Această inserție permite inițializarea proprietăților obiectului în momentul creării acestuia, folosind parametrul `name` pentru a seta o proprietate a obiectului.\n- **Personalizare obiecte**: Adaugă flexibilitate în crearea obiectelor, permițând personalizarea lor la momentul instanțierii.\n- **Simplificare cod**: Reduce necesitatea de a seta proprietățile după crearea obiectului, simplificând și accelerând procesul de inițializare.\n- **Convenție standard**: Urmează o convenție comună în programare orientată pe obiecte, facilitând înțelegerea și menținerea codului.",
+      "hunk:const:var@75-83:8": "- **Adaugă o funcționalitate de afișare**: Inserția permite afișarea unui mesaj în consolă care indică că obiectul curent este în mișcare (în cazul de față, zboară).\n- **Îmbogățește comportamentul obiectului**: Această adăugare face ca obiectul să aibă un comportament vizibil, făcându-l mai interactiv și ușor de urmărit în timpul execuției.\n- **Facilitează depanarea**: Mesajul din consolă ajută la identificarea obiectului care efectuează acțiunea, facilitând procesul de depanare.",
+      "hunk:const:var@25-43:9": "- **Adaugă proprietatea `description`** la obiectul curent.\n- **Permite stocarea și accesul la descrierea obiectului** în alte părți ale codului.\n- **Facilitează personalizarea obiectului** printr-un atribut descriptiv.\n- **Îmbogățește obiectul** cu informații suplimentare despre funcționalitatea sau scopul său.",
+      "hunk:const:var@44-74:9": "- **Extinde funcționalitatea clasei părinte**: Inserția `super(name)` permite clasei curente să moștenească proprietățile și metodele clasei părinte, specificând constructorul clasei părinte cu parametrul `name`.\n- **Asigură inițializarea corectă a proprietăților moștenite**: Această linie asigură că proprietățile clasei părinte sunt inițializate corect atunci când se creează o instanță a clasei curente.\n- **Permite utilizarea metodei `super` în alte metode**: Dacă clasa părinte are metode care trebuie apelate în clasele derivate, `super(name)` permite apelul acestor metode folosind `super.metoda()` în alte metode ale clasei curente.",
+      "hunk:const:var@75-83:9": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se schimbă în timpul execuției funcției.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care nu vor fi modificate.\n- **Previne erori de programare** prin asigurarea că variabila nu va fi suprascrisă accidental.\n- **Optimizează performanța** în anumite cazuri, deoarece motorul JavaScript poate face optimizări pentru variabile constante.",
+      "hunk:const:var@44-74:10": "- **Inițializare array**: Adaugă o proprietate `weapons` la obiectul curent, inițializată ca un array gol.\n- **Stocare dată**: Permite stocarea și gestionarea unei liste de arme în cadrul obiectului.\n- **Flexibilitate**: Ușurează adăugarea sau eliminarea de elemente din lista de arme în viitor.",
+      "hunk:const:var@25-43:11": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se va schimba în timpul execuției funcției.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care sunt constante.\n- **Previne modificări accidentale** ale variabilelor, reducând riscul de erori în cod.\n- **Optimizează performanța** prin utilizarea variabilelor constante, care pot fi evaluate la compilare sau la rulare.",
+      "hunk:const:var@44-74:12": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se va schimba în timpul execuției funcției.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care sunt constante.\n- **Previne modificările accidentale** ale variabilelor, reducând riscul de erori în cod.\n- **Optimizează performanța** prin eliminarea necesității de a aloca memorie pentru variabile care nu se schimbă.",
+      "hunk:const:var@25-43:13": "- **Acces la variabilele din contextul înconjurător**: Inserția `const var` permite funcției `fire` să acceseze variabilele definite în contextul înconjurător, făcându-le disponibile pentru utilizare în interiorul funcției.\n- **Preservarea valorilor variabilelor**: Folosirea `const` asigură că valorile variabilelor nu vor fi modificate accidental în interiorul funcției, păstrându-le constante și prevăzând comportamente nedorite.\n- **Contextul de execuție**: Această inserție ajută la stabilirea contextului de execuție al funcției `fire`, făcând-o să poată interacționa corect cu mediul înconjurător.",
+      "hunk:const:var@44-74:14": "- **Adaugă o armă nouă** în inventarul curent.\n- **Actualizează starea** a obiectului sau a personajului care deține inventarul.\n- **Poate declanșa efecte secundare** legate de adăugarea armei, cum ar fi modificări ale statisticii sau a abilităților.\n- **Asigură compatibilitatea** cu alte arme deja existente în inventar.",
+      "hunk:const:var@25-43:15": "- **Depanare**: Ajută la identificarea sursei evenimentului sau acțiunii care se declanșează, facilitând diagnosticarea problemelor.\n- **Monitorizare**: Permite urmărirea fluxului de execuție al codului, oferind vizibilitate asupra acțiunilor în curs.\n- **Feedback utilizator**: Furnizează informații utile despre starea aplicației sau a componentelor, îmbunătățind experiența utilizatorului.",
+      "hunk:const:var@44-74:16": "- **Adaugă un nou element** în array-ul `weapons` al obiectului curent.\n- **Extinde capacitatea** a obiectului pentru a include noi arme.\n- **Modifică starea internă** a obiectului prin adăugarea unui nou element în array.\n- **Permite accesul ulterior** la arma adăugată prin intermediul array-ului `weapons`.",
+      "hunk:const:var@25-43:17": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se va schimba în timpul execuției funcției.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care sunt constante.\n- **Previne modificările accidentale** ale variabilelor, reducând riscul de erori în cod.\n- **Optimizează performanța** prin eliminarea necesității de a aloca memorie pentru variabile care nu se schimbă.",
+      "hunk:const:var@44-74:18": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se schimbă.\n- **Îmbunătățește citirea codului** prin a face clară intenția de a folosi o valoare constantă.\n- **Previne modificări accidentale** ale valorii, reducând riscul de erori.\n- **Optimizează performanța** prin a permite compilatorului să facă optimizări mai eficiente.",
+      "hunk:const:var@25-43:19": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se schimbă în timpul execuției funcției.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care nu vor fi modificate.\n- **Previne erori de programare** prin asigurarea că variabila nu este suprascrisă accidental.\n- **Optimizează performanța** în anumite cazuri, deoarece motorul JavaScript poate face optimizări pentru variabile constante.",
+      "hunk:const:var@44-74:20": "- **Acces la variabilele din contextul înconjurător**: Inserția `const var` permite funcției `fire` să acceseze variabilele definite în contextul în care este definită, fără a fi necesară transmiterea lor explicit ca parametri.\n- **Stocare a stării interne**: Variabila `var` poate fi utilizată pentru a stoca starea internă a funcției, permițând astfel funcției să păstreze informații între apeluri consecutive.\n- **Reducerea complexității**: Prin utilizarea variabilelor din context, se reduce numărul de parametri necesari funcției, simplificând astfel apelurile și gestionarea lor.",
+      "hunk:const:var@44-74:22": "- **Adaugă un mesaj de depanare**: Inserția `console.log('firing all weapons')` ajută la depistarea erorilor prin afișarea unui mesaj în consolă când funcția este apelată.\n- **Îmbunătățește vizibilitatea fluxului de execuție**: Mesajul clar indică momentul în care funcția este executată, facilitând urmărirea codului.\n- **Asigură o verificare rapidă a funcționalității**: Permite verificarea dacă funcția este apelată în momentul așteptat, fără a necesita depanare complexă.",
+      "hunk:const:var@44-74:23": "- **Declararea variabilei `w` ca `const`**: Această inserție asigură că variabila `w` nu poate fi redeclarată sau modificată în interiorul buclei `for...of`. Aceasta promovează imutabilitatea și reduce riscul de erori de programare.\n- **Iterarea prin `this.weapons`**: Buclea `for...of` permite iterarea ușoară și sigură prin elementele din array-ul `this.weapons`, fără a fi nevoie de a accesa manual indexul sau a folosi alte metode de iterare.\n- **Accesul la proprietățile obiectelor din array**: Variabila `w` reprezintă fiecare element din array-ul `this.weapons` în fiecare iterație, permițând accesul direct la proprietățile obiectelor respective.",
+      "hunk:const:var@44-74:25": "- **Declanșează evenimentul `fire`**: Această inserție apelează metoda `fire` a obiectului `w`, declanșând un eveniment sau o acțiune asociată.\n- **Posibilă inițializare**: Inserția poate fi utilizată pentru a inițializa sau a activa o funcționalitate specifică obiectului `w`.\n- **Efecte secundare**: Această linie de cod poate avea efecte secundare, cum ar fi modificarea stării obiectului `w` sau declanșarea altor evenimente în cascadă.",
+      "hunk:const:var@44-74:27": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare imuabilă.\n- **Îmbunătățește citirea codului**, făcând clară intenția de a folosi o valoare care nu se va schimba.\n- **Previne modificări accidentale**, asigurându-te că valoarea nu poate fi suprascrisă ulterior.\n- **Optimizează performanța**, deoarece variabilele constante pot fi mai eficiente în anumite contexte.",
+      "hunk:const:var@44-74:29": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se va schimba în timpul execuției funcției.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care sunt constante.\n- **Previne modificările accidentale** ale variabilelor, reducând riscul de erori în cod.\n- **Optimizează performanța** prin utilizarea variabilelor constante, care pot fi evaluate la compilare sau la rulare.",
+      "hunk:const:var@44-74:31": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se va schimba în timpul execuției funcției.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care nu vor fi modificate.\n- **Previne modificări accidentale** ale variabilelor, reducând riscul de erori în cod.\n- **Optimizează performanța** prin utilizarea variabilelor constante, care pot fi optimizate de motorul JavaScript.",
+      "hunk:class:Robot@9-24:2": "- **Definirea clasei**: Această inserție definește clasa `Robot`, creând un șablon pentru crearea obiectelor de tip robot.\n- **Structura de bază**: Adaugă o structură de bază pentru clasa, permițând adăugarea de proprietăți și metode în continuare.\n- **Extensibilitate**: Permite extinderea clasei prin adăugarea de noi metode și proprietăți pentru a personaliza comportamentul robotului.",
+      "hunk:class:Robot@9-24:4": "- **Parametrizare**: Adăugarea parametrului `name` permite inițializarea obiectului `Robot` cu un nume specific, personalizând instanțele create.\n- **Identificare**: Facilitează identificarea robotului prin intermediul proprietății `name`, ceea ce este util pentru depanare și gestionare.\n- **Extensibilitate**: Permite adăugarea de funcționalități suplimentare care pot folosi numele robotului, cum ar fi logare sau comunicare.",
+      "hunk:class:Robot@9-24:6": "- **Atribuire nume robot**: Adaugă proprietatea `name` la instanța robotului, permițând identificarea și referirea robotului printr-un nume specific.\n- **Personalizare**: Permite personalizarea robotului prin atribuirea unui nume unic, facilitând gestionarea și interacțiunea cu el.\n- **Accesibilitate**: Face robotul mai accesibil în cod, permițând utilizarea numelui pentru a-l referi în alte părți ale programului.\n- **Claritate**: Îmbunătățește claritatea codului prin asocierea unei etichete (nume) cu instanța robotului.",
+      "hunk:class:Robot@9-24:8": "- **Extinderea funcționalității**: Această inserție adaugă o nouă secțiune de cod care poate extinde funcționalitatea clasei `Robot` prin adăugarea de noi metode sau proprietăți.\n- **Modificarea comportamentului**: Inserția poate modifica comportamentul existent al clasei `Robot` prin adăugarea de noi instrucțiuni sau prin suprascrierea metodelor existente.\n- **Optimizarea codului**: Această inserție poate fi utilizată pentru a optimiza codul existent, făcând-l mai eficient sau mai ușor de întreținut.\n- **Adăugarea de caracteristici noi**: Inserția poate introduce noi caracteristici sau funcționalități în clasa `Robot`, făcând-o mai versatilă și adaptabilă la noi cerințe.",
+      "hunk:class:Robot@9-24:10": "- **Adaugă o metodă de mișcare**: Această inserție introduce o nouă metodă `move` în clasa `Robot`, permițând obiectelor de tip `Robot` să se miște.\n- **Extinde funcționalitatea**: Metoda `move` adaugă o nouă capacitate robotului, făcându-l mai versatil și interactiv.\n- **Permite personalizarea mișcării**: Cu această metodă, se poate defini cum se mișcă robotul, permițând o mai mare flexibilitate în comportamentul său.",
+      "hunk:class:Robot@9-24:12": "- **Feedback vizual**: Adaugă o confirmare vizibilă că robotul se mișcă, utilă pentru depanare și monitorizare.\n- **Contextul acțiunii**: Clarifică care robot execută mișcarea, evitând confuzii în scenarii cu mai mulți roboți.\n- **Ușurință de depanare**: Permite identificarea rapidă a acțiunilor robotului în loguri, facilitând depanarea erorilor.",
+      "hunk:class:Robot@9-24:14": "- **Adaugă o funcționalitate nouă**: Această inserție permite adăugarea unei noi funcționalități în clasa `Robot`, extinzând comportamentul său curent.\n- **Permite personalizarea robotului**: Această inserție poate fi utilizată pentru a personaliza robotul cu noi caracteristici sau comportamente.\n- **Îmbunătățește flexibilitatea**: Această inserție face clasa `Robot` mai flexibilă, permițând adaptarea la noi cerințe sau scenarii.\n- **Îmbunătățește modularitatea**: Această inserție promovează modularitatea, permițând adăugarea de noi componente sau funcții fără a modifica codul existent.",
+      "hunk:class:Robot@9-24:16": "- **Extinde funcționalitatea**: Adaugă o nouă metodă sau proprietate clasei `Robot`, permițând implementarea de noi caracteristici sau comportamente.\n- **Îmbunătățește modularitatea**: Permite adăugarea de componente sau funcții suplimentare fără a modifica codul existent, respectând principiile SOLID.\n- **Permite personalizarea**: Asigură flexibilitatea de a adapta obiectele `Robot` la cerințele specifice ale aplicației.\n- **Îmbunătățește reutilizabilitatea**: Codul adăugat poate fi folosit în alte părți ale aplicației sau în proiecte viitoare."
+    }
+  },
+  "auto_notes": {
+    "const:var@25-43": "- Funcție **var** [25–43]\n- Efecte: logare/diagnosticare",
+    "const:var@44-74": "- Funcție **var** [44–74]\n- Efecte: logare/diagnosticare",
+    "const:var@75-83": "- Funcție **var** [75–83]\n- Efecte: logare/diagnosticare",
+    "class:Robot@9-24": "- Clasă **Robot** [9–24]\n- Efecte: logare/diagnosticare",
+    "class:Weapon@28-43": "- Clasă **Weapon** [28–43]\n- Efecte: logare/diagnosticare",
+    "class:CombatRobot@47-74": "- Clasă **CombatRobot** [47–74]\n- Efecte: logare/diagnosticare"
+  },
+  "micro_auto": {
+    "hunk:const:var@25-43:1": "- Completare incrementală: ",
+    "hunk:const:var@44-74:1": "- Completare incrementală: ",
+    "hunk:const:var@75-83:1": "- Completare incrementală: ",
+    "hunk:const:var@25-43:2": "- Introducem variabila **r0** ← new Robot('some robot')",
+    "hunk:const:var@44-74:2": "- Introducem variabila **w0** ← new Weapon('pew pew laser')",
+    "hunk:const:var@75-83:2": "- Introducem variabila **r1** ← new CombatRobot('some combat robot')",
+    "hunk:const:var@25-43:3": "- Completare incrementală: r0.move()",
+    "hunk:const:var@44-74:3": "- Completare incrementală: w0.fire()",
+    "hunk:const:var@75-83:3": "- Completare incrementală: r1.addWeapon(w0)",
+    "hunk:const:var@25-43:4": "- Completare incrementală: ",
+    "hunk:const:var@44-74:4": "- Completare incrementală: ",
+    "hunk:const:var@75-83:4": "- Completare incrementală: r1.fire()",
+    "hunk:const:var@25-43:5": "- Completare incrementală: class Weapon {",
+    "hunk:const:var@44-74:5": "- Completare incrementală: class CombatRobot extends Robot {",
+    "hunk:const:var@75-83:5": "- Completare incrementală: ",
+    "hunk:const:var@25-43:6": "- Completare incrementală: ",
+    "hunk:const:var@44-74:6": "- Completare incrementală: ",
+    "hunk:const:var@75-83:6": "- Completare incrementală: Robot.prototype.fly = function () {",
+    "hunk:const:var@25-43:7": "- Completare incrementală: constructor (description) {",
+    "hunk:const:var@44-74:7": "- Completare incrementală: constructor (name) {",
+    "hunk:const:var@75-83:7": "- Completare incrementală: ",
+    "hunk:const:var@25-43:8": "- Completare incrementală: ",
+    "hunk:const:var@44-74:8": "- Completare incrementală: ",
+    "hunk:const:var@75-83:8": "- Inserăm **logare** (diagnostic) cu `console.*`.",
+    "hunk:const:var@25-43:9": "- Completare incrementală: this.description = description",
+    "hunk:const:var@44-74:9": "- Completare incrementală: super(name)",
+    "hunk:const:var@75-83:9": "- Completare incrementală: }",
+    "hunk:const:var@25-43:10": "- Completare incrementală: ",
+    "hunk:const:var@44-74:10": "- Completare incrementală: this.weapons = []",
+    "hunk:const:var@25-43:11": "- Completare incrementală: }",
+    "hunk:const:var@44-74:11": "- Completare incrementală: ",
+    "hunk:const:var@25-43:12": "- Completare incrementală: ",
+    "hunk:const:var@44-74:12": "- Completare incrementală: }",
+    "hunk:const:var@25-43:13": "- Completare incrementală: fire () {",
+    "hunk:const:var@44-74:13": "- Completare incrementală: ",
+    "hunk:const:var@25-43:14": "- Completare incrementală: ",
+    "hunk:const:var@44-74:14": "- Completare incrementală: addWeapon (w) {",
+    "hunk:const:var@25-43:15": "- Inserăm **logare** (diagnostic) cu `console.*`.",
+    "hunk:const:var@44-74:15": "- Completare incrementală: ",
+    "hunk:const:var@25-43:16": "- Completare incrementală: ",
+    "hunk:const:var@44-74:16": "- Completare incrementală: this.weapons.push(w)",
+    "hunk:const:var@25-43:17": "- Completare incrementală: }",
+    "hunk:const:var@44-74:17": "- Completare incrementală: ",
+    "hunk:const:var@25-43:18": "- Completare incrementală: ",
+    "hunk:const:var@44-74:18": "- Completare incrementală: }",
+    "hunk:const:var@25-43:19": "- Completare incrementală: }",
+    "hunk:const:var@44-74:19": "- Completare incrementală: ",
+    "hunk:const:var@44-74:20": "- Completare incrementală: fire () {",
+    "hunk:const:var@44-74:21": "- Completare incrementală: ",
+    "hunk:const:var@44-74:22": "- Inserăm **logare** (diagnostic) cu `console.*`.",
+    "hunk:const:var@44-74:23": "- Introducem o **buclă** de iterare.",
+    "hunk:const:var@44-74:24": "- Completare incrementală: ",
+    "hunk:const:var@44-74:25": "- Completare incrementală: w.fire()",
+    "hunk:const:var@44-74:26": "- Completare incrementală: ",
+    "hunk:const:var@44-74:27": "- Completare incrementală: }",
+    "hunk:const:var@44-74:28": "- Completare incrementală: ",
+    "hunk:const:var@44-74:29": "- Completare incrementală: }",
+    "hunk:const:var@44-74:30": "- Completare incrementală: ",
+    "hunk:const:var@44-74:31": "- Completare incrementală: }",
+    "hunk:class:Robot@9-24:1": "- Completare incrementală: ",
+    "hunk:class:Robot@9-24:2": "- Completare incrementală: class Robot {",
+    "hunk:class:Robot@9-24:3": "- Completare incrementală: ",
+    "hunk:class:Robot@9-24:4": "- Completare incrementală: constructor (name) {",
+    "hunk:class:Robot@9-24:5": "- Completare incrementală: ",
+    "hunk:class:Robot@9-24:6": "- Completare incrementală: this.name = name",
+    "hunk:class:Robot@9-24:7": "- Completare incrementală: ",
+    "hunk:class:Robot@9-24:8": "- Completare incrementală: }",
+    "hunk:class:Robot@9-24:9": "- Completare incrementală: ",
+    "hunk:class:Robot@9-24:10": "- Completare incrementală: move () {",
+    "hunk:class:Robot@9-24:11": "- Completare incrementală: ",
+    "hunk:class:Robot@9-24:12": "- Inserăm **logare** (diagnostic) cu `console.*`.",
+    "hunk:class:Robot@9-24:13": "- Completare incrementală: ",
+    "hunk:class:Robot@9-24:14": "- Completare incrementală: }",
+    "hunk:class:Robot@9-24:15": "- Completare incrementală: ",
+    "hunk:class:Robot@9-24:16": "- Completare incrementală: }"
+  }
+}

@@ -1,0 +1,563 @@
+{
+  "frames": [
+    "",
+    "\n",
+    "\n  const fib = (index) => {\n",
+    "\n  const fib = (index) => {\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n    }\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n    }\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n    }\n\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n    }\n\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n    }\n\n  }\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n    }\n\n  }\n\n",
+    "\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n    }\n\n  }\n\n",
+    "\n\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n    }\n\n  }\n\n",
+    "\nfunction fibGen () {\n\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n    }\n\n  }\n\n",
+    "\nfunction fibGen () {\n\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n    }\n\n  }\n\n\n",
+    "\nfunction fibGen () {\n\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n    }\n\n  }\n\n  return fib\n\n",
+    "\nfunction fibGen () {\n\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n    }\n\n  }\n\n  return fib\n}\n\n",
+    "/**\n*3 - Urmăriți videoclipul S4v3.mp4 pentru a vedea cum se implementează un closure pentru memoizarea rezultatelor unei funcții.\n* După ce ați testat exemplul, implementați o variantă recursiva a unei funcții de exponențiere.\n* Atât rezultatele finale cât și cele intermediare vor fi memoizate.\n*\n*/\n\nfunction fibGen () {\n\n  const cache = [1, 1]\n  const fib = (index) => {\n\n    if (index < cache.length) {\n\n      console.log('found ' + index)\n      return cache[index]\n\n    }\n     else {\n\n      console.log('calculated ' + index)\n      cache[index] = fib(index - 1) + fib(index - 2)\n      return cache[index]\n\n    }\n\n  }\n\n  return fib\n}\n\nconst fib = fibGen()\nconsole.log(fib(1))\nconsole.log(fib(5))\nconsole.log(fib(3))\n"
+  ],
+  "style": "functional",
+  "steps": [
+    {
+      "title": "Importuri și constante",
+      "rationale": "Definim dependențele și parametrii inițiali ai pipeline-ului.",
+      "blocks": [
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 9,
+          "end": 27
+        },
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 11,
+          "end": 27
+        },
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 31,
+          "end": 31
+        }
+      ]
+    },
+    {
+      "title": "Efecte și I/O",
+      "rationale": "Izolăm efectele secundare (logare, fetch, timp) la nivelul interfeței.",
+      "blocks": [
+        {
+          "name": "fibGen",
+          "kind": "func",
+          "start": 7,
+          "end": 30
+        },
+        {
+          "name": "fib",
+          "kind": "arrow",
+          "start": 11,
+          "end": 27
+        }
+      ]
+    }
+  ],
+  "patches": [
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 27,
+        "scrollLine": 9,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@9-27",
+        "hId": "hunk:const:var@9-27:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 1,
+        "end": 1,
+        "text": "  const fib = (index) => {",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 11,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 2,
+        "end": 2,
+        "text": "",
+        "focusStart": 31,
+        "focusEnd": 31,
+        "scrollLine": 31,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@31-31",
+        "hId": "hunk:const:var@31-31:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 1,
+        "end": 1,
+        "text": "  const cache = [1, 1]",
+        "focusStart": 9,
+        "focusEnd": 27,
+        "scrollLine": 10,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@9-27",
+        "hId": "hunk:const:var@9-27:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 4,
+        "end": 4,
+        "text": "",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 12,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:2"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 4,
+        "end": 4,
+        "text": "    if (index < cache.length) {",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 13,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:3"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 6,
+        "end": 6,
+        "text": "",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 14,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:4"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 6,
+        "end": 6,
+        "text": "      console.log('found ' + index)",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 15,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:5"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 7,
+        "end": 7,
+        "text": "      return cache[index]",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 16,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:6"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 9,
+        "end": 9,
+        "text": "",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 17,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:7"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 9,
+        "end": 9,
+        "text": "    }",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 18,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:8"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 10,
+        "end": 10,
+        "text": "     else {",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 19,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:9"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 12,
+        "end": 12,
+        "text": "",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 20,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:10"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 12,
+        "end": 12,
+        "text": "      console.log('calculated ' + index)",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 21,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:11"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 13,
+        "end": 13,
+        "text": "      cache[index] = fib(index - 1) + fib(index - 2)",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 22,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:12"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 14,
+        "end": 14,
+        "text": "      return cache[index]",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 23,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:13"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 16,
+        "end": 16,
+        "text": "",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 24,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:14"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 16,
+        "end": 16,
+        "text": "    }",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 25,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:15"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 18,
+        "end": 18,
+        "text": "",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 26,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:16"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 18,
+        "end": 18,
+        "text": "  }",
+        "focusStart": 11,
+        "focusEnd": 27,
+        "scrollLine": 27,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@11-27",
+        "hId": "hunk:const:var@11-27:17"
+      }
+    ],
+    [],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "",
+        "focusStart": 7,
+        "focusEnd": 30,
+        "scrollLine": 7,
+        "name": "fibGen",
+        "kind": "func",
+        "blkId": "func:fibGen@7-30",
+        "hId": "hunk:func:fibGen@7-30:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 1,
+        "end": 1,
+        "text": "function fibGen () {",
+        "focusStart": 7,
+        "focusEnd": 30,
+        "scrollLine": 8,
+        "name": "fibGen",
+        "kind": "func",
+        "blkId": "func:fibGen@7-30",
+        "hId": "hunk:func:fibGen@7-30:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 22,
+        "end": 22,
+        "text": "",
+        "focusStart": 7,
+        "focusEnd": 30,
+        "scrollLine": 28,
+        "name": "fibGen",
+        "kind": "func",
+        "blkId": "func:fibGen@7-30",
+        "hId": "hunk:func:fibGen@7-30:3"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 22,
+        "end": 22,
+        "text": "  return fib",
+        "focusStart": 7,
+        "focusEnd": 30,
+        "scrollLine": 29,
+        "name": "fibGen",
+        "kind": "func",
+        "blkId": "func:fibGen@7-30",
+        "hId": "hunk:func:fibGen@7-30:4"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 23,
+        "end": 23,
+        "text": "}",
+        "focusStart": 7,
+        "focusEnd": 30,
+        "scrollLine": 30,
+        "name": "fibGen",
+        "kind": "func",
+        "blkId": "func:fibGen@7-30",
+        "hId": "hunk:func:fibGen@7-30:5"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "/**\n*3 - Urmăriți videoclipul S4v3.mp4 pentru a vedea cum se implementează un closure pentru memoizarea rezultatelor unei funcții.\n* După ce ați testat exemplul, implementați o variantă recursiva a unei funcții de exponențiere.\n* Atât rezultatele finale cât și cele intermediare vor fi memoizate.\n*\n*/"
+      },
+      {
+        "op": "insert",
+        "start": 25,
+        "end": 25,
+        "text": "const fib = fibGen()\nconsole.log(fib(1))\nconsole.log(fib(5))\nconsole.log(fib(3))"
+      }
+    ]
+  ],
+  "llm": {
+    "provider": "Mistral Codestral",
+    "model": "codestral-latest",
+    "notes": {
+      "const:var@9-27": "### **Bullets Didactice**\n\n- **Rol**: Funcția `fib` calculează al `index`-lea număr din șirul lui Fibonacci, folosind o abordare de memorizare (caching) pentru a evita recalculările redundante.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**: Un număr întreg `index` care reprezintă poziția în șirul lui Fibonacci.\n  - **Ieșiri**: Al `index`-lea număr din șirul lui Fibonacci.\n\n- **Efecte**:\n  - **Cache**: Funcția utilizează un array `cache` pentru a stoca rezultatele intermediare, reducând numărul de calculări necesare.\n  - **Recursivitate**: Funcția apelează recursiv ea însăși pentru a calcula valorile necesare din șirul lui Fibonacci.\n  - **Afisare**: Funcția afișează mesaje în consolă pentru a indica dacă un număr a fost găsit în cache sau a fost calculat.\n\n- **Avantaje**:\n  - **Eficiență**: Memorizarea reduce complexitatea timpului de la exponențială (O(2^n)) la liniară (O(n)) în cazul cel mai bun.\n  - **Simplitate**: Codul este ușor de înțeles și de modificat.\n\n- **Dezavantaje**:\n  - **Memorie**: Utilizarea unui array pentru cache poate consuma multă memorie pentru valori mari ale `index`.\n  - **Recursivitate**: Pentru valori mari ale `index`, stiva de apeluri poate depăși limita de memorie.\n\n- **Exemplu de Utilizare**:\n  ```js\n  console.log(fib(5)); // Afișează: calculated 2, calculated 3, calculated 4, calculated 5, 5\n  console.log(fib(3)); // Afișează: found 3, 2\n  ```",
+      "const:var@11-27": "### **Bullets Didactice**\n\n- **Rol**: Funcția `fib` calculează al `index`-lea număr din șirul lui Fibonacci folosind o abordare de memorizare (caching) pentru a optimiza performanța.\n- **Intrări/Ieșiri**:\n  - **Intrări**: Un număr întreg `index` care reprezintă poziția în șirul lui Fibonacci.\n  - **Ieșiri**: Valoarea numărului de Fibonacci de la poziția `index`.\n- **Efecte**:\n  - **Cache**: Funcția utilizează un array `cache` pentru a stoca valorile calculate anterior, reducând astfel numărul de apeluri recursive și optimizând timpul de execuție.\n  - **Logare**: Funcția afișează în consolă mesaje care indică dacă valoarea a fost găsită în cache sau calculată.\n  - **Recursivitate**: Funcția apelează recursiv ea însăși pentru a calcula valorile necesare din șirul lui Fibonacci.",
+      "const:var@31-31": "Aici este un exemplu de bullets didactice pentru un profesor, prezentate în format Markdown:\n\n```markdown\n- **Rolul profesorului**:\n  - Facilitator al procesului de învățare.\n  - Ghid și mentor pentru studenți.\n  - Evaluator al progresului și a competențelor.\n\n- **Intrări/ieșiri**:\n  - **Intrări**:\n    - Conținutul de învățat.\n    - Resursele didactice (cărți, articole, materiale multimedia).\n    - Feedback-ul studenților.\n  - **Ieșiri**:\n    - Studenții cu cunoștințe și abilități noi.\n    - Evaluări și feedback pentru studenți.\n    - Materiale didactice actualizate.\n\n- **Efecte**:\n  - Creșterea cunoștințelor și a competențelor studenților.\n  - Dezvoltarea abilităților de comunicare și de lucru în echipă.\n  - Crearea unei atmosfere de învățare pozitivă și inclusivă.\n  - Contribuția la dezvoltarea comunității academice.\n```",
+      "func:fibGen@7-30": "### Bullets Didactice\n\n- **Rol**: Funcția `fibGen` este un generator de funcții care returnează o funcție `fib` care calculează al n-lea termen din șirul lui Fibonacci folosind memoizare (caching) pentru a optimiza performanța.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**: Funcția `fib` primește un index `index` care reprezintă poziția termenului din șirul lui Fibonacci pe care dorim să-l calculăm.\n  - **Ieșiri**: Funcția `fib` returnează valoarea termenului de la poziția `index` din șirul lui Fibonacci.\n\n- **Efecte**:\n  - **Memoizare**: Funcția `fib` folosește un array `cache` pentru a stoca termenii deja calculați ai șirului lui Fibonacci. Acest lucru reduce numărul de apeluri recursive și îmbunătățește performanța.\n  - **Afisare**: Funcția `fib` afișează un mesaj în consolă pentru a indica dacă termenul a fost găsit în cache sau a fost calculat.\n  - **Recursivitate**: Funcția `fib` utilizează recursivitate pentru a calcula termenii șirului lui Fibonacci. Pentru fiecare index care nu este în cache, funcția apelează recursiv `fib` pentru a calcula termenii anteriori și apoi adaugă rezultatele pentru a obține termenul curent.\n\n- **Avantaje**:\n  - **Optimizare**: Memoizarea reduce complexitatea timpului de la exponențială (O(2^n)) la liniară (O(n)) pentru calculul termenilor șirului lui Fibonacci.\n  - **Claritate**: Structura funcțională și utilizarea cache-ului fac codul ușor de înțeles și de întreținut.\n\n- **Dezavantaje**:\n  - **Memorie**: Utilizarea unui array pentru cache poate consuma o cantitate semnificativă de memorie pentru valori mari ale indexului.\n  - **Recursivitate**: Pentru valori mari ale indexului, adâncimea recursivității poate duce la depășirea stivei de apeluri, ceea ce poate cauza o eroare de stivă (stack overflow).\n\n- **Exemplu de Utilizare**:\n  ```js\n  const fib = fibGen()\n  console.log(fib(5)) // Afișează: calculated 3, calculated 4, found 2, found 1, found 0, 8\n  ```",
+      "arrow:fib@11-27": "### Bullets Didactice\n\n- **Rol**: Funcția `fib` calculează al `index`-lea număr din șirul lui Fibonacci folosind o abordare de memorizare (caching) pentru a optimiza performanța.\n- **Intrări/Ieșiri**:\n  - **Intrări**: Un număr întreg `index` care reprezintă poziția în șirul lui Fibonacci.\n  - **Ieșiri**: Al `index`-lea număr din șirul lui Fibonacci.\n- **Efecte**:\n  - **Efecte secundare**: Funcția utilizează un array global `cache` pentru a stoca rezultatele intermediare, ceea ce poate avea efecte secundare dacă `cache` este modificat în alte părți ale codului.\n  - **Eficiență**: Abordarea de memorizare reduce numărul de apeluri recursive, ceea ce îmbunătățește performanța pentru valori mari ale `index`.\n  - **Mesaje de consola**: Funcția afișează mesaje în consolă pentru a indica dacă un număr Fibonacci a fost găsit în cache sau calculat.\n  - **Recursivitate**: Funcția apelează recursiv ea însăși pentru a calcula numerele Fibonacci anterioare, ceea ce poate duce la un număr mare de apeluri pentru valori mari ale `index`."
+    },
+    "micro": {
+      "hunk:const:var@11-27:1": "- **Declararea variabilei `fib`**: Această inserție declară o variabilă `fib` care este o funcție de tip arrow function. Aceasta permite stocarea funcției într-o variabilă și utilizarea acesteia ulterior în cod.\n- **Parametrul `index`**: Funcția `fib` primește un parametru `index`, care reprezintă poziția din șirul lui Fibonacci pe care dorești să o calculezi.\n- **Scopul funcției**: Această funcție este destinată să calculeze și să returneze valoarea de la poziția specificată din șirul lui Fibonacci.",
+      "hunk:const:var@9-27:2": "- **Optimizare a memoriei**: Stocarea valorilor inițiale în `cache` reduce numărul de calculări repetate, economisind timp și resurse.\n- **Accelerare a performanței**: Accesul direct la valorile din `cache` este mai rapid decât recalcularea lor, îmbunătățind eficiența funcției.\n- **Simplificare a codului**: Elimină necesitatea de a recalcula valori deja cunoscute, făcând codul mai curat și mai ușor de înțeles.\n- **Scalabilitate**: Permite funcției să gestioneze mai multe cazuri fără a afecta performanța, deoarece valorile sunt stocate și accesate eficient.",
+      "hunk:const:var@11-27:3": "- **Optimizare a performanței**: Verificarea lungimii cache-ului înainte de accesare evită erori de indexare și poate reduce timpul de execuție prin evitarea operațiilor inutile.\n- **Prevenire a erorilor**: Asigură că indexul este valid, prevenind erori precum \"Index out of bounds\".\n- **Claritate și ușurință de întreținere**: Codul devine mai ușor de înțeles și de întreținut, deoarece condiția explicită face explicită intenția de a accesa un element din cache.",
+      "hunk:const:var@11-27:5": "- **Depanare**: Ajută la identificarea poziției unui element în array sau a unei valori într-un obiect.\n- **Feedback vizual**: Confirmă că codul a ajuns la o anumită etapă, facilitând urmărirea execuției.\n- **Diagnosticare**: Poate indica dacă o căutare sau o verificare a fost realizată cu succes.",
+      "hunk:const:var@11-27:6": "- **Accelerare a performanței**: Această inserție permite accesul direct la datele cache, reducând timpul de căutare și îmbunătățind viteza execuției funcției.\n- **Evitarea recalculărilor**: Prin utilizarea valorilor cache, se evită recalculările redundante, economisind resurse și timp de procesare.\n- **Optimizare a memoriei**: Stocarea valorilor în cache poate reduce utilizarea memoriei, deoarece datele sunt reutilizate în loc să fie recalculate sau reîncărcate.",
+      "hunk:const:var@11-27:8": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se schimbă în timpul execuției funcției.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care nu vor fi modificate.\n- **Previne modificările accidentale** ale variabilelor constante, reducând riscul de erori în cod.\n- **Optimizează performanța** prin utilizarea variabilelor constante, care pot fi tratate mai eficient de motorul JavaScript.",
+      "hunk:const:var@11-27:9": "- **Corectare a indentării**: Inserția corectează indentarea pentru a respecta structura codului, făcând-l mai ușor de citit și de întreținut.\n- **Claritate**: Ajută la identificarea blocurilor de cod, facilitând înțelegerea fluxului de execuție.\n- **Consistență**: Asigură că codul respectă convențiile de stilare, contribuind la o bază de cod mai uniformă și profesională.",
+      "hunk:const:var@11-27:11": "- **Monitorizare progres**: Inserția adaugă un mesaj de logare care indică progresul calculului, afișând indexul curent.\n- **Depanare**: Ajută la identificarea punctelor în care procesul se blochează sau unde apar erori.\n- **Ușurință de urmărire**: Permite urmărirea ușoară a execuției funcției prin intermediul mesajelor de logare.",
+      "hunk:const:var@11-27:12": "- **Optimizare a performanței**: Această inserție adaugă valorile calculate anterior în cache, evitând recalcularea lor și reducând astfel timpul de execuție al funcției.\n- **Evitarea recalculărilor**: Dacă funcția `fib` este apelată cu același index de mai multe ori, valorile din cache sunt reutilizate, ceea ce este esențial pentru funcții recursive care pot duce la calculul repetat al aceleiași valori.\n- **Reducerea complexității**: Această tehnică transformă complexitatea exponențială a funcției `fib` într-o complexitate liniară, deoarece fiecare valoare este calculată o singură dată și apoi reutilizată.",
+      "hunk:const:var@11-27:13": "- **Optimizare a performanței**: Accesul direct la elementul din cache prin index este mai rapid decât o căutare în întregul array.\n- **Reducerea complexității**: Schimbarea de la o căutare liniară (O(n)) la un acces direct (O(1)) reduce complexitatea algoritmului.\n- **Evitarea recalculărilor**: Folosirea valorii din cache evită recalcularea aceleiași funcții pentru aceleași parametri, economisind timp și resurse.\n- **Consistență a rezultatelor**: Asigură că rezultatul este întotdeauna același pentru aceiași intrare, prevenind erori de calcul.",
+      "hunk:const:var@11-27:15": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se va schimba.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care nu vor fi modificate.\n- **Previne modificări accidentale** ale variabilelor, reducând riscul de erori în cod.\n- **Optimizează performanța** prin utilizarea variabilelor constante, care pot fi optimizate de motorul JavaScript.",
+      "hunk:const:var@11-27:17": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se schimbă în timpul execuției funcției.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care nu vor fi modificate.\n- **Previne erori de programare** prin asigurarea că variabila nu este suprascrisă accidental.\n- **Optimizează performanța** prin utilizarea variabilelor constante, care pot fi optimizate de motorul JavaScript.",
+      "hunk:func:fibGen@7-30:2": "- **Inițializare**: Adaugă o funcție numită `fibGen` care va genera secvența Fibonacci.\n- **Generare secvență**: Permite crearea unei secvențe de numere Fibonacci, unde fiecare număr este suma celor două precedente.\n- **Utilizare**: Poate fi utilizată pentru a genera numere Fibonacci la cerere, fără a calcula întregul șir de fiecare dată.\n- **Flexibilitate**: Permite personalizarea generării secvenței Fibonacci, de exemplu, pornind de la valori inițiale diferite.",
+      "hunk:func:fibGen@7-30:4": "- **Returnează funcția `fib`**: Această inserție returnează funcția `fib` în afara funcției `fibGen`, permițând accesul la aceasta din afara scopului curent.\n- **Permite generarea de numere Fibonacci**: Funcția returnată `fib` poate fi utilizată pentru a genera numere Fibonacci în mod eficient.\n- **Încapsulare a stării**: Funcția `fib` are acces la variabilele `a` și `b` din scopul închis al funcției `fibGen`, păstrând starea acestora între apeluri.\n- **Flexibilitate**: Această abordare permite utilizarea funcției `fib` în diferite contexte, nu doar în interiorul funcției `fibGen`.",
+      "hunk:func:fibGen@7-30:5": "- **Închide funcția**: Această inserție încheie definiția funcției `fibGen`, marcând sfârșitul blocului de cod.\n- **Permite apeluri ulterioare**: După închiderea funcției, aceasta poate fi apelată și utilizată în alte părți ale codului.\n- **Asigură corectitudinea sintactică**: Închiderea corectă a funcției este esențială pentru a evita erori de sintaxă și pentru a asigura funcționarea corectă a codului."
+    }
+  },
+  "auto_notes": {
+    "const:var@9-27": "- Funcție **var** [9–27]\n- Conține 2 `return`\n- Efecte: logare/diagnosticare",
+    "const:var@11-27": "- Funcție **var** [11–27]\n- Parametri: `index`\n- Conține 2 `return`\n- Efecte: logare/diagnosticare",
+    "const:var@31-31": "- Funcție **var** [31–31]\n- Heuristică: pare **pură** (fără efecte vizibile)",
+    "func:fibGen@7-30": "- Funcție **fibGen** [7–30]\n- Conține 3 `return`\n- Efecte: logare/diagnosticare",
+    "arrow:fib@11-27": "- Funcție **fib** [11–27]\n- Parametri: `index`\n- Conține 2 `return`\n- Efecte: logare/diagnosticare"
+  },
+  "micro_auto": {
+    "hunk:const:var@9-27:1": "- Completare incrementală: ",
+    "hunk:const:var@11-27:1": "- Definim **fib** ca funcție săgeată cu parametri: `index)`\n- Introducem variabila **fib** ← (index) => {",
+    "hunk:const:var@31-31:1": "- Completare incrementală: ",
+    "hunk:const:var@9-27:2": "- Introducem variabila **cache** ← [1, 1]",
+    "hunk:const:var@11-27:2": "- Completare incrementală: ",
+    "hunk:const:var@11-27:3": "- Introducem un **if** cu condiția `index < cache.length`",
+    "hunk:const:var@11-27:4": "- Completare incrementală: ",
+    "hunk:const:var@11-27:5": "- Inserăm **logare** (diagnostic) cu `console.*`.",
+    "hunk:const:var@11-27:6": "- Stabilim valoarea de întoarcere: `cache[index]`",
+    "hunk:const:var@11-27:7": "- Completare incrementală: ",
+    "hunk:const:var@11-27:8": "- Completare incrementală: }",
+    "hunk:const:var@11-27:9": "- Introducem un **if**",
+    "hunk:const:var@11-27:10": "- Completare incrementală: ",
+    "hunk:const:var@11-27:11": "- Inserăm **logare** (diagnostic) cu `console.*`.",
+    "hunk:const:var@11-27:12": "- Completare incrementală: cache[index] = fib(index - 1) + fib(index - 2)",
+    "hunk:const:var@11-27:13": "- Stabilim valoarea de întoarcere: `cache[index]`",
+    "hunk:const:var@11-27:14": "- Completare incrementală: ",
+    "hunk:const:var@11-27:15": "- Completare incrementală: }",
+    "hunk:const:var@11-27:16": "- Completare incrementală: ",
+    "hunk:const:var@11-27:17": "- Completare incrementală: }",
+    "hunk:func:fibGen@7-30:1": "- Completare incrementală: ",
+    "hunk:func:fibGen@7-30:2": "- Declarăm funcția **fibGen** cu parametrii: ∅",
+    "hunk:func:fibGen@7-30:3": "- Completare incrementală: ",
+    "hunk:func:fibGen@7-30:4": "- Stabilim valoarea de întoarcere: `fib`",
+    "hunk:func:fibGen@7-30:5": "- Completare incrementală: }"
+  }
+}

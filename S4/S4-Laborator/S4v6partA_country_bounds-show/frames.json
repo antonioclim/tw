@@ -1,0 +1,696 @@
+{
+  "frames": [
+    "",
+    "\n",
+    "\n",
+    "\nconst fetch = require('node-fetch')\n",
+    "\nconst fetch = require('node-fetch')\n",
+    "\nconst fetch = require('node-fetch')\n\n",
+    "\nconst fetch = require('node-fetch')\n\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\n\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\nfunction main () {\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n\nfunction main () {\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n\nfunction main () {\n\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n\nfunction main () {\n\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n\nfunction main () {\n\n  getCountryBounds('Romania')\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n\nfunction main () {\n\n  getCountryBounds('Romania')\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n\nfunction main () {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds))\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n      .then(object => resolve({\n\nfunction main () {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds))\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n      .then(object => resolve({\n\nfunction main () {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds))\n}\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n      .then(object => resolve({\n\n\nfunction main () {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds))\n}\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n      .then(object => resolve({\n\n        minLatitude: object[0].boundingbox[0],\n\nfunction main () {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds))\n}\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n      .then(object => resolve({\n\n        minLatitude: object[0].boundingbox[0],\n        maxLatitude: object[0].boundingbox[1],\n\nfunction main () {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds))\n}\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n      .then(object => resolve({\n\n        minLatitude: object[0].boundingbox[0],\n        maxLatitude: object[0].boundingbox[1],\n        minLongitude: object[0].boundingbox[2],\n\nfunction main () {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds))\n}\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n      .then(object => resolve({\n\n        minLatitude: object[0].boundingbox[0],\n        maxLatitude: object[0].boundingbox[1],\n        minLongitude: object[0].boundingbox[2],\n        maxLongitude: object[0].boundingbox[3],\n\nfunction main () {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds))\n}\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n      .then(object => resolve({\n\n        minLatitude: object[0].boundingbox[0],\n        maxLatitude: object[0].boundingbox[1],\n        minLongitude: object[0].boundingbox[2],\n        maxLongitude: object[0].boundingbox[3],\n\n\nfunction main () {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds))\n}\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n      .then(object => resolve({\n\n        minLatitude: object[0].boundingbox[0],\n        maxLatitude: object[0].boundingbox[1],\n        minLongitude: object[0].boundingbox[2],\n        maxLongitude: object[0].boundingbox[3],\n\n  }\n\nfunction main () {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds))\n}\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n      .then(object => resolve({\n\n        minLatitude: object[0].boundingbox[0],\n        maxLatitude: object[0].boundingbox[1],\n        minLongitude: object[0].boundingbox[2],\n        maxLongitude: object[0].boundingbox[3],\n\n  }\n  ))\n\nfunction main () {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds))\n}\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n      .then(object => resolve({\n\n        minLatitude: object[0].boundingbox[0],\n        maxLatitude: object[0].boundingbox[1],\n        minLongitude: object[0].boundingbox[2],\n        maxLongitude: object[0].boundingbox[3],\n\n  }\n  ))\n  )\n\nfunction main () {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds))\n}\n",
+    "\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n      .then(object => resolve({\n\n        minLatitude: object[0].boundingbox[0],\n        maxLatitude: object[0].boundingbox[1],\n        minLongitude: object[0].boundingbox[2],\n        maxLongitude: object[0].boundingbox[3],\n\n  }\n  ))\n  )\n}\n\nfunction main () {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds))\n}\n",
+    "/**\n* 6 - Urmăriți  acest videoclip S4v6A.mp4 pentru a vedea cum se poate face o cerere HTTP folosind Promise-uri cu .then.\n* TEMA: După ce ați testat exemplul, bazat pe exemplul anterior implementați o funcție (cu .then) care obține lista avioanelor de deasupra României.\n*\n*/\n\nconst fetch = require('node-fetch')\n\nfunction getObjectFromUrl (url) {\n\n  return new Promise(resolve =>\n    fetch(url)\n      .then(response => response.text())\n      .then(text => resolve(JSON.parse(text)))\n  )\n}\n\nfunction getCountryBounds (country) {\n\n  return new Promise(resolve =>\n    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)\n      .then(object => resolve({\n\n        minLatitude: object[0].boundingbox[0],\n        maxLatitude: object[0].boundingbox[1],\n        minLongitude: object[0].boundingbox[2],\n        maxLongitude: object[0].boundingbox[3],\n\n  }\n  ))\n  )\n}\n\nfunction main () {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds))\n}\n\nmain()\n"
+  ],
+  "style": "imperative",
+  "steps": [
+    {
+      "title": "Importuri și constante",
+      "rationale": "Definirea dependențelor și a configurărilor globale.",
+      "blocks": [
+        {
+          "name": "import",
+          "kind": "import",
+          "start": 6,
+          "end": 16
+        },
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 6,
+          "end": 16
+        }
+      ]
+    },
+    {
+      "title": "Logica procedurală",
+      "rationale": "Implementarea efectelor și a controlului de flux.",
+      "blocks": [
+        {
+          "name": "getObjectFromUrl",
+          "kind": "func",
+          "start": 8,
+          "end": 16
+        },
+        {
+          "name": "getCountryBounds",
+          "kind": "func",
+          "start": 17,
+          "end": 32
+        },
+        {
+          "name": "main",
+          "kind": "func",
+          "start": 33,
+          "end": 38
+        }
+      ]
+    }
+  ],
+  "patches": [
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "",
+        "focusStart": 6,
+        "focusEnd": 16,
+        "scrollLine": 6,
+        "name": "import",
+        "kind": "import",
+        "blkId": "import:import@6-16",
+        "hId": "hunk:import:import@6-16:1"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 1,
+        "end": 1,
+        "text": "const fetch = require('node-fetch')",
+        "focusStart": 6,
+        "focusEnd": 16,
+        "scrollLine": 7,
+        "name": "import",
+        "kind": "import",
+        "blkId": "import:import@6-16",
+        "hId": "hunk:import:import@6-16:2"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 2,
+        "end": 2,
+        "text": "",
+        "focusStart": 6,
+        "focusEnd": 16,
+        "scrollLine": 8,
+        "name": "import",
+        "kind": "import",
+        "blkId": "import:import@6-16",
+        "hId": "hunk:import:import@6-16:3"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 3,
+        "end": 3,
+        "text": "function getObjectFromUrl (url) {",
+        "focusStart": 6,
+        "focusEnd": 16,
+        "scrollLine": 9,
+        "name": "import",
+        "kind": "import",
+        "blkId": "import:import@6-16",
+        "hId": "hunk:import:import@6-16:4"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 4,
+        "end": 4,
+        "text": "",
+        "focusStart": 6,
+        "focusEnd": 16,
+        "scrollLine": 10,
+        "name": "import",
+        "kind": "import",
+        "blkId": "import:import@6-16",
+        "hId": "hunk:import:import@6-16:5"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 5,
+        "end": 5,
+        "text": "  return new Promise(resolve =>",
+        "focusStart": 6,
+        "focusEnd": 16,
+        "scrollLine": 11,
+        "name": "import",
+        "kind": "import",
+        "blkId": "import:import@6-16",
+        "hId": "hunk:import:import@6-16:6"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 6,
+        "end": 6,
+        "text": "    fetch(url)",
+        "focusStart": 6,
+        "focusEnd": 16,
+        "scrollLine": 12,
+        "name": "import",
+        "kind": "import",
+        "blkId": "import:import@6-16",
+        "hId": "hunk:import:import@6-16:7"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 7,
+        "end": 7,
+        "text": "      .then(response => response.text())",
+        "focusStart": 6,
+        "focusEnd": 16,
+        "scrollLine": 13,
+        "name": "import",
+        "kind": "import",
+        "blkId": "import:import@6-16",
+        "hId": "hunk:import:import@6-16:8"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 8,
+        "end": 8,
+        "text": "      .then(text => resolve(JSON.parse(text)))",
+        "focusStart": 6,
+        "focusEnd": 16,
+        "scrollLine": 14,
+        "name": "import",
+        "kind": "import",
+        "blkId": "import:import@6-16",
+        "hId": "hunk:import:import@6-16:9"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 9,
+        "end": 9,
+        "text": "  )",
+        "focusStart": 6,
+        "focusEnd": 16,
+        "scrollLine": 15,
+        "name": "import",
+        "kind": "import",
+        "blkId": "import:import@6-16",
+        "hId": "hunk:import:import@6-16:10"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 10,
+        "end": 10,
+        "text": "}",
+        "focusStart": 6,
+        "focusEnd": 16,
+        "scrollLine": 16,
+        "name": "import",
+        "kind": "import",
+        "blkId": "import:import@6-16",
+        "hId": "hunk:import:import@6-16:11"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 11,
+        "end": 11,
+        "text": "",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 17,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 12,
+        "end": 12,
+        "text": "",
+        "focusStart": 33,
+        "focusEnd": 38,
+        "scrollLine": 33,
+        "name": "main",
+        "kind": "func",
+        "blkId": "func:main@33-38",
+        "hId": "hunk:func:main@33-38:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 12,
+        "end": 12,
+        "text": "function getCountryBounds (country) {",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 18,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 14,
+        "end": 14,
+        "text": "function main () {",
+        "focusStart": 33,
+        "focusEnd": 38,
+        "scrollLine": 34,
+        "name": "main",
+        "kind": "func",
+        "blkId": "func:main@33-38",
+        "hId": "hunk:func:main@33-38:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 14,
+        "end": 14,
+        "text": "",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 19,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:3"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 16,
+        "end": 16,
+        "text": "",
+        "focusStart": 33,
+        "focusEnd": 38,
+        "scrollLine": 35,
+        "name": "main",
+        "kind": "func",
+        "blkId": "func:main@33-38",
+        "hId": "hunk:func:main@33-38:3"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 14,
+        "end": 14,
+        "text": "  return new Promise(resolve =>",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 20,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:4"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 18,
+        "end": 18,
+        "text": "  getCountryBounds('Romania')",
+        "focusStart": 33,
+        "focusEnd": 38,
+        "scrollLine": 36,
+        "name": "main",
+        "kind": "func",
+        "blkId": "func:main@33-38",
+        "hId": "hunk:func:main@33-38:4"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 15,
+        "end": 15,
+        "text": "    getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`)",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 21,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:5"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 20,
+        "end": 20,
+        "text": "    .then(bounds => console.log(bounds))",
+        "focusStart": 33,
+        "focusEnd": 38,
+        "scrollLine": 37,
+        "name": "main",
+        "kind": "func",
+        "blkId": "func:main@33-38",
+        "hId": "hunk:func:main@33-38:5"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 16,
+        "end": 16,
+        "text": "      .then(object => resolve({",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 22,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:6"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 22,
+        "end": 22,
+        "text": "}",
+        "focusStart": 33,
+        "focusEnd": 38,
+        "scrollLine": 38,
+        "name": "main",
+        "kind": "func",
+        "blkId": "func:main@33-38",
+        "hId": "hunk:func:main@33-38:6"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 18,
+        "end": 18,
+        "text": "",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 23,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:7"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 18,
+        "end": 18,
+        "text": "        minLatitude: object[0].boundingbox[0],",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 24,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:8"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 19,
+        "end": 19,
+        "text": "        maxLatitude: object[0].boundingbox[1],",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 25,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:9"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 20,
+        "end": 20,
+        "text": "        minLongitude: object[0].boundingbox[2],",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 26,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:10"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 21,
+        "end": 21,
+        "text": "        maxLongitude: object[0].boundingbox[3],",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 27,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:11"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 23,
+        "end": 23,
+        "text": "",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 28,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:12"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 23,
+        "end": 23,
+        "text": "  }",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 29,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:13"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 24,
+        "end": 24,
+        "text": "  ))",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 30,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:14"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 25,
+        "end": 25,
+        "text": "  )",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 31,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:15"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 26,
+        "end": 26,
+        "text": "}",
+        "focusStart": 17,
+        "focusEnd": 32,
+        "scrollLine": 32,
+        "name": "getCountryBounds",
+        "kind": "func",
+        "blkId": "func:getCountryBounds@17-32",
+        "hId": "hunk:func:getCountryBounds@17-32:16"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "/**\n* 6 - Urmăriți  acest videoclip S4v6A.mp4 pentru a vedea cum se poate face o cerere HTTP folosind Promise-uri cu .then.\n* TEMA: După ce ați testat exemplul, bazat pe exemplul anterior implementați o funcție (cu .then) care obține lista avioanelor de deasupra României.\n*\n*/"
+      },
+      {
+        "op": "insert",
+        "start": 33,
+        "end": 33,
+        "text": "\nmain()"
+      }
+    ]
+  ],
+  "llm": {
+    "provider": "Mistral Codestral",
+    "model": "codestral-latest",
+    "notes": {
+      "import:import@6-16": "### Rolul funcției `getObjectFromUrl`\n\n- **Rolul funcției** este de a prelua date de la o adresă URL specificată și de a le converti într-un obiect JavaScript.\n\n### Intrări și ieșiri\n\n- **Intrări**:\n  - `url`: O adresă URL de la care se vor prelua datele.\n\n- **Ieșiri**:\n  - **Promise**: O promisiune care se rezolvă cu un obiect JavaScript obținut din răspunsul de la URL-ul specificat.\n\n### Efecte\n\n- **Efecte secundare**:\n  - **Cerere HTTP**: Funcția face o cerere HTTP la adresa URL specificată pentru a prelua datele.\n  - **Conversie JSON**: Funcția convertește răspunsul text în format JSON într-un obiect JavaScript.\n\n### Exemple de utilizare\n\n- **Exemplu de apel**:\n  ```js\n  getObjectFromUrl('https://api.example.com/data')\n    .then(data => console.log(data))\n    .catch(error => console.error('Error:', error));\n  ```\n\n- **Exemplu de ieșire**:\n  ```js\n  {\n    \"name\": \"John Doe\",\n    \"age\": 30,\n    \"email\": \"john.doe@example.com\"\n  }\n  ```\n\n### Detalii tehnice\n\n- **Dependințe**:\n  - `node-fetch`: Un pachet care permite utilizarea API-ului Fetch în mediul Node.js.\n\n- **Metode utilizate**:\n  - `fetch`: Face o cerere HTTP la adresa URL specificată.\n  - `response.text()`: Preia răspunsul sub formă de text.\n  - `JSON.parse`: Converteste textul JSON într-un obiect JavaScript.\n\n### Gestionarea erorilor\n\n- **Gestionarea erorilor**:\n  - Funcția returnează o promisiune care poate fi gestionată cu `then` și `catch` pentru a trata erorile care pot apărea în timpul cererii HTTP sau a conversiei JSON.",
+      "const:var@6-16": "### Rolul funcției `getObjectFromUrl`\n\n- **Rolul funcției** este de a prelua date de la o adresă URL specificată și de a le converti într-un obiect JavaScript.\n\n### Intrări și ieșiri\n\n- **Intrări**:\n  - `url`: O adresă URL de la care se vor prelua datele. Aceasta este de tip `string`.\n\n- **Ieșiri**:\n  - **Promise**: Funcția returnează un obiect `Promise` care se va rezolva cu un obiect JavaScript obținut din răspunsul de la URL-ul specificat.\n\n### Efecte\n\n- **Efecte secundare**:\n  - **Cerere HTTP**: Funcția face o cerere HTTP către URL-ul specificat folosind `node-fetch`.\n  - **Conversie JSON**: Răspunsul HTTP este convertit din format text în obiect JavaScript folosind `JSON.parse`.\n\n### Exemple de utilizare\n\n- **Exemplu de apel**:\n  ```js\n  getObjectFromUrl('https://jsonplaceholder.typicode.com/posts/1')\n    .then(data => console.log(data))\n    .catch(error => console.error('Error:', error));\n  ```\n\n- **Exemplu de ieșire**:\n  ```js\n  {\n    userId: 1,\n    id: 1,\n    title: 'sunt aut facere repellat provident occaecati excepturi optio reprehenderit',\n    body: 'quia et suscipit\\nsuscipit recusandae consequuntur expedita et cum\\nreprehenderit molestiae ut ut quas totam\\nnostrum rerum est autem sunt rem eveniet architecto'\n  }\n  ```\n\n### Tratarea erorilor\n\n- **Tratarea erorilor**: Funcția nu are un bloc `catch` pentru a gestiona erorile, astfel încât erorile ar trebui să fie gestionate în codul care apelează `getObjectFromUrl`. De exemplu, folosind `.catch()` pe `Promise`-ul returnat.\n\n### Dependințe\n\n- **Dependințe**: Funcția utilizează `node-fetch` pentru a face cereri HTTP. Asigură-te că ai instalat `node-fetch` folosind `npm install node-fetch` înainte de a utiliza această funcție.",
+      "func:getObjectFromUrl@8-16": "### Bullets Didactice\n\n- **Rol**: Funcția `getObjectFromUrl` are rolul de a prelua date de la o adresă URL specificată și de a le converti într-un obiect JavaScript. Aceasta utilizează `fetch` pentru a face cererea HTTP și `Promise` pentru a gestiona asincronismul.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**: Funcția primește un singur parametru, `url`, care este un șir de caractere reprezentând adresa URL de la care se vor prelua datele.\n  - **Ieșiri**: Funcția returnează un `Promise` care se rezolvă cu un obiect JavaScript obținut din răspunsul cererii HTTP.\n\n- **Efecte**:\n  - **Efecte secundare**: Funcția face o cerere HTTP către adresa URL specificată, ceea ce poate avea efecte secundare precum consumul de lățime de bandă și resursele serverului.\n  - **Efecte de performanță**: Utilizarea `fetch` și `Promise` poate afecta performanța aplicației, deoarece cererile HTTP sunt operații asincrone care pot dura timp și pot bloca firul de execuție dacă nu sunt gestionate corect.\n  - **Efecte de eroare**: Funcția poate arunca erori dacă cererea HTTP eșuează sau dacă răspunsul nu poate fi convertit în JSON. Aceste erori trebuie gestionate pentru a evita blocarea aplicației.\n\n- **Exemplu de utilizare**:\n  ```js\n  getObjectFromUrl('https://api.example.com/data')\n    .then(data => console.log(data))\n    .catch(error => console.error('Error:', error));\n  ```\n\n- **Gestionarea erorilor**: Pentru a gestiona erorile, funcția poate fi extinsă pentru a include blocuri `catch` în lanțul de `Promise`-uri, astfel încât să poată trata erorile de rețea sau de parsare JSON.\n\n- **Optimizare**: Pentru a optimiza performanța, funcția poate fi modificată pentru a include opțiuni de configurare a cererii HTTP, cum ar fi metodele de cerere, antetele și corpul cererii. De asemenea, poate fi utilizată o bibliotecă precum `axios` pentru a simplifica gestionarea cererilor HTTP și a răspunsurilor.",
+      "func:getCountryBounds@17-32": "### Bullets Didactice\n\n- **Rol**: Funcția `getCountryBounds` are rolul de a obține coordonatele de delimitare ale unui țară specificată, utilizând serviciul de geocodare OpenStreetMap Nominatim.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**: Funcția primește un singur parametru, `country`, care reprezintă numele țării pentru care se doresc coordonatele de delimitare.\n  - **Ieșiri**: Funcția returnează o promisiune (`Promise`) care, când este rezolvată, furnizează un obiect cu proprietățile `minLatitude`, `maxLatitude`, `minLongitude` și `maxLongitude`, reprezentând coordonatele de delimitare ale țării.\n\n- **Efecte**:\n  - **Efecte secundare**: Funcția face un apel la un serviciu extern (OpenStreetMap Nominatim) pentru a obține datele necesare. Acest apel poate avea efecte secundare, cum ar fi utilizarea rețelei și eventual costuri asociate.\n  - **Efecte de performanță**: Funcția poate fi afectată de latenta rețelei și de disponibilitatea serviciului extern. De asemenea, funcția poate fi blocată dacă apelul la serviciul extern nu se finalizează în timp util.\n\n- **Detalii de implementare**:\n  - **Utilizare a promisiunilor**: Funcția utilizează promisiuni pentru a gestiona asincronismul. Aceasta este o practică bună pentru a gestiona operații asincrone, cum ar fi apelurile la servicii externe.\n  - **Accesare a datelor**: Funcția accesează proprietățile obiectului returnat de apelul la serviciul extern pentru a extrage coordonatele de delimitare. Este important să se verifice că obiectul returnat are structura așteptată pentru a evita erori.\n\n- **Posibile erori**:\n  - **Erori de rețea**: Dacă apelul la serviciul extern eșuează din cauza problemelor de rețea, promisiunea returnată de funcție va fi respinsă.\n  - **Erori de date**: Dacă obiectul returnat de apelul la serviciul extern nu are structura așteptată, funcția poate arunca o eroare atunci când încearcă să acceseze proprietățile obiectului.\n\n- **Exemplu de utilizare**:\n  ```js\n  getCountryBounds('Romania').then(bounds => {\n    console.log(bounds);\n    // Output: { minLatitude: '43.6285', maxLatitude: '48.2654', minLongitude: '20.2639', maxLongitude: '29.6879' }\n  });\n  ```",
+      "func:main@33-38": "**Bullets didactice:**\n\n- **Rol:** Funcția `main` este punctul de intrare al programului. Ea inițiază procesul de obținere a limitelor geografice ale României și afișează rezultatul în consolă.\n\n- **Intrări/Ieșiri:**\n  - **Intrări:** Funcția `main` nu primește niciun parametru.\n  - **Ieșiri:** Funcția `main` nu returnează nicio valoare, dar afișează în consolă limitele geografice ale României.\n\n- **Efecte:**\n  - **Efecte secundare:** Funcția `main` are un efect secundar, anume afișarea în consolă a limitelor geografice ale României.\n  - **Efecte de sistem:** Funcția `main` poate avea efecte de sistem, cum ar fi cererea către un serviciu extern pentru obținerea limitelor geografice.\n\n- **Utilizare a Promiselor:** Funcția `main` utilizează Promisi pentru a gestiona operațiile asincrone, cum ar fi cererea către un serviciu extern pentru obținerea limitelor geografice.\n\n- **Dependențe:** Funcția `main` depinde de funcția `getCountryBounds`, care este responsabilă pentru obținerea limitelor geografice ale unui țară specificată.\n\n- **Excepții:** Funcția `main` nu gestionează explicit excepțiile care ar putea apărea în timpul execuției, cum ar fi erorile de rețea sau erorile de procesare a răspunsului."
+    },
+    "micro": {
+      "hunk:import:import@6-16:2": "- **Adaugă capacitatea de a face cereri HTTP** în funcția curentă, permițând interacțiunea cu API-uri externe sau alte servicii web.\n- **Extinde funcționalitatea** a funcției prin integrarea unui modul extern (`node-fetch`), care nu era disponibil inițial.\n- **Permite prelucrarea datelor** primite de la serverele externe, facilitând prelucrarea și utilizarea acestora în funcția curentă.\n- **Asigură compatibilitatea** cu mediul Node.js, unde `node-fetch` este un modul comun pentru gestionarea cererilor HTTP.",
+      "hunk:import:import@6-16:4": "- **Extrage parametri din URL**: Această inserție permite funcției să preia și să returneze un obiect cu parametri dintr-un URL dat.\n- **Simplifică manipularea URL-urilor**: Facilitează accesul la parametri din URL fără a fi necesară manipularea manuală a șirurilor.\n- **Returnează un obiect**: Transformă parametri din URL într-un obiect JavaScript, ușor de utilizat în cod.\n- **Poate fi utilizat pentru rutare**: Ajută la implementarea rutării în aplicații web, permițând accesul ușor la parametri din URL.",
+      "hunk:import:import@6-16:6": "- **Promisiune**: Această inserție transformă funcția într-o promisiune, permițând gestionarea asincronă a operațiilor.\n- **Deferare**: Rezolvarea promisiunii este amânată până când se apelează explicit `resolve`, permițând controlul fluxului de execuție.\n- **Compatibilitate**: Promisiunile sunt compatibile cu sintaxa `async/await`, facilitând integrarea cu alte funcții asincrone.\n- **Gestionare erori**: Promisiunile pot fi gestionate cu `catch`, permițând tratarea erorilor într-un mod structurat.",
+      "hunk:import:import@6-16:7": "- **Accesare resurse externe**: Această inserție permite funcției să acceseze resurse externe prin intermediul unui apel HTTP, utilizând funcția `fetch` pentru a obține date de la o adresă URL specificată.\n- **Asincronitate**: Adăugarea `fetch` introduce un comportament asincron, deoarece apelul către o resursă externă poate dura un timp variabil, necesitănd gestionarea promisiunilor sau a callback-urilor pentru a prelucra răspunsul.\n- **Interacțiune cu API-uri**: Această inserție permite interacțiunea cu API-uri externe, permițând funcției să primească și să trateze date JSON sau alte formate de răspuns.\n- **Dependințe externe**: Utilizarea `fetch` adaugă o dependință la funcționalitățile de rețea ale browserului sau a mediului de execuție, ceea ce poate afecta comportamentul funcției în anumite contexte sau medii.",
+      "hunk:import:import@6-16:8": "- **Transformarea răspunsului în text**: Această inserție converteste răspunsul primit de la server într-un format text, ceea ce este util atunci când serverul returnează date în format text sau HTML.\n- **Prepararea datelor pentru procesare**: Aceasta permite procesarea ulterioară a datelor sub formă de text, cum ar fi parsarea sau manipularea acestora.\n- **Simplificarea fluxului de date**: Înlocuiește necesitatea de a gestiona răspunsuri complexe sau binare, simplificând astfel codul și facilitând lucrul cu datele.",
+      "hunk:import:import@6-16:9": "- **Parsarea datelor JSON**: Această inserție adaugă funcționalitatea de a parsa textul primit într-un obiect JavaScript folosind `JSON.parse()`, transformând astfel datele din format text în formatul necesar pentru manipulare în codul JavaScript.\n- **Gestionarea asincronă**: Folosind `resolve`, inserția permite ca rezultatul parsării să fie transmis către următorul pas din lanțul de promisiuni, facilitând astfel gestionarea operațiilor asincrone.\n- **Simplificarea codului**: Această linie de cod simplifică procesul de prelucrare a datelor JSON, eliminând necesitatea de a scrie manual cod suplimentar pentru parsare și rezolvare a promisiunii.",
+      "hunk:import:import@6-16:10": "- **Îmbunătățirea citirii codului**: Inserția adaugă un spațiu între parantezele rotunde, ceea ce face codul mai ușor de citit și înțelegere.\n- **Consistența stilului**: Această inserție ajută la menținerea unui stil uniform în cod, ceea ce este important pentru colaborarea eficientă în echipă.\n- **Prevenirea erorilor**: Adăugarea spațiului între paranteze poate preveni erori de sintaxă, deoarece unele limbaje de programare sunt sensibile la spațiile albe.",
+      "hunk:import:import@6-16:11": "- **Îmbunătățirea structurii codului**: Această inserție ajută la organizarea mai bună a codului, făcându-l mai ușor de citit și de întreținut.\n- **Prevenirea erorilor**: Asigură că codul este sintactic corect și evită apariția erorilor de sintaxă.\n- **Optimizarea performanței**: Contribuie la o execuție mai eficientă a codului, deoarece reduce riscul de erori care ar putea afecta performanța.",
+      "hunk:func:getCountryBounds@17-32:2": "- **Clarificare**: Începutul funcției este marcat explicit, făcându-se mai ușor de urmărit codul.\n- **Documentare**: Poate fi folosit pentru a adăuga comentarii sau documentație în viitor, explicând scopul funcției.\n- **Extensibilitate**: Permite adăugarea de parametri sau modificări ulterioare fără a afecta restul codului.\n- **Convenție**: Respectă convențiile de denumire și structură a codului, facilitând colaborarea și menținerea.",
+      "hunk:func:main@33-38:2": "- **Definirea funcției**: Această inserție definește o funcție numită `main`, care poate fi apelată ulterior în cod.\n- **Bloc de cod**: Începe un bloc de cod delimitat de acolade `{ }`, în care se vor scrie instrucțiile funcției.\n- **Scop**: Funcția `main` servește ca punct de intrare în program, unde se pot iniția și coordona alte operații.",
+      "hunk:func:getCountryBounds@17-32:4": "- **Asincronitate**: Adăugarea `Promise` permite funcției să returneze o promisiune, permițând apelantului să trateze rezultatul într-un mod asincron, folosind `.then()` sau `async/await`.\n- **Compatibilitate**: Face funcția compatibilă cu codul care așteaptă promisiuni, facilitând integrarea cu alte funcții asincrone sau biblioteci care folosesc promisiuni.\n- **Controlul fluxului**: Permite gestionarea mai bună a fluxului de execuție, permițând apelantului să decidă când să proceseze rezultatul, în loc să aștepte blocant.",
+      "hunk:func:main@33-38:4": "- **Accesare date geografice**: Inserția adaugă funcționalitatea de a obține coordonatele geografice ale României, permițând utilizarea acestora în alte părți ale aplicației.\n- **Personalizare**: Permite adaptarea aplicației pentru a se concentra pe România, oferind o experiență mai relevantă pentru utilizatorii din această țară.\n- **Integrare cu alte funcții**: Poate fi utilizată împreună cu alte funcții pentru a afișa hărți, statistici sau alte informații specifice României.",
+      "hunk:func:getCountryBounds@17-32:5": "- **Accesare date geografice**: Inserția permite obținerea coordonatelor geografice ale țării specificate prin interogarea serviciului Nominatim de la OpenStreetMap.\n- **Integrare cu API extern**: Această funcție folosește un API extern pentru a prelua datele necesare, extinzând funcționalitatea curentă a aplicației.\n- **Utilizare a datelor în aplicație**: Datele obținute pot fi utilizate pentru a delimita hărțile sau pentru alte operații geografice în cadrul aplicației.",
+      "hunk:func:main@33-38:5": "- Adaugă o funcție de callback care primește obiectul `bounds` și îl afișează în consolă.\n- Permite vizualizarea valorilor din obiectul `bounds` pentru depanare sau verificare.\n- Este utilă pentru a verifica dacă datele sunt primite corect înainte de a fi procesate mai departe.\n- Poate fi înlocuită cu o altă funcție de callback pentru a efectua alte operații cu `bounds`.",
+      "hunk:func:getCountryBounds@17-32:6": "- **Extrage obiectul JSON**: Inserția extrage obiectul JSON primit din răspunsul unei promisiuni.\n- **Transformă datele**: Prepara obiectul pentru a fi rezolvat, asigurând că datele sunt în formatul necesar pentru funcția curentă.\n- **Asigură compatibilitatea**: Asigură că datele sunt în formatul corect pentru a fi procesate de restul funcției `getCountryBounds`.",
+      "hunk:func:main@33-38:6": "- **Închide funcția**: Acest fragment închide corpul funcției `main`, marcând sfârșitul blocului de cod asociat acesteia.\n- **Permite execuția**: Fără această închidere, codul din interiorul funcției nu ar putea fi executat corect.\n- **Sintaxă corectă**: Este o parte esențială a sintaxei JavaScript pentru a defini corect o funcție.",
+      "hunk:func:getCountryBounds@17-32:8": "- **Accesare corectă a coordonatelor**: Inserția asigură accesul la coordonata minimă de latitudine din obiectul `boundingbox`, necesară pentru definirea granițelor țării.\n- **Evitarea erorilor de indexare**: Folosirea indexului `[0]` asigură că se accesează prima valoare din `boundingbox`, prevenind erori de tip \"undefined\" sau \"out of bounds\".\n- **Eficiență**: Accesul direct la coordonate reduce timpul de execuție și simplifică codul.\n- **Claritate**: Inserția face codul mai ușor de înțeles, indicând explicit că se lucrează cu coordonatele minime de latitudine.",
+      "hunk:func:getCountryBounds@17-32:9": "- **Accesare corectă a coordonatelor**: Inserția asigură că se accesează corect coordonata de latitudine maximă din obiectul `boundingbox`.\n- **Corectitudine a datelor**: Asigură că se folosește valoarea corectă pentru latitudinea maximă, evitând erori de tip \"undefined\" sau \"null\".\n- **Conformitate cu standardul**: Respectă formatul standard al obiectului `boundingbox`, unde prima coordonată este latitudinea minimă și a doua este latitudinea maximă.",
+      "hunk:func:getCountryBounds@17-32:10": "- **Accesare corectă a coordonatelor**: Inserția asigură accesul la coordonata minimă de longitudine din `boundingbox`, necesară pentru definirea granițelor țării.\n- **Optimizare a codului**: Fragmentul simplifică procesul de extragere a datelor, reducând riscul de erori și îmbunătățind lizibilitatea.\n- **Precizie geografică**: Asigură că granițele țării sunt definite cu exactitate, utilizând coordonatele corecte din `boundingbox`.",
+      "hunk:func:getCountryBounds@17-32:11": "- **Corectarea erorii de indexare**: Inserția corectează o eroare de indexare care putea apărea dacă `object[0].boundingbox` nu este definit sau nu are cel puțin 4 elemente.\n- **Asigurarea valorii corecte**: Asigură că `maxLongitude` primește valoarea corectă din `boundingbox`, care este a patra valoare (index 3) în formatul standard de bounding box.\n- **Prevenirea erorilor de execuție**: Previne erori de execuție care ar putea apărea dacă `boundingbox` nu este definit sau nu are suficiente elemente.\n- **Mentenanța codului**: Face codul mai robust și mai ușor de întreținut, asigurându-se că toate valorile necesare sunt disponibile înainte de a fi utilizate.",
+      "hunk:func:getCountryBounds@17-32:13": "- **Îmbunătățirea citirii codului**: Inserția adaugă un spațiu între parantezele de închidere, ceea ce face codul mai ușor de citit și mai bine formatat.\n- **Consistența stilului**: Această inserție ajută la menținerea unui stil uniform în cod, ceea ce este important pentru colaborarea eficientă în echipă.\n- **Prevenirea erorilor**: Un spațiu suplimentar între paranteze poate preveni erori de sintaxă sau de interpretare a codului.",
+      "hunk:func:getCountryBounds@17-32:14": "- **Închide parantezele funcției**: Această inserție închide parantezele funcției `getCountryBounds`, marcând sfârșitul corpului funcției.\n- **Permite apelarea funcției**: Cu această inserție, funcția poate fi apelată în codul JavaScript, de exemplu: `getCountryBounds()`.\n- **Asigură sintaxa corectă**: Închiderea parantezelor este esențială pentru a menține sintaxa JavaScript corectă și pentru a evita erori.",
+      "hunk:func:getCountryBounds@17-32:15": "- **Închide paranteza funcției**: Această inserție închide paranteza care deschide corpul funcției `getCountryBounds`, marcând sfârșitul parametrilor și începutul blocului de cod al funcției.\n- **Permite adăugarea codului**: După această inserție, se poate adăuga codul care va fi executat atunci când funcția este apelată, pentru a obține granițele țării specificate.",
+      "hunk:func:getCountryBounds@17-32:16": "- **Îmbunătățirea citirii codului**: Această inserție separă logic funcțiile, făcând codul mai ușor de citit și de înțeles.\n- **Prevenirea erorilor**: Separarea funcțiilor reduce riscul de a introduce erori în codul existent.\n- **Ușurința de întreținere**: Adăugarea unei noi funcții permite o întreținere mai ușoară și o actualizare mai rapidă a codului."
+    }
+  },
+  "auto_notes": {
+    "import:import@6-16": "- Funcție **import** [6–16]\n- Conține 1 `return`\n- Efecte: cereri HTTP",
+    "const:var@6-16": "- Funcție **var** [6–16]\n- Conține 1 `return`\n- Efecte: cereri HTTP",
+    "func:getObjectFromUrl@8-16": "- Funcție **getObjectFromUrl** [8–16]\n- Conține 1 `return`\n- Efecte: cereri HTTP",
+    "func:getCountryBounds@17-32": "- Funcție **getCountryBounds** [17–32]\n- Conține 1 `return`",
+    "func:main@33-38": "- Funcție **main** [33–38]\n- Efecte: logare/diagnosticare"
+  },
+  "micro_auto": {
+    "hunk:import:import@6-16:1": "- Completare incrementală: ",
+    "hunk:import:import@6-16:2": "- Introducem variabila **fetch** ← require('node-fetch')",
+    "hunk:import:import@6-16:3": "- Completare incrementală: ",
+    "hunk:import:import@6-16:4": "- Declarăm funcția **getObjectFromUrl** cu parametrii: `url`",
+    "hunk:import:import@6-16:5": "- Completare incrementală: ",
+    "hunk:import:import@6-16:6": "- Stabilim valoarea de întoarcere: `new Promise(resolve =>`\n- Operăm **asincron** (`async/await` sau `Promise`).",
+    "hunk:import:import@6-16:7": "- Adăugăm o **cerere HTTP** cu `fetch(...)`.",
+    "hunk:import:import@6-16:8": "- Completare incrementală: .then(response => response.text())",
+    "hunk:import:import@6-16:9": "- Completare incrementală: .then(text => resolve(JSON.parse(text)))",
+    "hunk:import:import@6-16:10": "- Completare incrementală: )",
+    "hunk:import:import@6-16:11": "- Completare incrementală: }",
+    "hunk:func:getCountryBounds@17-32:1": "- Completare incrementală: ",
+    "hunk:func:main@33-38:1": "- Completare incrementală: ",
+    "hunk:func:getCountryBounds@17-32:2": "- Declarăm funcția **getCountryBounds** cu parametrii: `country`",
+    "hunk:func:main@33-38:2": "- Declarăm funcția **main** cu parametrii: ∅",
+    "hunk:func:getCountryBounds@17-32:3": "- Completare incrementală: ",
+    "hunk:func:main@33-38:3": "- Completare incrementală: ",
+    "hunk:func:getCountryBounds@17-32:4": "- Stabilim valoarea de întoarcere: `new Promise(resolve =>`\n- Operăm **asincron** (`async/await` sau `Promise`).",
+    "hunk:func:main@33-38:4": "- Completare incrementală: getCountryBounds('Romania')",
+    "hunk:func:getCountryBounds@17-32:5": "- Completare incrementală: getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&…",
+    "hunk:func:main@33-38:5": "- Inserăm **logare** (diagnostic) cu `console.*`.",
+    "hunk:func:getCountryBounds@17-32:6": "- Completare incrementală: .then(object => resolve({",
+    "hunk:func:main@33-38:6": "- Completare incrementală: }",
+    "hunk:func:getCountryBounds@17-32:7": "- Completare incrementală: ",
+    "hunk:func:getCountryBounds@17-32:8": "- Completare incrementală: minLatitude: object[0].boundingbox[0],",
+    "hunk:func:getCountryBounds@17-32:9": "- Completare incrementală: maxLatitude: object[0].boundingbox[1],",
+    "hunk:func:getCountryBounds@17-32:10": "- Completare incrementală: minLongitude: object[0].boundingbox[2],",
+    "hunk:func:getCountryBounds@17-32:11": "- Completare incrementală: maxLongitude: object[0].boundingbox[3],",
+    "hunk:func:getCountryBounds@17-32:12": "- Completare incrementală: ",
+    "hunk:func:getCountryBounds@17-32:13": "- Completare incrementală: }",
+    "hunk:func:getCountryBounds@17-32:14": "- Completare incrementală: ))",
+    "hunk:func:getCountryBounds@17-32:15": "- Completare incrementală: )",
+    "hunk:func:getCountryBounds@17-32:16": "- Completare incrementală: }"
+  }
+}

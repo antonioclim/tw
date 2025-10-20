@@ -1,0 +1,1209 @@
+{
+  "frames": [
+    "",
+    "\n",
+    "\n\n",
+    "\nconst constant = new ConstantStream(1);\n\n",
+    "\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\n\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\nclass ConstantStream extends Stream {\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\nclass ConstantStream extends Stream {\n\nclass NextIntegerStream extends Stream {\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n\nclass ConstantStream extends Stream {\n\nclass NextIntegerStream extends Stream {\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n\nclass ConstantStream extends Stream {\n\n\nclass NextIntegerStream extends Stream {\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n\nclass ConstantStream extends Stream {\n\n\nclass NextIntegerStream extends Stream {\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\nclass ConstantStream extends Stream {\n\n\nclass NextIntegerStream extends Stream {\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\nclass NextIntegerStream extends Stream {\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n    this.#value = this.#nextValue(this.#value);\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n    this.#value = this.#nextValue(this.#value);\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n    this.#value = this.#nextValue(this.#value);\n\n    return this.#value;\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n    this.#value = this.#nextValue(this.#value);\n\n    return this.#value;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n    this.#value = this.#nextValue(this.#value);\n\n    return this.#value;\n\n  }\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n    this.#value = this.#nextValue(this.#value);\n\n    return this.#value;\n\n  }\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n    this.#value = this.#nextValue(this.#value);\n\n    return this.#value;\n\n  }\n\n  static get count() {\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n    this.#value = this.#nextValue(this.#value);\n\n    return this.#value;\n\n  }\n\n  static get count() {\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n    this.#value = this.#nextValue(this.#value);\n\n    return this.#value;\n\n  }\n\n  static get count() {\n\n    return Stream.#count;\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n    this.#value = this.#nextValue(this.#value);\n\n    return this.#value;\n\n  }\n\n  static get count() {\n\n    return Stream.#count;\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n    this.#value = this.#nextValue(this.#value);\n\n    return this.#value;\n\n  }\n\n  static get count() {\n\n    return Stream.#count;\n\n  }\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n    this.#value = this.#nextValue(this.#value);\n\n    return this.#value;\n\n  }\n\n  static get count() {\n\n    return Stream.#count;\n\n  }\n\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n    this.#value = this.#nextValue(this.#value);\n\n    return this.#value;\n\n  }\n\n  static get count() {\n\n    return Stream.#count;\n\n  }\n\n}\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n",
+    "// streams.js\n/**\n* 1 - Urmăriți videoclipul S4v1.mp4 pentru a vedea cum se declară un tip obiectual în Javascript.\n* După ce ați testat exemplul, implementați un tip obiectual care implementează un șir crescător având ca elemente toate numerele pare pornind de la o valoare dată.\n* Constructorul primește valoarea inițială a secvenței.\n* Singura metodă este 'next' care calculează următoarea valoare din șir.\n*\n*/\n\nclass Stream {\n\n  #value;\n\n  #nextValue;\n\n  static #count = 0;\n\n  constructor(value, nextValue) {\n\n    this.#value = value;\n\n    this.#nextValue = nextValue;\n\n    Stream.#count++;\n\n  }\n\n  get value() {\n\n    return this.#value;\n\n  }\n\n  get next() {\n\n    this.#value = this.#nextValue(this.#value);\n\n    return this.#value;\n\n  }\n\n  static get count() {\n\n    return Stream.#count;\n\n  }\n\n}\n\nclass ConstantStream extends Stream {\n\n  constructor(value) {\n\n    super(value, value => value);\n\n  }\n\n}\n\nclass NextIntegerStream extends Stream {\n\n  constructor() {\n\n    super(0, value => value + 1);\n\n  }\n\n}\n\nconst constant = new ConstantStream(1);\n\nconst nextInteger = new NextIntegerStream();\n\nfor (let i = 0; i < 10; i++) {\n\n  console.log(`constant[${i}] = ${constant.next}`);\n\n  console.log(`nextInteger[${i}] = ${nextInteger.next}`);\n\n}\n\nconsole.log(Stream.count);\n"
+  ],
+  "style": "imperative",
+  "steps": [
+    {
+      "title": "Importuri și constante",
+      "rationale": "Gestionarea dependențelor și a configurărilor globale.",
+      "blocks": [
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 69,
+          "end": 70
+        },
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 71,
+          "end": 72
+        }
+      ]
+    },
+    {
+      "title": "Definirea claselor și prototipurilor",
+      "rationale": "Modelarea datelor și a comportamentelor în paradigma OOP.",
+      "blocks": [
+        {
+          "name": "Stream",
+          "kind": "class",
+          "start": 9,
+          "end": 48
+        },
+        {
+          "name": "ConstantStream",
+          "kind": "class",
+          "start": 49,
+          "end": 58
+        },
+        {
+          "name": "NextIntegerStream",
+          "kind": "class",
+          "start": 59,
+          "end": 68
+        }
+      ]
+    }
+  ],
+  "patches": [
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "",
+        "focusStart": 69,
+        "focusEnd": 70,
+        "scrollLine": 69,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@69-70",
+        "hId": "hunk:const:var@69-70:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 1,
+        "end": 1,
+        "text": "",
+        "focusStart": 71,
+        "focusEnd": 72,
+        "scrollLine": 71,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@71-72",
+        "hId": "hunk:const:var@71-72:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 1,
+        "end": 1,
+        "text": "const constant = new ConstantStream(1);",
+        "focusStart": 69,
+        "focusEnd": 70,
+        "scrollLine": 70,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@69-70",
+        "hId": "hunk:const:var@69-70:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 3,
+        "end": 3,
+        "text": "const nextInteger = new NextIntegerStream();",
+        "focusStart": 71,
+        "focusEnd": 72,
+        "scrollLine": 72,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@71-72",
+        "hId": "hunk:const:var@71-72:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 9,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "",
+        "focusStart": 49,
+        "focusEnd": 58,
+        "scrollLine": 49,
+        "name": "ConstantStream",
+        "kind": "class",
+        "blkId": "class:ConstantStream@49-58",
+        "hId": "hunk:class:ConstantStream@49-58:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "",
+        "focusStart": 59,
+        "focusEnd": 68,
+        "scrollLine": 59,
+        "name": "NextIntegerStream",
+        "kind": "class",
+        "blkId": "class:NextIntegerStream@59-68",
+        "hId": "hunk:class:NextIntegerStream@59-68:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 1,
+        "end": 1,
+        "text": "class Stream {",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 10,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 3,
+        "end": 3,
+        "text": "class ConstantStream extends Stream {",
+        "focusStart": 49,
+        "focusEnd": 58,
+        "scrollLine": 50,
+        "name": "ConstantStream",
+        "kind": "class",
+        "blkId": "class:ConstantStream@49-58",
+        "hId": "hunk:class:ConstantStream@49-58:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 5,
+        "end": 5,
+        "text": "class NextIntegerStream extends Stream {",
+        "focusStart": 59,
+        "focusEnd": 68,
+        "scrollLine": 60,
+        "name": "NextIntegerStream",
+        "kind": "class",
+        "blkId": "class:NextIntegerStream@59-68",
+        "hId": "hunk:class:NextIntegerStream@59-68:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 2,
+        "end": 2,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 11,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:3"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 6,
+        "end": 6,
+        "text": "",
+        "focusStart": 49,
+        "focusEnd": 58,
+        "scrollLine": 51,
+        "name": "ConstantStream",
+        "kind": "class",
+        "blkId": "class:ConstantStream@49-58",
+        "hId": "hunk:class:ConstantStream@49-58:3"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 9,
+        "end": 9,
+        "text": "",
+        "focusStart": 59,
+        "focusEnd": 68,
+        "scrollLine": 61,
+        "name": "NextIntegerStream",
+        "kind": "class",
+        "blkId": "class:NextIntegerStream@59-68",
+        "hId": "hunk:class:NextIntegerStream@59-68:3"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 3,
+        "end": 3,
+        "text": "  #value;",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 12,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:4"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 7,
+        "end": 7,
+        "text": "  constructor(value) {",
+        "focusStart": 49,
+        "focusEnd": 58,
+        "scrollLine": 52,
+        "name": "ConstantStream",
+        "kind": "class",
+        "blkId": "class:ConstantStream@49-58",
+        "hId": "hunk:class:ConstantStream@49-58:4"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 11,
+        "end": 11,
+        "text": "  constructor() {",
+        "focusStart": 59,
+        "focusEnd": 68,
+        "scrollLine": 62,
+        "name": "NextIntegerStream",
+        "kind": "class",
+        "blkId": "class:NextIntegerStream@59-68",
+        "hId": "hunk:class:NextIntegerStream@59-68:4"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 4,
+        "end": 4,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 13,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:5"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 10,
+        "end": 10,
+        "text": "",
+        "focusStart": 49,
+        "focusEnd": 58,
+        "scrollLine": 53,
+        "name": "ConstantStream",
+        "kind": "class",
+        "blkId": "class:ConstantStream@49-58",
+        "hId": "hunk:class:ConstantStream@49-58:5"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 15,
+        "end": 15,
+        "text": "",
+        "focusStart": 59,
+        "focusEnd": 68,
+        "scrollLine": 63,
+        "name": "NextIntegerStream",
+        "kind": "class",
+        "blkId": "class:NextIntegerStream@59-68",
+        "hId": "hunk:class:NextIntegerStream@59-68:5"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 5,
+        "end": 5,
+        "text": "  #nextValue;",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 14,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:6"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 11,
+        "end": 11,
+        "text": "    super(value, value => value);",
+        "focusStart": 49,
+        "focusEnd": 58,
+        "scrollLine": 54,
+        "name": "ConstantStream",
+        "kind": "class",
+        "blkId": "class:ConstantStream@49-58",
+        "hId": "hunk:class:ConstantStream@49-58:6"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 17,
+        "end": 17,
+        "text": "    super(0, value => value + 1);",
+        "focusStart": 59,
+        "focusEnd": 68,
+        "scrollLine": 64,
+        "name": "NextIntegerStream",
+        "kind": "class",
+        "blkId": "class:NextIntegerStream@59-68",
+        "hId": "hunk:class:NextIntegerStream@59-68:6"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 6,
+        "end": 6,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 15,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:7"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 14,
+        "end": 14,
+        "text": "",
+        "focusStart": 49,
+        "focusEnd": 58,
+        "scrollLine": 55,
+        "name": "ConstantStream",
+        "kind": "class",
+        "blkId": "class:ConstantStream@49-58",
+        "hId": "hunk:class:ConstantStream@49-58:7"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 21,
+        "end": 21,
+        "text": "",
+        "focusStart": 59,
+        "focusEnd": 68,
+        "scrollLine": 65,
+        "name": "NextIntegerStream",
+        "kind": "class",
+        "blkId": "class:NextIntegerStream@59-68",
+        "hId": "hunk:class:NextIntegerStream@59-68:7"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 7,
+        "end": 7,
+        "text": "  static #count = 0;",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 16,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:8"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 15,
+        "end": 15,
+        "text": "  }",
+        "focusStart": 49,
+        "focusEnd": 58,
+        "scrollLine": 56,
+        "name": "ConstantStream",
+        "kind": "class",
+        "blkId": "class:ConstantStream@49-58",
+        "hId": "hunk:class:ConstantStream@49-58:8"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 23,
+        "end": 23,
+        "text": "  }",
+        "focusStart": 59,
+        "focusEnd": 68,
+        "scrollLine": 66,
+        "name": "NextIntegerStream",
+        "kind": "class",
+        "blkId": "class:NextIntegerStream@59-68",
+        "hId": "hunk:class:NextIntegerStream@59-68:8"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 8,
+        "end": 8,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 17,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:9"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 18,
+        "end": 18,
+        "text": "",
+        "focusStart": 49,
+        "focusEnd": 58,
+        "scrollLine": 57,
+        "name": "ConstantStream",
+        "kind": "class",
+        "blkId": "class:ConstantStream@49-58",
+        "hId": "hunk:class:ConstantStream@49-58:9"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 27,
+        "end": 27,
+        "text": "",
+        "focusStart": 59,
+        "focusEnd": 68,
+        "scrollLine": 67,
+        "name": "NextIntegerStream",
+        "kind": "class",
+        "blkId": "class:NextIntegerStream@59-68",
+        "hId": "hunk:class:NextIntegerStream@59-68:9"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 9,
+        "end": 9,
+        "text": "  constructor(value, nextValue) {",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 18,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:10"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 19,
+        "end": 19,
+        "text": "}",
+        "focusStart": 49,
+        "focusEnd": 58,
+        "scrollLine": 58,
+        "name": "ConstantStream",
+        "kind": "class",
+        "blkId": "class:ConstantStream@49-58",
+        "hId": "hunk:class:ConstantStream@49-58:10"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 29,
+        "end": 29,
+        "text": "}",
+        "focusStart": 59,
+        "focusEnd": 68,
+        "scrollLine": 68,
+        "name": "NextIntegerStream",
+        "kind": "class",
+        "blkId": "class:NextIntegerStream@59-68",
+        "hId": "hunk:class:NextIntegerStream@59-68:10"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 10,
+        "end": 10,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 19,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:11"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 11,
+        "end": 11,
+        "text": "    this.#value = value;",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 20,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:12"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 12,
+        "end": 12,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 21,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:13"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 13,
+        "end": 13,
+        "text": "    this.#nextValue = nextValue;",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 22,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:14"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 14,
+        "end": 14,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 23,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:15"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 15,
+        "end": 15,
+        "text": "    Stream.#count++;",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 24,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:16"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 16,
+        "end": 16,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 25,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:17"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 17,
+        "end": 17,
+        "text": "  }",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 26,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:18"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 18,
+        "end": 18,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 27,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:19"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 19,
+        "end": 19,
+        "text": "  get value() {",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 28,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:20"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 20,
+        "end": 20,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 29,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:21"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 21,
+        "end": 21,
+        "text": "    return this.#value;",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 30,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:22"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 22,
+        "end": 22,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 31,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:23"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 23,
+        "end": 23,
+        "text": "  }",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 32,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:24"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 25,
+        "end": 25,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 33,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:25"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 25,
+        "end": 25,
+        "text": "  get next() {",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 34,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:26"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 27,
+        "end": 27,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 35,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:27"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 27,
+        "end": 27,
+        "text": "    this.#value = this.#nextValue(this.#value);",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 36,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:28"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 29,
+        "end": 29,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 37,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:29"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 29,
+        "end": 29,
+        "text": "    return this.#value;",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 38,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:30"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 31,
+        "end": 31,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 39,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:31"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 31,
+        "end": 31,
+        "text": "  }",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 40,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:32"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 33,
+        "end": 33,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 41,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:33"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 33,
+        "end": 33,
+        "text": "  static get count() {",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 42,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:34"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 35,
+        "end": 35,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 43,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:35"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 35,
+        "end": 35,
+        "text": "    return Stream.#count;",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 44,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:36"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 37,
+        "end": 37,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 45,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:37"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 37,
+        "end": 37,
+        "text": "  }",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 46,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:38"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 39,
+        "end": 39,
+        "text": "",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 47,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:39"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 39,
+        "end": 39,
+        "text": "}",
+        "focusStart": 9,
+        "focusEnd": 48,
+        "scrollLine": 48,
+        "name": "Stream",
+        "kind": "class",
+        "blkId": "class:Stream@9-48",
+        "hId": "hunk:class:Stream@9-48:40"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "// streams.js\n/**\n* 1 - Urmăriți videoclipul S4v1.mp4 pentru a vedea cum se declară un tip obiectual în Javascript.\n* După ce ați testat exemplul, implementați un tip obiectual care implementează un șir crescător având ca elemente toate numerele pare pornind de la o valoare dată.\n* Constructorul primește valoarea inițială a secvenței.\n* Singura metodă este 'next' care calculează următoarea valoare din șir.\n*\n*/"
+      },
+      {
+        "op": "insert",
+        "start": 64,
+        "end": 64,
+        "text": "\nfor (let i = 0; i < 10; i++) {\n\n  console.log(`constant[${i}] = ${constant.next}`);\n\n  console.log(`nextInteger[${i}] = ${nextInteger.next}`);\n\n}\n\nconsole.log(Stream.count);"
+      }
+    ]
+  ],
+  "llm": {
+    "provider": "Mistral Codestral",
+    "model": "codestral-latest",
+    "notes": {
+      "const:var@69-70": "### Bullets Didactice\n\n- **Rol**: Declarația `const constant = new ConstantStream(1);` are rolul de a crea un obiect `ConstantStream` care emite o valoare constantă de 1. Acest obiect poate fi folosit în fluxuri de date sau în alte contexte în care este necesară o valoare constantă.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**: Constructorul `ConstantStream` primește o singură intrare, care este valoarea constantă pe care dorești să o emiți (în acest caz, 1).\n  - **Ieșiri**: Obiectul `constant` creat va emite continuu valoarea 1, fără a schimba această valoare.\n\n- **Efecte**:\n  - **Imutabilitate**: Valoarea emisiunii obiectului `constant` este imuabilă și nu se va schimba în timp.\n  - **Utilizare în fluxuri**: Acest obiect poate fi folosit în fluxuri de date pentru a introduce o valoare constantă în flux, de exemplu, pentru a inițializa o variabilă sau pentru a furniza o valoare de referință.\n\n- **Exemplu de Utilizare**:\n  ```js\n  const constant = new ConstantStream(1);\n  console.log(constant.next()); // Afișează: { value: 1, done: false }\n  console.log(constant.next()); // Afișează: { value: 1, done: false }\n  ```\n  În acest exemplu, `constant.next()` va returna mereu același obiect cu valoarea 1, demonstrând imutabilitatea și constanța valorii emise.",
+      "const:var@71-72": "**Bullets didactice:**\n\n- **Rol:** `nextInteger` este o instanță a clasei `NextIntegerStream`, care este utilizată pentru a genera secvențe de numere întregi consecutive.\n- **Intrări:** Clasa `NextIntegerStream` nu primește intrări externe în constructor sau în alte metode. Ea generează numere întregi consecutive fără a depinde de date externe.\n- **Ieșiri:** Metodele clasei `NextIntegerStream` (de exemplu, `next()`) returnează numere întregi consecutive, începând de la 0 sau de la o valoare specificată inițial.\n- **Efecte:** Fiecare apel al unei metode care generează numere întregi (de exemplu, `next()`) va avansa secvența și va returna următorul număr întreg din secvență. Aceasta are efecte secundare asupra stării interne a instanței `nextInteger`.\n- **Exemplu de utilizare:**\n  ```js\n  const nextInteger = new NextIntegerStream();\n  console.log(nextInteger.next()); // Afișează: 0\n  console.log(nextInteger.next()); // Afișează: 1\n  console.log(nextInteger.next()); // Afișează: 2\n  ```\n- **Avantaje:** Utilizarea unei clase precum `NextIntegerStream` poate fi utilă în scenarii în care este necesară generarea de numere întregi consecutive, de exemplu, pentru a atribui ID-uri unice sau pentru a itera printr-o secvență de numere.",
+      "class:Stream@9-48": "### Bullets Didactice pentru Clasa `Stream`\n\n- **Rol**:\n  - `Stream` este o clasă care modelează un flux de valori, unde fiecare valoare este generată pe baza valorii precedente folosind o funcție specificată.\n  - Este utilă pentru a genera secvențe de valori în mod dinamic, fără a stoca toate valorile în memorie.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**:\n    - `value`: Valoarea inițială a fluxului.\n    - `nextValue`: O funcție care primește valoarea curentă și returnează următoarea valoare din flux.\n  - **Ieșiri**:\n    - `value`: Proprietate care returnează valoarea curentă a fluxului.\n    - `next`: Metodă care calculează și returnează următoarea valoare a fluxului, actualizând valoarea curentă.\n    - `count`: Proprietate statică care returnează numărul total de instanțe create ale clasei `Stream`.\n\n- **Efecte**:\n  - **Efecte secundare**:\n    - Fiecare apel al metodei `next` actualizează valoarea curentă a fluxului.\n    - Crearea unei noi instanțe a clasei `Stream` incrementă contorul static `#count`.\n  - **Avantaje**:\n    - Permite generarea eficientă de secvențe de valori fără a stoca toate valorile în memorie.\n    - Poate fi utilizat pentru a modela fluxuri de date dinamice, cum ar fi secvențe matematice sau evenimente în timp.\n  - **Dezavantaje**:\n    - Nu permite accesul direct la valorile anterioare ale fluxului, doar la valoarea curentă și următoarea.\n    - Nu este thread-safe, deci nu este recomandat pentru utilizare în medii multi-threaded fără sincronizare suplimentară.\n\n- **Exemplu de Utilizare**:\n  ```javascript\n  const stream = new Stream(1, (x) => x + 1);\n  console.log(stream.value); // 1\n  console.log(stream.next); // 2\n  console.log(stream.next); // 3\n  console.log(Stream.count); // 1\n  ```\n\n- **Detalii Tehnice**:\n  - Utilizează proprietăți private (`#value`, `#nextValue`, `#count`) pentru a asigura încapsularea datelor.\n  - Metodele `get` sunt utilizate pentru a accesa proprietățile private, oferind o interfață de citire controlată.\n  - Proprietatea statică `count` permite urmărirea numărului de instanțe create ale clasei.",
+      "class:ConstantStream@49-58": "### Bullets Didactice pentru `ConstantStream`\n\n- **Rol**: Clasa `ConstantStream` este un tip de `Stream` care emite o valoare constantă fără a o modifica. Este utilă atunci când ai nevoie de un flux de date care nu se schimbă în timp.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**: Constructorul primește o singură valoare, `value`, care este valoarea constantă pe care o va emite fluxul.\n  - **Ieșiri**: Fluxul va emite mereu aceeași valoare, `value`, fără a o modifica.\n\n- **Efecte**:\n  - **Imutabilitate**: Valoarea emisa de `ConstantStream` nu se schimbă niciodată, ceea ce face acest flux imuabil.\n  - **Simplu**: `ConstantStream` este simplu și ușor de utilizat pentru cazurile în care ai nevoie de un flux de date constantă.\n  - **Extensibilitate**: Deși este simplu, `ConstantStream` poate fi extins pentru a include funcționalități suplimentare, dacă este necesar.\n\n- **Exemplu de Utilizare**:\n  ```js\n  const constantStream = new ConstantStream(42);\n  constantStream.subscribe(value => console.log(value)); // Va afișa mereu 42\n  ```\n\n- **Comparare cu `Stream` de Bază**:\n  - Un `Stream` obișnuit poate emite valori diferite, în funcție de funcția de transformare pe care o primește.\n  - `ConstantStream` este o specializare a `Stream` care emite o singură valoare constantă, fără a o modifica.\n\n- **Avantaje**:\n  - **Simplicitate**: Ușor de înțeles și de utilizat.\n  - **Predictibilitate**: Valoarea emisa este mereu aceeași, ceea ce face fluxul predictibil.\n  - **Reutilizabilitate**: Poate fi reutilizat în diferite părți ale codului pentru a emite aceeași valoare constantă.",
+      "class:NextIntegerStream@59-68": "### Bullets Didactice pentru `NextIntegerStream`\n\n- **Rol**:\n  - `NextIntegerStream` este o clasă care extinde `Stream`, reprezentând un flux de numere întregi consecutive.\n  - Este utilizată pentru a genera o secvență de numere întregi, începând de la 0 și crescând cu 1 la fiecare pas.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**: Nu primește intrări externe, deoarece inițializează fluxul cu valoarea 0.\n  - **Ieșiri**: Returnează o secvență de numere întregi consecutive, începând de la 0 (0, 1, 2, 3, ...).\n\n- **Efecte**:\n  - **Efecte secundare**: Nu are efecte secundare, deoarece nu modifică starea externă.\n  - **Efecte de performanță**: Este eficientă din punct de vedere al memoriei și timpului de execuție, deoarece generează numerele pe măsură ce sunt solicitate, fără a stoca întreaga secvență în memorie.\n\n- **Exemplu de Utilizare**:\n  ```js\n  const stream = new NextIntegerStream();\n  console.log(stream.next()); // 0\n  console.log(stream.next()); // 1\n  console.log(stream.next()); // 2\n  ```\n\n- **Extensibilitate**:\n  - Poate fi extinsă pentru a genera alte tipuri de secvențe numerice, schimbând funcția de transformare în constructorul clasei.\n\n- **Implementare**:\n  - Utilizează conceptul de **lazy evaluation**, generând fiecare element al secvenței doar atunci când este solicitat, ceea ce face eficientă utilizarea memoriei."
+    },
+    "micro": {
+      "hunk:const:var@69-70:2": "- **Imutabilitate**: Adaugă o valoare constantă imuabilă în fluxul de date, asigurând că aceasta nu poate fi modificată ulterior.\n- **Simplificare**: Înlocuiește o serie de valori statice cu o singură referință, simplificând codul și reducând riscul de erori.\n- **Optimizare**: Permite optimizări în timpul execuției, deoarece motorul JavaScript poate înțelege că valoarea nu se va schimba.\n- **Claritate**: Face codul mai ușor de înțeles, indicând explicit că valoarea este constantă și nu trebuie modificată.",
+      "hunk:const:var@71-72:2": "- **Inițializare**: Această inserție inițializează un obiect `NextIntegerStream` și îl atribuie variabilei `nextInteger`.\n- **Utilizare**: Permite utilizarea obiectului `NextIntegerStream` pentru a genera sau manipula numere întregi în funcția curentă.\n- **Context**: Asigură că obiectul este disponibil în scopul funcției, permițând accesul și utilizarea sa în alte părți ale codului.",
+      "hunk:class:Stream@9-48:2": "- **Extinde funcționalitatea**: Adăugarea clasei `Stream` permite crearea de obiecte care pot gestiona fluxuri de date, facilitând operații precum citirea, scrierea sau manipularea datelor într-un mod eficient.\n- **Modularizare**: Clasa `Stream` modularizează codul, separând responsabilitățile legate de gestionarea fluxurilor de date, ceea ce face codul mai ușor de întreținut și extins.\n- **Eficiență**: Utilizarea clasei `Stream` poate îmbunătăți performanța în operații cu mari volume de date, deoarece permite procesarea datelor în bucăți (chunks), fără a încărca întregul set de date în memorie.",
+      "hunk:class:ConstantStream@49-58:2": "- **Moștenire**: Această inserție permite clasei `ConstantStream` să moștenească toate proprietățile și metodele clasei `Stream`, facilitând reutilizarea codului și extinderea funcționalității.\n- **Polimorfism**: Prin moștenire, `ConstantStream` poate fi utilizat în loc de `Stream` oriunde este necesar, asigurând compatibilitatea și flexibilitatea în cod.\n- **Extindere**: Adăugarea acestei inserții permite clasei `ConstantStream` să implementeze sau să suprascrie metodele din `Stream` pentru a se potrivi cu cerințele specifice.",
+      "hunk:class:NextIntegerStream@59-68:2": "- **Extinde funcționalitatea**: Această inserție permite clasei `NextIntegerStream` să moștenească metodele și proprietățile clasei `Stream`, extinzând astfel funcționalitatea acesteia.\n- **Polimorfism**: Prin moștenire, `NextIntegerStream` poate fi utilizat în loc de `Stream` oriunde este necesar un obiect de tip `Stream`, asigurând compatibilitatea și flexibilitatea codului.\n- **Reutilizare de cod**: Moștenirea permite reutilizarea codului existent din clasa `Stream`, reducând astfel duplicarea și simplificând întreținerea.",
+      "hunk:class:Stream@9-48:4": "- **Incapsulare**: Adaugă un câmp privat `#value` care nu poate fi accesat sau modificat din afara clasei `Stream`, asigurând astfel o mai bună protecție a datelor interne.\n- **Stare internă**: Permite clasei `Stream` să păstreze o stare internă (`#value`) care poate fi utilizată în metodele clasei fără a fi expusă direct în afara acesteia.",
+      "hunk:class:ConstantStream@49-58:4": "- **Inițializare**: Adaugă o inserție care inițializează proprietatea `value` a clasei `ConstantStream` cu valoarea primită ca argument în constructor.\n- **Stabilire valoare constantă**: Asigură că valoarea `value` este setată la crearea unei instanțe a clasei, făcând-o disponibilă pentru metodele și proprietățile ulterioare ale clasei.\n- **Simplificare cod**: Elimină necesitatea de a seta manual proprietatea `value` după crearea instanței, simplificând procesul de inițializare.\n- **Consistență**: Asigură consistența valorii `value` pentru toate instanțele clasei `ConstantStream`.",
+      "hunk:class:NextIntegerStream@59-68:4": "- **Inițializare**: Această inserție adaugă un constructor pentru clasa `NextIntegerStream`, permițând inițializarea obiectelor de acest tip.\n- **Stare internă**: Constructorul poate fi folosit pentru a seta starea internă inițială a obiectului, cum ar fi un contor sau o valoare de pornire.\n- **Extensibilitate**: Adăugarea unui constructor face clasa mai flexibilă și ușor de extins, permițând adăugarea de parametri inițiali în viitoarele versiuni.\n- **Convenție**: Respectă convențiile de programare prin definirea clară a punctului de pornire pentru obiectele create din această clasă.",
+      "hunk:class:Stream@9-48:6": "- Adaugă un câmp privat `#nextValue` în clasa `Stream`, care poate fi folosit pentru a stoca o valoare intermediară sau pentru a gestiona starea internă a obiectelor de tip `Stream`.\n- Permite o mai bună organizare și încapsulare a datelor interne ale clasei, reducând riscul de modificări neintenționate din afara clasei.\n- Poate fi utilizat pentru a implementa funcționalități avansate sau pentru a optimiza performanța metodei curente.\n- Asigură o mai bună modularitate și reutilizabilitate a codului, deoarece câmpul privat poate fi folosit doar în interiorul clasei `Stream`.",
+      "hunk:class:ConstantStream@49-58:6": "- **Inițializare simplă**: Această inserție inițializează `ConstantStream` cu o valoare constantă, fără a necesita o funcție de transformare complexă.\n- **Eficiență**: Folosirea unei funcții identitate (`value => value`) asigură că fluxul nu efectuează nicio transformare suplimentară asupra valorii, optimizând performanța.\n- **Simplificare**: Reduce complexitatea codului, eliminând necesitatea unei funcții de transformare explicită pentru cazul în care valoarea rămâne neschimbată.",
+      "hunk:class:NextIntegerStream@59-68:6": "- **Inițializare**: Această inserție inițializează `NextIntegerStream` cu valoarea de start 0 și o funcție de incrementare care adaugă 1 la fiecare valoare.\n- **Secvență de numere**: Asigură generarea unei secvențe de numere întregi consecutive, începând de la 0.\n- **Simplificare**: Elimină necesitatea de a specifica manual valoarea de start și funcția de incrementare în constructorul clasei.\n- **Extensibilitate**: Permite utilizarea clasei pentru a genera orice secvență de numere întregi, prin modificarea valorii inițiale sau a funcției de incrementare.",
+      "hunk:class:Stream@9-48:8": "- Adaugă o proprietate privată statică `#count` în clasa `Stream`.\n- Aceasta este inițializată cu valoarea `0`.\n- Proprietatea este privată, ceea ce înseamnă că nu poate fi accesată sau modificată din afara clasei.\n- Este statică, astfel încât să fie partajată de toate instanțele clasei `Stream`.",
+      "hunk:class:ConstantStream@49-58:8": "- **Simplificare**: Înlătură codul redundant sau inutil, făcând funcția mai curată și ușor de înțeles.\n- **Eficiență**: Reduce timpul de execuție și resursele utilizate, deoarece elimină operații inutile.\n- **Mentenabilitate**: Face codul mai ușor de întreținut, deoarece este mai simplu și mai direct.\n- **Corectitudine**: Asigură că funcția funcționează corect, fără a include logica sau codul care nu contribuie la scopul său.",
+      "hunk:class:NextIntegerStream@59-68:8": "- **Extinderea funcționalității**: Această inserție adaugă o nouă funcționalitate la clasa `NextIntegerStream`, permițând generarea de numere întregi consecutive.\n- **Simplificarea codului**: Fragmentul simplifică codul prin eliminarea necesității de a scrie manual o funcție separată pentru generarea de numere întregi.\n- **Eficiența**: Această inserție îmbunătățește eficiența prin reducerea numărului de linii de cod și prin utilizarea unui generator pentru a produce numere întregi pe măsură ce sunt necesare.\n- **Lizibilitatea**: Fragmentul face codul mai lizibil și mai ușor de înțeles, reducând complexitatea și facilitând întreținerea.",
+      "hunk:class:Stream@9-48:10": "- **Parametri suplimentari**: Adăugarea parametrului `nextValue` permite inițializarea obiectului `Stream` cu două valori, nu doar una, ceea ce poate fi util pentru anumite scenarii de utilizare.\n- **Flexibilitate**: Această modificare face constructorul mai flexibil, permițând crearea obiectelor `Stream` cu mai multe valori inițiale, dacă este necesar.\n- **Posibilitate de extindere**: Această schimbare deschide drumul pentru extinderi ulterioare ale clasei `Stream`, permițând gestionarea mai multor valori în flux.",
+      "hunk:class:ConstantStream@49-58:10": "- **Simplificare a codului**: Această inserție elimină o parte redundantă din funcția curentă, făcând codul mai curat și mai ușor de înțeles.\n- **Eficiență**: Reduce numărul de linii de cod fără a afecta funcționalitatea, ceea ce poate îmbunătăți performanța.\n- **Lizibilitate**: Face codul mai simplu și mai ușor de citit, facilitând viitoarele modificări sau depanări.",
+      "hunk:class:NextIntegerStream@59-68:10": "- **Extinde funcționalitatea**: Adaugă o nouă caracteristică sau comportament la clasa existentă, fără a modifica codul existent.\n- **Menține compatibilitatea**: Permite utilizarea clasei în mod normal, fără a afecta codul care o utilizează deja.\n- **Îmbunătățește modularitatea**: Permite adăugarea de funcționalități noi într-un mod organizat și ușor de întreținut.\n- **Promovează reutilizarea codului**: Permite reutilizarea clasei în alte contexte, fără a duplica codul.",
+      "hunk:class:Stream@9-48:12": "- **Encapsulare**: Folosirea `#` în fața proprietății `value` indică faptul că aceasta este privată, adică nu poate fi accesată sau modificată din afara clasei `Stream`. Aceasta promovează principiul de encapsulare, care este esențial pentru a menține integritatea datelor și a reduce riscul de modificări neintenționate.\n\n- **Protecție împotriva modificărilor neintenționate**: Prin faptul că `value` este privată, se asigură că aceasta poate fi modificată doar prin metodele definite în clasa `Stream`, ceea ce permite o mai bună control asupra modului în care datele sunt actualizate.\n\n- **Prevenirea conflictelor de nume**: Utilizarea `#` ajută la evitarea conflictelor de nume între proprietățile interne ale clasei și cele din afara acesteia, deoarece proprietățile private sunt unice pentru fiecare instanță a clasei.",
+      "hunk:class:Stream@9-48:14": "- **Stocarea valorii următoare**: Această inserție adaugă o proprietate privată `#nextValue` în clasa `Stream`, care stochează valoarea următoare care urmează să fie procesată sau emisă.\n- **Initializarea stării interne**: Această proprietate ajută la menținerea stării interne a obiectului `Stream`, permițând următoarei valori să fie accesate și utilizate în alte metode ale clasei.\n- **Suport pentru funcționalități secvențiale**: Această inserție este esențială pentru implementarea funcționalităților secvențiale, cum ar fi iterarea sau procesarea valorilor într-un mod ordonat.\n- **Flexibilitate și modularitate**: Această adăugare face clasa `Stream` mai flexibilă și modulară, permițând o gestionare mai eficientă a valorilor în flux.",
+      "hunk:class:Stream@9-48:16": "- **Contorizare obiecte**: Adaugă o inserție care crește contorul de obiecte create din clasa `Stream`.\n- **Monitorizare instanțe**: Permite urmărirea numărului de instanțe active ale clasei `Stream`.\n- **Statistică**: Poate fi utilizată pentru a colecta date despre utilizarea clasei în aplicație.",
+      "hunk:class:Stream@9-48:18": "- **Extinde funcționalitatea**: Adaugă o nouă metodă sau proprietate în clasa `Stream`, îmbogățind comportamentul ei.\n- **Permite personalizare**: Ușurează adaptarea clasei la cerințele specifice ale aplicației.\n- **Îmbunătățește modularitatea**: Permite adăugarea de funcționalități fără a modifica codul existent, respectând principiile SOLID.\n- **Facilitează testarea**: Permite testarea în izolare a noii funcționalități adăugate.",
+      "hunk:class:Stream@9-48:20": "- **Accesibilitate**: Adaugă o metodă de accesare a valorii curente a stream-ului, făcând-o mai ușor de utilizat și mai intuitivă.\n- **Encapsulare**: Permite accesul la valoarea stream-ului fără a expune direct proprietățile interne ale clasei.\n- **Consistență**: Asigură o metodă uniformă de accesare a valorii, indiferent de implementarea internă a stream-ului.",
+      "hunk:class:Stream@9-48:22": "- **Acces direct la valoare**: Inserția permite accesul direct la valoarea internă a obiectului `Stream`, fără a fi necesară o metodă separată.\n- **Simplificare a codului**: Reduce numărul de metode necesare pentru a obține valoarea, simplificând astfel structura clasei.\n- **Consistență**: Asigură o metodă uniformă de acces la valoarea obiectului, facilitând utilizarea și întreținerea codului.\n- **Eficiență**: Accesul direct la valoare poate fi mai eficient decât apelarea unei metode, deoarece nu implică apelul unei funcții.",
+      "hunk:class:Stream@9-48:24": "- **Extinderea funcționalității**: Această inserție adaugă o nouă funcționalitate sau un comportament suplimentar în clasa `Stream`, fără a modifica codul existent.\n- **Modularizarea codului**: Permite adăugarea de noi caracteristici sau comportamente în mod independent, păstrând codul curent intact.\n- **Flexibilitate**: Ușurează introducerea de modificări sau extinderi ulterioare, fără a afecta restul aplicației.\n- **Mentenabilitate**: Facilitează actualizările și modificările ulterioare, deoarece codul este organizat în module distincte.",
+      "hunk:class:Stream@9-48:26": "- **Acces simplu**: Permite accesul la proprietatea `next` ca pe o proprietate, nu ca pe o metodă, simplificând sintaxa.\n- **Encapsulare**: Ascunde logica internă a obținerii valorii următoare, oferind o interfață mai curată.\n- **Lazy evaluation**: Poate fi utilizată pentru a evalua valorile doar când sunt necesare, optimizând performanța.\n- **Convenție**: Respectă convențiile JavaScript pentru definirea proprietăților de tip getter.",
+      "hunk:class:Stream@9-48:28": "- **Actualizare valoare internă**: Această inserție actualizează valoarea internă a obiectului `Stream` folosind funcția `#nextValue`, care primește valoarea curentă ca argument.\n- **Modificare stării obiectului**: Aceasta modifică starea internă a obiectului, ceea ce poate fi utilizat pentru a urmări sau a manipula fluxul de date.\n- **Posibilitate de extindere**: Această inserție permite o mai mare flexibilitate în extinderea și personalizarea comportamentului obiectului `Stream`.",
+      "hunk:class:Stream@9-48:30": "- **Acces direct la valoare**: Inserția permite accesul direct la valoarea internă a obiectului `Stream`, fără a fi necesară o metodă separată.\n- **Simplificare a codului**: Reduce numărul de metode necesare pentru a obține valoarea, făcând codul mai concis și ușor de înțeles.\n- **Consistență**: Menține o interfață simplă și directă pentru clasa `Stream`, aliniindu-se la principiile de design ale programării orientate pe obiect.",
+      "hunk:class:Stream@9-48:32": "- **Extinderea funcționalității**: Această inserție adaugă o nouă secțiune de cod în funcția curentă, extinzând astfel funcționalitățile existente.\n- **Modularizarea codului**: Această adăugare permite o mai bună organizare a codului, făcându-l mai ușor de înțeles și de întreținut.\n- **Posibilitatea de a adăuga noi caracteristici**: Această inserție deschide drumul pentru adăugarea unor noi caracteristici sau funcționalități în viitor.\n- **Flexibilitatea**: Această adăugare face codul mai flexibil, permițând o mai ușoară adaptare la schimbări viitoare.",
+      "hunk:class:Stream@9-48:34": "- **Accesibilitate**: Adaugă o proprietate statică `count` la clasa `Stream`, permițând accesul la ea fără a crea o instanță a clasei.\n- **Stare partajată**: Permite stocarea și accesarea unei valori comune pentru toate instanțele clasei `Stream`.\n- **Simplificare**: Simplifică codul prin eliminarea necesității de a apela o metodă pentru a obține numărul de stream-uri.",
+      "hunk:class:Stream@9-48:36": "- **Acces direct la proprietate privată**: Inserția permite accesul direct la proprietatea privată `#count` a clasei `Stream`, care nu ar fi fost accesibilă din afara clasei fără această modificare.\n- **Simplificare a codului**: Reduce complexitatea codului prin eliminarea necesității de a folosi un getter sau o metodă publică pentru a accesa valoarea proprietății private.\n- **Eficiență**: Accesul direct la proprietate este mai eficient decât apelul unei metode sau a unui getter, deoarece nu implică apeluri suplimentare de funcții.",
+      "hunk:class:Stream@9-48:38": "- **Extinderea funcționalității**: Această inserție adaugă o nouă funcționalitate sau un comportament suplimentar în clasa `Stream`, fără a modifica codul existent.\n- **Modularizarea codului**: Permite o mai bună organizare a codului, separând funcționalitățile în module distincte și ușor de gestionat.\n- **Flexibilitatea**: Face clasa `Stream` mai flexibilă și adaptabilă la schimbări viitoare, fără a afecta restul codului.\n- **Reutilizarea codului**: Posibilitatea de a reutiliza această funcționalitate în alte părți ale aplicației, reducând astfel duplicarea codului.",
+      "hunk:class:Stream@9-48:40": "- **Extinde funcționalitatea**: Adaugă o nouă metodă sau proprietate clasei `Stream`, îmbogățind comportamentul ei.\n- **Permite personalizare**: Ușurează adaptarea clasei la nevoile specifice ale aplicației.\n- **Îmbunătățește reutilizabilitatea**: Face ca clasa să fie mai flexibilă și mai ușor de integrat în alte părți ale codului.\n- **Îmbunătățește testabilitatea**: Permite testarea mai ușoară a funcționalității noi adăugate."
+    }
+  },
+  "auto_notes": {
+    "const:var@69-70": "- Funcție **var** [69–70]\n- Heuristică: pare **pură** (fără efecte vizibile)",
+    "const:var@71-72": "- Funcție **var** [71–72]\n- Heuristică: pare **pură** (fără efecte vizibile)",
+    "class:Stream@9-48": "- Clasă **Stream** [9–48]\n- Conține 3 `return`",
+    "class:ConstantStream@49-58": "- Clasă **ConstantStream** [49–58]\n- Heuristică: pare **pură** (fără efecte vizibile)",
+    "class:NextIntegerStream@59-68": "- Clasă **NextIntegerStream** [59–68]\n- Heuristică: pare **pură** (fără efecte vizibile)"
+  },
+  "micro_auto": {
+    "hunk:const:var@69-70:1": "- Completare incrementală: ",
+    "hunk:const:var@71-72:1": "- Completare incrementală: ",
+    "hunk:const:var@69-70:2": "- Introducem variabila **constant** ← new ConstantStream(1);",
+    "hunk:const:var@71-72:2": "- Introducem variabila **nextInteger** ← new NextIntegerStream();",
+    "hunk:class:Stream@9-48:1": "- Completare incrementală: ",
+    "hunk:class:ConstantStream@49-58:1": "- Completare incrementală: ",
+    "hunk:class:NextIntegerStream@59-68:1": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:2": "- Completare incrementală: class Stream {",
+    "hunk:class:ConstantStream@49-58:2": "- Completare incrementală: class ConstantStream extends Stream {",
+    "hunk:class:NextIntegerStream@59-68:2": "- Completare incrementală: class NextIntegerStream extends Stream {",
+    "hunk:class:Stream@9-48:3": "- Completare incrementală: ",
+    "hunk:class:ConstantStream@49-58:3": "- Completare incrementală: ",
+    "hunk:class:NextIntegerStream@59-68:3": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:4": "- Completare incrementală: #value;",
+    "hunk:class:ConstantStream@49-58:4": "- Completare incrementală: constructor(value) {",
+    "hunk:class:NextIntegerStream@59-68:4": "- Completare incrementală: constructor() {",
+    "hunk:class:Stream@9-48:5": "- Completare incrementală: ",
+    "hunk:class:ConstantStream@49-58:5": "- Completare incrementală: ",
+    "hunk:class:NextIntegerStream@59-68:5": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:6": "- Completare incrementală: #nextValue;",
+    "hunk:class:ConstantStream@49-58:6": "- Completare incrementală: super(value, value => value);",
+    "hunk:class:NextIntegerStream@59-68:6": "- Completare incrementală: super(0, value => value + 1);",
+    "hunk:class:Stream@9-48:7": "- Completare incrementală: ",
+    "hunk:class:ConstantStream@49-58:7": "- Completare incrementală: ",
+    "hunk:class:NextIntegerStream@59-68:7": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:8": "- Completare incrementală: static #count = 0;",
+    "hunk:class:ConstantStream@49-58:8": "- Completare incrementală: }",
+    "hunk:class:NextIntegerStream@59-68:8": "- Completare incrementală: }",
+    "hunk:class:Stream@9-48:9": "- Completare incrementală: ",
+    "hunk:class:ConstantStream@49-58:9": "- Completare incrementală: ",
+    "hunk:class:NextIntegerStream@59-68:9": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:10": "- Completare incrementală: constructor(value, nextValue) {",
+    "hunk:class:ConstantStream@49-58:10": "- Completare incrementală: }",
+    "hunk:class:NextIntegerStream@59-68:10": "- Completare incrementală: }",
+    "hunk:class:Stream@9-48:11": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:12": "- Completare incrementală: this.#value = value;",
+    "hunk:class:Stream@9-48:13": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:14": "- Completare incrementală: this.#nextValue = nextValue;",
+    "hunk:class:Stream@9-48:15": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:16": "- Completare incrementală: Stream.#count++;",
+    "hunk:class:Stream@9-48:17": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:18": "- Completare incrementală: }",
+    "hunk:class:Stream@9-48:19": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:20": "- Completare incrementală: get value() {",
+    "hunk:class:Stream@9-48:21": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:22": "- Stabilim valoarea de întoarcere: `this.#value;`",
+    "hunk:class:Stream@9-48:23": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:24": "- Completare incrementală: }",
+    "hunk:class:Stream@9-48:25": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:26": "- Completare incrementală: get next() {",
+    "hunk:class:Stream@9-48:27": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:28": "- Completare incrementală: this.#value = this.#nextValue(this.#value);",
+    "hunk:class:Stream@9-48:29": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:30": "- Stabilim valoarea de întoarcere: `this.#value;`",
+    "hunk:class:Stream@9-48:31": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:32": "- Completare incrementală: }",
+    "hunk:class:Stream@9-48:33": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:34": "- Completare incrementală: static get count() {",
+    "hunk:class:Stream@9-48:35": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:36": "- Stabilim valoarea de întoarcere: `Stream.#count;`",
+    "hunk:class:Stream@9-48:37": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:38": "- Completare incrementală: }",
+    "hunk:class:Stream@9-48:39": "- Completare incrementală: ",
+    "hunk:class:Stream@9-48:40": "- Completare incrementală: }"
+  }
+}

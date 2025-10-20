@@ -1,0 +1,473 @@
+{
+  "frames": [
+    "",
+    "\n",
+    "\n\n",
+    "\nconst orderCoffee = (type) => {\n\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n\n  if (Object.values(types).indexOf(type) === -1) {\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n\n  if (Object.values(types).indexOf(type) === -1) {\n\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n\n  if (Object.values(types).indexOf(type) === -1) {\n\n    throw new Error('coffee error')\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n\n  if (Object.values(types).indexOf(type) === -1) {\n\n    throw new Error('coffee error')\n\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n\n  if (Object.values(types).indexOf(type) === -1) {\n\n    throw new Error('coffee error')\n\n  }\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n\n  if (Object.values(types).indexOf(type) === -1) {\n\n    throw new Error('coffee error')\n\n  }\n   else {\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n\n  if (Object.values(types).indexOf(type) === -1) {\n\n    throw new Error('coffee error')\n\n  }\n   else {\n\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n\n  if (Object.values(types).indexOf(type) === -1) {\n\n    throw new Error('coffee error')\n\n  }\n   else {\n\n    console.log(`preparing ${type} coffee`)\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n\n  if (Object.values(types).indexOf(type) === -1) {\n\n    throw new Error('coffee error')\n\n  }\n   else {\n\n    console.log(`preparing ${type} coffee`)\n\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n\n  if (Object.values(types).indexOf(type) === -1) {\n\n    throw new Error('coffee error')\n\n  }\n   else {\n\n    console.log(`preparing ${type} coffee`)\n\n  }\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n\n  if (Object.values(types).indexOf(type) === -1) {\n\n    throw new Error('coffee error')\n\n  }\n   else {\n\n    console.log(`preparing ${type} coffee`)\n\n  }\n\n",
+    "\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n\n  if (Object.values(types).indexOf(type) === -1) {\n\n    throw new Error('coffee error')\n\n  }\n   else {\n\n    console.log(`preparing ${type} coffee`)\n\n  }\n\n}\n",
+    "/**\n* 5 - Urmăriți videoclipul următor S4v5.mp4 pentru a vedea cum se pot utiliza excepțiile pentru a valida input-urile unei funcții.\n* După ce ați testat exemplul, implementați funcția increaseSalary care primește ca parametrii un array de salarii și\n*   un număr, reprezentând procentul cu care se vor mări (ex 10).\n* Funcția aruncă excepții dacă primul parametru nu este un array sau al doilea parametru nu este un număr.\n*\n*/\n\nconst orderCoffee = (type) => {\n\n  const types = {\n\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR'\n\n  }\n\n  if (Object.values(types).indexOf(type) === -1) {\n\n    throw new Error('coffee error')\n\n  }\n   else {\n\n    console.log(`preparing ${type} coffee`)\n\n  }\n\n}\n\ntry {\n\n  orderCoffee('REGULAR')\n  orderCoffee('SWEET_COFFEE_NO_SUGAR_NO_CAFFEINE')\n}\n catch (err) {\n\n  console.warn(err)\n}\n"
+  ],
+  "style": "functional",
+  "steps": [
+    {
+      "title": "Imports & constante",
+      "rationale": "Definim dependențele și parametrii pipeline-ului pentru o bază de cod clară și modulară.",
+      "blocks": [
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 8,
+          "end": 29
+        },
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 10,
+          "end": 16
+        }
+      ]
+    },
+    {
+      "title": "Efecte & I/O",
+      "rationale": "Izolăm efectele secundare (logare, fetch, timp) la margine pentru a asigura o funcționalitate pură și testabilă.",
+      "blocks": [
+        {
+          "name": "orderCoffee",
+          "kind": "arrow",
+          "start": 8,
+          "end": 29
+        }
+      ]
+    }
+  ],
+  "patches": [
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 8,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 1,
+        "end": 1,
+        "text": "",
+        "focusStart": 10,
+        "focusEnd": 16,
+        "scrollLine": 10,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@10-16",
+        "hId": "hunk:const:var@10-16:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 1,
+        "end": 1,
+        "text": "const orderCoffee = (type) => {",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 9,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 3,
+        "end": 3,
+        "text": "  const types = {",
+        "focusStart": 10,
+        "focusEnd": 16,
+        "scrollLine": 11,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@10-16",
+        "hId": "hunk:const:var@10-16:2"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 4,
+        "end": 4,
+        "text": "",
+        "focusStart": 10,
+        "focusEnd": 16,
+        "scrollLine": 12,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@10-16",
+        "hId": "hunk:const:var@10-16:3"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 5,
+        "end": 5,
+        "text": "    SPECIAL: 'SPECIAL',",
+        "focusStart": 10,
+        "focusEnd": 16,
+        "scrollLine": 13,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@10-16",
+        "hId": "hunk:const:var@10-16:4"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 6,
+        "end": 6,
+        "text": "    REGULAR: 'REGULAR'",
+        "focusStart": 10,
+        "focusEnd": 16,
+        "scrollLine": 14,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@10-16",
+        "hId": "hunk:const:var@10-16:5"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 7,
+        "end": 7,
+        "text": "",
+        "focusStart": 10,
+        "focusEnd": 16,
+        "scrollLine": 15,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@10-16",
+        "hId": "hunk:const:var@10-16:6"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 8,
+        "end": 8,
+        "text": "  }",
+        "focusStart": 10,
+        "focusEnd": 16,
+        "scrollLine": 16,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@10-16",
+        "hId": "hunk:const:var@10-16:7"
+      }
+    ],
+    [],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 9,
+        "end": 9,
+        "text": "",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 17,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:3"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 10,
+        "end": 10,
+        "text": "  if (Object.values(types).indexOf(type) === -1) {",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 18,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:4"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 11,
+        "end": 11,
+        "text": "",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 19,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:5"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 12,
+        "end": 12,
+        "text": "    throw new Error('coffee error')",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 20,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:6"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 13,
+        "end": 13,
+        "text": "",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 21,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:7"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 14,
+        "end": 14,
+        "text": "  }",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 22,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:8"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 15,
+        "end": 15,
+        "text": "   else {",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 23,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:9"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 16,
+        "end": 16,
+        "text": "",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 24,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:10"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 17,
+        "end": 17,
+        "text": "    console.log(`preparing ${type} coffee`)",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 25,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:11"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 18,
+        "end": 18,
+        "text": "",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 26,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:12"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 19,
+        "end": 19,
+        "text": "  }",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 27,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:13"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 20,
+        "end": 20,
+        "text": "",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 28,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:14"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 21,
+        "end": 21,
+        "text": "}",
+        "focusStart": 8,
+        "focusEnd": 29,
+        "scrollLine": 29,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@8-29",
+        "hId": "hunk:const:var@8-29:15"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "/**\n* 5 - Urmăriți videoclipul următor S4v5.mp4 pentru a vedea cum se pot utiliza excepțiile pentru a valida input-urile unei funcții.\n* După ce ați testat exemplul, implementați funcția increaseSalary care primește ca parametrii un array de salarii și\n*   un număr, reprezentând procentul cu care se vor mări (ex 10).\n* Funcția aruncă excepții dacă primul parametru nu este un array sau al doilea parametru nu este un număr.\n*\n*/"
+      },
+      {
+        "op": "insert",
+        "start": 22,
+        "end": 22,
+        "text": "\ntry {\n\n  orderCoffee('REGULAR')\n  orderCoffee('SWEET_COFFEE_NO_SUGAR_NO_CAFFEINE')\n}\n catch (err) {\n\n  console.warn(err)\n}"
+      }
+    ]
+  ],
+  "llm": {
+    "provider": "Mistral Codestral",
+    "model": "codestral-latest",
+    "notes": {
+      "const:var@8-29": "### Bullets Didactice\n\n- **Rol**: Funcția `orderCoffee` are rolul de a comanda o cafea de un anumit tip (SPECIAL sau REGULAR). Dacă tipul specificat nu este valid, funcția aruncă o eroare.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**: Funcția primește un singur parametru, `type`, care reprezintă tipul de cafea dorită.\n  - **Ieșiri**: Dacă tipul este valid, funcția afișează un mesaj în consolă care indică că cafeaua este în curs de pregătire. Dacă tipul nu este valid, funcția aruncă o eroare cu mesajul \"coffee error\".\n\n- **Efecte**:\n  - **Efecte secundare**: Funcția are un efect secundar în cazul în care tipul de cafea este valid, prin afișarea unui mesaj în consolă.\n  - **Efecte de eroare**: Funcția poate arunca o eroare dacă tipul de cafea nu este valid, ceea ce poate fi tratat de codul care apelează funcția.\n\n- **Validare**: Funcția utilizează un obiect `types` pentru a valida tipul de cafea. Aceasta verifică dacă tipul specificat se află în lista valorilor obiectului `types`.\n\n- **Excepții**: Funcția aruncă o excepție (eroare) dacă tipul de cafea nu este valid, ceea ce permite codul care apelează funcția să trateze această situație în mod corespunzător.\n\n- **Utilizare**: Funcția poate fi utilizată pentru a comanda o cafea de un anumit tip, asigurându-se că tipul este valid înainte de a începe pregătirea.",
+      "const:var@10-16": "### Bullets Didactice\n\n- **Rol**: Acest cod definește un obiect `types` care conține două proprietăți constante, `SPECIAL` și `REGULAR`, utilizate pentru a categoriza sau a eticheta diferite tipuri de elemente sau entități în cadrul unui program. Aceste constante sunt utile pentru a evita erori de tipare și pentru a face codul mai ușor de întreținut.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**: Nu există intrări directe pentru acest cod, deoarece acesta definește doar constante.\n  - **Ieșiri**: Acest cod nu produce ieșiri directe, dar constantele definite (`SPECIAL` și `REGULAR`) pot fi utilizate în alte părți ale programului pentru a categoriza elemente.\n\n- **Efecte**:\n  - **Efecte directe**: Acest cod nu are efecte directe asupra programului în momentul execuției, deoarece nu conține instrucțiuni de execuție.\n  - **Efecte indirecte**: Prin definirea acestor constante, se asigură o mai bună organizare și claritate a codului, facilitând utilizarea și întreținerea acestuia.\n\n- **Avantaje**:\n  - **Claritate**: Utilizarea de constante face codul mai ușor de înțeles și de întreținut.\n  - **Evită erori**: Definirea constantelor reduce riscul de erori de tipare, deoarece valorile sunt fixe și nu pot fi schimbate accidental.\n  - **Reutilizabilitate**: Aceste constante pot fi reutilizate în întreaga aplicație, asigurând o consistență în categorizarea elementelor.\n\n- **Exemple de utilizare**:\n  ```js\n  if (element.type === types.SPECIAL) {\n    // Cod pentru elemente speciale\n  } else if (element.type === types.REGULAR) {\n    // Cod pentru elemente regulate\n  }\n  ```\n\n- **Extensibilitate**:\n  - **Adăugarea de noi tipuri**: Dacă este necesar să se adauge noi tipuri de elemente, acestea pot fi adăugate simplu în obiectul `types`, fără a modifica codul existent care utilizează aceste constante.\n  ```js\n  const types = {\n    SPECIAL: 'SPECIAL',\n    REGULAR: 'REGULAR',\n    PREMIUM: 'PREMIUM' // Nou tip adăugat\n  }\n  ```",
+      "arrow:orderCoffee@8-29": "### Bullets Didactice\n\n- **Rol**: Funcția `orderCoffee` are rolul de a prelua o comandă pentru o cafea de un anumit tip și de a afișa un mesaj corespunzător în consolă. De asemenea, verifică dacă tipul de cafea comandat este valid.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**: Funcția primește un singur parametru, `type`, care reprezintă tipul de cafea dorită (de exemplu, `SPECIAL` sau `REGULAR`).\n  - **Ieșiri**: Dacă tipul de cafea este valid, funcția afișează un mesaj în consolă care indică că cafeaua este în curs de pregătire. Dacă tipul de cafea nu este valid, funcția aruncă o eroare cu mesajul \"coffee error\".\n\n- **Efecte**:\n  - **Efecte secundare**: Funcția nu are efecte secundare directe asupra sistemului sau a mediului înconjurător, dar afișează un mesaj în consolă care poate fi considerat un efect secundar în contextul interacțiunii cu utilizatorul.\n  - **Validare**: Funcția validează tipul de cafea comandat, asigurându-se că acesta este unul dintre cele permise (`SPECIAL` sau `REGULAR`). Aceasta este o practică bună pentru a preveni erori și a asigura că funcția se comportă conform așteptărilor.\n\n- **Excepții**: Funcția poate arunca o excepție dacă tipul de cafea comandat nu este valid, ceea ce indică o utilizare incorectă a funcției.\n\n- **Utilizare**: Funcția poate fi utilizată pentru a comanda o cafea de un anumit tip, de exemplu, `orderCoffee('SPECIAL')` sau `orderCoffee('REGULAR')`. Este important să se asigure că tipul de cafea este unul dintre cele permise pentru a evita erori.\n\n- **Extensibilitate**: Funcția poate fi extinsă pentru a include mai multe tipuri de cafea sau pentru a gestiona diferite scenarii de comandă, de exemplu, adăugând opțiuni pentru lapte, zahăr sau alte adăugiri."
+    },
+    "micro": {
+      "hunk:const:var@8-29:2": "- **Declararea variabilei `orderCoffee`**: Această inserție declară o variabilă constantă `orderCoffee` care este o funcție de ordinul întâi (higher-order function) care primește un parametru `type`.\n- **Funcționalitate**: Funcția `orderCoffee` poate fi utilizată pentru a comanda o cafea de un anumit tip, specificat prin parametrul `type`.\n- **Scop**: Această funcție poate fi utilizată pentru a crea o interfață simplă și clară pentru comanda de cafea în cadrul aplicației.",
+      "hunk:const:var@10-16:2": "- **Declararea variabilei `types`**: Această inserție adaugă o variabilă `types` care este un obiect gol. Aceasta poate fi utilizată pentru a stoca și organiza diferite tipuri de date sau configurări în cadrul funcției curente.\n- **Extensibilitate**: Obiectul `types` permite adăugarea ușoară a unor proprietăți noi, făcând funcția mai flexibilă și adaptabilă la schimbări viitoare.\n- **Organizare a codului**: Utilizarea unui obiect pentru a grupa diferite tipuri de date sau configurări ajută la organizarea și la menținerea codului mai curat și mai ușor de înțeles.",
+      "hunk:const:var@10-16:4": "- **Extinde funcționalitatea**: Adaugă o nouă opțiune (`SPECIAL`) în funcția curentă, permițând astfel gestionarea unui caz particular sau a unei caracteristici speciale.\n- **Îmbunătățește flexibilitatea**: Permite funcției să fie utilizată în scenarii suplimentare, fără a modifica codul existent.\n- **Clarifică scopul**: Face codul mai explicit prin specificarea explicită a opțiunii speciale, facilitând înțelegerea și întreținerea ulterioară.",
+      "hunk:const:var@10-16:5": "- Adaugă o constantă `REGULAR` cu valoarea `'REGULAR'` în obiectul `var`.\n- Extinde obiectul `var` cu o nouă proprietate, `REGULAR`, care poate fi utilizată pentru a indica un tip de obiect sau stare regulată.\n- Permite o mai bună organizare și claritate a codului prin utilizarea de constante pentru a defini tipuri sau stări specifice.\n- Facilitează refactorizarea și menținerea codului prin centralizarea valorilor constante într-un singur loc.",
+      "hunk:const:var@10-16:7": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare imuabilă.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care nu vor fi modificate.\n- **Previne erori de programare** prin asigurarea că variabila nu poate fi suprascrisă accidental.\n- **Optimizează performanța** prin utilizarea variabilelor constante, care pot fi optimizate de motorul JavaScript.",
+      "hunk:const:var@8-29:4": "- **Validare tip**: Asigură că `type` este unul dintre valorile acceptate din obiectul `types`.\n- **Prevenire erori**: Evită comportamente nedorite dacă `type` nu este valid.\n- **Claritate cod**: Face explicită condiția de validare a tipului.\n- **Robusteză**: Protejează funcția împotriva valorilor invalide ale `type`.",
+      "hunk:const:var@8-29:6": "- **Adaugă o condiție de eroare explicită**: Inserția aruncă o eroare dacă condiția `var` nu este îndeplinită, făcând codul mai robust și ușor de depanat.\n- **Îmbunătățește gestionarea erorilor**: Permite o gestionare mai bună a erorilor prin aruncarea unui mesaj clar și specific (\"coffee error\").\n- **Asigură o ieșire sigură**: În cazul în care condiția nu este îndeplinită, codul se oprește imediat, prevenind comportamente nedorite.\n- **Facilitează depanarea**: Mesajul de eroare specific poate ajuta la identificarea rapidă a cauzei problemei.",
+      "hunk:const:var@8-29:8": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se va schimba în timpul execuției funcției.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care sunt constante.\n- **Previne erori de programare** prin asigurarea că variabila nu va fi modificată accidental.\n- **Optimizează performanța** prin utilizarea variabilelor constante, care pot fi optimizate de motorul JavaScript.",
+      "hunk:const:var@8-29:9": "- **Clarificare a condiției**: Inserția `else` clarifică că blocul de cod care urmează va fi executat doar dacă condiția din `if` nu este îndeplinită.\n- **Extindere a funcționalității**: Adăugarea `else` permite implementarea unui scenariu alternativ, făcând funcția mai robustă și adaptabilă la diverse situații.\n- **Prevenirea erorilor**: Folosirea `else` poate preveni execuția accidentală a codului din blocul `if` atunci când condiția nu este îndeplinită, reducând riscul de erori.\n- **Structurare mai clară**: Inserția `else` ajută la organizarea codului într-o structură mai clară și ușor de înțeles, facilitând astfel întreținerea și actualizarea ulterioară.",
+      "hunk:const:var@8-29:11": "- **Informare despre procesul de pregătire**: Inserția adaugă o linie de cod care afișează un mesaj în consolă care indică că se pregătește o anumită tip de cafea. Acest lucru poate fi util pentru depanare sau pentru a urmări progresul procesului de pregătire a cafelei.\n\n- **Personalizare a mesajului**: Mesajul folosește un șablon de șir de caractere (template literal) pentru a include valoarea variabilei `type` în mesajul afișat. Aceasta permite afișarea unui mesaj personalizat în funcție de tipul de cafea care este pregătit.\n\n- **Depanare și monitorizare**: Afișarea acestui mesaj în consolă poate fi folosită pentru a depana probleme sau pentru a monitoriza fluxul de execuție al codului. Este o practică comună în dezvoltarea software pentru a urmări progresul și a identifica punctele de problemă.",
+      "hunk:const:var@8-29:13": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se va schimba în timpul execuției funcției.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care nu vor fi modificate.\n- **Previne erori de programare** prin asigurarea că variabila nu va fi suprascrisă accidental.\n- **Optimizează performanța** în anumite cazuri, deoarece motorul JavaScript poate face optimizări pentru variabile constante.",
+      "hunk:const:var@8-29:15": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se va schimba în timpul execuției funcției.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care nu vor fi modificate.\n- **Previne erori de programare** prin asigurarea că variabila nu va fi suprascrisă accidental.\n- **Optimizează performanța** prin utilizarea variabilelor constante, care pot fi optimizate de motorul JavaScript."
+    }
+  },
+  "auto_notes": {
+    "const:var@8-29": "- Funcție **var** [8–29]\n- Efecte: logare/diagnosticare, aruncă erori",
+    "const:var@10-16": "- Funcție **var** [10–16]\n- Heuristică: pare **pură** (fără efecte vizibile)",
+    "arrow:orderCoffee@8-29": "- Funcție **orderCoffee** [8–29]\n- Efecte: logare/diagnosticare, aruncă erori"
+  },
+  "micro_auto": {
+    "hunk:const:var@8-29:1": "- Completare incrementală: ",
+    "hunk:const:var@10-16:1": "- Completare incrementală: ",
+    "hunk:const:var@8-29:2": "- Definim **orderCoffee** ca funcție săgeată cu parametri: `type)`\n- Introducem variabila **orderCoffee** ← (type) => {",
+    "hunk:const:var@10-16:2": "- Introducem variabila **types** ← {",
+    "hunk:const:var@10-16:3": "- Completare incrementală: ",
+    "hunk:const:var@10-16:4": "- Completare incrementală: SPECIAL: 'SPECIAL',",
+    "hunk:const:var@10-16:5": "- Completare incrementală: REGULAR: 'REGULAR'",
+    "hunk:const:var@10-16:6": "- Completare incrementală: ",
+    "hunk:const:var@10-16:7": "- Completare incrementală: }",
+    "hunk:const:var@8-29:3": "- Completare incrementală: ",
+    "hunk:const:var@8-29:4": "- Introducem un **if** cu condiția `Object.values(types`",
+    "hunk:const:var@8-29:5": "- Completare incrementală: ",
+    "hunk:const:var@8-29:6": "- Completare incrementală: throw new Error('coffee error')",
+    "hunk:const:var@8-29:7": "- Completare incrementală: ",
+    "hunk:const:var@8-29:8": "- Completare incrementală: }",
+    "hunk:const:var@8-29:9": "- Introducem un **if**",
+    "hunk:const:var@8-29:10": "- Completare incrementală: ",
+    "hunk:const:var@8-29:11": "- Inserăm **logare** (diagnostic) cu `console.*`.",
+    "hunk:const:var@8-29:12": "- Completare incrementală: ",
+    "hunk:const:var@8-29:13": "- Completare incrementală: }",
+    "hunk:const:var@8-29:14": "- Completare incrementală: ",
+    "hunk:const:var@8-29:15": "- Completare incrementală: }"
+  }
+}

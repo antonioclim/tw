@@ -1,0 +1,26 @@
+{
+  "frames": [
+    "",
+    "/**\n* 4 - Urmăriți următorul videoclip S4v4 pentru a vedea cum se poate atașa o metodă la prototipul unui tip existent.\n* După ce ați testat exemplul:\n* TEMA: implementați metoda 'times' pe tipul Number, astfel încât 3.times(() => {}) să execute funcția de 3 ori.\n*\n*/\n\nString.prototype.capitalizeWords = function() {\n\n  return this.replace(/\\b[a-z]/g, match => match.toUpperCase());\n\n}\n\nconsole.log(\"this words will be capitalized.\".capitalizeWords());\n"
+  ],
+  "style": "functional",
+  "steps": [],
+  "patches": [
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "/**\n* 4 - Urmăriți următorul videoclip S4v4 pentru a vedea cum se poate atașa o metodă la prototipul unui tip existent.\n* După ce ați testat exemplul:\n* TEMA: implementați metoda 'times' pe tipul Number, astfel încât 3.times(() => {}) să execute funcția de 3 ori.\n*\n*/\n\nString.prototype.capitalizeWords = function() {\n\n  return this.replace(/\\b[a-z]/g, match => match.toUpperCase());\n\n}\n\nconsole.log(\"this words will be capitalized.\".capitalizeWords());"
+      }
+    ]
+  ],
+  "llm": {
+    "provider": "Mistral Codestral",
+    "model": "codestral-latest",
+    "notes": {},
+    "micro": {}
+  },
+  "auto_notes": {},
+  "micro_auto": {}
+}

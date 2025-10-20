@@ -1,0 +1,547 @@
+{
+  "frames": [
+    "",
+    "\n",
+    "\n",
+    "\n\n",
+    "\n\n\n",
+    "\n\n\n\n",
+    "\nconst fetch = require('node-fetch');\n\n\n\n",
+    "\nconst fetch = require('node-fetch');\n\n\n\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n    minLatitude: object[0].boundingbox[0],\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n    minLatitude: object[0].boundingbox[0],\n    maxLatitude: object[0].boundingbox[1],\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n    minLatitude: object[0].boundingbox[0],\n    maxLatitude: object[0].boundingbox[1],\n    minLongitude: object[0].boundingbox[2],\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n    minLatitude: object[0].boundingbox[0],\n    maxLatitude: object[0].boundingbox[1],\n    minLongitude: object[0].boundingbox[2],\n    maxLongitude: object[0].boundingbox[3]\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n    minLatitude: object[0].boundingbox[0],\n    maxLatitude: object[0].boundingbox[1],\n    minLongitude: object[0].boundingbox[2],\n    maxLongitude: object[0].boundingbox[3]\n\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n    minLatitude: object[0].boundingbox[0],\n    maxLatitude: object[0].boundingbox[1],\n    minLongitude: object[0].boundingbox[2],\n    maxLongitude: object[0].boundingbox[3]\n\n  }\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n    minLatitude: object[0].boundingbox[0],\n    maxLatitude: object[0].boundingbox[1],\n    minLongitude: object[0].boundingbox[2],\n    maxLongitude: object[0].boundingbox[3]\n\n  }\n\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n    minLatitude: object[0].boundingbox[0],\n    maxLatitude: object[0].boundingbox[1],\n    minLongitude: object[0].boundingbox[2],\n    maxLongitude: object[0].boundingbox[3]\n\n  }\n\nfunction main() {\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n    minLatitude: object[0].boundingbox[0],\n    maxLatitude: object[0].boundingbox[1],\n    minLongitude: object[0].boundingbox[2],\n    maxLongitude: object[0].boundingbox[3]\n\n  }\n\nfunction main() {\n\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n    minLatitude: object[0].boundingbox[0],\n    maxLatitude: object[0].boundingbox[1],\n    minLongitude: object[0].boundingbox[2],\n    maxLongitude: object[0].boundingbox[3]\n\n  }\n\nfunction main() {\n\n  getCountryBounds('Romania')\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n    minLatitude: object[0].boundingbox[0],\n    maxLatitude: object[0].boundingbox[1],\n    minLongitude: object[0].boundingbox[2],\n    maxLongitude: object[0].boundingbox[3]\n\n  }\n\nfunction main() {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds));\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n    minLatitude: object[0].boundingbox[0],\n    maxLatitude: object[0].boundingbox[1],\n    minLongitude: object[0].boundingbox[2],\n    maxLongitude: object[0].boundingbox[3]\n\n  }\n\nfunction main() {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds));\n\n",
+    "\nconst fetch = require('node-fetch');\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n    minLatitude: object[0].boundingbox[0],\n    maxLatitude: object[0].boundingbox[1],\n    minLongitude: object[0].boundingbox[2],\n    maxLongitude: object[0].boundingbox[3]\n\n  }\n\nfunction main() {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds));\n\n}\n",
+    "/**\n* 6 - Urmăriți  acest videoclip S4v6B.mp4 pentru a vedea cum se poate face o cerere HTTP folosind Promise-uri cu  async/await.\n* TEMA: După ce ați testat exemplul, bazat pe exemplul anterior implementați o funcție (cu async/await) care obține lista avioanelor de deasupra României.\n*\n*/\n\nconst fetch = require('node-fetch');\n\nasync function getObjectFromUrl(url) {\n\n  const response = await fetch(url);\n\n  const text = await response.text();\n\n  return JSON.parse(text);\n\n}\n\nasync function getCountryBounds(country) {\n\n  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);\n\n  return {\n\n    minLatitude: object[0].boundingbox[0],\n    maxLatitude: object[0].boundingbox[1],\n    minLongitude: object[0].boundingbox[2],\n    maxLongitude: object[0].boundingbox[3]\n\n  }\n  ;\n\n}\n\nfunction main() {\n\n  getCountryBounds('Romania')\n    .then(bounds => console.log(bounds));\n\n}\n\nmain();\n"
+  ],
+  "style": "imperative",
+  "steps": [
+    {
+      "title": "Importuri și constante",
+      "rationale": "Gestionarea dependențelor și a configurărilor globale.",
+      "blocks": [
+        {
+          "name": "import",
+          "kind": "import",
+          "start": 6,
+          "end": 7
+        },
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 6,
+          "end": 7
+        },
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 10,
+          "end": 11
+        },
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 12,
+          "end": 13
+        },
+        {
+          "name": "var",
+          "kind": "const",
+          "start": 20,
+          "end": 30
+        }
+      ]
+    },
+    {
+      "title": "Logica procedurală",
+      "rationale": "Implementarea efectelor și a controlului de flux.",
+      "blocks": [
+        {
+          "name": "main",
+          "kind": "func",
+          "start": 34,
+          "end": 40
+        }
+      ]
+    }
+  ],
+  "patches": [
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "",
+        "focusStart": 6,
+        "focusEnd": 7,
+        "scrollLine": 6,
+        "name": "import",
+        "kind": "import",
+        "blkId": "import:import@6-7",
+        "hId": "hunk:import:import@6-7:1"
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 1,
+        "end": 1,
+        "text": "",
+        "focusStart": 10,
+        "focusEnd": 11,
+        "scrollLine": 10,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@10-11",
+        "hId": "hunk:const:var@10-11:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 2,
+        "end": 2,
+        "text": "",
+        "focusStart": 12,
+        "focusEnd": 13,
+        "scrollLine": 12,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@12-13",
+        "hId": "hunk:const:var@12-13:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 3,
+        "end": 3,
+        "text": "",
+        "focusStart": 20,
+        "focusEnd": 30,
+        "scrollLine": 20,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@20-30",
+        "hId": "hunk:const:var@20-30:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "\nconst fetch = require('node-fetch');",
+        "focusStart": 6,
+        "focusEnd": 7,
+        "scrollLine": 7,
+        "name": "import",
+        "kind": "import",
+        "blkId": "import:import@6-7",
+        "hId": "hunk:import:import@6-7:2"
+      },
+      {
+        "op": "delete",
+        "start": 3,
+        "end": 4,
+        "text": ""
+      }
+    ],
+    [],
+    [
+      {
+        "op": "insert",
+        "start": 3,
+        "end": 3,
+        "text": "  const response = await fetch(url);",
+        "focusStart": 10,
+        "focusEnd": 11,
+        "scrollLine": 11,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@10-11",
+        "hId": "hunk:const:var@10-11:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 5,
+        "end": 5,
+        "text": "  const text = await response.text();",
+        "focusStart": 12,
+        "focusEnd": 13,
+        "scrollLine": 13,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@12-13",
+        "hId": "hunk:const:var@12-13:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 7,
+        "end": 7,
+        "text": "  const object = await getObjectFromUrl(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);",
+        "focusStart": 20,
+        "focusEnd": 30,
+        "scrollLine": 21,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@20-30",
+        "hId": "hunk:const:var@20-30:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 8,
+        "end": 8,
+        "text": "",
+        "focusStart": 20,
+        "focusEnd": 30,
+        "scrollLine": 22,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@20-30",
+        "hId": "hunk:const:var@20-30:3"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 9,
+        "end": 9,
+        "text": "  return {",
+        "focusStart": 20,
+        "focusEnd": 30,
+        "scrollLine": 23,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@20-30",
+        "hId": "hunk:const:var@20-30:4"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 10,
+        "end": 10,
+        "text": "",
+        "focusStart": 20,
+        "focusEnd": 30,
+        "scrollLine": 24,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@20-30",
+        "hId": "hunk:const:var@20-30:5"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 11,
+        "end": 11,
+        "text": "    minLatitude: object[0].boundingbox[0],",
+        "focusStart": 20,
+        "focusEnd": 30,
+        "scrollLine": 25,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@20-30",
+        "hId": "hunk:const:var@20-30:6"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 12,
+        "end": 12,
+        "text": "    maxLatitude: object[0].boundingbox[1],",
+        "focusStart": 20,
+        "focusEnd": 30,
+        "scrollLine": 26,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@20-30",
+        "hId": "hunk:const:var@20-30:7"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 13,
+        "end": 13,
+        "text": "    minLongitude: object[0].boundingbox[2],",
+        "focusStart": 20,
+        "focusEnd": 30,
+        "scrollLine": 27,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@20-30",
+        "hId": "hunk:const:var@20-30:8"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 14,
+        "end": 14,
+        "text": "    maxLongitude: object[0].boundingbox[3]",
+        "focusStart": 20,
+        "focusEnd": 30,
+        "scrollLine": 28,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@20-30",
+        "hId": "hunk:const:var@20-30:9"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 15,
+        "end": 15,
+        "text": "",
+        "focusStart": 20,
+        "focusEnd": 30,
+        "scrollLine": 29,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@20-30",
+        "hId": "hunk:const:var@20-30:10"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 16,
+        "end": 16,
+        "text": "  }",
+        "focusStart": 20,
+        "focusEnd": 30,
+        "scrollLine": 30,
+        "name": "var",
+        "kind": "const",
+        "blkId": "const:var@20-30",
+        "hId": "hunk:const:var@20-30:11"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 17,
+        "end": 17,
+        "text": "",
+        "focusStart": 34,
+        "focusEnd": 40,
+        "scrollLine": 34,
+        "name": "main",
+        "kind": "func",
+        "blkId": "func:main@34-40",
+        "hId": "hunk:func:main@34-40:1"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 18,
+        "end": 18,
+        "text": "function main() {",
+        "focusStart": 34,
+        "focusEnd": 40,
+        "scrollLine": 35,
+        "name": "main",
+        "kind": "func",
+        "blkId": "func:main@34-40",
+        "hId": "hunk:func:main@34-40:2"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 19,
+        "end": 19,
+        "text": "",
+        "focusStart": 34,
+        "focusEnd": 40,
+        "scrollLine": 36,
+        "name": "main",
+        "kind": "func",
+        "blkId": "func:main@34-40",
+        "hId": "hunk:func:main@34-40:3"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 20,
+        "end": 20,
+        "text": "  getCountryBounds('Romania')",
+        "focusStart": 34,
+        "focusEnd": 40,
+        "scrollLine": 37,
+        "name": "main",
+        "kind": "func",
+        "blkId": "func:main@34-40",
+        "hId": "hunk:func:main@34-40:4"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 21,
+        "end": 21,
+        "text": "    .then(bounds => console.log(bounds));",
+        "focusStart": 34,
+        "focusEnd": 40,
+        "scrollLine": 38,
+        "name": "main",
+        "kind": "func",
+        "blkId": "func:main@34-40",
+        "hId": "hunk:func:main@34-40:5"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 22,
+        "end": 22,
+        "text": "",
+        "focusStart": 34,
+        "focusEnd": 40,
+        "scrollLine": 39,
+        "name": "main",
+        "kind": "func",
+        "blkId": "func:main@34-40",
+        "hId": "hunk:func:main@34-40:6"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 23,
+        "end": 23,
+        "text": "}",
+        "focusStart": 34,
+        "focusEnd": 40,
+        "scrollLine": 40,
+        "name": "main",
+        "kind": "func",
+        "blkId": "func:main@34-40",
+        "hId": "hunk:func:main@34-40:7"
+      }
+    ],
+    [
+      {
+        "op": "insert",
+        "start": 0,
+        "end": 0,
+        "text": "/**\n* 6 - Urmăriți  acest videoclip S4v6B.mp4 pentru a vedea cum se poate face o cerere HTTP folosind Promise-uri cu  async/await.\n* TEMA: După ce ați testat exemplul, bazat pe exemplul anterior implementați o funcție (cu async/await) care obține lista avioanelor de deasupra României.\n*\n*/"
+      },
+      {
+        "op": "insert",
+        "start": 2,
+        "end": 2,
+        "text": "\nasync function getObjectFromUrl(url) {"
+      },
+      {
+        "op": "insert",
+        "start": 6,
+        "end": 6,
+        "text": "\n  return JSON.parse(text);\n\n}\n\nasync function getCountryBounds(country) {"
+      },
+      {
+        "op": "insert",
+        "start": 17,
+        "end": 17,
+        "text": "  ;\n\n}"
+      },
+      {
+        "op": "insert",
+        "start": 24,
+        "end": 24,
+        "text": "\nmain();"
+      }
+    ]
+  ],
+  "llm": {
+    "provider": "Mistral Codestral",
+    "model": "codestral-latest",
+    "notes": {
+      "import:import@6-7": "```markdown\n- **Rol**: Profesorul de programare JavaScript\n- **Intrări/Ieșiri**:\n  - **Intrări**: Cunoștințe de bază în JavaScript, modulul `node-fetch` instalat în proiectul Node.js.\n  - **Ieșiri**: Înțelegerea modulului `node-fetch` și a modulului `require` în Node.js.\n- **Efecte**:\n  - Înțelegerea modulului `node-fetch` pentru a efectua cereri HTTP în Node.js.\n  - Înțelegerea modulului `require` pentru a importa module în Node.js.\n  - Capacitatea de a utiliza `node-fetch` pentru a interacționa cu API-uri sau alte servicii web.\n```",
+      "const:var@6-7": "```markdown\n- **Rol**: Profesorul de programare JavaScript\n- **Intrări/Ieșiri**:\n  - **Intrări**: Cunoștințe de bază în JavaScript, instalarea Node.js și npm\n  - **Ieșiri**: Înțelegerea modulului `node-fetch` și utilizarea sa pentru a face cereri HTTP în aplicațiile Node.js\n- **Efecte**:\n  - **Efecte pozitive**: Înțelegerea și utilizarea modulului `node-fetch` pentru a face cereri HTTP în aplicațiile Node.js, îmbunătățirea abilităților de programare JavaScript\n  - **Efecte negative**: Dificultăți în instalarea și configurarea modulului `node-fetch`, erori în codul scris de elevi\n- **Activități didactice**:\n  - Prezentarea modulului `node-fetch` și a funcționalităților sale\n  - Exemple practice de utilizare a modulului `node-fetch` pentru a face cereri HTTP\n  - Exerciții și proiecte pentru a aplica cunoștințele dobândite\n- **Evaluare**:\n  - Evaluarea cunoștințelor dobândite prin intermediul exercițiilor și proiectelor\n  - Feedback-ul furnizat de elevi pentru a îmbunătăți prezentarea și activitățile didactice\n```",
+      "const:var@10-11": "### **Bullets Didactice pentru `fetch` în JavaScript**\n\n- **Rol**:\n  - `fetch` este o funcție asincronă utilizată pentru a face cereri HTTP către un server.\n  - Returnează o promisiune (`Promise`) care se rezolvă cu un obiect `Response`.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**:\n    - `url`: Adresa către care se face cererea (string).\n    - (Opțional) `options`: Un obiect care poate include metode HTTP, antete, corpul cererii, etc.\n  - **Ieșiri**:\n    - Promisiune care se rezolvă cu un obiect `Response` dacă cererea este reușită.\n    - Promisiune care se respinge dacă cererea eșuează (ex: eroare de rețea).\n\n- **Efecte**:\n  - **Efecte secundare**: Trimite o cerere către server, consumând resurse de rețea.\n  - **Efecte de sistem**: Nu modifică starea aplicației, dar poate declanșa alte acțiuni asincrone.\n\n- **Exemplu de utilizare**:\n  ```js\n  const response = await fetch('https://api.example.com/data');\n  const data = await response.json(); // Parsează răspunsul ca JSON\n  ```\n\n- **Avantaje**:\n  - Simplu și modern (folosește promisiuni).\n  - Suportă cereri asincrone fără a bloca firul de execuție.\n\n- **Dezvantaje**:\n  - Nu gestionează erorile de rețea automat (trebuie tratate manual).\n  - Nu suportă cereri `XMLHttpRequest` mai vechi.",
+      "const:var@12-13": "### Bullets Didactice\n\n- **Rol**: Această linie de cod este utilizată pentru a extrage conținutul text al unui răspuns HTTP primit de la un server. Este parte a unei operații asincrone, deoarece folosește `await` pentru a aștepta finalizarea cererii.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**: `response` - un obiect de răspuns HTTP primit de la un server.\n  - **Ieșiri**: `text` - o variabilă care conține conținutul text al răspunsului HTTP.\n\n- **Efecte**:\n  - **Efecte secundare**: Nu există efecte secundare directe, dar operația asincronă poate duce la blocarea execuției codului până când răspunsul este primit.\n  - **Efecte de performanță**: Utilizarea `await` poate afecta performanța dacă răspunsul este întârziat sau dacă cererea este blocată.\n\n- **Context**:\n  - **Context de utilizare**: Această linie de cod este utilizată în contextul unei aplicații web care interacționează cu un server pentru a prelua date text.\n  - **Dependențe**: Depinde de un obiect `response` valid care a fost primit de la un server.\n\n- **Exemplu de utilizare**:\n  ```js\n  async function fetchData() {\n    const response = await fetch('https://api.example.com/data');\n    const text = await response.text();\n    console.log(text);\n  }\n  fetchData();\n  ```\n\n- **Posibile erori**:\n  - **Erori de rețea**: Dacă cererea HTTP eșuează din cauza problemelor de rețea, `response.text()` va arunca o eroare.\n  - **Erori de parsare**: Dacă răspunsul nu este un text valid, `response.text()` poate arunca o eroare.",
+      "const:var@20-30": "### Bullets Didactice\n\n- **Rol**: Funcția extrage coordonatele geografice (latitudine și longitudine) ale unui țară specificată, folosind API-ul Nominatim al OpenStreetMap. Aceste coordonate sunt utilizate pentru a defini granițele geografice ale țării.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**: Funcția primește un parametru `country`, care reprezintă numele țării pentru care se doresc coordonatele geografice.\n  - **Ieșiri**: Funcția returnează un obiect cu patru proprietăți: `minLatitude`, `maxLatitude`, `minLongitude`, și `maxLongitude`, care definesc granițele geografice ale țării.\n\n- **Efecte**:\n  - **Efecte secundare**: Funcția face un apel API către serverul Nominatim, ceea ce poate duce la întârzieri și erori de rețea.\n  - **Efecte de performanță**: Apelul API poate fi lent, deoarece depinde de disponibilitatea și viteza serverului Nominatim.\n  - **Efecte de securitate**: Funcția utilizează un URL extern, ceea ce poate pune în pericol securitatea datelor dacă URL-ul nu este sigur sau dacă răspunsul API nu este verificat corespunzător.\n\n- **Exemple de utilizare**:\n  ```js\n  const countryCoordinates = await getCountryCoordinates('Romania');\n  console.log(countryCoordinates);\n  // Output: { minLatitude: '43.62', maxLatitude: '48.27', minLongitude: '20.26', maxLongitude: '29.69' }\n  ```\n\n- **Dependențe**:\n  - Funcția depinde de funcția `getObjectFromUrl`, care trebuie să fie definită și să returneze un obiect JSON dintr-un URL dat.\n  - Funcția depinde de disponibilitatea și stabilitatea API-ului Nominatim.\n\n- **Posibile erori**:\n  - Dacă țara specificată nu este găsită, funcția poate arunca o eroare sau returna un obiect gol.\n  - Dacă apelul API către Nominatim eșuează, funcția poate arunca o eroare de rețea.",
+      "func:main@34-40": "### Bullets Didactice\n\n- **Rol**: Funcția `main` este punctul de intrare al programului. Ea inițiază procesul de obținere a limitelor geografice ale României și afișează rezultatul în consolă.\n\n- **Intrări/Ieșiri**:\n  - **Intrări**: Funcția `main` nu primește niciun parametru.\n  - **Ieșiri**: Funcția `main` nu returnează nicio valoare. Ea afișează limitelerele geografice ale României în consolă.\n\n- **Efecte**:\n  - **Efecte secundare**: Funcția `main` are un efect secundar, anume afișarea limitelor geografice ale României în consolă.\n  - **Efecte de programare**: Funcția `main` utilizează o promisiune (`Promise`) pentru a obține limitelerele geografice ale României. Aceasta indică faptul că operația de obținere a limitelor este asincronă.\n\n- **Context**:\n  - **Context de utilizare**: Funcția `main` este utilizată pentru a demonstra cum se pot obține și afișa limitelerele geografice ale României utilizând o promisiune.\n  - **Context tehnologic**: Funcția `main` utilizează JavaScript și promisiuni pentru a gestiona operații asincrone.\n\n- **Exemple de utilizare**:\n  - **Exemplu de utilizare**: Funcția `main` poate fi utilizată pentru a obține și afișa limitelerele geografice ale României într-un mediu de dezvoltare sau de testare.\n  - **Exemplu de integrare**: Funcția `main` poate fi integrată într-un sistem mai mare pentru a obține și procesa limitelerele geografice ale României.\n\n- **Dependențe**:\n  - **Dependențe externe**: Funcția `main` depinde de funcția `getCountryBounds`, care este responsabilă pentru obținerea limitelor geografice ale României.\n  - **Dependențe interne**: Funcția `main` nu are dependențe interne."
+    },
+    "micro": {
+      "hunk:import:import@6-7:2": "- **Acces la funcționalități externe**: Adaugă `node-fetch` pentru a permite apeluri HTTP din codul JavaScript/TypeScript, facilitând interacțiunea cu API-uri externe.\n- **Compatibilitate cu Node.js**: Asigură compatibilitatea cu mediul Node.js, unde `fetch` nu este disponibil nativ.\n- **Simplificare a codului**: Permite utilizarea unui API standardizat pentru cereri HTTP, simplificând codul și facilitând menținerea sa.",
+      "hunk:const:var@10-11:2": "- **Asincronitate**: Adaugă `await` pentru a aștepta răspunsul de la cerere înainte de a continua execuția codului, făcând funcția asincronă.\n- **Gestionare erori**: Permite gestionarea erorilor prin blocuri `try/catch` pentru a trata posibile eșecuri ale cererii.\n- **Simplificare cod**: Reduce complexitatea codului prin eliminarea callback-urilor sau promisiunilor înlănțuite, făcând codul mai ușor de citit și întreținut.",
+      "hunk:const:var@12-13:2": "- **Extrage textul răspunsului**: Inserția `const text = await response.text();` extrage conținutul text al răspunsului primit de la server.\n- **Permite prelucrarea datelor**: Această linie de cod permite prelucrarea datelor text extrase, facilitând manipularea și utilizarea lor în aplicație.\n- **Asigură compatibilitatea cu răspunsurile text**: Adăugarea acestei linii asigură că aplicația poate gestiona corect răspunsurile text din cereri HTTP, făcând-o mai robustă și flexibilă.",
+      "hunk:const:var@20-30:2": "- **Accesul la date geografice**: Inserția permite obținerea de informații despre un anumit țară din API-ul Nominatim al OpenStreetMap, inclusiv coordonatele geografice și alte detalii relevante.\n- **Utilizarea asincronă**: Funcția `getObjectFromUrl` este apelată cu `await`, permițând obținerea datelor într-un mod asincron, fără a bloca execuția codului.\n- **Flexibilitate**: Variabila `country` poate fi înlocuită cu orice țară dorită, făcând funcția reutilizabilă pentru diverse cerințe geografice.",
+      "hunk:const:var@20-30:4": "- **Claritate**: Înserția `const var` la începutul funcției face clară intenția de a declara o variabilă constantă, ceea ce poate ajuta la înțelegerea codului de către alți dezvoltatori.\n- **Scop**: Această inserție poate indica faptul că variabila declarată nu va fi modificată ulterior în funcție, ceea ce poate fi util pentru a evita erori de programare.\n- **Eficiență**: Declararea variabilelor constante poate ajuta la optimizarea codului de către motorul JavaScript, deoarece motorul știe că nu trebuie să aloce memorie pentru modificări ulterioare ale variabilei.\n- **Documentație**: Înserția `const var` poate servi ca o formă de documentație internă, indicând că variabila este destinată să rămână constantă în timpul execuției funcției.",
+      "hunk:const:var@20-30:6": "- **Accesare corectă a proprietăților obiectului**: Inserția asigură că proprietățile `boundingbox` și indexul `0` sunt accesate corect din obiectul `object[0]`, evitând erori de tip \"undefined\".\n- **Extragere a coordonatei minime de latitudine**: Această linie extrage valoarea minimă a latitudinii din `boundingbox`, care este necesară pentru a defini zona geografică.\n- **Integrare în funcționalitatea curentă**: Linia se integrează ușor în funcția existentă, completând datele necesare pentru calculul sau afișarea zonei geografice.",
+      "hunk:const:var@20-30:7": "- **Accesare coordonată**: Adaugă accesarea coordonatei de latitudine maximă din obiectul curent.\n- **Utilizare boundingbox**: Folosește proprietatea `boundingbox` pentru a obține coordonatele geografice.\n- **Indexare array**: Indexează array-ul `boundingbox` pentru a extrage latitudinea maximă.\n- **Atribuire valoare**: Atribuie valoarea obținută proprietății `maxLatitude` din obiectul curent.",
+      "hunk:const:var@20-30:8": "- **Accesare corectă a coordonatelor**: Inserția asigură accesul la coordonata minimă de longitudine din obiectul curent, necesară pentru definirea unei zone geografice.\n- **Utilizare în contextul funcției**: Această inserție este specifică pentru funcția curentă și contribuie la calculul sau reprezentarea corectă a unei zone geografice.\n- **Evitarea erorilor**: Fără această inserție, funcția ar putea accesa o coordonată greșită sau ar putea produce o eroare, afectând rezultatul final.",
+      "hunk:const:var@20-30:9": "- **Accesare corectă a coordonatei**: Inserția `maxLongitude: object[0].boundingbox[3]` permite accesarea corectă a coordonatei de longitudine maximă dintr-un obiect geografic, utilizând proprietățile `boundingbox` ale acestuia.\n- **Utilizare a proprietăților obiectului**: Această linie demonstrează cum se pot accesa și utiliza proprietățile unui obiect în JavaScript, în acest caz, pentru a extrage coordonatele geografice.\n- **Contextul geografic**: În cadrul unui context geografic, această inserție este esențială pentru a defini limitele de longitudine ale unui obiect, fiind utilă în aplicații de cartografie sau de localizare.",
+      "hunk:const:var@20-30:11": "- **Adaugă o variabilă constantă** în funcție, care poate fi utilizată pentru a stoca o valoare care nu se va schimba în timpul execuției funcției.\n- **Îmbunătățește citibilitatea codului** prin specificarea explicită a variabilelor care sunt constante.\n- **Previne erori de programare** prin asigurarea că variabila nu va fi modificată accidental.\n- **Optimizează performanța** prin utilizarea variabilelor constante, care pot fi optimizate de motorul JavaScript.",
+      "hunk:func:main@34-40:2": "- **Definirea funcției**: Această inserție definește o funcție numită `main`, care poate fi apelată ulterior în cod.\n- **Punct de intrare**: Funcția `main` servește adesea ca punct de intrare pentru un program, fiind prima funcție apelată la rulare.\n- **Encapsulare**: Aceasta permite gruparea codului într-o funcție, facilitând organizarea și reutilizarea acestuia.\n- **Parametri și return**: Funcția poate fi extinsă pentru a primi parametri și a returna valori, conform necesităților programului.",
+      "hunk:func:main@34-40:4": "- **Accesare date geografice**: Inserția adaugă funcționalitatea de a obține coordonatele geografice ale României, permițând utilizarea acestor date în alte părți ale aplicației.\n- **Personalizare**: Permite utilizatorilor să interacționeze cu date specifice României, făcând aplicația mai personalizată și relevantă pentru utilizatorii din această țară.\n- **Integrare cu hărți**: Poate fi utilizată pentru a afișa hărți sau zone geografice specifice României, îmbunătățind vizualizarea datelor spațiale.",
+      "hunk:func:main@34-40:5": "- **Adaugă un callback** pentru a afișa rezultatul promisiunii în consolă.\n- **Simplifică codul** prin eliminarea unei funcții separate pentru tratarea rezultatului.\n- **Îmbunătățește citibilitatea** prin înlănțuirea directă a promisiunilor.\n- **Reducerea verbosității** prin eliminarea unei funcții suplimentare.",
+      "hunk:func:main@34-40:7": "- **Închide funcția**: Acest fragment închide corpul funcției `main`, marcând sfârșitul blocului de cod asociat acesteia.\n- **Permite execuția**: Fără această închidere, codul din interiorul funcției nu ar putea fi executat corect.\n- **Sintaxă corectă**: Este o parte esențială a structurii sintactice a unei funcții în JavaScript, asigurând că codul este scris conform regulilor limbajului."
+    }
+  },
+  "auto_notes": {
+    "import:import@6-7": "- Funcție **import** [6–7]\n- Heuristică: pare **pură** (fără efecte vizibile)",
+    "const:var@6-7": "- Funcție **var** [6–7]\n- Heuristică: pare **pură** (fără efecte vizibile)",
+    "const:var@10-11": "- Funcție **var** [10–11]\n- Efecte: cereri HTTP, await/asincron",
+    "const:var@12-13": "- Funcție **var** [12–13]\n- Efecte: await/asincron",
+    "const:var@20-30": "- Funcție **var** [20–30]\n- Conține 1 `return`\n- Efecte: await/asincron",
+    "func:main@34-40": "- Funcție **main** [34–40]\n- Efecte: logare/diagnosticare"
+  },
+  "micro_auto": {
+    "hunk:import:import@6-7:1": "- Completare incrementală: ",
+    "hunk:const:var@10-11:1": "- Completare incrementală: ",
+    "hunk:const:var@12-13:1": "- Completare incrementală: ",
+    "hunk:const:var@20-30:1": "- Completare incrementală: ",
+    "hunk:import:import@6-7:2": "- Introducem variabila **fetch** ← require('node-fetch');",
+    "hunk:const:var@10-11:2": "- Introducem variabila **response** ← await fetch(url);\n- Operăm **asincron** (`async/await` sau `Promise`).\n- Adăugăm o **cerere HTTP** cu `fetch(...)`.",
+    "hunk:const:var@12-13:2": "- Introducem variabila **text** ← await response.text();\n- Operăm **asincron** (`async/await` sau `Promise`).",
+    "hunk:const:var@20-30:2": "- Introducem variabila **object** ← await getObjectFromUrl(`https://nominatim.openstreetmap.org/…\n- Operăm **asincron** (`async/await` sau `Promise`).",
+    "hunk:const:var@20-30:3": "- Completare incrementală: ",
+    "hunk:const:var@20-30:4": "- Stabilim valoarea de întoarcere: `{`",
+    "hunk:const:var@20-30:5": "- Completare incrementală: ",
+    "hunk:const:var@20-30:6": "- Completare incrementală: minLatitude: object[0].boundingbox[0],",
+    "hunk:const:var@20-30:7": "- Completare incrementală: maxLatitude: object[0].boundingbox[1],",
+    "hunk:const:var@20-30:8": "- Completare incrementală: minLongitude: object[0].boundingbox[2],",
+    "hunk:const:var@20-30:9": "- Completare incrementală: maxLongitude: object[0].boundingbox[3]",
+    "hunk:const:var@20-30:10": "- Completare incrementală: ",
+    "hunk:const:var@20-30:11": "- Completare incrementală: }",
+    "hunk:func:main@34-40:1": "- Completare incrementală: ",
+    "hunk:func:main@34-40:2": "- Declarăm funcția **main** cu parametrii: ∅",
+    "hunk:func:main@34-40:3": "- Completare incrementală: ",
+    "hunk:func:main@34-40:4": "- Completare incrementală: getCountryBounds('Romania')",
+    "hunk:func:main@34-40:5": "- Inserăm **logare** (diagnostic) cu `console.*`.",
+    "hunk:func:main@34-40:6": "- Completare incrementală: ",
+    "hunk:func:main@34-40:7": "- Completare incrementală: }"
+  }
+}
