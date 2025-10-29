@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>06 – fetch GET/POST</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 2rem auto; line-height: 1.5; }
+    input, button { padding: .5rem; }
+    .card { padding: .5rem .75rem; border: 1px solid #ddd; border-radius: 6px; margin: .25rem 0; }
+  </style>
+</head>
+<body>
+  <h1>Lista pisicilor (GET) + Adăugare (POST)</h1>
+
+  <section>
+    <h2>GET</h2>
+    <button id="reload">Reîncarcă lista</button>
+    <div id="list"></div>
+  </section>
+
+  <section>
+    <h2>POST</h2>
+    <input id="name" type="text" placeholder="Nume pisică">
+    <button id="add">Adaugă</button>
+  </section>
+
+  <script src="/health.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

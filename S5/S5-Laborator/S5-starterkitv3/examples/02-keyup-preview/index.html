@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>02 – keyup live preview</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 2rem auto; line-height: 1.5; }
+    .preview { margin-top: 1rem; padding: .75rem; border: 1px dashed #aaa; border-radius: 6px; }
+    input { padding: .5rem; width: 100%; max-width: 420px; }
+  </style>
+</head>
+<body>
+  <h1>Eveniment <code>keyup</code> & previzualizare</h1>
+  <label for="name">Introduceți text:</label><br>
+  <input id="name" type="text" placeholder="Tastați aici..." autocomplete="off">
+  <div class="preview" id="pv">Previzualizare: <em>(nimic încă)</em></div>
+
+  <script src="/health.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

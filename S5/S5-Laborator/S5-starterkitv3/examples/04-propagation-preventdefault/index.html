@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>04 – Propagare & preventDefault</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 2rem auto; line-height: 1.5; }
+    .layer { padding: 1rem; border-radius: 8px; margin: .5rem 0; }
+    #d1 { background: #eef; }
+    #d2 { background: #efe; }
+    #d3 { background: #fee; }
+    code { background: #f6f6f6; padding: .1rem .3rem; border-radius: 4px; }
+    a { color: inherit; }
+    .log { font-family: Consolas, monospace; border: 1px solid #ccc; padding: .5rem; border-radius: 6px; min-height: 3rem; }
+  </style>
+</head>
+<body>
+  <h1>Propagare și prevenirea comportamentului implicit</h1>
+  <p>Faceți click în straturile imbricate pentru a observa propagarea. <em>d2</em> oprește propagarea cu <code>stopPropagation()</code>.</p>
+  <div id="d1" class="layer">
+    d1
+    <div id="d2" class="layer">
+      d2
+      <div id="d3" class="layer">d3 (click aici)</div>
+    </div>
+  </div>
+
+  <p>Exemplu <code>preventDefault()</code>: <a href="https://www.example.com" id="lnk">Link extern</a> (nu va naviga)</p>
+  <div class="log" id="log"></div>
+
+  <script src="/health.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

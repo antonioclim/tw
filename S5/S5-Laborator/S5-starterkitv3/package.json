@@ -1,0 +1,22 @@
+{
+  "name": "starterkit-dom-events",
+  "version": "1.2.0",
+  "description": "Starter kit educațional: Evenimente & DOM (Node.js + Express, port 8080).",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "dom",
+    "events",
+    "education"
+  ],
+  "author": "StarterKit Generator",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

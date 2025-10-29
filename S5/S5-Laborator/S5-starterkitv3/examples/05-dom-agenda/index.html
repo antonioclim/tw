@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>05 – Agendă DOM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 2rem auto; line-height: 1.5; }
+    input, button { padding: .5rem; }
+    ul { list-style: none; padding: 0; }
+    li { padding: .4rem .6rem; border: 1px solid #ddd; margin: .25rem 0; border-radius: 6px; display: flex; justify-content: space-between; }
+    .remove { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Agendă simplă (DOM)</h1>
+  <input id="name" type="text" placeholder="Nume contact">
+  <button id="add">Adaugă</button>
+
+  <ul id="list"></ul>
+
+  <script src="/health.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

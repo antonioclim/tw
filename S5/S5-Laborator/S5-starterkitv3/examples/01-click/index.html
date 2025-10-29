@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>01 – Eveniment click</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 2rem auto; line-height: 1.5; }
+    #out { margin-top: 1rem; padding: .75rem; border: 1px solid #ccc; border-radius: 6px; }
+    button { padding: .5rem 1rem; border-radius: 6px; border: 1px solid #888; cursor: pointer; }
+    button:active { transform: translateY(1px); }
+  </style>
+</head>
+<body>
+  <h1>Eveniment <code>click</code> & manipulare DOM</h1>
+  <p>Apăsați butonul pentru a actualiza conținutul elementului de mai jos.</p>
+  <button id="btn">Apasă-mă</button>
+  <div id="out" aria-live="polite">Aici apare mesajul...</div>
+
+  <script src="/health.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
