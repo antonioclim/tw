@@ -1,0 +1,23 @@
+<!doctype html><html lang="ro"><head>
+<meta charset="utf-8"><title>05 - Flex: schelet paginÄƒ</title>
+<link rel="stylesheet" href="../common.css">
+<style>
+body{margin:0;height:100vh;display:flex;flex-direction:column}
+.header{background:darkgoldenrod;height:15vh;display:flex;align-items:center;padding:8px}
+.content{display:flex;height:70vh}
+.sidebar{width:15%;background:thistle;display:flex;flex-direction:column}
+.sidebar .item{border-bottom:1px solid #333;padding:8px;background:aliceblue}
+.pane{flex:1;background:darkred}
+.footer{background:darkkhaki;height:15vh;display:flex;align-items:center;padding:8px}
+</style></head><body>
+<div class="header">I'm the header</div>
+<div class="content">
+  <div class="sidebar">
+    <div class="item">Item 1</div>
+    <div class="item">Item 2</div>
+    <div class="item">Item 3</div>
+  </div>
+  <div class="pane"></div>
+</div>
+<div class="footer">I'm the footer</div>
+</body></html>

@@ -1,0 +1,35 @@
+<!doctype html><html lang="ro"><head>
+<meta charset="utf-8"><title>10 - Contacts + Messages</title>
+<link rel="stylesheet" href="../common.css">
+<style>
+.app{display:grid;grid-template-columns:30% 1fr;grid-template-rows:10vh 1fr 10vh;
+grid-template-areas:"search chat-hd" "contacts thread" "contacts chat-in";height:80vh;border:1px solid #eee;margin-top:8px}
+.search{grid-area:search;background:#f2f3f5;display:flex;align-items:center;padding:8px}
+.contacts{grid-area:contacts;overflow:auto}
+.chat-hd{grid-area:chat-hd;background:#f2f3f5;display:flex;align-items:center;padding:8px}
+.thread{grid-area:thread;padding:12px;overflow:auto}
+.chat-in{grid-area:chat-in;background:#f2f3f5;display:flex;align-items:center;padding:8px}
+.contact{height:10vh;display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:center;padding:8px;border-bottom:1px solid #e0e0e0}
+.avatar{width:48px;height:48px;border-radius:50%;background:#ddd;display:grid;place-items:center;font-weight:700;color:#333}
+.msg{max-width:75%;min-height:10vh;border-radius:6px;padding:10px;margin:10px;display:flex;flex-direction:column}
+.msg:nth-child(odd){background:#f2f3f5;align-self:flex-start}
+.msg:nth-child(even){background:#cde7ff;align-self:flex-end;text-align:right}
+.time{font-size:.8em;color:#667}
+#find{width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;font-size:14px}
+</style></head><body>
+<div class="app">
+  <div class="search"><input id="find" placeholder="Search"></div>
+  <div class="contacts">
+    <div class="contact"><div class="avatar">A</div><div>Alice</div></div>
+    <div class="contact"><div class="avatar">B</div><div>Bob</div></div>
+    <div class="contact"><div class="avatar">C</div><div>Carol</div></div>
+  </div>
+  <div class="chat-hd"><div class="avatar"></div><div style="margin-left:8px">Alice</div></div>
+  <div class="thread">
+    <div class="msg"><div>Hello</div><div class="time">10:00</div></div>
+    <div class="msg"><div>Hi!</div><div class="time">10:01</div></div>
+    <div class="msg"><div>How are you?</div><div class="time">10:02</div></div>
+  </div>
+  <div class="chat-in"><input style="width:100%;padding:8px" placeholder="Type a message..."></div>
+</div>
+</body></html>

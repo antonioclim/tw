@@ -1,0 +1,23 @@
+<!doctype html><html lang="ro"><head>
+<meta charset="utf-8"><title>08 - Meniu responsive</title>
+<link rel="stylesheet" href="../common.css">
+<style>
+.ui{height:100vh}
+.menu{height:5vh;display:flex;flex-flow:row;align-items:center;justify-content:center;background:tomato;gap:8px}
+.menu-item{min-width:200px;border:1px dashed gold;height:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:center}
+.burger{display:none}
+@media screen and (max-width:400px){
+  .menu{display:none}
+  .burger{display:flex;position:fixed;top:10px;left:10px;height:3em;width:3em;border-radius:50%;background:lightgray;color:#fff;align-items:center;justify-content:center}
+}
+</style></head><body>
+<div class="ui">
+  <div class="menu">
+    <div class="menu-item">first</div>
+    <div class="menu-item">second</div>
+    <div class="menu-item">third</div>
+    <div class="menu-item">fourth</div>
+  </div>
+  <div class="burger">&#9776;</div>
+</div>
+</body></html>
