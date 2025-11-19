@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RECAP - Exemplu Practic Integrat: RESTful API complet cu Express.js</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            border-bottom: 4px solid #fda085;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 5px solid #fda085;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05em;
+        }
+
+        .first-paragraph::first-letter {
+            font-size: 3em;
+            font-weight: bold;
+            float: left;
+            line-height: 0.8;
+            margin: 0.1em 0.1em 0 0;
+            color: #fda085;
+        }
+
+        strong {
+            color: #e17055;
+            font-weight: 600;
+        }
+
+        em {
+            color: #16a085;
+            font-style: italic;
+        }
+
+        code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            background: transparent;
+            color: #ecf0f1;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .code-block {
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #fda085;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .important {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        .references {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .references h2, .references h3 {
+            color: #7f8c8d;
+        }
+
+        .references p {
+            font-size: 0.95em;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .references a {
+            color: #fda085;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .references a:hover {
+            text-decoration: underline;
+            color: #e17055;
+        }
+
+        sup {
+            color: #fda085;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>S8seg8 – Exemplu Practic Integrat: RESTful API complet cu Express.js </h1>
+<p class="first-paragraph">În acest ultim segment al lecției vom integra toate cunoștințele acumulate despre <strong>RESTful API cu Express.js</strong> într-un exemplu complet, coerent și modular. Vom demonstra cum se construiește un server Express care expune rute RESTful pentru diferite <em>resurse</em> folosind routere separate, middleware-uri de validare și logging, tratarea erorilor (atât <em>Not Found</em> – 404, cât și <em>Internal Server Error</em> – 500) și date stocate static în memorie. </p>
+<h2><strong>Recapitulare concepte cheie</strong> (segmentele 1–7)</h2>
+<p>În segmentele anterioare am parcurs pas cu pas elementele fundamentale necesare construirii unui API RESTful cu Express. Să reamintim pe scurt principalele componente și concepte pe care le vom folosi acum în exemplul integrat:</p>
+<p><strong>Principiile REST</strong> – organizarea datelor ca <em>resurse</em> accesibile prin <em>URI</em> clare și folosirea verbelor HTTP standard (GET, POST, PUT, DELETE etc.) pentru operații CRUD, asigurând o interfață uniformă.</p>
+<p><strong>Server Express de bază</strong> – configurarea unei aplicații Node.js cu Express și definirea primelor rute (endpoint-uri) și metode HTTP asociate (ex. <code>app.get()</code> pentru citire, <code>app.post()</code> pentru creare ș.a.).</p>
+<p><strong>Rute și routere Express modulare</strong> – utilizarea <code>express.Router</code> pentru a grupa logic rutele aferente unei anumite resurse sub un prefix comun, facilitând organizarea codului pe module separate. Am învățat că putem defini rute în fișiere diferite (de ex. routes/spells.js) și apoi le putem <strong>monta</strong> în aplicația principală cu <code>app.use()</code>, păstrând astfel proiectul modular și ușor de întreținut.</p>
+<p><strong>Manipularea datelor în memorie</strong> – am folosit obiecte JavaScript sau array-uri pentru a stoca temporar entitățile (în lipsa unei baze de date) și am implementat operații CRUD asupra acestor structuri (căutare după ID, adăugare de element nou, modificare, ștergere).</p>
+<p><strong>Middleware</strong> – am discutat despre funcțiile middleware în Express, care interceptează cererile între client și rutele finale. Express însuși este conceput ca un lanț de middleware-uri prin care trece fiecare cerere. Am folosit middleware-uri <em>built-in</em> (precum <code>express.json()</code> pentru parsarea automată a corpului cererilor JSON) și middleware-uri personalizate (de exemplu pentru logarea fiecărei cereri sau pentru autentificare). Am înțeles că middleware-urile pot fie să încheie ciclul cerere-răspuns, fie să apeleze <code>next()</code> pentru a transfera controlul mai departe.</p>
+<p><strong>Validarea intrărilor</strong> – am subliniat importanța verificării datelor primite de la client înainte de a le folosi sau stoca. Validarea previne datele invalide sau atacurile de tip injecție și asigură integritatea sistemului (exemplu: verificăm că un nou <em>wizard</em> are toate câmpurile obligatorii și valori valide înainte de a-l adăuga). În practică există biblioteci dedicate (precum <strong>express-validator</strong>) pentru a facilita aceste verificări (Singh &amp; Selvan, 2024), dar se pot realiza și manual, în cod, pentru cazul nostru simplu.</p>
+<p><strong>Gestionarea erorilor</strong> – am învățat cum să tratăm elegant erorile și situațiile neașteptate. Express are un <em>handler</em> implicit de erori, însă este recomandat să definim middleware-uri speciale pentru erorile aplicației. Două scenarii critice discutate au fost: rutele inexistente (eroare 404 – Not Found) și erorile interne ale serverului (eroare 500 – Internal Server Error). Am văzut că Express trimite implicit un răspuns 404 dacă nicio rută definită nu se potrivește cererii, sau un 500 cu stack trace dacă apare o excepție nesurprinsă în cod. Totuși, pentru a oferi mesaje mai prietenoase și a nu divulga detalii tehnice către utilizatori, e preferabil să definim propriile răspunsuri personalizate pentru aceste erori (CodeSignal, 2025). De asemenea, am notat că o <strong>practică esențială</strong> este logarea erorilor și afișarea unor mesaje utile de eroare, fără a expune însă <em>stack trace</em>-ul în producție (Kosisochukwu, 2023).</p>
+<p>Având aceste elemente în vedere, suntem pregătiți să construim un exemplu practic care le îmbină pe toate. Vom realiza un <strong>mini-API RESTful</strong> inspirat de lumea Harry Potter (Hogwarts), demonstrând implementarea completă cap-coadă.</p>
+<h2><strong>Structura aplicației și resursele </strong></h2>
+<p>Să definim mai întâi <strong>cerințele și structura</strong> aplicației noastre demonstrative. Imaginați-vă că realizăm un API pentru administrarea informațiilor din Hogwarts. Vom avea câteva <strong>resurse</strong> principale cu care lucrăm, fiecare expusă prin endpoint-uri RESTful distincte:</p>
+<p><strong>Wizards</strong> – vrăjitorii existenți (cu proprietăți precum nume, vârstă, casă de apartenență etc.), accesibili prin ruta de bază <code>/wizards</code>.</p>
+<p><strong>Houses</strong> – cele patru case de la Hogwarts (Gryffindor, Slytherin, Ravenclaw, Hufflepuff), accesibile prin ruta <code>/houses</code>.</p>
+<p><strong>Spells</strong> – o colecție de vrăji celebre predate la Hogwarts, accesibile prin ruta <code>/spells</code>.</p>
+<p>Fiecare resursă va avea operații CRUD de bază. De exemplu, pentru <em>spells</em>: vom putea obține lista tuturor vrăjilor (GET <code>/spells</code>), detaliile unei vrăji după ID (GET <code>/spells/:id</code>), adăuga o vrajă nouă (POST <code>/spells</code>), actualiza o vrajă (PUT/PATCH <code>/spells/:id</code>) sau șterge (DELETE <code>/spells/:id</code>). Similar, vom gândi operații pentru <em>wizards</em> și <em>houses`. În implementarea noastră,</em> <em>datele vor fi stocate în memorie</em>*, folosind array-uri JavaScript, pentru simplitate – într-un proiect real acestea ar proveni dintr-o bază de date, dar logica de routing și manipulare ar rămâne în linii mari la fel.</p>
+<p>Aplicația va fi organizată modular, cu fișiere separate pentru rutele fiecărei resurse și un fișier principal <code>app.js</code> care configurează serverul Express. Iată o posibilă structură de directoare a proiectului nostru:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>app.js – fișierul principal care pornește serverul Express, încarcă middleware-urile globale și montează routerele pentru resurse.</code></pre>
+</div>
+<p>routes/wizards.js – modulul de rute pentru vrăjitori (prefix <code>/wizards</code>).</p>
+<p>routes/houses.js – modulul de rute pentru case (prefix <code>/houses</code>).</p>
+<p>routes/spells.js – modulul de rute pentru vrăji (prefix <code>/spells</code>).</p>
+<p>Fiecare modul de rute va folosi un <strong>router Express</strong> independent. Această abordare asigură <em>separarea preocupărilor</em>: logica fiecărei resurse stă în propriul modul, ceea ce îmbunătățește claritatea și întreținerea codului (MDN Web Docs, n.d.). Express ne permite acest tip de organizare – putem avea oricâte fișiere de rute dorim, structurate cum are sens pentru aplicație, deoarece framework-ul nu impune o structură unică prestabilită (flexibilitatea este deliberată).</p>
+<p>În continuare, vom construi pe rând modulele de rute și apoi le vom integra în <code>app.js</code>, adăugând și middleware-urile necesare.</p>
+<h2><strong>Definirea rutelor modulare cu</strong> <code>express.Router</code></h2>
+<p>Pentru început, să implementăm modulul de rute pentru una dintre resurse – de exemplu, <strong>Spells</strong> (routes/spells.js). Acest fișier va crea un router, va defini rutele CRUD pentru vrăji și va exporta routerul pentru a fi folosit în aplicația principală. Vom include și o structură de date în memorie (un array de obiecte) ce conține vrăjile existente, precum și logică de <strong>validare</strong> simplă la adăugarea unei vrăji noi (asigurând că avem toate câmpurile necesare). Iată cum ar putea arăta routes/spells.js:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>// routes/spells.js
+const express = require(&#x27;express&#x27;);
+const router = express.Router();
+
+// In-memory data for spells (as an example database)
+let spells = [
+  { id: 1, name: &quot;Alohomora&quot;, description: &quot;Unlocks doors&quot; },
+  { id: 2, name: &quot;Expelliarmus&quot;, description: &quot;Disarms an opponent&quot; }
+];
+
+// GET all spells
+router.get(&#x27;/&#x27;, (req, res) =&gt; {
+  res.json(spells);
+});
+
+// GET a single spell by ID
+router.get(&#x27;/:id&#x27;, (req, res) =&gt; {
+  const spellId = parseInt(req.params.id);
+  const spell = spells.find(sp =&gt; sp.id === spellId);
+  if (!spell) {
+    return res.status(404).json({ error: &quot;Spell not found&quot; });
+  }
+  res.json(spell);
+});
+
+// POST a new spell (with basic validation)
+router.post(&#x27;/&#x27;, (req, res) =&gt; {
+  const { name, description } = req.body;
+  if (!name || !description) {
+    return res.status(400).json({ error: &quot;Missing &#x27;name&#x27; or &#x27;description&#x27; for the spell&quot; });
+  }
+  // Create new spell object
+  const newSpell = {
+    id: spells.length ? spells[spells.length - 1].id + 1 : 1,  // simple unique ID assignment
+    name: name,
+    description: description
+  };
+  spells.push(newSpell);
+  res.status(201).json(newSpell);
+});
+
+// (Optional) PUT update a spell by ID
+router.put(&#x27;/:id&#x27;, (req, res) =&gt; {
+  const spellId = parseInt(req.params.id);
+  const spell = spells.find(sp =&gt; sp.id === spellId);
+  if (!spell) {
+    return res.status(404).json({ error: &quot;Spell not found&quot; });
+  }
+  const { name, description } = req.body;
+  if (!name || !description) {
+    return res.status(400).json({ error: &quot;Name and description are required to update the spell&quot; });
+  }
+  // Update spell properties
+  spell.name = name;
+  spell.description = description;
+  res.json(spell);
+});
+
+// (Optional) DELETE a spell by ID
+router.delete(&#x27;/:id&#x27;, (req, res) =&gt; {
+  const spellId = parseInt(req.params.id);
+  const index = spells.findIndex(sp =&gt; sp.id === spellId);
+  if (index === -1) {
+    return res.status(404).json({ error: &quot;Spell not found&quot; });
+  }
+  // Remove the spell from array
+  const deletedSpell = spells.splice(index, 1);
+  res.json(deletedSpell[0]);
+});
+
+module.exports = router;</code></pre>
+</div>
+<p>Observați în codul de mai sus câteva aspecte importante:</p>
+<p>Folosim <code>express.Router()</code> pentru a obține un router <em>nou</em> pe care definim rutele specifice resursei <em>spells</em>. Aceasta permite gruparea logicii de rutare sub prefixul comun <code>/spells</code> (definit ulterior când montăm routerul în aplicația principală), izolând astfel acest set de rute de altele.</p>
+<p>Am inclus un array <strong>spells</strong> cu câteva obiecte predefinite, simulând datele existente. Într-o aplicație reală, aceste date ar veni dintr-o bază de date, dar aici folosim stocare în memorie pentru simplitate.</p>
+<p>Ruta GET /spells returnează întreaga listă de vrăji (sub formă de JSON). Ruta GET /spells/:id extrage :id din parametrii URL (observați utilizarea req.params.id) și caută obiectul corespunzător în array. Dacă nu găsește nicio vrajă cu ID-ul respectiv, trimite un răspuns 404 (Not Found) cu un mesaj de eroare. Această verificare demonstrează <strong>tratarea situației când resursa cerută nu există</strong>, evitând să returnăm un obiect nedefinit.</p>
+<p>Ruta POST /spells ilustrează un <strong>pattern de validare</strong> simplu: extragem din corpul cererii (<code>req.body</code>) proprietățile așteptate (name și description) – atenție, pentru ca <code>req.body</code> să existe, trebuie să folosim un middleware de parsing JSON, despre care vom vorbi imediat. Verificăm dacă aceste câmpuri există; dacă nu, întoarcem un răspuns 400 (Bad Request) cu un mesaj clar despre lipsa datelor. Aceasta este o bună practică pentru a preveni introducerea de date incomplete sau incorecte (Singh &amp; Selvan, 2024). Dacă datele sunt valide, creăm un nou obiect <em>spell</em>, îi atribuim un id unic (în exemplu, luăm ultimul ID existent și îl incrementăm – o strategie simplistă) și apoi adăugăm noul obiect în array. Returnăm răspunsul cu status 201 (Created) și obiectul creat în format JSON.</p>
+<p>Am inclus opțional și rute <code>PUT</code> și <code>DELETE</code> pentru a ilustra completitudinea API-ului RESTful. Ruta PUT /spells/:id actualizează o vrajă existentă – întâi caută vraja, verifică similar că are toate datele necesare în cerere, apoi modifică proprietățile obiectului. Ruta DELETE /spells/:id șterge o vrajă pe baza ID-ului, dacă aceasta există. Ambele rute folosesc coduri de stare adecvate (404 dacă elementul nu există, 400 dacă datele de actualizare lipsesc, 200 OK implicit dacă operația reușește). Într-un cadru educativ, nu intrăm mai adânc în discuția <em>when to use PUT vs PATCH</em>, dar este bine de știut că ambele pot fi folosite pentru actualizare; am folosit PUT aici pentru simplitate.</p>
+<p>Modulul de rute pentru <strong>Wizards</strong> (routes/wizards.js) și cel pentru <strong>Houses</strong> (routes/houses.js) vor fi foarte asemănătoare ca structură cu <code>spells.js</code>. Fiecare va avea propriul array de date (de exemplu, wizards cu obiecte {id, name, house, year} etc., respectiv houses cu obiecte {id, name, headOfHouse,...}), și rute CRUD similare (poate cu ușoare diferențe de câmpuri sau logică specifică). Cheia este că <strong>fiecare set de rute este izolat în modulul său</strong>, deci modificările într-o resursă nu afectează altele. Acest nivel de modularizare reflectă un design de tip <em>MVC</em> minimalist – rutele noastre acționează ca niște <em>controlere</em> care manipulează datele (modelul nostru fiind aici array-ul în memorie) și întorc răspunsuri (fără a folosi <em>view</em>-uri deoarece trimitem JSON direct).</p>
+<h2><strong>Integrarea routerelor în aplicația Express principală</strong></h2>
+<p>Odată definite modulele de rute, trebuie să le <strong>integrăm</strong> în aplicația Express și să configurăm middleware-urile globale, inclusiv tratarea erorilor. În fișierul <code>app.js</code> vom inițializa aplicația Express, vom încărca middleware-urile necesare (precum parser-ul JSON și un middleware de logging pentru toate cererile), vom monta routerele pentru <code>/wizards</code>, <code>/houses</code> și <code>/spells</code>, apoi vom adăuga la final middleware-urile de <strong>eroare 404 și 500</strong>. Să examinăm cum arată <code>app.js</code> complet:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>// app.js
+const express = require(&#x27;express&#x27;);
+const app = express();
+
+// Import route modules
+const wizardsRouter = require(&#x27;./routes/wizards&#x27;);
+const housesRouter = require(&#x27;./routes/houses&#x27;);
+const spellsRouter = require(&#x27;./routes/spells&#x27;);
+
+// Global middleware: parse JSON bodies
+app.use(express.json());  // built-in middleware pentru parsarea corpului JSON al cererilor
+
+// Global middleware: simple request logger
+app.use((req, res, next) =&gt; {
+  console.log(`${req.method} ${req.url}`);
+  next();  // continue to next middleware/route
+});
+
+// Mount routers for our resources with specific base paths
+app.use(&#x27;/wizards&#x27;, wizardsRouter);
+app.use(&#x27;/houses&#x27;, housesRouter);
+app.use(&#x27;/spells&#x27;, spellsRouter);
+
+// 404 handler (for any request that didn&#x27;t match above routes)
+app.use((req, res) =&gt; {
+  res.status(404).json({ error: &quot;Not Found&quot; });
+});
+
+// 500 error handler (general error handling middleware)
+app.use((err, req, res, next) =&gt; {
+  console.error(err.stack);            // Log stacktrace for debugging (not sent to client)
+  res.status(500).json({ error: &quot;Internal Server Error&quot; });
+});
+
+// Start the server
+app.listen(3000, () =&gt; {
+  console.log(&quot;Hogwarts API server started on port 3000&quot;);
+});</code></pre>
+</div>
+<p>Să explicăm pe scurt acest fișier, deoarece el reprezintă <em>punctul central</em> al aplicației noastre:</p>
+<p><strong>Configurarea middleware global</strong>: Prima linie <code>app.use(express.json())</code> activează middleware-ul built-in pentru parsarea JSON. Fără aceasta, <code>req.body</code> ar fi undefined pentru cererile POST/PUT cu JSON. Express 4+ include acest middleware în pachet (nu mai e nevoie de body-parser separat) – este esențial pentru a putea citi datele trimise de client în format JSON. Apoi definim manual un middleware de <strong>logging</strong> care va rula la fiecare cerere (deoarece nu specificăm o cale, el se aplică global pentru toate rutele). Acesta doar afișează în consolă metoda HTTP și URL-ul cererii (de exemplu: GET /spells/2). Apoi apelează <code>next()</code> pentru a permite trecerea la următorul element din lanț. Acest tip de middleware este util în dezvoltare pentru a monitoriza traficul și debugga; în producție, s-ar putea folosi un logger mai sofisticat (precum <em>morgan</em>).</p>
+<p><strong>Montarea routerelor modulare</strong>: Folosim <code>app.use(&#x27;/wizards&#x27;, wizardsRouter)</code> (și similar pentru houses și spells) pentru a adăuga routerele definite anterior în <em>stack</em>-ul de middleware al aplicației Express. Practic, spunem: toate rutele definite în <code>wizardsRouter</code> vor primi calea de bază <code>/wizards</code>. De exemplu, dacă în <code>wizardsRouter</code> avem definit <code>router.get(&#x27;/:id&#x27;)</code>, el va răspunde la cereri de tip GET către <code>/wizards/:id</code> în contextul aplicației. Acest mecanism ne permite să <strong>compunem</strong> aplicația din bucăți: Express inserează fiecare router ca middleware separat, care se ocupă doar de rutele cu prefixul respectiv. Organizarea modulară devine clară: dacă pe viitor am adăuga o nouă secțiune (de exemplu, <code>/classes</code> pentru cursuri), am crea un <code>classesRouter</code> și l-am monta cu <code>app.use(&#x27;/classes&#x27;, classesRouter)</code> fără a afecta restul codului.</p>
+<p><strong>Middleware pentru 404</strong>: Linia <code>app.use((req, res) =&gt; { ... res.status(404)... })</code> introdusă <strong>după</strong> toate <code>app.use</code> de mai sus are rolul de a prinde orice cerere care <em>ajunge până aici</em> fără să fi primit deja un răspuns. În Express, dacă nicio rută nu a răspuns unei cereri, aceasta <strong>nu este considerată o eroare</strong> tehnică (nu se aruncă excepție), ci doar o situație în care nu s-a găsit nimic pentru acea cerere. Din acest motiv, middleware-urile de eroare (cu 4 parametri) nu interceptează absența unei rute. Soluția este să definim manual un middleware la final, care va trata cazurile rămase ca 404 (Not Found). Astfel, dacă cineva face o cerere la o rută neimplementată (ex: <code>/potions</code> care nu există), acel request va “cădea” până la acest handler și va primi răspunsul 404 JSON cu { error: &quot;Not Found&quot; }. Am optat să nu trimitem o pagină HTML cu un mesaj standard, ci un JSON, întrucât API-ul nostru comunică prin JSON (într-o aplicație reală, am putea avea o pagină 404 user-friendly dacă ar fi un site web).</p>
+<p><strong>Middleware de eroare 500</strong>: Ultimul <code>app.use</code> are patru parametri (err, req, res, next) – Express îl recunoaște ca fiind un <strong>error-handling middleware</strong> (OpenJS Foundation, n.d.). Orice eroare apărută în rutelor de mai sus (de exemplu, dacă ar exista un throw sau o respingere de promisiune necontrolată) va ajunge aici. Acest handler doar loghează eroarea (în consolă, folosind <code>console.error(err.stack)</code>) și apoi trimite un răspuns 500 (Internal Server Error) cu un mesaj generic JSON. Observați că nu expunem detaliile interne ale erorii către client – o bună practică de securitate, pentru că <em>stack trace</em>-ul poate conține informații sensibile despre aplicație. În dezvoltare, Express include implicit <em>stack trace</em>-ul în răspuns (dacă nu suprascriem handler-ul), însă în producție acest comportament nu are loc (pentru a evita divulgarea de informații). De aceea, definirea unui handler personalizat ne ajută să controlăm exact ce mesaj vede utilizatorul și să logăm intern detaliile pentru debugging.</p>
+<p>Un aspect important de menționat: ordinea acestor middleware-uri în fișier contează. <strong>Middleware-ul de 404 trebuie să vină la final</strong>, după toate rutele montate, altfel el ar intercepta și cereri legitime. În codul de mai sus, l-am pus după <code>app.use(&#x27;/...&#x27;)</code> pentru a ne asigura că doar cererile neprinse de niciun router ajung la el. Acest tipar este recomandat și în documentația Express – practic <em>ultimul middleware</em> din listă tratează 404. Similar, middleware-ul de eroare (500) trebuie să fie ultimul definit (după 404), deoarece Express parcurge în ordine și ajunge la el doar dacă un next(err) a fost invocat vreodată sau o eroare a fost aruncată în anteriori. Dacă am inversa ordinea celor două, handler-ul de 404 ar fi ignorat în caz de erori, sau handler-ul de 500 nu ar mai fi apelat pentru cereri neasociate unei erori.</p>
+<p>La acest punct, aplicația noastră <strong>Hogwarts API</strong> este completă din perspectivă funcțională. O putem porni (cu node app.js) și testa rutele cu un instrument precum <em>Postman</em> sau curl. De exemplu:</p>
+<p>O cerere GET http://localhost:3000/spells va întoarce lista tuturor vrăjilor în format JSON (două obiecte la început, <em>Alohomora</em> și <em>Expelliarmus</em>).</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>GET http://localhost:3000/spells/1 va întoarce obiectul vrajei cu id=1 (Alohomora).
+GET http://localhost:3000/spells/99 va întoarce {&quot;error&quot;: &quot;Spell not found&quot;} cu status 404, deoarece nu există vraja cu ID 99.
+POST http://localhost:3000/spells cu un body JSON de exemplu {&quot;name&quot;: &quot;Lumos&quot;, &quot;description&quot;: &quot;Illuminates the wand&quot;} va adăuga vraja și va răspunde cu obiectul nou creat și status 201. Dacă omitem name sau description, vom primi status 400 și mesaj de eroare de la validare.</code></pre>
+</div>
+<p>Similar, putem testa și pentru /wizards și /houses (de exemplu, GET /wizards ar putea lista toți vrăjitorii cunoscuți, în funcție de ce am pus în array-ul inițial în <code>wizards.js</code>).</p>
+<h2><strong>Aplicabilitatea în proiecte reale</strong></h2>
+<p>Exemplul de mai sus, deși simplificat, urmează îndeaproape practicile folosite în dezvoltarea reală de API-uri cu Express. Să discutăm <strong>cât de realist</strong> este acest model și cum s-ar transpune el într-un proiect de producție:</p>
+<p>În primul rând, <strong>Express.js rămâne unul dintre cele mai populare framework-uri web pentru Node.js</strong>, fiind apreciat pentru simplitatea și flexibilitatea sa. A fost numit adesea <em>„standardul de facto”</em> pentru servere Node, iar sondaje recente arată că aproximativ 19% dintre dezvoltatorii web la nivel mondial declară că folosesc Express.js în mod curent. Cu alte cuvinte, abordarea pe care am ilustrat-o are o relevanță directă: numeroase API-uri și backend-uri de aplicații reale sunt construite exact după acest tipar. De exemplu, Express este adesea folosit ca partea de backend în stack-uri cunoscute precum <strong>MEAN</strong>/<strong>MERN</strong> (MongoDB, Express, Angular/React, Node), asigurând legătura între baza de date MongoDB și front-end-ul JavaScript.</p>
+<p>În practică însă, câteva lucruri ar fi diferite sau extinse față de exemplul nostru:</p>
+<p><strong>Persistența datelor</strong>: În locul array-urilor în memorie, un serviciu real va folosi o bază de date (SQL sau NoSQL) pentru stocarea datelor. Express nu impune un anumit sistem de baze de date – putem integra orice tehnologie preferăm (MySQL, PostgreSQL, MongoDB etc.) prin drivere sau ORM-uri dedicate. De exemplu, am putea folosi <strong>Mongoose</strong> pentru a defini modele <em>Wizard</em>, <em>House</em>, <em>Spell</em> și a realiza operațiile CRUD direct în MongoDB. Framework-ul Express este neutru față de bazele de date, lăsând acest aspect la latitudinea dezvoltatorului sau a bibliotecilor externe.</p>
+<p><strong>Validare și securitate</strong>: Deși am arătat un mecanism simplu de validare manuală, într-o aplicație reală ar fi indicat să folosim middleware-uri de validare mai robuste. Pachetul express-validator, de exemplu, oferă un API declarativ pentru a valida și <strong>sanitiza</strong> intrările (ex.: să asigurăm că un câmp email este într-adevăr un email, că un ID furnizat ca parametru e numeric șamd.). Utilizarea unei asemenea biblioteci, combinată cu practici de securitate (protejarea împotriva atacurilor XSS, SQL injection), este esențială pentru un serviciu expus public. În plus, într-un mediu real am implementa și mecanisme de <strong>autentificare și autorizare</strong> (de pildă, folosind JSON Web Tokens sau sesiuni/cookies), astfel încât numai anumiți utilizatori să poată crea/edita resurse (ex.: doar profesorii pot adăuga vrăji noi, elevii pot doar citi etc.). Aceste aspecte se realizează tot prin middleware-uri (ex. un middleware care verifică token-ul de autentificare la anumite rute protejate).</p>
+<p><strong>Structură pe nivele și organizare</strong>: Pentru un proiect de dimensiuni mari, de obicei se adoptă o structură și mai modulară. De exemplu, se pot separa <em>controlere</em> (funcțiile care procesează efectiv cererea și pregătesc răspunsul) de <em>servicii</em> (logică de business, acces la date) și de <em>rute</em> (care doar leagă URL-urile de controlere). Express nu impune o arhitectură anume, ceea ce poate fi un avantaj (libertate de organizare) dar și o responsabilitate – echipa de dezvoltare trebuie să convină asupra unei structuri coerente (OpenJS Foundation, n.d.). În exemplul nostru am combinat logica în routere pentru simplitate, însă într-un proiect real am putea avea fișiere separate pentru fiecare controller (de exemplu, spellsController.js care exportă funcții getAllSpells, getSpellById, createSpell etc., apelate din rutele corespunzătoare). Există și <em>framework</em>-uri derivative peste Express (cum ar fi <strong>LoopBack</strong> sau <strong>NestJS</strong>) care oferă o structură predefinită (inclusiv management de modele, validare, injectare de dependențe șamd.), utile mai ales pentru aplicații enterprise mari. Totuși, nucleul exemplului rămâne aplicabil: Express ca motor de routing și middleware stă la baza acelor framework-uri, și cunoștințele dobândite aici se transferă direct.</p>
+<p><strong>Tratarea erorilor și logging centralizat</strong>: În producție, în loc să trimitem simplu <em>&quot;Internal Server Error&quot;</em>, am putea dori să avem mesaje de eroare mai detaliate (fără a expune totuși informații sensibile) sau coduri de eroare specificate. De asemenea, am integra un sistem de logare centralizat (ex. folosind un serviciu extern sau salvând log-urile în fișiere) și monitorizare pentru erori neprevăzute. Un <em>pattern</em> des întâlnit este crearea unei clase de erori personalizate (de exemplu, AppError care extinde clasa Error) pentru a distinge între erori operaționale (cele anticipate și comunicate clar utilizatorului, cum ar fi &quot;Spell not found&quot;) și erori de programare (bug-uri neprevăzute) – gestionându-le diferit (Kosisochukwu, 2023). Scopul este să oferim o experiență cât mai bună utilizatorului final chiar și când ceva nu merge (un mesaj util în locul unui crash al serverului) și, concomitent, să alerteze dezvoltatorii prin log-uri detaliate pentru a remedia problema.</p>
+<p><strong>Scalare și performanță</strong>: Soluția cu Express se adaptează ușor la creștere. Dacă traficul devine foarte mare, aplicația poate fi scalată orizontal (rulând mai multe instanțe în paralel, în spatele unui load balancer) sau se poate trece la un server mai performant. De asemenea, pentru operațiuni intensive se pot utiliza <em>middleware</em>-uri de cache, compresie a răspunsurilor (ex. compression middleware pentru a activa GZIP), sau se poate opta pentru un server web front (NGINX) care să servească conținutul static și să reverse-proxy către Express pentru API. Express fiind minimalist nu face automat aceste lucruri, dar oferă <em>hook</em>-urile necesare pentru a le integra (OpenJS Foundation, n.d.).</p>
+<p><strong>Comunitate și suport</strong>: Un avantaj major al Express este comunitatea vastă și ecosistemul de module. Aproape orice funcționalitate ai nevoie, există probabil un <em>middleware</em> sau bibliotecă compatibilă (de la autentificare cu Passport, la rate limiting, la integrare cu template engines ș.a.). Faptul că este atât de răspândit înseamnă și că există multe resurse de învățare, tutoriale și soluții la probleme comune (exemplul nostru a fost inspirat din documentația oficială și tutoriale recunoscute – am urmat îndeaproape recomandările de structurare și error handling din documentație).</p>
+<p>În concluzie, ceea ce am realizat în mini-proiectul <em>Hogwarts API</em> este o <strong>microversiune</strong> a modului în care se dezvoltă API-uri web reale cu Node și Express. Am demonstrat cum se pot organiza rutele în mod modular, cum se aplică middleware-urile la nivel de aplicație și de rută, cum se validează datele de intrare pentru a menține consistența și securitatea, precum și cum se gestionează erorile într-un mod robust. Aceste principii și tehnici sunt direct aplicabile atunci când lucrați la propriul vostru proiect – fie că este un simplu backend pentru o aplicație front-end sau un serviciu web complex. Express.js, prin natura sa necomplicată și flexibilă, <strong>permite să începi simplu</strong>, cum am făcut-o noi, și apoi să extinzi pe măsură ce cerințele cresc. În mâinile unui dezvoltator, Express oferă „cărămizile” necesare pentru a construi orice, de la un prototip rapid până la un API de producție scalabil, atâta timp cât respectăm bunele practici de organizare a codului și tratăm cu grijă aspectele critice (erori, securitate, performanță). Faptul că ne-am aliniat la aceste bune practici (modularizare, validare, error handling etc.) demonstrează încă o dată importanța lor: ele nu sunt doar exerciții academice, ci ingrediente esențiale pentru aplicații robuste în lumea reală.</p>
+<div class="references">
+<h2><strong>Bibliografie:</strong></h2>
+<p>CodeSignal. (2025). <em>Handling 404 and 500 Errors in Express.js</em>. CodeSignal Learn. Retrieved from https://codesignal.com/learn/courses/first-steps-into-back-end-engineering-with-expressjs/lessons/handling-404-and-500-errors-in-expressjs</p>
+<p>Kosisochukwu, M. (2023, October 11). <em>Express.js Error Handling 101</em>. ButterCMS. https://buttercms.com/blog/express-js-error-handling/</p>
+<p>MDN Web Docs. (n.d.). <em>Express Tutorial Part 4: Routes and controllers</em>. Retrieved November 14, 2025, from https://developer.mozilla.org/en-US/docs/Learn_web_development/Server-side/Express_Nodejs/routes</p>
+<p>OpenJS Foundation. (n.d.). <em>Using middleware</em>. In <em>Express.js Official Documentation</em>. Retrieved November 14, 2025, from https://expressjs.com/en/guide/using-middleware.html</p>
+<p>Singh, C., &amp; Selvan, A. (2024, January 19). <em>How to Handle Form Inputs Efficiently with Express-Validator in ExpressJs</em>. DigitalOcean. https://www.digitalocean.com/community/tutorials/how-to-handle-form-inputs-efficiently-with-express-validator-in-express-js</p>
+<p>Statistics and Data. (2024). <em>Most Popular Backend Frameworks – 2012/2024</em>. Retrieved from https://statisticsanddata.org/data/most-popular-backend-frameworks-2012-2024/</p>
+<h3><strong>“Gray”</strong></h3>
+<p>   Express Tutorial Part 4: Routes and controllers - Learn web development | MDN<br>
+<a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/routes">https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/routes</a></p>
+<p>  Using Express middleware<br>
+<a href="https://expressjs.com/en/guide/using-middleware.html">https://expressjs.com/en/guide/using-middleware.html</a></p>
+<p>  How to Handle Form Inputs Efficiently with Express-Validator in ExpressJs | DigitalOcean<br>
+<a href="https://www.digitalocean.com/community/tutorials/how-to-handle-form-inputs-efficiently-with-express-validator-in-express-js">https://www.digitalocean.com/community/tutorials/how-to-handle-form-inputs-efficiently-with-express-validator-in-express-js</a></p>
+<p> Handling 404 and 500 Errors in Express.js | CodeSignal Learn<br>
+<a href="https://codesignal.com/learn/courses/first-steps-into-back-end-engineering-with-expressjs/lessons/handling-404-and-500-errors-in-expressjs">https://codesignal.com/learn/courses/first-steps-into-back-end-engineering-with-expressjs/lessons/handling-404-and-500-errors-in-expressjs</a></p>
+<p>    Express.js Error Handling 101 | ButterCMS<br>
+<a href="https://buttercms.com/blog/express-js-error-handling/">https://buttercms.com/blog/express-js-error-handling/</a></p>
+<p>    Express FAQ<br>
+<a href="https://expressjs.com/en/starter/faq.html">https://expressjs.com/en/starter/faq.html</a></p>
+<p> Express error handling<br>
+<a href="https://expressjs.com/en/guide/error-handling.html">https://expressjs.com/en/guide/error-handling.html</a></p>
+<p>   Most Popular Backend Frameworks – 2012/2024 -<br>
+<a href="https://statisticsanddata.org/data/most-popular-backend-frameworks-2012-2024/">https://statisticsanddata.org/data/most-popular-backend-frameworks-2012-2024/</a></p>
+</div>
+
+    </div>
+</body>
+</html>

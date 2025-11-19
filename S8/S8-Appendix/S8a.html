@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentele API-urilor RESTful și Express.js</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05em;
+        }
+
+        .first-paragraph::first-letter {
+            font-size: 3em;
+            font-weight: bold;
+            float: left;
+            line-height: 0.8;
+            margin: 0.1em 0.1em 0 0;
+            color: #667eea;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        em {
+            color: #16a085;
+            font-style: italic;
+        }
+
+        code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            background: transparent;
+            color: #ecf0f1;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .code-block {
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .important {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        .references {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .references h2 {
+            color: #7f8c8d;
+        }
+
+        .references p {
+            font-size: 0.95em;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .references a {
+            color: #667eea;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .references a:hover {
+            text-decoration: underline;
+            color: #764ba2;
+        }
+
+        sup {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><strong>S8v1</strong><strong>: </strong><strong>Fundamentele</strong><strong> API-</strong><strong>urilor</strong><strong> RESTful și Express.js</strong></h1>
+<h2><strong>Introducere</strong><strong> </strong><strong>Teoretică</strong></h2>
+<p class="first-paragraph">În era aplicațiilor web moderne, <strong>API-urile RESTful</strong> (din engleză <em>Representational State Transfer</em>) au devenit un standard de facto pentru comunicarea între client și server. Roy Fielding (2000) a introdus termenul REST pentru a descrie un stil arhitectural al sistemelor distribuite, bazat pe un set de constrângeri menite să asigure performanța și scalabilitatea serviciilor web (ex. separarea client-server, comunicarea <em>stateless</em>, cache etc.). Pe scurt, arhitectura REST presupune că fiecare <strong>resursă</strong> este accesibilă printr-un URI unic, iar interacțiunile se fac prin metode HTTP standard (GET, POST, PUT, DELETE) într-un mod fără stare (fiecare cerere conține toată informația necesară, fără a depinde de contexte stocate pe server). Această uniformitate a interfeței și independență a cererilor contribuie la <strong>scalabilitate</strong> și <strong>flexibilitate</strong>, permițând dezvoltarea separată a clientului și serverului și evoluția independentă a fiecăruia (Fielding, 2000).</p>
+<p>Un alt pilon al web-ului modern este formatul <strong>JSON</strong> (<em>JavaScript Object Notation</em>). JSON este un format ușor, bazat pe text, independent de limbaj, folosit pentru interschimbul de date structurate. Dezvoltat în 2001 de Douglas Crockford și standardizat ulterior (ex. RFC 4627, ECMA-404), JSON oferă o sintaxă simplă <strong>pentru obiecte</strong> (<em>perechi nume-valoare</em>) și <strong>array</strong>-uri, permițând reprezentarea de structuri de date complexe într-o manieră portabilă și <strong>ușor de înțeles atât de către oameni cât și de mașini</strong>. Datorită simplității și ușurinței de prelucrare, JSON a înlocuit practic XML în majoritatea aplicațiilor web: de exemplu, din cele mai populare zece API-uri publice, doar unul mai folosea XML, restul utilizând JSON (Target, 2017). Până în 2019, JSON devenise formatul <strong>preferat</strong> de schimb de date între clienți web/mobili și servicii back-end, XML rămânând tot mai rar folosit (Freeman, 2019). Acest context evidențiază importanța stăpânirii arhitecturii REST și a formatului JSON pentru orice dezvoltator care construiește servicii web contemporane.</p>
+<p>În practică, pentru a implementa rapid un API conform principiilor REST, dezvoltatorii se bazează frecvent pe <strong>framework-uri web</strong>. <strong>Express.js</strong> este un astfel de framework minimalist și flexibil pentru Node.js, care oferă un set robust de funcționalități pentru dezvoltarea de aplicații web și mobile. Express simplifică definirea routelor HTTP și gestionarea cererilor, permițând crearea rapidă a serviciilor <strong>RESTful</strong> ce furnizează și consumă date în format JSON (Express.js, n.d.). Având la dispoziție numeroase metode HTTP utile și middleware-uri, construirea unui API consistent și scalabil devine mult mai accesibilă chiar și pentru aplicații complexe. În continuare, vom explora modul în care conceptele teoretice de mai sus se aplică efectiv în dezvoltarea unui API folosind Express și JSON.</p>
+<h2><strong>Explicație Aplicată</strong></h2>
+<p>Principiile teoretice ale arhitecturii REST capătă formă concretă atunci când proiectăm un API. În esență, un <strong>API RESTful</strong> expune <em>resurse</em> – entități logice precum utilizatori, produse sau, într-un exemplu fictiv, personaje dintr-un roman celebru – prin intermediul unor URL-uri intuitive. Fiecărei resurse îi corespunde un <em>endpoint</em> și operații standard prin metode HTTP. De exemplu, o resursă characters poate fi accesată la adresa /api/characters prin metoda GET pentru a obține lista tuturor personajelor, POST pentru a adăuga un nou personaj, PUT/PATCH pentru a actualiza unul existent și DELETE pentru a îl șterge. Această convenție respectă constrângerea de <strong>Uniform Interface</strong> din REST, deoarece folosim un set uniform de operații (metodele HTTP) pentru orice tip de resursă. Important este că serverul nu stochează starea sesiunii între cereri (constrângerea de <em>Stateless</em>): fiecare cerere GET, POST etc. trebuie să conțină toate datele necesare (de exemplu, corpul JSON al cererii sau tokenul de autentificare) astfel încât serverul să o poată înțelege izolat (Fielding, 2000). Acest model <em>stateless</em> mărește scalabilitatea – serverul poate deservi oricare cerere independent, fără a depinde de un context anterior – și fiabilitatea, deoarece recuperarea după eventuale erori nu necesită reconstrucția unei sesiuni pe server. Totodată, se facilitează cache-ul: răspunsurile la cererile GET pot fi marcate ca <strong>cacheable</strong>, permițând clienților sau proxy-urilor să refolosească datele și să reducă numărul de interacțiuni repetitive, ceea ce îmbunătățește performanța percepută.</p>
+<p>Express.js implementează elegant aceste concepte, oferind un mod simplu de a defini rute și de a manipula răspunsurile JSON. Arhitectura sa <strong>neopinionată</strong> (unopinionated) înseamnă că nu impune o structură strictă a aplicației, lăsând dezvoltatorului libertatea să organizeze codul cum dorește, atâta timp cât respectă principiile de bază. De exemplu, Express nu impune un format anume al datelor – putem transmite JSON în răspunsuri pur și simplu folosind metoda utilitară res.json(). În plus, Express suportă middleware-uri precum express.json() (inclus în versiuni recente) pentru a parsa automat corpul cererilor JSON, facilitând astfel consumarea datelor trimise de client în format JSON. Toate aceste facilități evidențiază sinergia dintre Express și JSON în realizarea de API-uri RESTful: Express gestionează routarea și logica HTTP, în timp ce JSON este formatul de date prin care clientul și serverul schimbă informații structurate.</p>
+<p>Să ne gândim la un scenariu concret într-un mod aplicat: dorim să proiectăm un serviciu web pentru o bibliotecă de fantezie populată cu personaje celebre. Vom avea resurse precum characters și ne propunem să oferim acces la ele într-un mod conform cu REST. În Express, definirea unei rute pentru a obține toate personajele se face cu app.get(), iar întoarcerea rezultatului în format JSON se realizează prin res.json(). Similar, adăugarea unui nou personaj se va mapa pe o rută POST folosind app.post(), citind datele JSON din corpul cererii (de exemplu, detaliile noului personaj) și apoi întorcând un răspuns (eventual tot JSON) care confirmă crearea. Astfel, <strong>construcția unui API pas cu pas</strong> respectă în practică regulile teoretice: fiecare rută corespunde unei acțiuni asupra resursei, folosind verbul HTTP potrivit, menținând totodată protocolul <em>stateless</em> (fiecare cerere POST de creare conține toate datele noului obiect, deci nu depinde de vreo stare anterioară pe server) și furnizând reprezentările resurselor în format JSON (ușor de consumat de orice client, fie el browser sau aplicație mobilă).</p>
+<h2><strong>Exemplu Practic</strong></h2>
+<p>Pentru a ilustra aceste concepte, să implementăm o micro-aplicație Express care gestionează o listă de personaje Jedi din universul <strong>Star Wars</strong>. Vom crea un API RESTful simplu care permite afișarea tuturor cavalerilor Jedi disponibili. În exemplul de mai jos, ruta GET /api/jedi va întoarce, în format JSON, un set de personaje cu atributele lor importante:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>const express = require(&#x27;express&#x27;);
+const app = express();
+const PORT = 3000;
+
+// Middleware pentru parsarea automată a corpului cererilor JSON
+app.use(express.json());
+
+// Datele noastre (într-un context real, acestea ar proveni dintr-o bază de date)
+const jediKnights = [
+  { name: &quot;Luke Skywalker&quot;, midichlorians: 15000 },
+  { name: &quot;Yoda&quot;, midichlorians: 17000 },
+  { name: &quot;Obi-Wan Kenobi&quot;, midichlorians: 13400 }
+];
+
+// Definim ruta GET pentru a obține lista de Jedi
+app.get(&#x27;/api/jedi&#x27;, (req, res) =&gt; {
+  res.json(jediKnights);
+});
+
+// Pornim serverul
+app.listen(PORT, () =&gt; {
+  console.log(`Serverul rulează pe portul ${PORT}`);
+});</code></pre>
+</div>
+<p>În acest exemplu, am creat o listă jediKnights de obiecte JavaScript, fiecare reprezentând un personaj Jedi cu proprietăți (un nume și, de exemplu, un număr fictiv de midichlorieni ca măsură a puterii Forței). Ruta GET /api/jedi întoarce această listă sub formă de JSON către orice client care face cererea – de exemplu, un browser sau o aplicație front-end va primi un răspuns de tip JSON care arată astfel:</p>
+<p>[
+  { &quot;name&quot;: &quot;Luke Skywalker&quot;, &quot;midichlorians&quot;: 15000 },
+  { &quot;name&quot;: &quot;Yoda&quot;, &quot;midichlorians&quot;: 17000 },
+  { &quot;name&quot;: &quot;Obi-Wan Kenobi&quot;, &quot;midichlorians&quot;: 13400 }
+]</p>
+<p>Acest output JSON corespunde reprezentării serializate a resursei jedi – o listă de entități – și exemplifică principiul ** reprezentational state transfer<em>, în sensul că starea resurselor de pe server (lista de Jedi) este transferată clientului sub forma unei reprezentări (document JSON). Totul funcționează fără stare persistentă pe server: fiecare cerere GET produce direct răspunsul pe baza datelor existente, fără a depinde de vreo interacțiune anterioară. Structura aleasă a URL-ului (</em><em>/api/jedi</em><em>) este intuitivă și sugerează clar resursa returnată, făcând interfața API-ului uniformă</em> și ușor de înțeles – un dezvoltator familiarizat cu acest stil va intui rapid că, de pildă, o resursă /api/jedi/&lt;id&gt; ar putea oferi detalii despre un anumit Jedi, sau că o cerere POST la /api/jedi ar adăuga un nou personaj în listă.</p>
+<p>Deși exemplul nostru este unul simplificat (lista de date este stocată în memorie și avem doar operația de citire), el reflectă fidel modul în care se construiesc API-urile în proiecte reale. </p>
+<p>În practică, datele ar fi preluate dintr-o bază de date, iar pe lângă GET s-ar implementa și operații de actualizare sau ștergere, însă <strong>modelul rămâne același</strong>. </p>
+<p>Prin utilizarea Express, codul pentru definirea acestor rute rămâne concis și clar, concentrându-se pe logica aplicației, în timp ce framework-ul se ocupă de detaliile legate de protocolul HTTP. </p>
+<p>Formatul JSON al răspunsurilor garantează interoperabilitatea – orice client (web, mobil sau alt serviciu) poate interpreta ușor datele. Totodată, un astfel de API ar putea servi drept bază pentru aplicații complexe: de exemplu, un joc online sau o enciclopedie web despre Star Wars ar putea folosi exact acest tip de endpoint pentru a afișa lista de personaje Jedi utilizatorilor. Simplitatea exemplului ascunde, de fapt, un <strong>șablon general</strong> folosit pe scară largă în industrie, de la aplicații de e-commerce care expun liste de produse și până la rețele sociale care oferă acces la postări și comentarii prin API. Abordarea RESTful cu JSON și Express asigură că aceste servicii pot fi dezvoltate rapid, întreținute ușor și scalate atunci când numărul de utilizatori crește.</p>
+<h2><strong>Concluzie</strong></h2>
+<p>Segmentul de față a prezentat conceptele fundamentale ale arhitecturii RESTful și importanța formatului JSON, precum și modul în care framework-ul Express.js le îmbină practic pentru a crea API-uri web robuste. Am pornit de la <strong>principiile teoretice</strong> – constrângerile REST definite de Fielding (client-server, <em>stateless</em>, interfață uniformă etc.) și avantajele JSON ca format de schimb de date – și am ajuns la <strong>implementarea practică</strong> a acestor idei într-un exemplu concret, demonstrând cum teoria se reflectă direct în cod. Prin exemplul simplu al serviciului de listare a personajelor Jedi, se poate vedea clar că respectarea principiilor REST duce la un design clar și previzibil al API-ului, iar utilizarea JSON asigură <em>interoperabilitatea</em> și <em>ușurința prelucrării datelor</em>.</p>
+<p>Din perspectivă academică, acest demers evidențiază legătura dintre conceptele arhitecturale și soluțiile tehnice: cunoașterea rigorilor teoretice (de ce este preferabil un serviciu fără stare? de ce JSON și nu alt format?) îmbunătățește calitatea deciziilor de proiectare și a codului rezultat. Totodată, exemplele aplicate arată <strong>relevanța practică</strong> a acestor cunoștințe: aproape orice aplicație web din lumea reală – de la platforme educaționale la servicii financiare – se bazează pe API-uri RESTful cu JSON, adesea construite cu ajutorul unor framework-uri precum Express. Prin urmare, stăpânirea acestor fundamente nu este doar un exercițiu teoretic, ci și o condiție esențială pentru a putea dezvolta soluții informatice moderne. În segmentele următoare, se poate aprofunda această bază, explorând aspecte avansate precum securizarea API-urilor, validarea datelor JSON sau implementarea unor <em>middleware</em>-uri personalizate în Express, continuând astfel călătoria de învățare de la concepte fundamentale la aplicații de nivel enterprise.</p>
+<h2><strong>REFERINȚE</strong></h2>
+<p>Fielding, R. T. (2000). <em>REST: Architectural Styles and the Design of Network-Based Software Architectures</em> (Doctoral dissertation, University of California, Irvine).</p>
+<p>Freeman, J. (2019, October 25). <em>What is JSON? A better format for data exchange</em>. InfoWorld. https://www.infoworld.com/article/3222851/what-is-json-a-better-format-for-data-exchange.html</p>
+<p>Gupta, L. (2024, November 19). <em>REST Architectural Constraints</em>. REST API Tutorial. https://restfulapi.net/rest-architectural-constraints/</p>
+<p>Library of Congress. (2024, May 7). <em>JSON (JavaScript Object Notation) – Format Description</em>. Retrieved from https://www.loc.gov/preservation/digital/formats/fdd/fdd000381.shtml</p>
+<p>OpenJS Foundation. (n.d.). <em>Express - Node.js web application framework</em> (Express.js Official Documentation). Retrieved November 13, 2025, from https://expressjs.com/</p>
+<p>Target, S. (2017, September 21). <em>The Rise and Rise of JSON</em>. Two-Bit History. https://twobithistory.org/2017/09/21/the-rise-and-rise-of-json.html</p>
+<h2><strong>“GRAY”</strong></h2>
+<p>  Fielding, R.T. (2000) Rest Architectural Styles and the Design of Network-Based Software Architectures. Doctoral Dissertation, University of California. - References - Scientific Research Publishing </p>
+<p><a href="https://www.scirp.org/reference/referencespapers?referenceid=3827015">https://www.scirp.org/reference/referencespapers?referenceid=3827015</a></p>
+<p>      REST Architectural Constraints</p>
+<p><a href="https://restfulapi.net/rest-architectural-constraints/">https://restfulapi.net/rest-architectural-constraints/</a></p>
+<p>   JSON (JavaScript Object Notation)</p>
+<p><a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000381.shtml">https://www.loc.gov/preservation/digital/formats/fdd/fdd000381.shtml</a></p>
+<p> The Rise and Rise of JSON</p>
+<p><a href="https://twobithistory.org/2017/09/21/the-rise-and-rise-of-json.html">https://twobithistory.org/2017/09/21/the-rise-and-rise-of-json.html</a></p>
+<p> Express - Node.js web application framework</p>
+<p><a href="https://expressjs.com/">https://expressjs.com/</a></p>
+
+    </div>
+</body>
+</html>

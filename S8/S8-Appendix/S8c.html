@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segmentul 3 – Metoda HTTP POST și Crearea Resurselor în Express.js</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 5px solid #3498db;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05em;
+        }
+
+        .first-paragraph::first-letter {
+            font-size: 3em;
+            font-weight: bold;
+            float: left;
+            line-height: 0.8;
+            margin: 0.1em 0.1em 0 0;
+            color: #3498db;
+        }
+
+        strong {
+            color: #2980b9;
+            font-weight: 600;
+        }
+
+        em {
+            color: #16a085;
+            font-style: italic;
+        }
+
+        code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            background: transparent;
+            color: #ecf0f1;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .code-block {
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #3498db;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .important {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        .references {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .references h2 {
+            color: #7f8c8d;
+        }
+
+        .references p {
+            font-size: 0.95em;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .references a {
+            color: #3498db;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .references a:hover {
+            text-decoration: underline;
+            color: #2980b9;
+        }
+
+        sup {
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Segmentul 3 – Metoda <code>HTTP POST</code> și Crearea Resurselor în Express.js</h1>
+
+        <h2>Introducere</h2>
+        
+        <p class="first-paragraph">Metoda <strong>HTTP POST</strong> are semantica de a transmite date către un server pentru a crea sau procesa o resursă, spre deosebire de metoda GET, care doar solicită date. Cererile <strong>GET</strong> ar trebui folosite doar pentru citire și nu trebuie să modifice starea serverului (sunt considerate <em>sigure</em>, fără efecte secundare)<sup>[1]</sup>. Prin contrast, cererile <strong>POST</strong> trimit o entitate (de obicei în corpul cererii) către server și de obicei produc o schimbare de stare sau un efect secundar – de exemplu crearea unei noi înregistrări în baza de date<sup>[2]</sup>. Astfel, <strong>POST</strong> este folosit frecvent pentru operații de <em>creare</em> (în terminologia CRUD), în timp ce <strong>GET</strong> realizează operații de <em>citire</em> a resurselor existente<sup>[3]</sup>.</p>
+
+        <p>O diferență importantă este că metoda POST <strong>nu este idempotentă</strong>: dacă aceeași cerere POST este trimisă de mai multe ori, ea poate avea efect repetat (de pildă, inserarea aceluiași obiect de mai multe ori)<sup>[4]</sup>. În schimb, metode ca GET (sau PUT) repetate au efect unic, repetarea lor neproducând modificări suplimentare (de aceea se spune că GET este idempotent și „safe")<sup>[5]</sup>. Această caracteristică face ca POST să fie folosit atunci când fiecare cerere trebuie să genereze o <strong>nouă acțiune sau resursă</strong>. În practică, datele din formulare HTML sunt trimise aproape întotdeauna prin cereri POST, ceea ce permite serverului să primească informațiile introduse de utilizator și să le folosească pentru a crea noi entități (de exemplu, un formular de înregistrare a unui elev nou la Hogwarts va fi procesat printr-un POST, adăugând elevul în baza de date)<sup>[6]</sup>.</p>
+
+        <p>În contextul arhitecturii REST, cererea POST este adesea îndreptată către o colecție (de exemplu <code>/students</code>), iar serverul creează resursa nouă în acea colecție și returnează locația ei (prin URI-ul noii resurse)<sup>[7]</sup>. Detaliile complete ale POST-ului, inclusiv semantica răspunsului (de exemplu, codul de status <code>201 Created</code>), sunt definite în RFC-urile HTTP și în ghiduri de design pentru API-uri RESTful, despre care se vor oferi mai multe detalii în secțiunile următoare.</p>
+
+        <h2>Sintaxa și semantica cererilor POST în Express.js</h2>
+
+        <h3>Definirea unei rute POST</h3>
+
+        <p>În Express.js, se definește o rută POST folosind metoda <code>app.post(cale, callback)</code>, unde <code>cale</code> este calea (URL-ul endpoint-ului) și <code>callback</code> este funcția de tratare a cererii<sup>[8]</sup>. Exemplul de mai jos arată o rută care primește date JSON despre un student și le afișează în consolă:</p>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>const express = require('express');
+const app = express();
+
+// Middleware pentru parsarea JSON
+app.use(express.json());
+
+app.post('/students', (req, res) => {
+    console.log(req.body); 
+    // req.body va conține datele JSON trimise în corpul cererii
+    res.send('Date primite cu succes');
+});
+
+app.listen(3000, () => {
+    console.log('Server pornit pe portul 3000');
+});</code></pre>
+        </div>
+
+        <p>În acest exemplu, când clientul trimite o cerere POST către <code>/students</code> cu un JSON în corp (de exemplu <code>{"name":"Harry Potter","house":"Gryffindor"}</code>), middleware-ul <code>express.json()</code> va parsa corpul cererii și va face datele disponibile în <code>req.body</code><sup>[9]</sup>. Funcția de callback poate apoi accesa <code>req.body</code> pentru a obține informațiile trimise.</p>
+
+        <h3>Utilizarea <code>req.body</code></h3>
+
+        <p>Proprietatea <code>req.body</code> conține perechile cheie-valoare ale datelor trimise în corpul cererii<sup>[11]</sup>. Implicit, <code>req.body</code> este <code>undefined</code> și este populat când se folosește un middleware de parsare, cum ar fi <code>express.json()</code> (pentru JSON) sau <code>express.urlencoded()</code> (pentru date de tip formular)<sup>[12]</sup>. Iată un exemplu extins:</p>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>const express = require('express');
+const app = express();
+
+// Middleware pentru parsarea JSON
+app.use(express.json());
+
+// Middleware pentru parsarea datelor de tip URL-encoded
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/students', (req, res) => {
+    const newStudent = req.body;
+    console.log('Student nou:', newStudent);
+    
+    // Aici s-ar adăuga logica de salvare în baza de date
+    // De exemplu: database.save(newStudent);
+    
+    res.status(201).json({
+        message: 'Student creat cu succes',
+        student: newStudent
+    });
+});
+
+app.listen(3000);</code></pre>
+        </div>
+
+        <p>În acest exemplu, serverul ascultă pe ruta <code>/students</code> pentru cereri POST<sup>[13]</sup>. Datele primite în <code>req.body</code> sunt convertite în format JSON și apoi pot fi procesate (de exemplu, salvate într-o bază de date). Răspunsul trimite înapoi un mesaj de confirmare împreună cu datele nou create.</p>
+
+        <h3>Returnarea codului de status <code>201 Created</code></h3>
+
+        <p>Conform standardelor HTTP, o cerere POST reușită care rezultă în crearea unei noi resurse ar trebui să returneze codul de status <code>201 Created</code><sup>[10]</sup>. Acest cod indică faptul că cererea a fost îndeplinită și a dus la crearea unei noi resurse. Este o bună practică să incluzi în răspuns și un header <code>Location</code> cu URI-ul noii resurse create<sup>[14]</sup>, astfel încât clientul să știe unde poate accesa resursa nou creată:</p>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>app.post('/students', (req, res) => {
+    const newStudent = req.body;
+    // Simulăm salvarea și generarea unui ID
+    newStudent.id = Date.now(); // ID simplu pentru exemplu
+    
+    // Returnăm 201 Created cu header Location
+    res.status(201)
+       .location(`/students/${newStudent.id}`)
+       .json(newStudent);
+});</code></pre>
+        </div>
+
+        <p>În exemplul de mai sus, metoda <code>res.status(201)</code> setează codul de status la 201, iar <code>res.location()</code> adaugă un header <code>Location</code> cu URL-ul complet al resursei nou create<sup>[15]</sup>. Astfel, clientul știe exact unde să acceseze studentul nou adăugat (de exemplu, <code>/students/1234567890</code>).</p>
+
+        <h2>Procesarea și stocarea datelor primite prin POST</h2>
+
+        <h3>Validarea datelor de intrare</h3>
+
+        <p>Este esențial să validezi datele primite înainte de a le procesa sau stoca. Validarea asigură că datele sunt în formatul așteptat și că nu lipsesc câmpuri obligatorii. De exemplu, pentru un student, ai putea verifica că există câmpurile <code>name</code> și <code>house</code>:</p>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>app.post('/students', (req, res) => {
+    const { name, house, year } = req.body;
+    
+    // Validare simplă
+    if (!name || !house) {
+        return res.status(400).json({
+            error: 'Câmpurile name și house sunt obligatorii'
+        });
+    }
+    
+    // Validare tip de date
+    if (year && typeof year !== 'number') {
+        return res.status(400).json({
+            error: 'Câmpul year trebuie să fie un număr'
+        });
+    }
+    
+    // Datele sunt valide, continuăm cu procesarea
+    const newStudent = { name, house, year, id: Date.now() };
+    
+    res.status(201)
+       .location(`/students/${newStudent.id}`)
+       .json(newStudent);
+});</code></pre>
+        </div>
+
+        <p>În acest exemplu, dacă datele sunt invalide, serverul returnează un răspuns cu codul de status <code>400 Bad Request</code> și un mesaj de eroare care explică problema. Această abordare ajută la prevenirea erorilor și la menținerea integrității datelor.</p>
+
+        <div class="tip">
+            <strong>Sfat:</strong> Pentru validări mai complexe, poți folosi biblioteci specializate precum <code>joi</code>, <code>express-validator</code> sau <code>yup</code>, care oferă funcții avansate de validare și mesaje de eroare personalizabile.
+        </div>
+
+        <h3>Salvarea în baza de date</h3>
+
+        <p>După validare, datele trebuie salvate într-o bază de date. Exemplul următor demonstrează cum ar putea arăta salvarea folosind o bază de date MongoDB cu Mongoose (un ORM popular pentru MongoDB):</p>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>const express = require('express');
+const mongoose = require('mongoose');
+
+const app = express();
+app.use(express.json());
+
+// Definim schema și modelul pentru Student
+const studentSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    house: { type: String, required: true },
+    year: { type: Number, default: 1 }
+});
+
+const Student = mongoose.model('Student', studentSchema);
+
+// Conectare la MongoDB
+mongoose.connect('mongodb://localhost:27017/hogwarts', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+app.post('/students', async (req, res) => {
+    try {
+        const { name, house, year } = req.body;
+        
+        // Creare și salvare student nou
+        const newStudent = new Student({ name, house, year });
+        await newStudent.save();
+        
+        res.status(201)
+           .location(`/students/${newStudent._id}`)
+           .json(newStudent);
+    } catch (error) {
+        res.status(500).json({
+            error: 'Eroare la salvarea studentului',
+            details: error.message
+        });
+    }
+});
+
+app.listen(3000, () => {
+    console.log('Server pornit pe portul 3000');
+});</code></pre>
+        </div>
+
+        <p>În acest exemplu, folosim <code>async/await</code> pentru a gestiona operațiile asincrone de salvare în baza de date. Metoda <code>newStudent.save()</code> salvează documentul în MongoDB, iar în caz de succes, returnăm un răspuns <code>201 Created</code>. În caz de eroare (de exemplu, eroare de validare sau probleme de conectare), returnăm un răspuns <code>500 Internal Server Error</code> cu detalii despre eroare.</p>
+
+        <h3>Gestionarea erorilor</h3>
+
+        <p>O gestionare robustă a erorilor este crucială pentru aplicațiile de producție. Iată un exemplu mai complet care acoperă diverse tipuri de erori:</p>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>app.post('/students', async (req, res) => {
+    try {
+        const { name, house, year } = req.body;
+        
+        // Validare
+        if (!name || !house) {
+            return res.status(400).json({
+                error: 'Câmpurile name și house sunt obligatorii'
+            });
+        }
+        
+        // Verificare duplicat (opțional)
+        const existingStudent = await Student.findOne({ name, house });
+        if (existingStudent) {
+            return res.status(409).json({
+                error: 'Un student cu același nume există deja în această casă'
+            });
+        }
+        
+        // Creare și salvare
+        const newStudent = new Student({ name, house, year });
+        await newStudent.save();
+        
+        res.status(201)
+           .location(`/students/${newStudent._id}`)
+           .json({
+               message: 'Student creat cu succes',
+               student: newStudent
+           });
+           
+    } catch (error) {
+        console.error('Eroare la crearea studentului:', error);
+        
+        // Erori de validare Mongoose
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                error: 'Date invalide',
+                details: error.message
+            });
+        }
+        
+        // Alte erori
+        res.status(500).json({
+            error: 'Eroare internă a serverului',
+            details: error.message
+        });
+    }
+});</code></pre>
+        </div>
+
+        <div class="important">
+            <strong>Important:</strong> În producție, evită să expui detalii tehnice ale erorilor către client (cum ar fi stack traces complete). Folosește în schimb mesaje generice și loghează erorile detaliate pe server pentru debugging.
+        </div>
+
+        <h2>Exemplu practic complet: API pentru gestionarea studenților</h2>
+
+        <p>În această secțiune, vom construi un exemplu complet de API pentru gestionarea studenților de la Hogwarts, care include operațiile de creare (POST), citire (GET), actualizare (PUT) și ștergere (DELETE).</p>
+
+        <h3>Structura proiectului</h3>
+
+        <div class="code-block" data-lang="Bash">
+            <pre><code>hogwarts-api/
+├── package.json
+├── server.js
+├── models/
+│   └── Student.js
+├── routes/
+│   └── students.js
+└── middleware/
+    └── validation.js</code></pre>
+        </div>
+
+        <h3>Fișierul <code>package.json</code></h3>
+
+        <div class="code-block" data-lang="JSON">
+            <pre><code>{
+  "name": "hogwarts-api",
+  "version": "1.0.0",
+  "description": "API pentru gestionarea studenților Hogwarts",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}</code></pre>
+        </div>
+
+        <h3>Modelul Student (<code>models/Student.js</code>)</h3>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>const mongoose = require('mongoose');
+
+const studentSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: [true, 'Numele este obligatoriu'],
+        trim: true,
+        minlength: [2, 'Numele trebuie să aibă cel puțin 2 caractere']
+    },
+    house: {
+        type: String,
+        required: [true, 'Casa este obligatorie'],
+        enum: {
+            values: ['Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin'],
+            message: '{VALUE} nu este o casă validă'
+        }
+    },
+    year: {
+        type: Number,
+        default: 1,
+        min: [1, 'Anul trebuie să fie între 1 și 7'],
+        max: [7, 'Anul trebuie să fie între 1 și 7']
+    },
+    patronus: {
+        type: String,
+        trim: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+module.exports = mongoose.model('Student', studentSchema);</code></pre>
+        </div>
+
+        <h3>Middleware de validare (<code>middleware/validation.js</code>)</h3>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>const validateStudent = (req, res, next) => {
+    const { name, house } = req.body;
+    
+    // Verificare câmpuri obligatorii
+    if (!name || !house) {
+        return res.status(400).json({
+            error: 'Câmpurile name și house sunt obligatorii'
+        });
+    }
+    
+    // Verificare lungime nume
+    if (name.trim().length < 2) {
+        return res.status(400).json({
+            error: 'Numele trebuie să aibă cel puțin 2 caractere'
+        });
+    }
+    
+    // Verificare casă validă
+    const validHouses = ['Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin'];
+    if (!validHouses.includes(house)) {
+        return res.status(400).json({
+            error: `Casa trebuie să fie una dintre: ${validHouses.join(', ')}`
+        });
+    }
+    
+    next();
+};
+
+module.exports = { validateStudent };</code></pre>
+        </div>
+
+        <h3>Rutele pentru studenți (<code>routes/students.js</code>)</h3>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>const express = require('express');
+const router = express.Router();
+const Student = require('../models/Student');
+const { validateStudent } = require('../middleware/validation');
+
+// CREATE - Creare student nou
+router.post('/', validateStudent, async (req, res) => {
+    try {
+        const { name, house, year, patronus } = req.body;
+        
+        // Verificare duplicat
+        const existingStudent = await Student.findOne({ 
+            name: name.trim(), 
+            house 
+        });
+        
+        if (existingStudent) {
+            return res.status(409).json({
+                error: 'Un student cu acest nume există deja în această casă'
+            });
+        }
+        
+        // Creare student nou
+        const newStudent = new Student({
+            name: name.trim(),
+            house,
+            year: year || 1,
+            patronus: patronus?.trim()
+        });
+        
+        await newStudent.save();
+        
+        res.status(201)
+           .location(`/api/students/${newStudent._id}`)
+           .json({
+               message: 'Student creat cu succes',
+               student: newStudent
+           });
+           
+    } catch (error) {
+        console.error('Eroare la crearea studentului:', error);
+        
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                error: 'Date invalide',
+                details: Object.values(error.errors).map(e => e.message)
+            });
+        }
+        
+        res.status(500).json({
+            error: 'Eroare internă a serverului'
+        });
+    }
+});
+
+// READ - Obținere toți studenții
+router.get('/', async (req, res) => {
+    try {
+        const { house, year } = req.query;
+        const filter = {};
+        
+        if (house) filter.house = house;
+        if (year) filter.year = parseInt(year);
+        
+        const students = await Student.find(filter).sort({ name: 1 });
+        
+        res.json({
+            count: students.length,
+            students
+        });
+    } catch (error) {
+        console.error('Eroare la obținerea studenților:', error);
+        res.status(500).json({
+            error: 'Eroare internă a serverului'
+        });
+    }
+});
+
+// READ - Obținere student după ID
+router.get('/:id', async (req, res) => {
+    try {
+        const student = await Student.findById(req.params.id);
+        
+        if (!student) {
+            return res.status(404).json({
+                error: 'Studentul nu a fost găsit'
+            });
+        }
+        
+        res.json(student);
+    } catch (error) {
+        console.error('Eroare la obținerea studentului:', error);
+        
+        if (error.kind === 'ObjectId') {
+            return res.status(400).json({
+                error: 'ID invalid'
+            });
+        }
+        
+        res.status(500).json({
+            error: 'Eroare internă a serverului'
+        });
+    }
+});
+
+// UPDATE - Actualizare student
+router.put('/:id', validateStudent, async (req, res) => {
+    try {
+        const { name, house, year, patronus } = req.body;
+        
+        const updatedStudent = await Student.findByIdAndUpdate(
+            req.params.id,
+            {
+                name: name.trim(),
+                house,
+                year,
+                patronus: patronus?.trim()
+            },
+            { new: true, runValidators: true }
+        );
+        
+        if (!updatedStudent) {
+            return res.status(404).json({
+                error: 'Studentul nu a fost găsit'
+            });
+        }
+        
+        res.json({
+            message: 'Student actualizat cu succes',
+            student: updatedStudent
+        });
+        
+    } catch (error) {
+        console.error('Eroare la actualizarea studentului:', error);
+        
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                error: 'Date invalide',
+                details: Object.values(error.errors).map(e => e.message)
+            });
+        }
+        
+        if (error.kind === 'ObjectId') {
+            return res.status(400).json({
+                error: 'ID invalid'
+            });
+        }
+        
+        res.status(500).json({
+            error: 'Eroare internă a serverului'
+        });
+    }
+});
+
+// DELETE - Ștergere student
+router.delete('/:id', async (req, res) => {
+    try {
+        const deletedStudent = await Student.findByIdAndDelete(req.params.id);
+        
+        if (!deletedStudent) {
+            return res.status(404).json({
+                error: 'Studentul nu a fost găsit'
+            });
+        }
+        
+        res.json({
+            message: 'Student șters cu succes',
+            student: deletedStudent
+        });
+        
+    } catch (error) {
+        console.error('Eroare la ștergerea studentului:', error);
+        
+        if (error.kind === 'ObjectId') {
+            return res.status(400).json({
+                error: 'ID invalid'
+            });
+        }
+        
+        res.status(500).json({
+            error: 'Eroare internă a serverului'
+        });
+    }
+});
+
+module.exports = router;</code></pre>
+        </div>
+
+        <h3>Fișierul principal (<code>server.js</code>)</h3>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>const express = require('express');
+const mongoose = require('mongoose');
+const studentRoutes = require('./routes/students');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Logging middleware simplu
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+    next();
+});
+
+// Conectare la MongoDB
+mongoose.connect('mongodb://localhost:27017/hogwarts', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => console.log('Conectat la MongoDB'))
+.catch(err => console.error('Eroare la conectarea la MongoDB:', err));
+
+// Rute
+app.use('/api/students', studentRoutes);
+
+// Rută de bază
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Bine ai venit la API-ul Hogwarts!',
+        endpoints: {
+            students: {
+                getAll: 'GET /api/students',
+                getOne: 'GET /api/students/:id',
+                create: 'POST /api/students',
+                update: 'PUT /api/students/:id',
+                delete: 'DELETE /api/students/:id'
+            }
+        }
+    });
+});
+
+// Middleware pentru rute inexistente
+app.use((req, res) => {
+    res.status(404).json({
+        error: 'Ruta nu a fost găsită'
+    });
+});
+
+// Middleware global pentru gestionarea erorilor
+app.use((err, req, res, next) => {
+    console.error('Eroare globală:', err.stack);
+    res.status(500).json({
+        error: 'Eroare internă a serverului'
+    });
+});
+
+// Pornire server
+app.listen(PORT, () => {
+    console.log(`Serverul rulează pe portul ${PORT}`);
+});</code></pre>
+        </div>
+
+        <h3>Testarea API-ului</h3>
+
+        <p>Pentru a testa API-ul, poți folosi <strong>Postman</strong>, <strong>cURL</strong> sau orice alt client HTTP. Iată câteva exemple de cereri:</p>
+
+        <h4>1. Creare student nou (POST)</h4>
+
+        <div class="code-block" data-lang="Bash">
+            <pre><code>curl -X POST http://localhost:3000/api/students \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Harry Potter",
+    "house": "Gryffindor",
+    "year": 1,
+    "patronus": "Stag"
+  }'</code></pre>
+        </div>
+
+        <p><strong>Răspuns așteptat (201 Created):</strong></p>
+
+        <div class="code-block" data-lang="JSON">
+            <pre><code>{
+  "message": "Student creat cu succes",
+  "student": {
+    "_id": "6501234567890abcdef12345",
+    "name": "Harry Potter",
+    "house": "Gryffindor",
+    "year": 1,
+    "patronus": "Stag",
+    "createdAt": "2024-01-15T10:30:00.000Z"
+  }
+}</code></pre>
+        </div>
+
+        <h4>2. Obținere toți studenții (GET)</h4>
+
+        <div class="code-block" data-lang="Bash">
+            <pre><code>curl http://localhost:3000/api/students</code></pre>
+        </div>
+
+        <h4>3. Obținere student specific (GET)</h4>
+
+        <div class="code-block" data-lang="Bash">
+            <pre><code>curl http://localhost:3000/api/students/6501234567890abcdef12345</code></pre>
+        </div>
+
+        <h4>4. Actualizare student (PUT)</h4>
+
+        <div class="code-block" data-lang="Bash">
+            <pre><code>curl -X PUT http://localhost:3000/api/students/6501234567890abcdef12345 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Harry Potter",
+    "house": "Gryffindor",
+    "year": 2,
+    "patronus": "Stag"
+  }'</code></pre>
+        </div>
+
+        <h4>5. Ștergere student (DELETE)</h4>
+
+        <div class="code-block" data-lang="Bash">
+            <pre><code>curl -X DELETE http://localhost:3000/api/students/6501234567890abcdef12345</code></pre>
+        </div>
+
+        <h4>6. Filtrare studenți după casă</h4>
+
+        <div class="code-block" data-lang="Bash">
+            <pre><code>curl http://localhost:3000/api/students?house=Gryffindor</code></pre>
+        </div>
+
+        <div class="success">
+            <strong>Succes!</strong> Acum ai un API complet funcțional pentru gestionarea studenților. Poți extinde acest exemplu adăugând autentificare, paginare, sortare avansată și alte funcționalități.
+        </div>
+
+        <h2>Bune practici și considerații de securitate</h2>
+
+        <h3>1. Validarea și sanitizarea datelor</h3>
+
+        <p>Întotdeauna validează și sanitizează datele de intrare pentru a preveni atacuri precum SQL injection, XSS (Cross-Site Scripting) sau NoSQL injection. Folosește biblioteci precum <code>validator.js</code> sau <code>express-validator</code> pentru validări robuste:</p>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>const { body, validationResult } = require('express-validator');
+
+app.post('/students',
+    // Validări
+    body('name')
+        .trim()
+        .isLength({ min: 2, max: 100 })
+        .withMessage('Numele trebuie să aibă între 2 și 100 de caractere')
+        .matches(/^[a-zA-Z\s]+$/)
+        .withMessage('Numele poate conține doar litere și spații'),
+    
+    body('house')
+        .isIn(['Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin'])
+        .withMessage('Casa nu este validă'),
+    
+    body('year')
+        .optional()
+        .isInt({ min: 1, max: 7 })
+        .withMessage('Anul trebuie să fie între 1 și 7'),
+    
+    // Handler
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        
+        // Continuă cu procesarea...
+    }
+);</code></pre>
+        </div>
+
+        <h3>2. Limitarea ratei de cereri (Rate Limiting)</h3>
+
+        <p>Pentru a preveni abuzul API-ului și atacurile de tip DDoS, implementează rate limiting folosind middleware-ul <code>express-rate-limit</code>:</p>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minute
+    max: 100, // Maxim 100 de cereri per IP
+    message: 'Prea multe cereri de la acest IP, încearcă din nou mai târziu'
+});
+
+// Aplică la toate cererile
+app.use('/api/', limiter);</code></pre>
+        </div>
+
+        <h3>3. Protecția împotriva atacurilor comune</h3>
+
+        <p>Folosește middleware-ul <code>helmet</code> pentru a seta header-e HTTP sigure:</p>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>const helmet = require('helmet');
+
+app.use(helmet());</code></pre>
+        </div>
+
+        <h3>4. Gestionarea variabilelor de mediu</h3>
+
+        <p>Nu stoca niciodată informații sensibile (cum ar fi URI-ul bazei de date sau chei API) direct în cod. Folosește fișiere <code>.env</code> și biblioteca <code>dotenv</code>:</p>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>require('dotenv').config();
+
+const PORT = process.env.PORT || 3000;
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/hogwarts';
+
+mongoose.connect(MONGODB_URI);</code></pre>
+        </div>
+
+        <p><strong>Fișier <code>.env</code>:</strong></p>
+
+        <div class="code-block" data-lang="Bash">
+            <pre><code>PORT=3000
+MONGODB_URI=mongodb://localhost:27017/hogwarts
+NODE_ENV=development</code></pre>
+        </div>
+
+        <div class="important">
+            <strong>Important:</strong> Nu uita să adaugi <code>.env</code> în fișierul <code>.gitignore</code> pentru a preveni expunerea secretelor în repository-ul de cod!
+        </div>
+
+        <h3>5. Implementarea CORS</h3>
+
+        <p>Dacă API-ul tău va fi accesat de la frontend-uri pe domenii diferite, configurează CORS (Cross-Origin Resource Sharing) corespunzător:</p>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>const cors = require('cors');
+
+// Permițerea tuturor originilor (doar pentru dezvoltare)
+app.use(cors());
+
+// Configurare specifică pentru producție
+const corsOptions = {
+    origin: 'https://yourdomain.com',
+    optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));</code></pre>
+        </div>
+
+        <h3>6. Logging și monitorizare</h3>
+
+        <p>Implementează logging pentru a urmări cererile și erorile. Folosește biblioteci precum <code>morgan</code> pentru logging-ul HTTP și <code>winston</code> pentru logging avansat:</p>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>const morgan = require('morgan');
+const winston = require('winston');
+
+// Logging HTTP
+app.use(morgan('combined'));
+
+// Logger personalizat
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.json(),
+    transports: [
+        new winston.transports.File({ filename: 'error.log', level: 'error' }),
+        new winston.transports.File({ filename: 'combined.log' })
+    ]
+});
+
+if (process.env.NODE_ENV !== 'production') {
+    logger.add(new winston.transports.Console({
+        format: winston.format.simple()
+    }));
+}</code></pre>
+        </div>
+
+        <h3>7. Documentarea API-ului</h3>
+
+        <p>Documentează-ți API-ul folosind Swagger/OpenAPI pentru a facilita utilizarea de către alți dezvoltatori:</p>
+
+        <div class="code-block" data-lang="JavaScript">
+            <pre><code>const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));</code></pre>
+        </div>
+
+        <h2>Concluzie</h2>
+
+        <p>În acest document, am explorat în detaliu metoda HTTP POST și implementarea sa în Express.js pentru crearea de resurse noi. Am învățat:</p>
+
+        <ul>
+            <li>Diferența fundamentală dintre POST și GET, inclusiv conceptele de idempotență și operații sigure</li>
+            <li>Sintaxa și utilizarea rutelor POST în Express.js, inclusiv <code>app.post()</code> și <code>req.body</code></li>
+            <li>Importanța validării datelor de intrare pentru securitate și integritate</li>
+            <li>Cum să returnăm coduri de status HTTP corecte (în special <code>201 Created</code>)</li>
+            <li>Tehnici de gestionare a erorilor și returnare de răspunsuri adecvate</li>
+            <li>Un exemplu practic complet de API RESTful cu operații CRUD</li>
+            <li>Bune practici de securitate și considerații pentru aplicații de producție</li>
+        </ul>
+
+        <p>Metoda POST este fundamentală în dezvoltarea aplicațiilor web moderne și a API-urilor RESTful. Înțelegerea corectă a semanticii sale și implementarea ei conform standardelor asigură că aplicațiile tale sunt robuste, sigure și ușor de utilizat<sup>[16]</sup>. Prin aplicarea tehnicilor și bunelor practici prezentate în acest document, vei putea construi API-uri profesionale, scalabile și mentenabile.</p>
+
+        <div class="note">
+            <strong>Notă finală:</strong> Exemplele prezentate aici sunt educaționale și pot necesita adaptări suplimentare pentru utilizare în producție, inclusiv autentificare, autorizare, criptare a datelor sensibile, backup-uri regulate și testare extensivă.
+        </div>
+
+        <div class="references">
+            <h2>Referințe</h2>
+            
+            <p><sup>[1]</sup> <sup>[2]</sup> <sup>[5]</sup> HTTP request methods - HTTP | MDN<br>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods">https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods</a></p>
+            
+            <p><sup>[3]</sup> <sup>[7]</sup> RESTful API Design: 13 Best Practices to Make Your Users Happy - Florimond Manca<br>
+            <a href="https://florimond.dev/en/posts/2018/08/restful-api-design-13-best-practices-to-make-your-users-happy">https://florimond.dev/en/posts/2018/08/restful-api-design-13-best-practices-to-make-your-users-happy</a></p>
+            
+            <p><sup>[4]</sup> <sup>[8]</sup> <sup>[9]</sup> POST request method - HTTP | MDN<br>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST">https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST</a></p>
+            
+            <p><sup>[6]</sup> What is the difference between POST and PUT in HTTP? | Sentry<br>
+            <a href="https://sentry.io/answers/what-is-the-difference-between-post-and-put-in-http/">https://sentry.io/answers/what-is-the-difference-between-post-and-put-in-http/</a></p>
+            
+            <p><sup>[10]</sup> <sup>[14]</sup> <sup>[15]</sup> 201 Created - HTTP | MDN<br>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/201">https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/201</a></p>
+            
+            <p><sup>[11]</sup> Express req.body Property - GeeksforGeeks<br>
+            <a href="https://www.geeksforgeeks.org/web-tech/express-js-req-body-property/">https://www.geeksforgeeks.org/web-tech/express-js-req-body-property/</a></p>
+            
+            <p><sup>[12]</sup> Express Json Middleware. express.json() is a built-in middleware… | by rahul singh tomar | Medium<br>
+            <a href="https://rahultomar092.medium.com/express-json-middleware-346a9b6ab228">https://rahultomar092.medium.com/express-json-middleware-346a9b6ab228</a></p>
+            
+            <p><sup>[13]</sup> Express app.post() Function - GeeksforGeeks<br>
+            <a href="https://www.geeksforgeeks.org/web-tech/express-js-app-post-function/">https://www.geeksforgeeks.org/web-tech/express-js-app-post-function/</a></p>
+            
+            <p><sup>[16]</sup> How to Send and Receive Data in a REST API - Treblle<br>
+            <a href="https://treblle.com/blog/send-receive-data-rest-api">https://treblle.com/blog/send-receive-data-rest-api</a></p>
+        </div>
+    </div>
+</body>
+</html>

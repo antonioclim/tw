@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validarea datelor în API REST Express.js și arhitectura modulară cu routere</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            border-bottom: 4px solid #fee140;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 5px solid #fee140;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05em;
+        }
+
+        .first-paragraph::first-letter {
+            font-size: 3em;
+            font-weight: bold;
+            float: left;
+            line-height: 0.8;
+            margin: 0.1em 0.1em 0 0;
+            color: #fa709a;
+        }
+
+        strong {
+            color: #e17055;
+            font-weight: 600;
+        }
+
+        em {
+            color: #16a085;
+            font-style: italic;
+        }
+
+        code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            background: transparent;
+            color: #ecf0f1;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .code-block {
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #fa709a;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .important {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        .references {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .references h2, .references h3 {
+            color: #7f8c8d;
+        }
+
+        .references p {
+            font-size: 0.95em;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .references a {
+            color: #fa709a;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .references a:hover {
+            text-decoration: underline;
+            color: #e17055;
+        }
+
+        sup {
+            color: #fa709a;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>S8seg6: Validarea datelor în API REST Express.js și arhitectura modulară cu routere</h1>
+<h2><strong>Introducere</strong></h2>
+<p class="first-paragraph">Orice <strong>aplicație backend REST</strong> trebuie să verifice și să valideze datele primite de la clienți, similar cu modul în care profesorii de la Hogwarts verifică dacă incantațiile elevilor sunt corecte înainte de a le permite să folosească magia. <strong>Validarea datelor</strong> asigură că informațiile din cererile HTTP (de exemplu, în corpul unui request <code>POST</code> sau <code>PATCH</code>) sunt complete, coerente și conforme cu așteptările aplicației. Aceasta previne <strong>comportamente neașteptate</strong>, erori în procesare și potențiale vulnerabilități de securitate. Cu alte cuvinte, <strong>„nu avem încredere oarbă în datele primite”</strong> – verificăm întotdeauna dacă, de exemplu, câmpurile obligatorii precum name (numele vrăjii) și effect (efectul vrăjii) sunt prezente și valide înainte de a continua procesarea. Dacă aceste date lipsesc sau sunt incorecte, serverul nostru Express ar trebui să răspundă cu un cod de eroare adecvat (de obicei <strong>400 Bad Request</strong>, semnalând că cererea clientului este invalidă).</p>
+<p>Pe lângă validare, o aplicație robustă trebuie să aibă o <strong>arhitectură modulară</strong>, mai ales pe măsură ce proiectul crește (gândiți-vă la extinderea bibliotecii de vrăji de la Hogwarts, care trebuie organizată cu grijă). În contextul Express.js, modularitatea se obține prin <strong>routere</strong> separate – adică împărțirea rutelor în fișiere și module distincte. Această separare a rutelor pe componente (de exemplu, un router pentru vrăji, altul pentru elevi, altul pentru profesori, etc.) ajută la menținerea codului organizat, ușor de întreținut și scalabil. Conform recomandărilor MDN, folosirea <code>express.Router</code> permite gruparea handler-elor de rute pentru o anumită secțiune a site-ului (sau a API-ului) într-un modul separat, care poate fi montat cu un prefix comun de cale. Astfel, toate rutele legate de <strong>vrăji</strong> pot fi gestionate într-un singur modul (de ex. <code>spellsRouter</code>), în timp ce rutele pentru alte resurse (precum elevi sau profesori) stau în modulele lor – exact ca în Hogwarts, unde fiecare casă sau materie este gestionată separat, pentru a evita haosul.</p>
+<p>Un beneficiu major al acestei arhitecturi modulare este că evităm aplicațiile monolitice într-un singur fișier, care devin dificil de urmărit și de modificat pe măsură ce logica crește în complexitate. După cum subliniază documentația MDN, o aplicație &quot;monolitică&quot; într-un singur fișier este greu de înțeles și de întreținut, motiv pentru care este recomandat să ne <strong>organizăm codul în părți gestionabile</strong> (module) încă de la început. Prin separarea responsabilităților (de exemplu, <strong>routere</strong> pentru definirea endpoint-urilor și <strong>controller-e</strong>/middleware-uri pentru logica efectivă), aplicația devine mai clară ca structură și reduce <strong>cuplarea</strong> între componente. În termeni practici, asta înseamnă că putem modifica sau extinde, de pildă, modulul de vrăji fără a afecta alte părți ale serverului, exact cum adăugarea unei noi vrăji în programa de la Hogwarts nu ar trebui să dea peste cap întregul sistem de predare.</p>
+<h2><strong>Explicație aplicată</strong></h2>
+<p>Să trecem de la teorie la practică, folosind analogia <strong>Hogwarts</strong>. Imaginați-vă că dezvoltăm un <strong>API REST pentru gestionarea vrăjilor</strong> predate la Hogwarts. Avem nevoie de următoarele elemente:</p>
+<p><strong>Middleware de validare a datelor</strong> – În Express, un middleware este o funcție care interceptează cererea înainte ca aceasta să ajungă la handler-ul final. Vom scrie un middleware numit, de exemplu, validateSpell, care verifică dacă în <code>req.body</code> există câmpurile obligatorii name (numele vrăjii) și effect (efectul vrăjii). Dacă oricare dintre ele lipsește, middleware-ul va opri fluxul normal al cererii și va întoarce un răspuns de eroare <strong>400 Bad Request</strong> cu un mesaj clar către client (de exemplu, <em>&quot;Cerere invalidă. Numele și efectul vrăjii sunt necesare.&quot;</em>). În caz contrar – dacă datele sunt complete – middleware-ul va apela <code>next()</code> pentru a lăsa cererea să ajungă la ruta (handler-ul) final. Acest tip de middleware asigură că niciun <em>spell</em> nou nu este adăugat în sistem fără informațiile esențiale, la fel cum niciun elev nu poate înscrie o vrajă în manualul școlii fără a preciza numele și efectul acesteia.</p>
+<p><strong>Router Express separat pentru vrăji</strong> – Vom organiza rutele legate de vrăji într-un fișier dedicat, de exemplu routes/spells.js (sau <code>spellsRouter.js</code>). În acest modul vom folosi <code>express.Router()</code> pentru a crea un <strong>mini-aplicații Express</strong> responsabilă doar de rutele <code>/spells</code>. Aici definim, de exemplu, ruta GET /spells (pentru listarea tuturor vrăjilor disponibile) și ruta POST /spells (pentru adăugarea unei vrăji noi). Ruta de <code>POST</code> va utiliza middleware-ul validateSpell menționat anterior, pentru a se asigura că datele trimise despre vrajă sunt valide înainte de a fi procesate. Practic, în acest fișier vom avea ceva de forma:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>const express = require(&#x27;express&#x27;);
+const router = express.Router();
+
+// middleware validateSpell defined here or imported
+router.post(&#x27;/spells&#x27;, validateSpell, (req, res) =&gt; {
+    // handle adding new spell
+});
+
+// other routes like GET /spells, etc.
+module.exports = router;</code></pre>
+</div>
+<p>Acest router devine responsabil doar de logica de <strong>routing</strong> a vrăjilor, menținând astfel separarea față de alte entități (elevi, profesori etc.). Această practică urmează principiul &quot;separation of concerns&quot; (separarea responsabilităților) și este considerată o bună practică în dezvoltarea cu Express.</p>
+<p><strong>Montarea routerului modular în aplicația principală</strong> – Fișierul principal al serverului nostru (de obicei <code>app.js</code> sau <code>server.js</code>) va rămâne curat și concentrat pe configurarea generală a aplicației (de ex. conectarea la baza de date, middleware-uri globale precum <code>express.json()</code> pentru parsarea JSON, etc., și pornirea serverului). În acest fișier principal vom <strong>importa routerul</strong> din modulul <code>spells.js</code> și îl vom atașa la aplicația Express prin <code>app.use()</code>. De exemplu, dacă am exportat routerul de vrăji ca <code>spellsRouter</code>, vom scrie:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>const spellsRouter = require(&#x27;./routes/spells&#x27;);
+app.use(&#x27;/spells&#x27;, spellsRouter);</code></pre>
+</div>
+<p>Acest lucru spune aplicației că orice cerere al cărei URL începe cu <code>/spells</code> trebuie direcționată către routerul respectiv. Rutele definite în acel router vor fi acum accesibile cu prefixul <code>/spells</code> (de exemplu, ruta definită ca <code>router.get(&#x27;/&#x27;, ...)</code> în <code>spells.js</code> va răspunde la cereri de tip GET către <code>/spells/</code>). Astfel, dacă un elev trimite o cerere POST către http://&lt;server&gt;/spells pentru a adăuga o nouă vrajă, Express va delega acea cerere routerului nostru modular de vrăji, care la rândul său va rula întâi middleware-ul de validare și apoi logica de inserare a noii vrăji.</p>
+<p>Prin aceste trei componente (middleware de validare, router dedicat, montare în aplicație) obținem un design clar: <strong>datele sunt validate la intrarea în sistem</strong>, iar codul este structurat pe module. În continuare, vom vedea un exemplu concret, cu cod, al acestei configurații.</p>
+<h2><strong>Exemplu</strong></h2>
+<p>Să realizăm un <strong>exemplu practic</strong> continuând firul narativ Hogwarts. Vom crea un mini-API Express pentru gestionarea <strong>vrăjilor</strong> (spells), ilustrând validarea datelor și arhitectura pe bază de routere modulare.</p>
+<p>Presupunem că avem o aplicație Express de bază (în fișierul <code>server.js</code>) și dorim să adăugăm funcționalitatea de a lista vrăji și de a adăuga vrăji noi. Fiecare <strong>vrajă</strong> va avea un name (nume) și un effect (efectul magic); ambele sunt obligatorii.</p>
+<p><strong>1. Definirea middleware-ului de validare (</strong><strong>validateSpell</strong><strong>)</strong>: Mai jos este codul unui middleware Express care validează existența câmpurilor necesare în corpul cererii. Dacă lipsesc, trimite imediat un răspuns de eroare 400 JSON și nu mai continuă către ruta finală; dacă sunt prezente, apelează <code>next()</code> pentru a continua procesarea normală.</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>// spellsRouter.js (modulul de rute pentru &quot;spells&quot;)
+
+const express = require(&#x27;express&#x27;);
+const router = express.Router();
+
+// Middleware de validare a unei vrăji noi
+function validateSpell(req, res, next) {
+  // Verificăm dacă există &#x27;name&#x27; și &#x27;effect&#x27; în corpul cererii
+  if (!req.body.name || !req.body.effect) {
+    return res.status(400).json({
+      error: &quot;Cerere invalidă. &#x27;name&#x27; și &#x27;effect&#x27; sunt obligatorii pentru o vrajă.&quot;
+    });
+  }
+  // Dacă ambele câmpuri există, trecem la următorul middleware/handler
+  next();
+}</code></pre>
+</div>
+<p>În acest cod, validateSpell examinează <code>req.body</code> (obiectul JSON trimis de client, de exemplu de către un elev care adaugă o vrajă). Dacă oricare dintre câmpuri lipsesc, răspundem imediat cu statut <strong>400 Bad Request</strong> și un obiect JSON care conține un mesaj de eroare. Observați că am folosit <code>res.status(400).json({...})</code> – acesta setează codul HTTP 400 și trimite un răspuns în format JSON. Dacă datele sunt complete, <code>next()</code> va transfera controlul către următoarea funcție din lanț (în cazul nostru, funcția care adaugă efectiv vraja în lista de vrăji).</p>
+<p><strong>2. Definirea routerului modular pentru vrăji (</strong><code>spellsRouter.js</code><strong>)</strong>: În continuare, vom defini rutele propriu-zise pentru vrăji, folosindu-ne de middleware-ul de validare de mai sus acolo unde este necesar. Vom include și o listă simulată de vrăji pentru exemplificare.</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>// Continuare în spellsRouter.js
+
+// Exemplu de &quot;bază de date&quot; în memorie cu câteva vrăji inițiale
+const spells = [
+  { id: 1, name: &quot;Lumos&quot;, effect: &quot;Emite lumină de la vârful baghetei&quot; },
+  { id: 2, name: &quot;Wingardium Leviosa&quot;, effect: &quot;Face obiectele să leviteze&quot; }
+];
+
+// GET /spells - returnează lista tuturor vrăjilor
+router.get(&#x27;/&#x27;, (req, res) =&gt; {
+  res.json(spells);
+});
+
+// POST /spells - adaugă o nouă vrajă (folosind middleware-ul de validare)
+router.post(&#x27;/&#x27;, validateSpell, (req, res) =&gt; {
+  // Construim noua vrajă cu datele din cerere
+  const newSpell = {
+    id: spells.length + 1,
+    name: req.body.name,
+    effect: req.body.effect
+  };
+  spells.push(newSpell);
+  // Întoarcem răspuns 201 Created cu vraja nou adăugată
+  res.status(201).json(newSpell);
+});
+
+module.exports = router;</code></pre>
+</div>
+<p>În acest fragment, am definit două rute în routerul de vrăji: - GET /spells – întoarce lista tuturor vrăjilor (aici folosim un array spells ca stocare temporară, conținând două vrăji de exemplu: <em>Lumos</em> și <em>Wingardium Leviosa</em>). - POST /spells – adaugă o nouă vrajă. Observați că validateSpell apare ca middleware între ruta &#x27;/&#x27; și funcția handler finală; asta înseamnă că înainte ca funcția anonima (req, res) =&gt; {...} să fie executată, Express va rula validateSpell. Doar dacă validateSpell apelează <code>next()</code> (adică datele sunt OK), se va ajunge la logica de inserare a noii vrăji. În handler-ul POST, preluăm req.body.name și req.body.effect (despre care știm acum sigur că există, datorită validării) și creăm un obiect nou newSpell cu un id unic (mai mare decât ultimul id din listă). Apoi inserăm noua vrajă în array și trimitem înapoi un răspuns cu statut <strong>201 Created</strong> ce conține obiectul vrăjii adăugate în format JSON. Astfel, clientul (să zicem, elevul care a adăugat vraja) primește confirmarea adăugării, inclusiv cu id-ul asignat.</p>
+<p><strong>3. Importul și montarea routerului în aplicația principală</strong>: În final, configurăm fișierul principal al aplicației Express (<code>server.js</code>) să folosească routerul modular tocmai creat. De asemenea, ne asigurăm că serverul poate interpreta corect corpul cererilor JSON, folosind middleware-ul <code>express.json()</code> furnizat de Express.</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>// server.js (aplicația principală Express)
+const express = require(&#x27;express&#x27;);
+const app = express();
+const PORT = 3000;
+
+// Middleware global pentru parsarea JSON-ului în cereri
+app.use(express.json());
+
+// Importăm routerul modular al vrăjilor
+const spellsRouter = require(&#x27;./routes/spellsRouter&#x27;);
+// Montăm routerul sub ruta &#x27;/spells&#x27;
+app.use(&#x27;/spells&#x27;, spellsRouter);
+
+// Pornim serverul
+app.listen(PORT, () =&gt; {
+  console.log(`Serverul rulează la http://localhost:${PORT}/`);
+});</code></pre>
+</div>
+<p>Câteva explicații pentru acest fișier: </p>
+<p>- <code>app.use</code>(<code>express.json</code>()) este un middleware furnizat de Express ce parsează automat corpul cererilor cu tipul application/json. Fără acesta, <code>req.body</code> ar fi undefined pentru cererile POST/PUT/PATCH care trimit JSON. În analogia Hogwarts, acest middleware este precum un interpret automat de limbaj care îi ajută pe profesori (serverul) să înțeleagă mesajele scrise de elevi (datele JSON trimise). </p>
+<p>- Importăm modulul <code>spellsRouter</code> folosind require. Calea <code>&#x27;./routes/spellsRouter&#x27;</code> presupune că fișierul nostru de rute se află într-un director routes relativ la <code>server.js</code>. </p>
+<p>- <code>app.use</code>(&#x27;/spells&#x27;, <code>spellsRouter</code>) montează toate rutele definite în <code>spellsRouter</code> sub prefixul comun <code>/spells</code>. Asta înseamnă că dacă în <code>spellsRouter</code> aveam ruta <code>router.get(&#x27;/&#x27;)</code>, ea va răspunde în contextul global la GET /spells/. În exemplul nostru, am definit <code>router.post(&#x27;/&#x27;)</code> și <code>router.get(&#x27;/&#x27;)</code> în modulul de vrăji, deci ele corespund la POST /spells și GET /spells în server.</p>
+<p>Acum, dacă rulăm serverul și trimitem cereri: - O cerere GET /spells va întoarce lista de vrăji existente (inițial două, Lumos și Wingardium Leviosa, în exemplul nostru). - O cerere POST /spells cu un JSON de forma {&quot;name&quot;: &quot;Expelliarmus&quot;, &quot;effect&quot;: &quot;Dezarmează adversarul&quot;} va trece prin validateSpell (toate câmpurile obligatorii prezente, deci OK), apoi va adăuga vraja și va răspunde cu 201 Created și obiectul nou: {&quot;id&quot;: 3, &quot;name&quot;: &quot;Expelliarmus&quot;, &quot;effect&quot;: &quot;Dezarmează adversarul&quot;}. - O cerere POST /spells <em>fără</em> name sau effect (sau cu valori goale) va fi blocată de middleware și va genera un răspuns <strong>400 Bad Request</strong>, de exemplu: {&quot;error&quot;: &quot;Cerere invalidă. &#x27;name&#x27; și &#x27;effect&#x27; sunt obligatorii pentru o vrajă.&quot;}. Acest răspuns atenționează clar clientul că a trimis date insuficiente și trebuie să le corecteze. Astfel de verificări îmbunătățesc atât <strong>fiabilitatea</strong> aplicației (datele stocate sunt mereu valide), cât și <strong>securitatea</strong> acesteia, împiedicând trimiterea de date neadecvate care ar putea provoca probleme[7].</p>
+<h2><strong>Concluzie</strong></h2>
+<p>În concluzie, implementarea validării datelor și utilizarea arhitecturii modulare cu routere separate aduce multiple beneficii oricărei aplicații Express, fie ea și una inspirată din universul Hogwarts. <strong>Validarea explicită a datelor</strong> la nivel de API asigură integritatea și calitatea informațiilor procesate de server, previne erori în lanț (garantând că logica aplicației nu primește niciodată &quot;gunoaie&quot; ca input – principiu cunoscut drept <em>garbage in, garbage out</em>) și reduce vectorii de atac posibili (de exemplu, input-ul validat poate atenua risc de injecții de cod sau scripturi malițioase). În aplicații reale – de la platforme educaționale pentru vrăjitori (unde elevii trimit vrăji noi spre aprobare), până la sisteme enterprise precum CRM-uri sau jocuri multiplayer – astfel de verificări conferă fiabilitate și securitate sporită serviciilor web oferite.</p>
+<p>Pe de altă parte, folosirea <strong>routerelor modulare</strong> contribuie la o structură scalabilă și ușor de întreținut a proiectului. Putem adăuga ușor noi funcționalități (noi “module” de rute pentru entități suplimentare) fără a afecta părțile existente, iar codul este organizat logic pe domenii de interes. Acest lucru corespunde direct cu bunele practici de inginerie software: cod organizat, cuplate redus între componente și responsabilități clare pentru fiecare modul. În exemplul Hogwarts, dacă dorim să extindem aplicația pentru a gestiona și <strong>elevi</strong> sau <strong>poțiuni</strong>, vom crea routere separate (<code>studentsRouter</code>, <code>potionsRouter</code>, etc.), fiecare cu propriul middleware de validare și propriile rute, pe care le vom monta în <code>server.js</code> (de ex. <code>app.use(&#x27;/students&#x27;, studentsRouter)</code>). Astfel, sistemul devine ușor de extins, la fel cum Hogwarts își poate extinde programa cu noi cursuri fără a perturba cursurile existente.</p>
+<p>Nu în ultimul rând, merită menționat că, în producție, dezvoltatorii folosesc frecvent și biblioteci externe pentru validare, care oferă funcționalități avansate și scurtează timpul de dezvoltare. Exemple populare sunt <strong>Joi</strong> (parte din ecosistemul Hapi), <strong>Yup</strong> sau middleware-uri precum <strong>express-validator</strong>. Aceste biblioteci permit definirea unor scheme de validare complexe (de tipul &quot;name trebuie să fie șir de caractere nevid, efectul să aibă minimum 10 caractere, etc.&quot;) și generează automat răspunsuri de eroare detaliate. În proiectul nostru, însă, am implementat <strong>manual</strong> validarea pentru simplitate și claritate didactică. Indiferent de abordarea aleasă, principiul de bază rămâne: <strong>validează tot ce intră</strong> și <strong>organizează-ți codul pe componente</strong>. Urmând aceste practici, aplicația va fi pregătită să facă față atât testelor O.W.L. ale Ministerului Magiei (dacă ar exista un audit al calității codului în lumea vrăjitorilor!), cât și cerințelor riguroase din lumea reală a dezvoltării software.</p>
+<div class="references">
+<h2><strong>Referințe</strong></h2>
+<p>GeeksforGeeks. (2025a, July 23). <em>How to implement validation in Express JS?</em> Retrieved from https://www.geeksforgeeks.org/node-js/how-to-implement-validation-in-express-js/</p>
+<p>GeeksforGeeks. (2025b, July 23). <em>How to Separate Routers and Controllers in Node.js?</em> Retrieved from https://www.geeksforgeeks.org/node-js/how-to-separate-routers-and-controllers-in-node-js/</p>
+<p>MDN Web Docs. (2025a, September 11). <em>Express/Node introduction</em>. Retrieved from https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/Introduction</p>
+<p>MDN Web Docs. (2025b, July 18). <em>Express Tutorial Part 4: Routes and controllers</em>. Retrieved from https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/routes</p>
+<p>Zanini, A. (2024, June 19). <em>How to Perform Data Validation in Node.js</em>. <strong>AppSignal Blog</strong>. Retrieved from https://blog.appsignal.com/2024/06/19/how-to-perform-data-validation-in-nodejs.html</p>
+<h3><strong>“Gray”</strong></h3>
+<p>     How to Perform Data Validation in Node.js | AppSignal Blog<br>
+<a href="https://blog.appsignal.com/2024/06/19/how-to-perform-data-validation-in-nodejs.html">https://blog.appsignal.com/2024/06/19/how-to-perform-data-validation-in-nodejs.html</a></p>
+<p>  How to implement validation in Express JS? - GeeksforGeeks<br>
+<a href="https://www.geeksforgeeks.org/node-js/how-to-implement-validation-in-express-js/">https://www.geeksforgeeks.org/node-js/how-to-implement-validation-in-express-js/</a></p>
+<p> How to Separate Routers and Controllers in Node.js ? - GeeksforGeeks<br>
+<a href="https://www.geeksforgeeks.org/node-js/how-to-separate-routers-and-controllers-in-node-js/">https://www.geeksforgeeks.org/node-js/how-to-separate-routers-and-controllers-in-node-js/</a></p>
+<p>  Express Tutorial Part 4: Routes and controllers - Learn web development | MDN<br>
+<a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/routes">https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/routes</a></p>
+<p> Express/Node introduction - Learn web development | MDN<br>
+<a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/Introduction">https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/Introduction</a></p>
+</div>
+
+    </div>
+</body>
+</html>

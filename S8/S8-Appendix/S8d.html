@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identificarea și ștergerea resurselor RESTful cu Express.js</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            border-bottom: 4px solid #00f2fe;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 5px solid #00f2fe;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05em;
+        }
+
+        .first-paragraph::first-letter {
+            font-size: 3em;
+            font-weight: bold;
+            float: left;
+            line-height: 0.8;
+            margin: 0.1em 0.1em 0 0;
+            color: #00f2fe;
+        }
+
+        strong {
+            color: #0984e3;
+            font-weight: 600;
+        }
+
+        em {
+            color: #16a085;
+            font-style: italic;
+        }
+
+        code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            background: transparent;
+            color: #ecf0f1;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .code-block {
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #00f2fe;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .important {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        .references {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .references h2, .references h3 {
+            color: #7f8c8d;
+        }
+
+        .references p {
+            font-size: 0.95em;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .references a {
+            color: #00f2fe;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .references a:hover {
+            text-decoration: underline;
+            color: #0984e3;
+        }
+
+        sup {
+            color: #00f2fe;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Identificarea și ștergerea resurselor RESTful cu Express.js</h1>
+<h2><strong>Introducere</strong></h2>
+<p class="first-paragraph">În arhitectura RESTful, fiecare resursă este accesată printr-un identificator unic (URI) care îi corespunde – de exemplu un <strong>parametru de rută</strong> precum <code>/wizards/:id</code> identifică fără echivoc un anumit <strong>vrăjitor</strong> din sistemul Hogwarts. Conform convențiilor REST, se folosesc adrese pe bază de substantive (ex. <code>/wizards</code> pentru colecția de vrăjitori) și identificatori unici în path pentru resurse individuale (ex. /wizards/123 pentru vrăjitorul cu ID 123). Parametrul din URL (:id) acționează așadar ca un identificator al resursei pe care dorim să o manipulăm.</p>
+<p>Metodele HTTP disponibile au roluri semantice bine definite în manipularea acestor resurse. Dintre ele, <code>DELETE</code>, <code>PUT</code> și <code>PATCH</code> asigură operații de ștergere, respectiv modificare a resurselor și, deși par similare ca scop (toate <strong>modifică</strong> resursa), există diferențe importante de semnificație și utilizare. Metoda <code>DELETE</code> elimină resursa specificată de URI-ul cererii, ștergând-o din colecție. Prin contrast, metoda <code>PUT</code> înlocuiește în întregime conținutul resursei țintă cu reprezentarea trimisă de client (dacă resursa nu există, unele API-uri pot opta să o creeze). Metoda <code>PATCH</code>, introdusă ulterior, aplică <em>modificări parțiale</em> resursei existente – clientul trimite doar diferențele (de exemplu câmpurile de actualizat) și serverul le aplică peste reprezentarea curentă. Astfel, <strong>PUT se folosește tipic pentru actualizări complete</strong> (toate atributele resursei sunt furnizate, înlocuind starea anterioară), pe când <strong>PATCH se folosește pentru actualizări parțiale</strong> (modifică doar anumite câmpuri, păstrând restul nemodificate).</p>
+<p>Un alt aspect teoretic esențial ține de <em>idempotanța</em> acestor metode. Conform specificațiilor HTTP, <code>PUT</code> și <strong>DELETE sunt idempotente</strong>, ceea ce înseamnă că solicitări repetate identice ar trebui să aibă același efect ca o singură solicitare (după prima operație, starea resursei nu se schimbă la apeluri ulterioare). În schimb, <strong>PATCH nu garantează idempotanța</strong> – aplicarea repetată a aceluiași patch poate produce efecte cumulative sau diferite dacă serverul nu gestionează special cazul, motiv pentru care PATCH trebuie folosit cu grijă (în general, clientul nu ar trebui să repete aceeași cerere PATCH de mai multe ori). În practică, idempotanța lui DELETE implică faptul că, după ce o resursă a fost ștearsă cu succes, o a doua cerere DELETE pe același URI nu ar mai găsi resursa – serverul poate răspunde atunci cu <em>404 Not Found</em> indicând că resursa nu există (fără a contrazice idempotanța, întrucât starea sistemului rămâne neschimbată față de după prima ștergere).</p>
+<p>În rezumat, <code>DELETE</code> este metoda prin care <em>ștergem o resursă</em> (expl. <em>exmatricularea unui vrăjitor din Hogwarts, eliminând înregistrarea sa</em>), <code>PUT</code> este folosit pentru <em>înlocuirea totală</em> a unei resurse (e.g. modificarea completă a profilului unui vrăjitor cu date noi), iar <code>PATCH</code> pentru <em>actualizări parțiale</em> (e.g. schimbarea casei Hogwarts a unui vrăjitor, lăsând celelalte date intacte). Toate trei sunt metode <em>nesigure</em> (modifică starea pe server) și necesită atenție la utilizare conform protocolului HTTP. Convențiile REST recomandă ca la ștergerea reușită a unei resurse serverul să întoarcă un status <strong>204 No Content</strong> (indicând succes fără corp de răspuns), iar dacă resursa nu este găsită, un <strong>404 Not Found</strong>, în timp ce operațiile de <em>update</em> (PUT/PATCH) reușite întorc de obicei <strong>200 OK</strong> sau <strong>204 No Content</strong>, iar dacă resursa țintă nu există pot întoarce <strong>404</strong> sau chiar <strong>201 Created</strong> în anumite cazuri de PUT (dacă se decide crearea resursei). Aceste convenții asigură un <strong>contract</strong> clar al API-ului: clienții pot interpreta ușor răspunsurile (2xx indică succes, 4xx eroare la client – de exemplu cerere către resursă inexistentă).</p>
+<h2><strong>Explicație aplicată</strong></h2>
+<p>Pentru a implementa corect ștergerea unei resurse RESTful în <strong>Express.js</strong>, folosim ruta corespunzătoare împreună cu metoda HTTP adecvată. Express pune la dispoziție metode precum <code>app.delete()</code> (analog cu <code>app.get()</code>, <code>app.post()</code> etc.) pentru a gestiona cereri HTTP DELETE către o anumită cale. În cazul nostru – continuând exemplul <strong>Hogwarts</strong> – vom dori o rută de forma <strong>DELETE /wizards/:id</strong>, care să șteargă vrăjitorul cu identificatorul specificat în URL. Segmentul :id din rută este un <em>parametru de rută</em> din Express, ceea ce înseamnă că valorile plasate în acea poziție în URL vor fi capturate automat și puse la dispoziție în obiectul <code>req.params</code> al cererii. În exemplul nostru, dacă se primește o cerere DELETE /wizards/7, Express va popula req.params.id cu valoarea &quot;7&quot; (string) – identificatorul vrăjitorului de șters.</p>
+<p>Inside handler-ului asociat rutei, vom extrage acest ID și îl vom folosi pentru a găsi și elimina resursa. De obicei, ID-urile numerice sunt convertite la tipul Number (pentru a asigura compararea corectă). Într-o aplicație reală, această operație ar presupune interogarea unei baze de date (de exemplu, căutarea în tabelul <em>Wizards</em> a unui rând cu cheia primară = id-ul furnizat). În contextul nostru didactic, putem presupune că <strong>stocarea</strong> este un array JavaScript în memorie, wizards[], care conține obiecte ce reprezintă vrăjitori. <strong>Validarea existenței resursei</strong> se reduce la a verifica dacă în acest array există un element cu acel id. Vom parcurge array-ul (sau folosi o metodă utilitară, precum findIndex) pentru a localiza indexul elementului cu ID-ul căutat.</p>
+<p><strong>Dacă găsim resursa (vrăjitorul) în colecție</strong>: efectuăm ștergerea propriu-zisă. În cazul unui array, ștergerea poate fi realizată cu <code>array.splice(index, 1)</code> – eliminând elementul de la indexul găsit. După eliminare, trebuie să trimitem răspunsul HTTP adecvat. Conform practicilor REST, alegem codul <strong>204 No Content</strong> pentru a indica faptul că operația de ștergere a avut loc cu succes, dar nu returnăm niciun conținut suplimentar în corpul răspunsului. În Express, putem folosi res.sendStatus(204) (o metodă conveniență care setează statusul la 204 și trimite răspunsul fără corp) sau echivalentul <code>res.status(204).send()</code>.</p>
+<p><strong>Dacă nu găsim resursa cu acel ID</strong>: aceasta înseamnă că fie ID-ul nu a fost valid, fie resursa a fost deja eliminată. În ambele situații, serverul trebuie să răspundă cu un cod de eroare din gama 4xx, indicând o problemă la nivel de cerere. Cazul potivit aici este <strong>404 Not Found</strong>, semnificând că resursa solicitată nu există (nu a fost găsită niciună entitate cu identificatorul respectiv). Vom folosi <code>res.status(404).json({error: &quot;Not Found&quot;})</code> sau similar, eventual trimițând un mesaj JSON care să ofere claritate (de exemplu un obiect cu un câmp &quot;error&quot; descriptiv). Trimiterea unui răspuns 404 previne încercări repetate inutile din partea clientului și indică explicit că operația nu a putut fi efectuată deoarece nu există entitatea respectivă.</p>
+<p>Este important de menționat că după ce trimitem răspunsul (res.sendStatus sau <code>res.status(...).send()</code>), executarea funcției de rută se oprește – Express finalizează ciclul cerere-răspuns. Orice logică suplimentară după aceste apeluri nu va mai fi rulată, așa că este recomandat ca acestea să fie ultimele instrucțiuni din ramurile de cod respective. De asemenea, într-o aplicație robustă, ar trebui să luăm în calcul și eventuale erori neașteptate (de exemplu, probleme la accesarea bazei de date), caz în care am folosi un block try-catch și am întoarce un status 500 Internal Server Error sau un alt cod relevant. În contextul stocării în memorie însă, astfel de erori sunt mai puțin probabile.</p>
+<p>Un alt detaliu de urmărit este <em>consistența idempotentă</em> menționată anterior: dacă, din greșeală, clientul trimite de două ori la rând aceeași cerere DELETE, prima cerere va șterge resursa (răspunzând 204), iar a doua nu o va mai găsi și va răspunde 404 – comportament considerat acceptabil și conform cu specificațiile, deoarece starea finală a sistemului este aceeași ca după prima operație. Alternativ, unele API-uri pot alege să răspundă tot cu 204 și la a doua cerere, tratând ștergerea ca pe o operație <em>idempotentă pură</em> (adică indiferent de câte ori o execuți, răspunsul este mereu de succes după prima eliminare). Totuși, majoritatea convențiilor indică folosirea lui 404 pentru a semnala clar că la momentul ultimei cereri resursa nu mai exista – noi vom implementa conform acestei convenții.</p>
+<p>Ca rezumat, implementarea în Express implică: definirea rutei cu <code>app.delete(&#x27;/wizards/:id&#x27;, handler)</code>, extragerea req.params.id, conversia la tipul așteptat (număr întreg), căutarea resursei în stoc (array) și apoi trimiterea unui răspuns <strong>204</strong> dacă s-a șters sau <strong>404</strong> dacă nu s-a găsit. Vom ilustra în secțiunea următoare un exemplu practic complet, cu cod.</p>
+<h2><strong>Exemplu practic</strong></h2>
+<p>Să considerăm o aplicație Express simplă pentru gestionarea vrăjitorilor Hogwarts, folosind stocare în memorie. Avem un array global wizards ce ține obiecte cu datele vrăjitorilor (de exemplu, <em>nume</em> și <em>casa</em> din care fac parte, alături de un <em>id</em> unic). Vom implementa două rute: <code>GET</code> pentru listarea tuturor vrăjitorilor și <code>DELETE</code> pentru ștergerea unui vrăjitor după ID. Codul de mai jos este complet executabil și demonstrează mecanismul:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>// Inițializăm aplicația Express
+const express = require(&#x27;express&#x27;);
+const app = express();
+app.use(express.json());  // middleware pentru parsarea JSON (util dacă am avea corp la PUT/PATCH)
+
+// &quot;Baza de date&quot; in-memory: array de vrăjitori existenți
+let wizards = [
+  { id: 1, name: &quot;Harry Potter&quot;, house: &quot;Gryffindor&quot; },
+  { id: 2, name: &quot;Hermione Granger&quot;, house: &quot;Gryffindor&quot; },
+  { id: 3, name: &quot;Draco Malfoy&quot;, house: &quot;Slytherin&quot; }
+];
+
+// GET /wizards – returnează lista tuturor vrăjitorilor
+app.get(&#x27;/wizards&#x27;, (req, res) =&gt; {
+  res.json(wizards);
+});
+
+// DELETE /wizards/:id – șterge vrăjitorul cu ID-ul specificat
+app.delete(&#x27;/wizards/:id&#x27;, (req, res) =&gt; {
+  const wizardId = parseInt(req.params.id);           // extragem ID-ul din parametrii de rută (string -&gt; număr)
+  const index = wizards.findIndex(w =&gt; w.id === wizardId);  // căutăm indicele vrăjitorului cu id-ul dat
+  if (index !== -1) {
+    // Dacă există vrăjitorul, îl eliminăm din array
+    wizards.splice(index, 1);
+    // Răspundem cu 204 No Content (ștergere reușită, fără conținut în răspuns)
+    res.sendStatus(204);
+  } else {
+    // Dacă nu există vrăjitor cu acel ID, trimitem 404 Not Found
+    res.status(404).json({ error: &quot;Wizard not found&quot; });
+  }
+});
+
+// Pornim serverul pe portul 3000 (doar dacă rulăm acest cod real)
+app.listen(3000, () =&gt; {
+  console.log(&quot;Server running on port 3000&quot;);
+});</code></pre>
+</div>
+<p>În exemplul de mai sus, array-ul wizards conține inițial trei vrăjitori faimoși. Ruta <code>GET</code> <code>/wizards</code> va returna conținutul listei – de exemplu, o cerere inițială ar întoarce un JSON cu cei trei vrăjitori. Ruta <code>DELETE</code> <code>/wizards/:id</code> implementează logica discutată: caută vrăjitorul cu ID-ul specificat și îl șterge dacă este găsit. Să analizăm scenariul de utilizare:</p>
+<p>Dacă se face o cerere DELETE /wizards/2, handler-ul va găsi ID-ul 2 în lista noastră (corespondent pentru <em>Hermione Granger</em>) și îl va elimina. Răspunsul către client va avea status <strong>204 No Content</strong>, iar corpul răspunsului va fi gol (conform semnificației lui 204). După această operație, un nou GET /wizards va returna doar doi vrăjitori (Harry și Draco), confirmând astfel că resursa cu ID=2 a fost eliminată din colecție.</p>
+<p>Dacă se face o cerere DELETE /wizards/5 (unde nu avem niciun vrăjitor cu ID 5 în listă), atunci ramura else va trimite un răspuns <strong>404 Not Found</strong> cu un mesaj JSON { &quot;error&quot;: &quot;Wizard not found&quot; }. Acest rezultat indică clientului că nu s-a putut realiza ștergerea deoarece resursa dorită nu există. În urma unui astfel de răspuns, lista de vrăjitori rămâne neschimbată. Totodată, dacă imediat după un 204 clientul ar repeta cererea de ștergere pentru același ID (ex. ștergerea lui Hermione încă o dată), acum sistemul nu ar mai găsi-o și ar întoarce tot 404 – comportament conform așteptărilor.</p>
+<p>Codul de mai sus folosește stocare în memorie pentru simplitate, dar într-o aplicație reală logicile ar fi similare: în loc de operații pe array, am avea interogări și comenzi către baza de date (ex. un query SELECT pentru verificare existenței, urmat de un DELETE în baza de date dacă există). De asemenea, în practică am structura codul pe controlere și servicii, însă pentru scop educativ exemplul monolit de mai sus este suficient de clar.</p>
+<h2><strong>CONCLUZIE</strong></h2>
+<p>Metoda <strong>HTTP DELETE</strong> joacă un rol crucial în administrarea resurselor unui API RESTful, permițând eliminarea datelor care nu mai sunt necesare sau care trebuie eliminate din motive de business. În contextul unui <em>dashboard</em> de administrare sau al oricărei interfețe unde se gestionează entități (utilizatori, înregistrări, conținut generat de utilizatori etc.), expunerea unor rute de tip DELETE facilitează operații precum <strong>ștergerea conturilor de utilizator inactive, eliminarea postărilor sau comentariilor nepotrivite, ștergerea elementelor de inventar scoase din uz</strong>, și altele asemenea. În exemplul Hogwarts, un administrator (sau poate directorul școlii) ar putea folosi un astfel de API pentru a <strong>revoca accesul unui vrăjitor</strong> (ștergându-i înregistrarea) atunci când este exmatriculat sau absolvent.</p>
+<p>Este însă esențial ca operațiile de ștergere să fie realizate în condiții de siguranță și control. O ștergere accidentală sau neautorizată poate duce la pierderi de date ireversibile, motiv pentru care se implementează mai multe <strong>măsuri de protecție</strong>. La nivel de interfață de utilizator, este o practică uzuală solicitarea unei <strong>confirmări explicite</strong> înainte de a efectua o acțiune destructivă – de exemplu, un dialog modal cu mesajul <em>&quot;Ești sigur că vrei să ștergi această resursă?&quot;</em> care obligă utilizatorul să confirme intenția. La nivel de API și server, <strong>autentificarea și autorizarea</strong> sunt obligatorii: ruta DELETE trebuie protejată, permițând accesul doar utilizatorilor cu drepturi adecvate (de exemplu, doar administratorii pot șterge înregistrări sensibile). Token-urile de acces sau sesiunile trebuie verificate pentru fiecare cerere de ștergere, iar în funcție de politicile de securitate se pot implementa și mecanisme de <strong>control al ratei</strong> (rate limiting) pentru a preveni abuzul (ștergeri masive). De asemenea, este recomandat ca fiecare operațiune de ștergere să fie <strong>logată</strong> și auditată, astfel încât să existe evidențe (cine a șters ce și când) – aspect util atât pentru securitate, cât și pentru debugging.</p>
+<p>O altă practică întâlnită în sistemele enterprise este utilizarea așa-numitei <strong>ștergeri logice (soft delete)</strong>. În locul eliminării imediate a datelor din baza de date, resursele sunt marcate ca <em>inactive</em> sau <em>șterse</em> printr-un atribut (de exemplu, un câmp boolean isDeleted sau un status). Aceasta permite <strong>recuperarea ulterioară</strong> a datelor șterse din greșeală și menținerea referințelor integrității datelor (de exemplu, dacă vrăjitorul șters avea referințe în alte entități, marcarea lui ca inactiv păstrează acele legături pentru istoricul sistemului). Abordarea de soft delete se potrivește în contexte unde conformitatea sau istoricul operațiunilor este important (e.g., aplicații financiare sau academice care păstrează arhive). Totuși, chiar și în aceste cazuri, la nivel de API extern se poate expune tot metoda DELETE – serverul va interpreta cererea ca o <strong>dezactivare</strong> a resursei, în loc de o ștergere fizică.</p>
+<p>În concluzie, identificarea resurselor prin parametri de rută și manipularea lor prin metode HTTP adecvate reprezintă fundamentul design-ului RESTful. Metoda DELETE, deși simplă ca semnificație (remove resource), necesită o înțelegere clară a convențiilor (status 204 vs 404) și o implementare riguroasă pentru a asigura consistența și securitatea aplicației. În exemplul nostru inspirat din Hogwarts, am văzut cum putem șterge în siguranță un „vrăjitor” din sistem. Extinzând această lecție, un dezvoltator ar trebui să poată aplica aceleași principii pentru orice tip de resursă dintr-un API web modern – asigurând că fiecare operație de ștergere este precisă, protejată și comunicată clar către client.</p>
+<div class="references">
+<h2><strong>Referințe:</strong></h2>
+<p>BrowserStack. (2025, August 18). <em>DELETE Method in HTTP</em>. Retrieved from https://www.browserstack.com/guide/delete-method.</p>
+<p>Express.js. (n.d.). <em>Express 5.x API Reference – app.delete()</em>. Retrieved from https://expressjs.com/en/5x/api.html#app.delete.</p>
+<p>MDN Web Docs. (2025a, July 18). <em>Express Tutorial Part 4: Routes and controllers</em>. Retrieved from https://developer.mozilla.org/en-US/docs/Learn_web_development/Express_Nodejs/routes.</p>
+<p>MDN Web Docs. (2025b, July 4). <em>HTTP request methods (HTTP/1.x)</em>. Retrieved from https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods.</p>
+<p>RESTful API Tutorial. (n.d.). <em>How to Design a REST API – Step by Step Guide</em>. Retrieved from https://restfulapi.net/rest-api-design-tutorial-with-example.</p>
+<h3><strong>“Gray”:</strong></h3>
+<p>        DELETE Method in HTTP | BrowserStack<br>
+<a href="https://www.browserstack.com/guide/delete-method">https://www.browserstack.com/guide/delete-method</a></p>
+<p>  How to Design a REST API - Step by Step Guide<br>
+<a href="https://restfulapi.net/rest-api-design-tutorial-with-example/">https://restfulapi.net/rest-api-design-tutorial-with-example/</a></p>
+<p>    HTTP request methods - HTTP | MDN<br>
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods">https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods</a></p>
+<p> rest - Status code when deleting a resource using HTTP DELETE for the second time - Stack Overflow<br>
+<a href="https://stackoverflow.com/questions/6439416/status-code-when-deleting-a-resource-using-http-delete-for-the-second-time">https://stackoverflow.com/questions/6439416/status-code-when-deleting-a-resource-using-http-delete-for-the-second-time</a></p>
+<p> Express 5.x - API Reference<br>
+<a href="https://expressjs.com/en/5x/api.html">https://expressjs.com/en/5x/api.html</a></p>
+<p> Express Tutorial Part 4: Routes and controllers - Learn web development | MDN<br>
+<a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/routes">https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/routes</a></p>
+<p> rest - 404 vs 204 on GET, PUT, DELETE Methods - Stack Overflow<br>
+<a href="https://stackoverflow.com/questions/65961464/404-vs-204-on-get-put-delete-methods">https://stackoverflow.com/questions/65961464/404-vs-204-on-get-put-delete-methods</a></p>
+</div>
+
+    </div>
+</body>
+</html>

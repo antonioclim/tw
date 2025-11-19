@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutarea GET în Express.js și răspunsuri JSON cu res.json()</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            border-bottom: 4px solid #f5576c;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 5px solid #f5576c;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05em;
+        }
+
+        .first-paragraph::first-letter {
+            font-size: 3em;
+            font-weight: bold;
+            float: left;
+            line-height: 0.8;
+            margin: 0.1em 0.1em 0 0;
+            color: #f5576c;
+        }
+
+        strong {
+            color: #d63031;
+            font-weight: 600;
+        }
+
+        em {
+            color: #16a085;
+            font-style: italic;
+        }
+
+        code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            background: transparent;
+            color: #ecf0f1;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .code-block {
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #f5576c;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .important {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        .references {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .references h2, .references h3 {
+            color: #7f8c8d;
+        }
+
+        .references p {
+            font-size: 0.95em;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .references a {
+            color: #f5576c;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .references a:hover {
+            text-decoration: underline;
+            color: #d63031;
+        }
+
+        sup {
+            color: #f5576c;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Segmentul 2 – Rutarea GET în Express.js și răspunsuri JSON cu <code>res.json()</code></h1>
+<h2>Semantica metodei <strong>HTTP GET</strong> în arhitectura REST</h2>
+<p class="first-paragraph">În arhitectura REST (Representational State Transfer), metodele HTTP au semnificații bine definite, reprezentând operații CRUD standard (Create, Read, Update, Delete) asupra resurselor. Metoda <strong>HTTP GET</strong> corespunde operației de citire (Read) – este folosită exclusiv pentru a <strong>retrage reprezentări ale resurselor</strong> fără a modifica starea acestora. GET este <em>metodă sigură</em> și <em>metodă idempotentă</em>, conform definiției din specificația HTTP/1.1.</p>
+<p><strong>SIGURE</strong><strong> (safe)</strong>: Metodele caracterizate ca <em>sigure</em> (precum GET, HEAD sau OPTIONS) nu trebuie să producă efecte colaterale pe server. Cu alte cuvinte, <strong>o cerere GET nu ar trebui niciodată să modifice resursele</strong> sau starea sistemului – rolul său este strict acela de a citi/informa, fără <em>efecte secundare</em> de scriere. Astfel, nu este permis ca un endpoint GET să declanșeze acțiuni de tip <strong>RPC</strong> (ex.: GET /api/orders?addItem=... ar încălca principiul, deoarece ar încerca să modifice o comandă printr-un GET). Această proprietate face ca cererile GET să fie <strong>cacheabile</strong> în mod transparent de browsere sau proxy-uri, îmbunătățind performanța aplicațiilor web.</p>
+<p><strong>IDEMPOTENTE</strong>: Metodele <em>idempotente</em> sunt cele pentru care <strong>executarea repetată </strong><strong>a</strong><strong> aceleiași cereri produce același efect ca o singură execuție</strong>. GET, fiind sigur (nu modifică nimic), este în mod implicit idempotent: de exemplu, două cereri succesive GET /api/orders/123 vor returna aceeași resursă, fără schimbări de stare. În general, pentru orice metodă idempotentă, starea resursei pe server se poate schimba cel mult o dată, iar cererile ulterioare nu vor genera efecte suplimentare. Prin contrast, metode ca POST nu sunt idempotente (două cereri POST identice pot crea două resurse distincte). Importanța idempotencei la GET este că permite retransmiterea în siguranță a cererilor în caz de eșec de rețea, știind că <strong>nu se vor produce efecte nedorite în plus</strong> la reîncercare.</p>
+<p>În contextul RESTful, GET joacă un rol central: clienții cer informații despre <strong>resurse</strong> (de exemplu, un anumit “user”, “product” sau “order”), iar serverul răspunde cu o <strong>reprezentare</strong> a resursei (de obicei în format JSON sau XML). Această abordare se aliniază cu principiul <em>Uniform Interface</em> al lui Roy Fielding, care impune utilizarea consecventă a metodelor HTTP standard pentru operații standardizate. Astfel, un API RESTful bine proiectat va folosi GET pentru orice operație de <strong>read</strong> asupra oricărei resurse, asigurând o interfață previzibilă și ușor de înțeles pentru consumatori. Faptul că GET este sigur și idempotent conferă <strong>stabilitate și consistență</strong> interfeței: clienții pot efectua refresh-uri, preluări periodice sau cereri paralele GET fără teama de a altera datele de pe server, beneficiind și de mecanisme de cache HTTP ce reduc latența și încărcarea serverului[6].</p>
+<h2><strong>Rutarea GET</strong> în Express.js (Node.js) – definiție și comportament</h2>
+<p>Express.js este un framework web minimalist pentru Node.js care facilitează definirea de <em>rute</em> (endpoints) și manipularea cererilor HTTP. Rutarea în Express se bazează pe metodele obiectului principal app care corespund metodelor HTTP. De exemplu, <code>app.get()</code><strong> definește o rută pentru cereri GET</strong> (în mod similar <code>app.post()</code> pentru POST etc.). Prin această metodă, putem specifica un <em>path</em> (cale URL) și o funcție <em>handler</em> callback ce va fi invocată automat de Express când sosește o cerere HTTP GET la acel path. Practic, aplicația Express “ascultă” solicitările de un anumit tip și, la detectarea unei potriviri (după metodă și URL), va apela funcția de handler asociată.</p>
+<p>Un exemplu minimal de rută GET în Express arată astfel:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>const express = require(&#x27;express&#x27;);
+const app = express();
+
+// Răspunde cu &quot;hello world&quot; la o cerere GET pe ruta rădăcină &quot;/&quot;
+app.get(&#x27;/&#x27;, (req, res) =&gt; {
+  res.send(&#x27;hello world&#x27;);
+});</code></pre>
+</div>
+<p>În exemplul de mai sus, <code>app.get(&#x27;/&#x27;, ...)</code> înregistrează un handler pentru ruta de <strong>homepage</strong> (ruta rădăcină). Orice cerere GET la http://&lt;server&gt;/ va declanșa apelul funcției cu parametrii (req, res) și va trimite înapoi un răspuns text simplu &quot;hello world&quot; folosind <code>res.send()</code>. Observăm că Express <strong>mapează direct semantica HTTP</strong>: folosim GET pentru a obține resurse (în acest caz, un mesaj de salut).</p>
+<p>Un aspect important al Express (și al Node.js, în general) este <strong>natura asincronă și non-blocantă</strong> a procesării cererilor. Deși la prima vedere handler-ul de mai sus pare secvențial, sub capotă Node.js funcționează pe bază de evenimente și <em>callback-uri</em>, permițând serverului să gestioneze concurent multiple cereri fără a le bloca una pe alta. În practică, asta înseamnă că într-un handler Express putem realiza operații de I/O asincron (cum ar fi interogări de baze de date, apeluri către alte servicii etc.) și apoi să trimitem răspunsul, <strong>fără a ține pe loc thread-ul de execuție</strong> pe durata așteptării. Express suportă nativ utilizarea funcțiilor asincrone (async/await) în definirea rutelor: de pildă, putem declara <code>app.get(&#x27;/data&#x27;, async (req, res) =&gt; { ... })</code>, efectuând operații cu await în interiorul callback-ului. Framework-ul va aștepta finalizarea promisiunilor (sau va trata callback-urile) înainte de a continua, permițând totodată altor cereri să fie deservite între timp. Este esențial însă ca pentru fiecare cerere Express să se trimită un singur răspuns – odată ce am apelat o metodă ca <code>res.json()</code> sau <code>res.send()</code>, ciclul cerere-răspuns este considerat încheiat. Dacă, de exemplu, uităm să punem return înainte de un <code>res.json()</code> într-o ramură de cod și apoi ajunge execuția și într-o altă ramură care trimite răspuns, am încerca să trimitem <strong>două răspunsuri</strong> pentru aceeași cerere – ceea ce va genera o eroare. Din acest motiv, la folosirea <em>async/await</em>, se recomandă să avem grijă ca logica să trimită <strong>un singur răspuns</strong> (de ex., prin return res.json(...) sau structurarea corectă a condițiilor).</p>
+<h3>Trimiterea răspunsurilor JSON cu <code>res.json()</code> și setarea codurilor de stare</h3>
+<p>Express oferă obiectului res (răspuns) metode convenabile pentru a redacta și expedia răspunsul HTTP către client. Pentru API-urile moderne este deosebit de utilă metoda <code>res.json()</code>, care trimite automat conținutul sub formă de JSON. Spre deosebire de <code>res.send()</code> (care poate trimite text brut, HTML, bufferi etc.), <code>res.json()</code> <strong>serializează obiectul sau array-ul JavaScript furnizat într-un șir JSON</strong>, setează automat antetul Content-Type: application/json și <strong>încheie</strong> conexiunea trimițând acest răspuns către client. Această metodă simplifică considerabil dezvoltarea de API: developerul poate pasa direct o structură de date (de ex. un obiect { id: 1, name: &quot;Alice&quot; } sau o listă de astfel de obiecte), iar Express se ocupă să o convertească în format JSON valid și să o trimită.</p>
+<p>În plus, putem specifica <strong>codul de stare HTTP</strong> al răspunsului folosind metoda <code>res.status()</code>. În mod implicit, dacă nu se precizează altfel, <code>res.json()</code> va trimite codul <em>200 OK</em> (presupunând că nu a fost setat deja un alt cod). Totuși, este o bună practică să indicăm explicit codurile de eroare sau situațiile speciale. De exemplu, dacă resursa cerută de client nu este găsită, putem trimite un 404 (<em>Not Found</em>); dacă apare o eroare de server, un 500 (<em>Internal Server Error</em>); pentru creații de resurse un 201 (<em>Created</em>), ș.a.m.d. În Express, convenția este să chain-uim aceste metode: <code>res.status(cod).json(data)</code> într-o singură instrucțiune. Fragmentul de cod de mai jos ilustrează utilizarea <code>res.status()</code> împreună cu <code>res.json()</code> pentru a trimite un mesaj de eroare JSON cu cod 404:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>// Exemplu de trimitere a unui răspuns JSON de eroare cu cod 404
+app.get(&#x27;/api/error&#x27;, (req, res) =&gt; {
+  const error = { status: 404, message: &#x27;Resource not found&#x27; };
+  res.status(404).json(error);
+});</code></pre>
+</div>
+<p>Prin acest mecanism, API-urile pot oferi <strong>răspunsuri consecvente și informative</strong>: atât în cazuri de succes (de regulă cod 200, cu corp JSON conținând datele cerute), cât și în cazuri de eroare (coduri 4xx/5xx, cu corp JSON ce poate conține detalii despre eroare). Folosirea JSON ca format de schimb principal are avantajul clarității și interoperabilității: JSON este compact și mai puțin verbal decât XML (nu necesită tag-uri de început și sfârșit pentru fiecare element), ceea ce duce la <strong>mesaje de dimensiuni mai mici</strong> și timpi mai buni de transmisie și parsare. În plus, JSON este practic un subset al limbajului JavaScript, fiind <strong>nativ interpretabil în aplicațiile web front-end</strong> (ex. prin JSON.parse sau direct prin utilizarea fetch API care decodează automat JSON), facilitând integrarea dintre client și server. Această simplitate și universalitate a JSON-ului îl fac formatul preferat pentru majoritatea API-urilor RESTful contemporane.</p>
+<h2>Exemplu practic: Rută <code>GET </code>/wizards pentru listarea vrăjitorilor (Harry Potter)</h2>
+<p>Pentru a îmbina toate conceptele de mai sus, vom construi un exemplu concret folosind Express. Să considerăm că dezvoltăm un API REST care furnizează informații despre <strong>vrăjitori din universul Harry Potter</strong>. Vom defini o rută GET simplă, /wizards, care returnează o listă de vrăjitori. În acest exemplu, lista este stocată în memorie (hardcodată) pentru simplitate, dar într-o aplicație reală aceste date ar proveni dintr-o bază de date (relațională sau NoSQL, de ex. MongoDB) printr-o interogare asincronă. </p>
+<p>Iată cum ar putea arăta codul Express pentru această funcționalitate:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>const express = require(&#x27;express&#x27;);
+const app = express();
+const PORT = 3000;
+
+// Lista de vrăjitori definită în memorie (exemplu demonstrativ)
+const wizards = [
+  { id: 1, name: &#x27;Harry Potter&#x27;, house: &#x27;Gryffindor&#x27; },
+  { id: 2, name: &#x27;Hermione Granger&#x27;, house: &#x27;Gryffindor&#x27; },
+  { id: 3, name: &#x27;Ron Weasley&#x27;, house: &#x27;Gryffindor&#x27; },
+  { id: 4, name: &#x27;Albus Dumbledore&#x27;, house: &#x27;Gryffindor&#x27; },
+  { id: 5, name: &#x27;Severus Snape&#x27;, house: &#x27;Slytherin&#x27; }
+];
+
+// Definirea rutei GET /wizards
+app.get(&#x27;/wizards&#x27;, (req, res) =&gt; {
+  // Trimiterea listei de vrăjitori în format JSON, cu codul 200 OK
+  res.status(200).json(wizards);
+});
+
+// Pornirea serverului pe portul definit
+app.listen(PORT, () =&gt; {
+  console.log(`Serverul rulează la http://localhost:${PORT}/`);
+});</code></pre>
+</div>
+<p>În fragmentul de mai sus, am definit mai întâi un array wizards ce conține obiecte JavaScript, fiecare reprezentând un vrăjitor și atributele sale (un simplu ID, numele și casa Hogwarts). Aceasta ține loc de bază de date pentru exemplificare. Apoi folosim <code>app.get(&#x27;/wizards&#x27;, ...)</code> pentru a înregistra o rută; când serverul primește o cerere GET către calea /wizards, va executa funcția callback furnizată. În interiorul acestei funcții, apelăm <code>res.status(200).json(wizards)</code>. Semnificația este următoarea:</p>
+<p><code>res.status(200)</code> setează codul de stare al răspunsului la 200 (OK). În acest caz, 200 indică faptul că cererea a fost îndeplinită cu succes. Am inclus explicit .status(200) deși, dacă l-am omite, <code>res.json(wizards)</code> ar trimite oricum 200 implicit – am făcut-o însă pentru claritate didactică, evidențiind că putem controla status-ul.</p>
+<p><code>res.json(wizards)</code> serializează lista de vrăjitori în JSON și o trimite în corpul răspunsului HTTP. Antetul Content-Type este setat automat la application/json de către Express, astfel încât clientul (de exemplu, un browser sau client HTTP) știe că trebuie să interpreteze conținutul ca JSON. După acest apel, Express închide conexiunea, considerând răspunsul complet.</p>
+<p>Astfel, un client care face o cerere GET la http://localhost:3000/wizards va primi un răspuns cu cod 200 și corpul de forma:</p>
+<p>[
+  { &quot;id&quot;: 1, &quot;name&quot;: &quot;Harry Potter&quot;, &quot;house&quot;: &quot;Gryffindor&quot; },
+  { &quot;id&quot;: 2, &quot;name&quot;: &quot;Hermione Granger&quot;, &quot;house&quot;: &quot;Gryffindor&quot; },
+  { &quot;id&quot;: 3, &quot;name&quot;: &quot;Ron Weasley&quot;, &quot;house&quot;: &quot;Gryffindor&quot; },
+  { &quot;id&quot;: 4, &quot;name&quot;: &quot;Albus Dumbledore&quot;, &quot;house&quot;: &quot;Gryffindor&quot; },
+  { &quot;id&quot;: 5, &quot;name&quot;: &quot;Severus Snape&quot;, &quot;house&quot;: &quot;Slytherin&quot; }
+]</p>
+<p>Lista este exact cea definită pe server. În practică, dacă aceste date ar fi stocate într-o bază de date reală, în loc să fie disponibile imediat în memorie, am avea un pas asincron – de pildă:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>app.get(&#x27;/wizards&#x27;, async (req, res) =&gt; {
+   try {
+      const wizards = await db.query(&#x27;SELECT id, name, house FROM wizards&#x27;);
+      res.json(wizards.rows);
+   } catch(err) {
+      res.status(500).json({ error: &#x27;Database error&#x27; });
+   }
+});</code></pre>
+</div>
+<p>În exemplul imaginar de mai sus, folosim await pentru a obține rezultatele dintr-o bază de date (fie SQL, fie o interogare pe un model Mongoose pentru MongoDB etc.), după care trimitem rezultatul direct ca JSON. Observați gestionarea erorilor: în caz că interogarea eșuează, întoarcem un mesaj JSON cu cod 500. <strong>Acest tipar – rută GET care citește date și le expune ca JSON – este fundația oricărui sistem de citire a datelor în aplicațiile moderne</strong>. Fie că vorbim de afișarea unui dashboard de administrare, de popularea unei interfețe web construite în React/Vue sau de ecranul unei aplicații mobile, în spatele fiecărei componente care afișează date stă în mod obișnuit una sau mai multe cereri GET către un API.</p>
+<h2><strong>CONCLUZII</strong></h2>
+<p>Rutarea GET reprezintă o piatră de temelie în construcția API-urilor RESTful, oferind un mod standardizat și predictibil de a <strong>accesa resurse</strong>. Caracterul sigur și idempotent al metodei GET, moștenit din protocolul HTTP, garantează că aceste operațiuni de citire pot fi efectuate în mod repetat și cache-ate, fără efecte adverse asupra sistemului. În ecosistemul Node.js, Express.js simplifică enorm implementarea acestor concepte, permițând definirea elegantă a rutelor prin <code>app.get()</code> și furnizând utilitare ca <code>res.json()</code> pentru a emite răspunsuri <strong>clare</strong> și <strong>consistente</strong> în format JSON.</p>
+<p>Un API robust trebuie să păstreze <strong>consistența interfeței</strong> – adică, să folosească metodele HTTP conform semnificației lor (GET pentru citire, fără side-effects), să mențină structuri uniformizate de URL-uri și formate de date, astfel încât dezvoltatorii clienți să poată anticipa ușor modul de interacțiune. Formatul JSON, datorită simplității și lizibilității sale, contribuie la această claritate a interfeței: atât oamenii, cât și mașinile (bibliotecile de parsare) îl pot înțelege imediat, reducându-se ambiguitățile de interpretare.</p>
+<p>În concluzie, stăpânirea rutelor GET și a transmiterii datelor în format JSON este esențială pentru orice dezvoltator de aplicații web moderne. Fie că realizează un microserviciu ce oferă date altor sisteme, fie un back-end pentru o aplicație single-page, <strong>abilitatea de a structura corect un endpoint GET (cu semantica potrivită și răspunsuri bine formate) asigură fundamentul unui API de încredere</strong>. În segmentele următoare ale cursului, vom vedea cum se extind aceste principii și la celelalte metode HTTP și cum putem construi întregi sisteme RESTful care să fie <strong>scalabile, ușor de consumat și conforme principiilor arhitecturale</strong> trasate de Fielding și de comunitatea web.</p>
+<div class="references">
+<h2><strong>Referințe</strong></h2>
+<p>Fielding, R. T. (2000). <em>Architectural Styles and the Design of Network-based Software Architectures</em> (Doctoral dissertation, University of California, Irvine).</p>
+<p>Gupta, L. (2023, November 4). <em>Difference between JSON and XML</em>. REST API Tutorial (restfulapi.net).</p>
+<p><strong>Express.js Documentation</strong> (n.d.). <em>Express Guide – Routing</em>. Express.js Official Website.</p>
+<p>Selvan, M. (2024, November 24). <em>Express </em><code>res.json()</code><em> Method</em>. CodeToFun Tutorials.</p>
+<p><strong>Zuplo</strong> (2025, March 12). <em>Common Mistakes in RESTful API Design</em>. Zuplo Learning Center.</p>
+<p><strong>API Conference Blog</strong> (n.d.). <em>Introduction to RESTful API Design</em>. APIConference.net.</p>
+<h3><strong>“Gray”</strong></h3>
+<p>   Common Mistakes in RESTful API Design | Zuplo Learning Center<br>
+<a href="https://zuplo.com/learning-center/common-pitfalls-in-restful-api-design">https://zuplo.com/learning-center/common-pitfalls-in-restful-api-design</a></p>
+<p>   Introduction to RESTful API Design<br>
+<a href="https://apiconference.net/blog-en/introduction-to-restful-api-design/">https://apiconference.net/blog-en/introduction-to-restful-api-design/</a></p>
+<p>     Express routing<br>
+<a href="https://expressjs.com/en/guide/routing.html">https://expressjs.com/en/guide/routing.html</a></p>
+<p>    Express res.json() Method | CodeToFun<br>
+<a href="https://codetofun.com/express/res-json/">https://codetofun.com/express/res-json/</a></p>
+<p>  Difference between JSON and XML<br>
+<a href="https://restfulapi.net/json-vs-xml/">https://restfulapi.net/json-vs-xml/</a></p>
+</div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionarea erorilor într-o aplicație RESTful Express.js</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            border-bottom: 4px solid #fc466b;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 5px solid #fc466b;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05em;
+        }
+
+        .first-paragraph::first-letter {
+            font-size: 3em;
+            font-weight: bold;
+            float: left;
+            line-height: 0.8;
+            margin: 0.1em 0.1em 0 0;
+            color: #fc466b;
+        }
+
+        strong {
+            color: #d63031;
+            font-weight: 600;
+        }
+
+        em {
+            color: #16a085;
+            font-style: italic;
+        }
+
+        code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+            font-size: 0.95em;
+        }
+
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        pre code {
+            background: transparent;
+            color: #ecf0f1;
+            padding: 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .code-block {
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #fc466b;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .important {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .tip {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        .references {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .references h2, .references h3 {
+            color: #7f8c8d;
+        }
+
+        .references p {
+            font-size: 0.95em;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .references a {
+            color: #fc466b;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .references a:hover {
+            text-decoration: underline;
+            color: #d63031;
+        }
+
+        sup {
+            color: #fc466b;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>S8seg7: Gestionarea erorilor într-o aplicație RESTful Express.js</h1>
+<h2><strong>Introducere</strong></h2>
+<p class="first-paragraph">În dezvoltarea aplicațiilor, apar inevitabil erori atât la nivelul aplicației, cât și la nivel de rețea. <strong>Erorile de aplicație</strong> sunt probleme interne ale serverului – de exemplu, bug-uri în cod sau excepții neașteptate care duc la <em>500 Internal Server Error</em>. <strong>Erorile de rețea</strong> (sau de client) apar atunci când cererea trimisă de utilizator este problematică – de pildă, solicitarea unei resurse inexistente, care rezultă în un <em>404 Not Found</em>. Cu alte cuvinte, un răspuns HTTP <strong>404 Not Found</strong> indică faptul că serverul nu poate găsi resursa cerută (URL-ul nu este recunoscut), pe când un <strong>500 Internal Server Error</strong> indică o situație internă pe care serverul nu știe cum să o gestioneze (un fel de eroare generică când serverul nu are un cod mai potrivit de returnat). În mod implicit, Express tratează aceste cazuri automat: dacă un client cere o rută inexistentă, Express va trimite un status <code>404</code>, iar dacă serverul întâmpină o eroare neașteptată în timpul execuției unei rute, va trimite un <code>500</code>.</p>
+<p>Este important să înțelegem sursa acestor erori. În general, putem distinge două categorii mari de probleme în backend: (1) <strong>erori programatice</strong> – cauzate de bug-uri sau excepții în codul serverului (de exemplu folosirea unei variabile nedefinite, aruncarea unei erori cu throw etc.), și (2) <strong>erori cauzate de utilizator</strong> – rezultate din acțiuni sau input incorect din partea clientului (de exemplu, cereri către rute greșite sau date de intrare invalide). Un articol ButterCMS (Kosisochukwu, 2024) subliniază că erorile programatice apar din probleme ale codului, pe când erorile operaționale (cauzate de condiții externe sau input) trebuie gestionate grațios la runtime. În contextul nostru, o eroare programatică la Hogwarts ar fi ca atunci când o vrajă se întoarce împotriva profesorului din cauza unei incantații greșite (bug în cod), iar o eroare cauzată de utilizator ar fi ca atunci când un elev încearcă să acceseze o vrajă inexistentă în bibliotecă (ruta greșită).</p>
+<p><strong>Gestionarea centralizată a erorilor</strong> în Express este esențială pentru a menține aplicația robustă și ușor de întreținut. În loc să tratăm erorile punctual în fiecare rută, Express ne permite să definim un <em>middleware</em> global de tratare a erorilor care va intercepta toate excepțiile neprevăzute. Acest lucru asigură consistența răspunsurilor și evită oprirea bruscă a execuției aplicației la apariția unei erori. După cum notează Kosisochukwu (2024), un management corespunzător al erorilor face diferența între a rezolva un bug în câteva minute sau în câteva ore, permițând tratarea grațioasă a excepțiilor fără a opri nejustificat aplicația. De asemenea, Express vine cu un handler implicit de erori care, dacă nu definim unul personalizat, trimite clientului detalii despre eroare (inclusiv <em>stack trace</em>-ul) în modul de dezvoltare, iar în modul de producție omite <em>stack trace</em>-ul pentru a proteja aplicația. Cu un middleware propriu, putem controla acest comportament și personaliza mesajele de eroare.</p>
+<p>Un alt aspect teoretic important este diferența de abordare între erorile <code>500</code> și <code>404</code> în Express. Conform documentației oficiale Express.js, răspunsurile <code>404</code> nu sunt rezultatul unei erori interne, ci indică pur și simplu că nicio rută definită nu a putut răspunde cererii – cu alte cuvinte, Express a epuizat toate funcțiile middleware și rutele posibile fără să găsească un răspuns potrivit. Din acest motiv, erorile 404 <em>nu sunt preluate de middleware-ul de eroare</em> (care interceptează doar erorile apărute efectiv în timpul execuției unei rute existente). Pentru a gestiona <strong>404 Not Found</strong>, trebuie să adăugăm manual un <em>middleware</em> special la finalul listei de rute, care să prindă orice solicitare neacoperită și să întoarcă un răspuns 404 personalizat. În schimb, erorile interne (500) apărute într-o rută (de exemplu prin throw sau next(err)) vor declanșa middleware-ul global de eroare dacă acesta este definit, sau în absența lui vor fi gestionate de handler-ul implicit Express (care setează automat status 500 și trimite un mesaj generic sau stack trace-ul în funcție de mediu).</p>
+<p>Pe scurt, <strong>gestionarea erorilor</strong> într-o API Express RESTful implică identificarea clară a tipului de eroare (eroare de client vs. eroare de server) și tratarea centralizată a ambelor cazuri: <em>erorile interne</em> (500) printr-un middleware de eroare global, respectiv <em>rutele inexistente</em> (404) printr-un middleware “catch-all” plasat la final. În continuare vom vedea cum implementăm practic aceste mecanisme, folosind în continuare analogia Hogwarts pentru exemple.</p>
+<h2><strong>Explicație</strong></h2>
+<p>Să trecem la abordarea practică a problemei: <strong>cum definim și configurăm middleware-urile de tratare </strong><strong>a</strong><strong> erorilor în Express</strong>. Vom avea nevoie de două middleware-uri principale la nivel de aplicație Express:</p>
+<p><strong>Middleware global de eroare (500)</strong> – o funcție specială cu <strong>patru</strong> argumente, semnătura fiind function(err, req, res, next). Prezența celor patru parametri îi semnalează lui Express că aceasta este o funcție de tratare a erorilor. Aceasta va intercepta orice eroare apărută în rută (transmisă fie prin throw, fie prin apelarea next(err) în cod) și va genera un răspuns adecvat către client (de obicei un status 500 și un mesaj JSON). Conform FAQ-ului Express, definirea unui astfel de handler se face la fel ca la orice alt middleware, doar că include parametrul suplimentar <code>err</code> la început. <strong>Important:</strong> Acest middleware trebuie atașat <strong>după toate celelalte rute și middleware-uri</strong> din aplicație, pentru a fi invocat doar când ceva a mers rău și nu a fost deja răspuns.</p>
+<p><strong>Middleware “404 Not Found” (catch-all)</strong> – o funcție middleware obișnuită (cu trei argumente req, res, next) plasată <strong>la finalul lanțului</strong> de route-handlers, care va trata orice cerere care nu a fost preluată de vreo rută definită anterior. Practic, dacă execuția ajunge la acest middleware, înseamnă că nicio rută nu s-a potrivit, deci vom returna un răspuns cu eroarea 404. Documentația Express recomandă adăugarea unei astfel de funcții la final, care setează codul de status la 404 și trimite un mesaj potrivit, de exemplu: <code>res.status(404).send(&quot;Sorry can&#x27;t find that!&quot;)</code>. Într-o API RESTful vom trimite un răspuns JSON în loc de text simplu, dar principiul rămâne același. Acest middleware de 404 <strong>nu folosește</strong> parametrul <code>err</code> (nu e un handler de eroare propriu-zis, ci un fallback pentru rutele lipsă).</p>
+<p>În continuare vom detalia cum se scriu efectiv aceste middleware-uri în cod și ce format au răspunsurile JSON trimise clientului.</p>
+<h3>Middleware-ul global de eroare (<strong>handler 500</strong>)</h3>
+<p>Un <strong>middleware de eroare</strong> Express are forma generală:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>app.use((err, req, res, next) =&gt; {
+    // cod de tratare a erorii
+});</code></pre>
+</div>
+<p>Observați prezența celor patru parametri – acesta este modul în care Express identifică funcția ca fiind destinată <strong>doar</strong> erorilor. Această funcție va fi apelată automat de Express ori de câte ori un middleware sau o rută a apelat next(err) sau a aruncat o excepție. În interiorul handler-ului, avem acces la obiectul <code>err</code> care descrie eroarea. Putem folosi acest obiect pentru a loga problema (ex: <code>console.error(err.stack)</code> pentru a afișa stack trace-ul în consolă) și pentru a trimite un răspuns către client.</p>
+<p>În cazul unei aplicații <strong>RESTful</strong> precum API-ul Hogwarts, este recomandat să trimitem erorile în format <strong>JSON</strong>, astfel încât clientul (de exemplu front-end-ul sau un alt serviciu) să poată interpreta ușor răspunsul. Un exemplu simplu de implementare a middleware-ului de eroare ar putea fi:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>// Middleware global de tratare a erorilor
+app.use((err, req, res, next) =&gt; {
+    console.error(&quot;[Eroare]&quot;, err.stack);  // Log pentru debug (în consolă)
+    // Setăm statusul HTTP la 500 (Internal Server Error) 
+    // și trimitem un JSON cu un mesaj generic de eroare.
+    res.status(500).json({ 
+        error: &quot;Something went wrong on the server.&quot;,  // mesaj generic pentru client
+        status: 500 
+    });
+});</code></pre>
+</div>
+<p>În codul de mai sus, <strong>ultimul middleware adăugat</strong> pe app interceptează erori și trimite un răspuns cu status 500 și corp JSON. Mesajul &quot;Something went wrong on the server.&quot; este unul generic, potrivit pentru mediul de producție (unde nu vrem să divulgăm detalii interne). În mediu de dezvoltare am putea include mai multe informații (de exemplu <code>err.message</code> sau alte detalii) pentru a facilita debugging-ul. Best practice este să <strong>nu trimitem </strong><strong>stack trace</strong><strong>-ul sau informații sensibile către client</strong>, deoarece acestea pot constitui un risc de securitate și oricum nu ajută utilizatorul final. În schimb, se poate loga intern complet eroarea (în consolă sau într-un fișier de log), dar răspunsul către client să conțină doar un mesaj prietenos și eventual un cod de eroare.</p>
+<p>De asemenea, observăm că am folosit <code>res.status(500)</code> înainte de .json(...). Setarea codului HTTP corect este esențială: <code>500</code> indică faptul că a fost o eroare de server. Alternativ, dacă am anticipa și erori de alt tip, am putea folosi proprietăți custom ale obiectului <code>err</code> – de pildă unele convenții adaugă err.statusCode sau <code>err.status</code> la erorile aruncate intenționat. Express însă, în handler-ul său implicit, verifică dacă eroarea are o proprietate status sau statusCode și folosește acea valoare; dacă nu, atribuie automat 500. În implementarea noastră personalizată, putem face ceva similar: de exemplu <code>res.status(err.status || 500).json({ ... })</code> pentru a trata și erori cu alt cod. În contextul de față ne concentrăm pe 500, deci nu intrăm în detalii despre erori 400 (Bad Request) sau altele – doar reținem că <strong>erorile intenționat provocate</strong> (ex: validări eșuate) ar trebui marcate cu un cod corespunzător (precum 400) și pot fi de asemenea prinse de același middleware global, dacă setăm statusul în obiectul de eroare.</p>
+<p><strong>Amplasați acest middleware la finalul configurației Express.</strong> După definirea tuturor rutelor și celorlalte middleware (de parsing, autentificare etc.), se apelează <code>app.use(handlerDeEroare)</code>. În acest mod, suntem siguri că orice eroare produsă oriunde în flux va ajunge aici dacă nu a fost deja tratată. Practic, Express menține un “stack” de middleware-uri, iar handler-ul de erori va sta ultimul la rând. În exemplul nostru Hogwarts, ne putem imagina că acest handler global este ca un <em>Profesor de Apărare contra Magiei Negre</em> care stă mereu de veghe la final pentru a prinde orice blestem scăpat de sub control în timpul execuției .</p>
+<h3>Middleware-ul <code>404</code> “Not Found” (<strong>rute inexistente</strong>)</h3>
+<p>Următorul aspect este gestionarea cererilor către <strong>rute inexistente</strong>. Așa cum am discutat, Express nu consideră lipsa unei rute ca fiind o “eroare” în sens intern, așa că <strong>nu va trimite automat către middleware-ul de eroare</strong> cazul unui 404. În schimb, dacă nicio rută nu răspunde, serverul Express pur și simplu va închide cererea cu un status 404 implicit. Ca să personalizăm acest comportament și să oferim clientului un mesaj util (și eventual tot JSON), adăugăm un <strong>middleware “catch-all”</strong> la sfârșitul definițiilor de rute.</p>
+<p>Acest middleware 404 va arăta astfel:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>// Middleware pentru rutele neimplementate (404 Not Found)
+app.use((req, res, next) =&gt; {
+    res.status(404).json({
+        error: &quot;Not found&quot;,
+        status: 404
+    });
+});</code></pre>
+</div>
+<p>Ce face acest cod? Fiind plasat după toate celelalte rute posibile (<code>app.use</code>/<code>app.get</code>/<code>app.post</code> etc.), el va fi executat doar dacă nicio rută definită nu a trimis deja un răspuns. Parametrii <code>req</code> și <code>res</code> ne permit să accesăm detalii despre cerere – de exemplu am putea include req.originalUrl și metoda HTTP în mesaj pentru a preciza ce resursă nu a fost găsită. În exemplu am trimis simplu { &quot;error&quot;: &quot;Not found&quot;, &quot;status&quot;: 404 }, dar putem îmbogăți mesajul. Important este să setăm <strong>codul de status 404</strong> și să trimitem un JSON care să informeze clientul că resursa cerută nu există.</p>
+<p>Express FAQ sugerează exact acest tip de handler, exemplificând cu un mesaj simplu de scuză. În API-uri, un mesaj mai tehnic este acceptabil. De exemplu, am putea trimite { &quot;error&quot;: &quot;Ruta nu există&quot; } sau { &quot;error&quot;: &quot;Resource /spells/abc not found&quot; }. În context Hogwarts, dacă un student cere o vrajă inexistentă, i-am putea răspunde cu un mesaj pe măsură, dar în termeni tehnici păstrăm claritatea: resursa cerută nu a fost găsită pe server.</p>
+<p>Trebuie menționat că putem realiza gestionarea 404 și într-un mod ușor diferit: în loc să trimitem direct răspunsul în acest middleware, am putea apela <code>next()</code> cu o eroare 404 către handler-ul global. De exemplu:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>app.use((req, res, next) =&gt; {
+    const err = new Error(&quot;Not Found&quot;);
+    err.status = 404;
+    next(err);
+});</code></pre>
+</div>
+<p>Acest tipar ar transmite o eroare cu status 404 mai departe către middleware-ul de eroare definit anterior, care ar trebui adaptat să diferențieze între 404 și 500. Unele generații de proiecte Express folosesc modul acesta (de pildă, pachete ca http-errors pot crea obiecte de eroare specifice codurilor). <strong>Pentru simplitate însă, în exemplul nostru vom folosi prima variantă</strong>, trimițând direct răspunsul 404 din middleware-ul dedicat. Acest lucru este suficient pentru majoritatea cazurilor și clar din punct de vedere al fluxului: ai ajuns la final, returnezi 404 și închei procesarea cererii, fără a mai invoca handler-ul general de erori.</p>
+<p>Așadar, rețineți: <strong>middleware-ul 404</strong> vine imediat <em>înainte</em> de middleware-ul de eroare în ordinea configurațiilor și <em>după</em> toate rutele. El prinde toate rutele neacoperite și răspunde separat, deoarece nu este vorba de o eroare a aplicației, ci de o cerere invalidă (din perspectiva serverului, clientul a greșit adresa).</p>
+<h3><strong>Structura </strong>răspunsurilor <strong>JSON de eroare</strong></h3>
+<p>Atât pentru erori interne, cât și pentru rutele inexistente, <strong>răspunsurile</strong> pe care le oferim vor fi în format JSON, cuprinzând tipic un camp care indică eroarea. În exemplele de mai sus am inclus două câmpuri: <code>error</code> (cu o descriere sau mesaj) și status (codul numeric HTTP, redundat informativ). Structura exactă poate varia în funcție de preferințe sau convenții. Un format minimalist este să trimitem doar un obiect cu un mesaj, de exemplu:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>{ &quot;error&quot;: &quot;Something went wrong&quot; }</code></pre>
+</div>
+<p>cum sugera enunțul. Totuși, este adesea util să includem și codul de status sau un cod de eroare intern. În aplicații mai mari, am putea avea un format precum:</p>
+<p>{
+   &quot;success&quot;: false,
+   &quot;error&quot;: {
+       &quot;code&quot;: 404,
+       &quot;message&quot;: &quot;Not found&quot;
+   }
+}</p>
+<p>Pentru simplitate, în lecția de față rămânem la { error: &quot;...&quot;, status: ... }. Acest format permite clientului să știe clar ce s-a întâmplat (prin mesaj) și să aibă și codul numeric (deși acesta vine și ca status HTTP). Important este să fim <strong>consecvenți</strong>: gestionarea centralizată a erorilor tocmai acest avantaj îl are – toate erorile vor fi livrate în același mod, indiferent de unde apar. Astfel, cei care consumă API-ul (fie dezvoltatori front-end, fie alte servicii) vor ști la ce să se aștepte. De exemplu, pot implementa logică de front-end care verifică dacă răspunsul are <code>error</code> și status și afișează un anumit mesaj pentru 404 sau 500, etc.</p>
+<p>În concluzie pentru această secțiune aplicată: am configurat două middleware-uri esențiale – unul pentru erori interne (500) și unul catch-all pentru rutele lipsă (404). Ambele trimit răspunsuri JSON structurate. În secțiunea următoare vom vedea un exemplu practic complet, cu cod și scenarii de test, folosind analogia Hogwarts pentru a simula situațiile de eroare.</p>
+<h2><strong>Exemplu</strong></h2>
+<p>Să punem cap la cap conceptele de mai sus într-un exemplu concret. Imaginați-vă că dezvoltăm o mică aplicație Express pentru biblioteca de vrăji de la Hogwarts. Avem câteva rute, printre care vom defini special una care <strong>simulează o eroare internă</strong> (poate o vrajă care dă greș) și vom vedea cum acționează middleware-urile noastre de eroare. De asemenea, vom verifica comportamentul pentru o rută inexistentă.</p>
+<p>Mai jos este un exemplu de cod JavaScript (simplificat) pentru serverul Express al aplicației Hogwarts. Comentariile adnotate explică fiecare secțiune:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>const express = require(&#x27;express&#x27;);
+const app = express();
+
+// 1. Definim o rută validă de test (opțional, pentru context)
+app.get(&#x27;/spells&#x27;, (req, res) =&gt; {
+    // Exemplu: returnăm lista de vrăji disponibile
+    res.json({ spells: [&quot;Lumos&quot;, &quot;Expelliarmus&quot;, &quot;Expecto Patronum&quot;] });
+});
+
+// 2. Definim o rută care *simulează o eroare internă*
+app.get(&#x27;/spells/error&#x27;, (req, res, next) =&gt; {
+    // Simulăm o eroare aruncată (excepție) în timpul execuției rutei
+    throw new Error(&quot;SpellFailure: incantația a eșuat&quot;);  
+    // Alternativ: next(new Error(&quot;SpellFailure&quot;));
+});
+
+// 3. Middleware &quot;catch-all&quot; pentru rutele inexistente (404 Not Found)
+app.use((req, res, next) =&gt; {
+    // Niciuna din rutele de mai sus nu a răspuns -&gt; resursa cerută nu există
+    res.status(404).json({ 
+        error: &quot;Not found&quot;,           // mesaj de eroare
+        status: 404                   // codul de status (redundant cu cel HTTP)
+    });
+});
+
+// 4. Middleware global de eroare (500 Internal Server Error)
+app.use((err, req, res, next) =&gt; {
+    console.error(&quot;Eroare internă:&quot;, err.message);  // Afișăm eroarea în consolă (server)
+    // Trimitere răspuns JSON de eroare către client:
+    res.status(500).json({ 
+        error: &quot;Internal Server Error. Something went wrong!&quot;, 
+        status: 500 
+    });
+});</code></pre>
+</div>
+<p>Să analizăm pe rând ce se întâmplă și cum funcționează mecanismul de tratare a erorilor în acest exemplu:</p>
+<p><strong>Ruta </strong><code>/spells</code> (punctul 1) este o rută normală care returnează un JSON cu o listă de vrăji. Am inclus-o doar pentru context – ea nu generează erori și, dacă este apelată, va răspunde cu status 200 OK și lista de vrăji.</p>
+<p><strong>Ruta </strong><code>/spells/error</code> (punctul 2) este special concepută pentru a arunca o eroare. Când această rută este apelată, execută throw new Error(&quot;SpellFailure: incantația a eșuat&quot;). În acel moment, <em>execuția în ruta curentă se întrerupe</em> și Express va detecta excepția. Deoarece am aruncat-o sincron în handler, Express o va prinde automat și va sări peste orice alt cod de rută, trecând direct la căutarea unui <strong>middleware de eroare</strong> în care să o transmită. Practic, Express va apela următorul middleware care are semnătura (err, req, res, next) – adică handler-ul nostru global de eroare de la punctul 4. (Notă: dacă era o eroare asincronă – de exemplu într-un callback sau promisiune – trebuia să folosim next(err) manual, dar în Express 5 și cu async/await, astfel de erori sunt propagate automat. În exemplul simplu nu intrăm în acest caz.)</p>
+<p>Odată ajunsă eroarea în <strong>middleware-ul global de eroare</strong> (punctul 4), codul din acesta se execută. În consola serverului vom vedea mesajul de eroare (ex: &quot;Eroare internă: SpellFailure: incantația a eșuat&quot;). Apoi serverul trimite înapoi către client un răspuns cu status: 500 și corpul JSON:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>{ &quot;error&quot;: &quot;Internal Server Error. Something went wrong!&quot;, &quot;status&quot;: 500 }</code></pre>
+</div>
+<p>Acesta este răspunsul pe care îl primește clientul (de exemplu, dacă un elev de la Hogwarts a apelat API-ul pentru <code>/spells/error</code>). Mesajul &quot;Internal Server Error. Something went wrong!&quot; este generic; am fi putut include și textul erorii reale (<code>err.message</code>), dar de obicei în producție se evită expunerea detaliilor. Oricum, ideea este că utilizatorul știe că a survenit o eroare de server. De asemenea, dacă ne uităm la antetele HTTP, vom vedea HTTP/1.1 500 Internal Server Error ca status.</p>
+<p><strong>Cum se comportă middleware-ul 404</strong> (punctul 3) în acest lanț? Observați ordinea: l-am plasat înaintea middleware-ului de eroare. Asta înseamnă că dacă o cerere <strong>nu corespunde nici rutei </strong><code>/spells</code><strong> nici rutei </strong><code>/spells/error</code>, atunci va ajunge la middleware-ul 404. Să zicem că cineva face o cerere GET la /spells/Invisibility (iar noi nu avem o astfel de rută definită). Executarea va trece prin lista de rute: nu găsește potrivire, ajunge la <code>app.use((req,res) =&gt; {...404...})</code>. Acolo noi nu apelăm next(err), ci trimitem direct răspunsul 404. Astfel, cererea <strong>nu va mai ajunge</strong> la middleware-ul de eroare global, deoarece noi am închis deja circuitul răspunzând la client. Clientul va primi un răspuns cu status: 404 și corpul:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>{ &quot;error&quot;: &quot;Not found&quot;, &quot;status&quot;: 404 }</code></pre>
+</div>
+<p>conform implementării noastre. În exemplul narativ, ar fi ca și cum un elev cere o vrajă care nu există – serverul îi răspunde politicos că nu a găsit ceea ce caută.</p>
+<p>Să verificăm și cazul fericit: dacă cineva face GET la <code>/spells</code>, ruta există și răspunde normal (status 200, JSON cu vrăji). În acel scenariu, nu se apelează deloc nici middleware-ul 404 (pentru că am găsit ruta) nici middleware-ul de eroare (nu a apărut nicio eroare). Ele rămân în așteptare pentru cazurile când chiar este nevoie de ele.</p>
+<p>Prin acest exemplu practic, vedem cum <strong>fluxul de execuție</strong> în Express separă clar situațiile de eroare de cele normale. Middleware-urile noastre acționează ca niște „plase de siguranță” la finalul lanțului de procesare: unul prinde erorile neprevăzute (excepții, probleme interne) și altul prinde toate cererile care altfel ar rămâne fără răspuns (rute neimplementate). Acest mod de organizare este considerat <strong>cea mai bună practică</strong>. După cum este menționat și în resursele oficiale, o aplicație robustă Express trebuie să <em>catch-uiască</em> toate rutele necontrolate și toate erorile neprevăzute într-un loc central. Astfel, evităm situații în care serverul cade complet sau lasă clientul fără un răspuns clar.</p>
+<p>Rezumat al comportamentului în acest exemplu Hogwarts:</p>
+<div class="code-block" data-lang="JavaScript">
+<pre><code>GET /spells → răspuns 200 OK, corp JSON cu date (fără erori implicate).
+GET /spells/error → (eroare simulată în rută) → middleware-ul global de eroare trimite răspuns 500 Internal Server Error, corp { error: &quot;...&quot;, status: 500 }.
+GET /spells/unknown (sau orice altceva care nu e definit) → middleware-ul 404 trimite răspuns 404 Not Found, corp { error: &quot;Not found&quot;, status: 404 }.</code></pre>
+</div>
+<p>Acum că am văzut în acțiune aceste mecanisme, să trecem la concluzii și bune practici generale de reținut.</p>
+<h2><strong>Concluzie</strong></h2>
+<p>Gestionarea eficientă a erorilor într-o aplicație Express.js este la fel de vitală ca și scrierea funcționalității de bază. Fără un plan clar de <strong>error handling</strong>, aplicația poate oferi o experiență neplăcută utilizatorilor (mesaje confuze sau lipsă de răspuns) și poate îngreuna munca dezvoltatorilor (debugging dificil, lipsa log-urilor centralizate). Așa cum am arătat prin analogia Hogwarts, chiar și cei mai iscusiți vrăjitori (developerii) au nevoie de o plasă de siguranță pentru vrăjile care dau greș (erorile).</p>
+<p>Recapitulând principalele idei și <strong>bune practici</strong>:</p>
+<p><strong>Centralizarea tratării erorilor</strong> – Folosiți un middleware global de eroare ((err, req, res, next)) pentru a prinde toate excepțiile neanticipate. Acesta previne oprirea bruscă a serverului și permite trimiterea unui răspuns controlat către client. Logați aici detaliile erorii (ideal, în mod silențios pe server sau într-un serviciu de monitorizare) și trimiteți clientului un mesaj generic sau prietenos. Nu expuneți informații sensibile în răspuns.</p>
+<p><strong>Tratamentul rutelor nevalide (404)</strong> – Asigurați-vă că ultima ruta din aplicație este una de tip <em>catch-all</em> care returnează <strong>404 Not Found</strong> pentru orice cerere care nu și-a găsit corespondent. Astfel, utilizatorii API-ului vor primi un răspuns clar când greșesc adresa, iar aplicația nu va lăsa conexiuni deschise fără răspuns. Puteți personaliza mesajul 404 pentru a oferi eventual instrucțiuni (de ex. &quot;URL greșit, verificați documentația&quot;).</p>
+<p><strong>Separarea tipurilor de erori</strong> – Este esențial să faceți diferența între erorile care reprezintă <em>probleme ale clientului</em> și cele care indică <em>probleme interne de server</em>. În termeni de cod de status HTTP:</p>
+<p><strong>4xx (Client Errors)</strong> – Apar când cererea are o problemă. De exemplu, <strong>400 Bad Request</strong> indică date de intrare invalide sau format greșit al cererii (echivalent cu a spune că utilizatorul a greșit incantația 💬). <strong>404 Not Found</strong> semnalează că resursa cerută nu există (utilizatorul a greșit adresa, ca în cazul unei camere inexistente la Hogwarts).</p>
+<p><strong>5xx (Server Errors)</strong> – Apar când serverul nu poate procesa corect o cerere din cauza unor erori interne sau situații neașteptate. <strong>500 Internal Server Error</strong> este cel mai generic cod, indicând că “ceva a mers prost” pe server (un experiment al profesorului a eșuat spectaculos 🧨). Alte coduri 5xx există pentru situații mai specifice, dar 500 acoperă majoritatea cazurilor de excepții neprevăzute.</p>
+<p>În practica de dezvoltare, <strong>erorile intenționate vs. neintenționate</strong> se tratează diferit: dacă știți că o anumită condiție de eroare poate surveni (de ex., utilizatorul nu trimite un parametru obligatoriu), atunci ar trebui să trimiteți un <strong>4xx</strong> adecvat (ex. 400 Bad Request cu un mesaj despre parametru lipsă), în loc să lăsați aplicația să arunce o excepție generică de 500. Rezervați codurile <code>500</code> doar pentru acele situații pe care nu le-ați putut preveni sau care reprezintă erori în cod. Astfel, clienții aplicației pot face diferența: un 400 sau 404 indică o eroare de input sau de adresă ce poate fi corectată de ei, pe când un 500 indică o problemă pe server care nu ține de acțiunile lor.</p>
+<p><strong>Mediul de producție vs. dezvoltare</strong> – Asigurați-vă că aveți un comportament diferit al handler-elor de erori în funcție de mediu. În dezvoltare, este acceptabil să afișați mai multe informații (poate chiar <em>stack trace</em>-ul sau <code>err.message</code>) pentru a debuga rapid. În producție, limitați-vă la mesaje generale și logați detaliile în privat. Express în sine ascunde stack trace-ul în mod producție dacă folosiți handler-ul implicit, dar dacă aveți unul personalizat, responsabilitatea vă aparține. După cum subliniază și Kosisochukwu (2024), nu trimiteți niciodată <em>stack</em>-ul complet către client, deoarece poate divulga informații sensibile despre aplicație.</p>
+<p><strong>Planificați oprirea grațioasă</strong> – Deși nu a fost subiectul central al lecției, merită menționat că pentru erori catastrofale (ex. necapturate, cum ar fi respingerea necontrolată a unei promisiuni sau o excepție nesurprinsă la nivel global), ar trebui să aveți mecanisme de a <em>închide grațios serverul</em> și de a reporni aplicația. Acest aspect ține de fiabilitatea în producție – unele erori nu pot fi recuperate, iar serverul trebuie repornit într-o stare curată.</p>
+<p>În încheiere, am demonstrat cum <strong>o strategie robustă de gestionare </strong><strong>a</strong><strong> erorilor</strong> îmbunătățește calitatea și siguranța aplicațiilor Express. La fel ca în lumea Hogwarts, unde fiecare vrăjitor știe că trebuie să aibă un plan de rezervă când lucrurile o iau razna, și în programare trebuie să anticipăm și să controlăm modul în care aplicația reacționează la probleme. Abordarea centralizată cu middleware-uri de eroare și 404 ne permite să menținem controlul asupra situațiilor neprevăzute, oferind totodată utilizatorilor mesaje utile. O aplicație Express bine construită nu va lăsa erorile la voia întâmplării: va <strong>încapsula</strong> haosul în mesaje clare și coduri HTTP corecte, asigurând o experiență predictibilă pentru client și un proces de debug mai ușor pentru dezvoltator.</p>
+<p><strong>În</strong><strong> final, </strong><strong>lecția</strong><strong> de </strong><strong>astăzi</strong><strong> </strong><strong>este</strong><strong> </strong><strong>aceasta</strong>: tratează-ți erorile cu la fel de multă grijă pe cât îți tratezi funcționalitatea principală. Cu un pic de pregătire și folosind mecanismele oferite de Express, chiar și cele mai “neastâmpărate” erori pot fi ținute sub control!</p>
+<div class="references">
+<h2><strong>Referințe</strong></h2>
+<p>MDN Web Docs. (2025, October 30). <em>HTTP response status codes</em>. Mozilla. Retrieved November 13, 2025, from https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status</p>
+<p>Express.js. (n.d.). <em>FAQ: How do I handle 404 responses?</em> Express.js Official Documentation. Retrieved November 13, 2025, from https://expressjs.com/en/starter/faq.html</p>
+<p>Express.js. (n.d.). <em>Guide: Error handling</em>. Express.js Official Documentation. Retrieved November 13, 2025, from https://expressjs.com/en/guide/error-handling.html</p>
+<p>Kosisochukwu, M. (2024, June 26). <em>Express.js Error Handling 101</em>. ButterCMS. Retrieved November 13, 2025, from https://buttercms.com/blog/express-js-error-handling/</p>
+<p>CodeSignal. (2025). <em>Handling 404 and 500 Errors in Express.js</em>. CodeSignal Learn. Retrieved November 13, 2025, from https://codesignal.com/learn/courses/first-steps-into-back-end-engineering-with-expressjs/lessons/handling-404-and-500-errors-in-expressjs</p>
+<h3><strong>“Gray”</strong></h3>
+<p>   HTTP response status codes - HTTP | MDN<br>
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status">https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status</a></p>
+<p> Handling 404 and 500 Errors in Express.js | CodeSignal Learn<br>
+<a href="https://codesignal.com/learn/courses/first-steps-into-back-end-engineering-with-expressjs/lessons/handling-404-and-500-errors-in-expressjs">https://codesignal.com/learn/courses/first-steps-into-back-end-engineering-with-expressjs/lessons/handling-404-and-500-errors-in-expressjs</a></p>
+<p>      Express.js Error Handling 101 | ButterCMS<br>
+<a href="https://buttercms.com/blog/express-js-error-handling/">https://buttercms.com/blog/express-js-error-handling/</a></p>
+<p>     Express error handling<br>
+<a href="https://expressjs.com/en/guide/error-handling.html">https://expressjs.com/en/guide/error-handling.html</a></p>
+<p>   Express FAQ<br>
+<a href="https://expressjs.com/en/starter/faq.html">https://expressjs.com/en/starter/faq.html</a></p>
+</div>
+
+    </div>
+</body>
+</html>
