@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S10vDEMO – Ghid COMPLET Postman 11.72.9</title>
+  <style>
+    :root { --orange: #FF6C37; --dark: #1a1a2e; --code-bg: #2d2d2d; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; line-height: 1.6; color: #333; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+    nav { background: var(--dark); padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; }
+    nav a { color: #fff; margin-right: 1.5rem; text-decoration: none; font-weight: 500; }
+    nav a:hover { color: var(--orange); }
+    h1 { color: var(--dark); border-bottom: 4px solid var(--orange); padding-bottom: 0.5rem; }
+    h2 { background: var(--orange); padding: 0.75rem 1rem; border-radius: 4px; color: #fff; margin-top: 2.5rem; }
+    h3 { color: var(--orange); border-left: 4px solid var(--orange); padding-left: 1rem; margin-top: 2rem; }
+    .step { background: #f8f9fa; border-left: 5px solid var(--orange); padding: 1.25rem; margin: 1rem 0; border-radius: 0 8px 8px 0; }
+    .step h4 { margin-top: 0; color: var(--orange); }
+    .important { background: #fff3cd; border: 1px solid #ffc107; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+    .tip { background: #d1ecf1; border: 1px solid #17a2b8; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+    .success { background: #d4edda; border: 1px solid #28a745; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+    code { background: #e9ecef; padding: 2px 6px; border-radius: 3px; font-family: Consolas, Monaco, monospace; }
+    pre { background: var(--code-bg); color: #f8f8f2; padding: 1.25rem; border-radius: 8px; overflow-x: auto; }
+    pre code { background: none; padding: 0; color: inherit; }
+    .method { display: inline-block; padding: 3px 10px; border-radius: 4px; font-weight: bold; font-size: 0.85em; margin-right: 0.5rem; }
+    .get { background: #61affe; color: #fff; }
+    .post { background: #49cc90; color: #fff; }
+    .put { background: #fca130; color: #fff; }
+    .delete { background: #f93e3e; color: #fff; }
+    .req { background: #fff; border: 2px solid #e0e0e0; border-radius: 8px; margin: 1.5rem 0; padding: 1.25rem; }
+    .req-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid #eee; }
+    ol li { margin-bottom: 0.75rem; }
+    .kbd { background: #333; color: #fff; padding: 2px 8px; border-radius: 4px; font-family: Consolas, monospace; font-size: 0.85em; }
+    .screenshot { background: #f0f0f0; border: 2px dashed #ccc; padding: 2rem; text-align: center; color: #666; margin: 1rem 0; border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th, td { border: 1px solid #ddd; padding: 0.75rem; text-align: left; }
+    th { background: var(--dark); color: #fff; }
+    tr:nth-child(even) { background: #f8f9fa; }
+    .toc { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+    .toc h3 { margin-top: 0; border: none; padding-left: 0; }
+    .toc ol { margin: 0; }
+    .toc a { color: var(--orange); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">🏠 Acasă</a>
+    <a href="demo-api.html">📡 API demo (ORM)</a>
+    <a href="postman.html">📬 Postman (simplu)</a>
+    <a href="postman-ghid-complet.html"><strong>📋 Postman COMPLET</strong></a>
+    <a href="sqlite-tools.html">🔧 Unelte SQLite</a>
+  </nav>
+
+  <div class="container">
+    <h1>🚀 Ghid COMPLET Postman 11.72.9 pentru S10vDEMO</h1>
+    
+    <div class="important">
+      <strong>Acest ghid este specific pentru Postman versiunea 11.72.9</strong> (Desktop App). 
+      Interfața web poate diferi ușor. Asigură-te că ai această versiune instalată!
+    </div>
+
+    <div class="toc">
+      <h3>📚 Cuprins</h3>
+      <ol>
+        <li><a href="#prereq">Cerințe preliminare</a></li>
+        <li><a href="#env">Configurare Environment</a></li>
+        <li><a href="#collection">Creare Colecție</a></li>
+        <li><a href="#test1">Test 1: Reset și verificare bază</a></li>
+        <li><a href="#test2">Test 2: Listare universități cu include</a></li>
+        <li><a href="#test3">Test 3: One-to-many (Universitate→Studenți)</a></li>
+        <li><a href="#test4">Test 4: CRUD Student (PUT/DELETE)</a></li>
+        <li><a href="#test5">Test 5: Many-to-many (Înscriere la cursuri)</a></li>
+        <li><a href="#test6">Test 6: Export/Import JSON</a></li>
+        <li><a href="#troubleshoot">Depanare probleme comune</a></li>
+      </ol>
+    </div>
+
+    <!-- ==================== SECTION 1 ==================== -->
+    <h2 id="prereq">1. Cerințe preliminare</h2>
+    
+    <h3>1.1. Verifică că serverul rulează</h3>
+    
+    <div class="step">
+      <h4>Pas 1: Deschide terminal în directorul laboratorului</h4>
+      <ol>
+        <li>Deschide <strong>Windows Terminal</strong> sau <strong>PowerShell</strong></li>
+        <li>Navighează la directorul laboratorului:
+          <pre><code>cd Z:\tw\S10vDEMO-lab</code></pre>
+          (sau calea unde ai dezarhivat kitul)
+        </li>
+      </ol>
+    </div>
+
+    <div class="step">
+      <h4>Pas 2: Instalează dependențele (doar prima dată)</h4>
+      <pre><code>npm install</code></pre>
+      <p>Așteaptă să se termine instalarea (poate dura 1-2 minute).</p>
+    </div>
+
+    <div class="step">
+      <h4>Pas 3: Pornește serverul</h4>
+      <pre><code>npm start</code></pre>
+      <p>Ar trebui să vezi în consolă:</p>
+      <pre><code>S10vDEMO – laborator separat pornit pe http://localhost:3000
+Pagini HTML: / (index), /demo-api.html, /postman.html, /sqlite-tools.html
+API demo REST: prefix /api/ ...
+Wrapper unelte SQLite: prefix /tools/...</code></pre>
+    </div>
+
+    <div class="success">
+      La pornire, baza de date se populează automat cu:
+      <ul>
+        <li>2 universități: UPB (București) și UVT (Timișoara)</li>
+        <li>4 studenți: Ana, Mihai (la UPB), Ioana, Dan (la UVT)</li>
+        <li>3 cursuri: Tehnologii Web, Baze de date, Introducere în AI</li>
+        <li>5 înscrieri cu note</li>
+      </ul>
+    </div>
+
+    <h3>1.2. Deschide Postman 11.72.9</h3>
+    
+    <div class="step">
+      <h4>Localizarea elementelor în interfață</h4>
+      <p>În Postman 11.72.9, interfața arată astfel:</p>
+      <table>
+        <tr>
+          <th>Element</th>
+          <th>Locație</th>
+          <th>Descriere</th>
+        </tr>
+        <tr>
+          <td><strong>Sidebar (stânga)</strong></td>
+          <td>Partea stângă a ferestrei</td>
+          <td>Conține Collections, Environments, History</td>
+        </tr>
+        <tr>
+          <td><strong>Environment selector</strong></td>
+          <td>Colțul din dreapta-sus</td>
+          <td>Dropdown pentru selectarea environment-ului activ</td>
+        </tr>
+        <tr>
+          <td><strong>Request tabs</strong></td>
+          <td>Zona centrală-sus</td>
+          <td>Tab-uri pentru request-uri deschise</td>
+        </tr>
+        <tr>
+          <td><strong>URL bar</strong></td>
+          <td>Sub tab-uri, în centru</td>
+          <td>Câmp pentru introducerea URL-ului (cu selector metodă în stânga)</td>
+        </tr>
+        <tr>
+          <td><strong>Request config</strong></td>
+          <td>Sub URL bar</td>
+          <td>Tab-uri: Params, Authorization, Headers, <strong>Body</strong>, Pre-request, Tests</td>
+        </tr>
+        <tr>
+          <td><strong>Response panel</strong></td>
+          <td>Partea de jos a ferestrei</td>
+          <td>Afișează răspunsul după Send</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- ==================== SECTION 2 ==================== -->
+    <h2 id="env">2. Configurare Environment</h2>
+    
+    <div class="tip">
+      <strong>De ce avem nevoie de Environment?</strong><br>
+      Environment-ul ne permite să folosim variabile precum <code>{{baseUrl}}</code> în loc de 
+      <code>http://localhost:3000/api</code>. Astfel, putem schimba ușor între local și producție.
+    </div>
+
+    <div class="step">
+      <h4>Pas 1: Deschide panoul Environments</h4>
+      <ol>
+        <li>În <strong>sidebar-ul din stânga</strong>, apasă pe iconița <strong>„Environments"</strong> 
+            (arată ca un ochi sau o lupă mică, sub iconița Collections)</li>
+        <li>SAU folosește shortcut: <span class="kbd">Ctrl</span> + <span class="kbd">Alt</span> + <span class="kbd">E</span></li>
+      </ol>
+    </div>
+
+    <div class="step">
+      <h4>Pas 2: Creează un Environment nou</h4>
+      <ol>
+        <li>Click pe butonul <strong>„+"</strong> sau <strong>„Create Environment"</strong></li>
+        <li>În câmpul de nume (sus), scrie: <code>S10vDEMO-local</code></li>
+      </ol>
+    </div>
+
+    <div class="step">
+      <h4>Pas 3: Adaugă variabila baseUrl</h4>
+      <ol>
+        <li>În tabelul de variabile, la prima linie goală:
+          <ul>
+            <li><strong>VARIABLE:</strong> <code>baseUrl</code></li>
+            <li><strong>TYPE:</strong> lasă <code>default</code></li>
+            <li><strong>INITIAL VALUE:</strong> <code>http://localhost:3000/api</code></li>
+            <li><strong>CURRENT VALUE:</strong> <code>http://localhost:3000/api</code></li>
+          </ul>
+        </li>
+        <li>Click pe butonul <strong>„Save"</strong> (sau <span class="kbd">Ctrl</span> + <span class="kbd">S</span>)</li>
+      </ol>
+      <div class="screenshot">
+        📷 Tabelul ar trebui să arate:<br><br>
+        <code>baseUrl | default | http://localhost:3000/api | http://localhost:3000/api</code>
+      </div>
+    </div>
+
+    <div class="step">
+      <h4>Pas 4: Activează Environment-ul</h4>
+      <ol>
+        <li>În <strong>colțul din dreapta-sus</strong> al ferestrei Postman, găsește dropdown-ul „No Environment"</li>
+        <li>Click pe el și selectează <strong>„S10vDEMO-local"</strong></li>
+        <li>Ar trebui să vezi acum „S10vDEMO-local" afișat în loc de „No Environment"</li>
+      </ol>
+    </div>
+
+    <div class="success">
+      Acum poți folosi <code>{{baseUrl}}</code> în orice request, și va fi înlocuit automat cu 
+      <code>http://localhost:3000/api</code>
+    </div>
+
+    <!-- ==================== SECTION 3 ==================== -->
+    <h2 id="collection">3. Creare Colecție</h2>
+
+    <div class="step">
+      <h4>Pas 1: Creează colecția principală</h4>
+      <ol>
+        <li>În sidebar, click pe tab-ul <strong>„Collections"</strong> (iconița cu foldere)</li>
+        <li>Click pe butonul <strong>„+"</strong> sau <strong>„Create Collection"</strong></li>
+        <li>Denumește colecția: <code>S10vDEMO - Relații ORM</code></li>
+        <li>Apasă <span class="kbd">Enter</span> pentru a confirma</li>
+      </ol>
+    </div>
+
+    <div class="step">
+      <h4>Pas 2: Creează foldere pentru organizare</h4>
+      <p>Click dreapta pe colecția nou creată și selectează <strong>„Add Folder"</strong>. Creează următoarele foldere:</p>
+      <ol>
+        <li><code>1. Setup și Verificare</code></li>
+        <li><code>2. One-to-Many (Universities)</code></li>
+        <li><code>3. CRUD Students</code></li>
+        <li><code>4. Many-to-Many (Courses)</code></li>
+        <li><code>5. Export-Import</code></li>
+      </ol>
+    </div>
+
+    <div class="tip">
+      Organizarea în foldere te ajută să urmărești fluxul logic al laboratorului și să găsești rapid request-urile.
+    </div>
+
+    <!-- ==================== SECTION 4 ==================== -->
+    <h2 id="test1">4. Test 1: Reset și verificare bază de date</h2>
+
+    <h3>4.1. Request: Reset Demo</h3>
+    
+    <div class="req">
+      <div class="req-header">
+        <span class="method get">GET</span>
+        <code>{{baseUrl}}/demo/reset</code>
+      </div>
+      
+      <h4>Pași pentru creare request:</h4>
+      <ol>
+        <li>Click dreapta pe folderul <code>1. Setup și Verificare</code></li>
+        <li>Selectează <strong>„Add Request"</strong></li>
+        <li>Denumește request-ul: <code>Reset Demo Database</code></li>
+        <li>În câmpul URL (lângă dropdown-ul metodei), scrie:
+          <pre><code>{{baseUrl}}/demo/reset</code></pre>
+        </li>
+        <li>Verifică că metoda selectată este <strong>GET</strong> (dropdown din stânga URL-ului)</li>
+        <li>Click pe butonul albastru <strong>„Send"</strong></li>
+      </ol>
+      
+      <h4>Răspuns așteptat (Status: 200 OK):</h4>
+      <pre><code>{
+  "message": "Baza demo a fost resetată și populată cu universități, studenți, cursuri și înscrieri."
+}</code></pre>
+      
+      <p>Click pe <strong>„Save"</strong> (<span class="kbd">Ctrl</span> + <span class="kbd">S</span>) pentru a salva request-ul în colecție.</p>
+    </div>
+
+    <div class="important">
+      Acest endpoint <strong>recreează complet</strong> baza de date cu datele demo. 
+      Folosește-l oricând vrei să revii la starea inițială!
+    </div>
+
+    <!-- ==================== SECTION 5 ==================== -->
+    <h2 id="test2">5. Test 2: Listare universități cu Include (Eager Loading)</h2>
+
+    <h3>5.1. Request: Get All Universities</h3>
+    
+    <div class="req">
+      <div class="req-header">
+        <span class="method get">GET</span>
+        <code>{{baseUrl}}/universities</code>
+      </div>
+      
+      <h4>Pași:</h4>
+      <ol>
+        <li>Click dreapta pe folderul <code>2. One-to-Many (Universities)</code> → „Add Request"</li>
+        <li>Nume: <code>Get All Universities (with Students & Courses)</code></li>
+        <li>Metodă: <strong>GET</strong></li>
+        <li>URL: <code>{{baseUrl}}/universities</code></li>
+        <li>Click <strong>„Send"</strong></li>
+      </ol>
+      
+      <h4>Răspuns așteptat (Status: 200 OK):</h4>
+      <pre><code>[
+  {
+    "id": 1,
+    "name": "UPB",
+    "city": "București",
+    "createdAt": "2025-...",
+    "updatedAt": "2025-...",
+    "Students": [
+      { "id": 1, "firstName": "Ana", "lastName": "Ionescu", "universityId": 1, ... },
+      { "id": 2, "firstName": "Mihai", "lastName": "Popescu", "universityId": 1, ... }
+    ],
+    "Courses": [
+      { "id": 1, "title": "Tehnologii Web", "semester": "Sem I", "universityId": 1, ... },
+      { "id": 2, "title": "Baze de date", "semester": "Sem I", "universityId": 1, ... }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "UVT",
+    "city": "Timișoara",
+    ...
+    "Students": [...],
+    "Courses": [...]
+  }
+]</code></pre>
+    </div>
+
+    <div class="tip">
+      <strong>Observă structura:</strong> Fiecare universitate conține direct array-urile 
+      <code>Students</code> și <code>Courses</code>. Aceasta este puterea <strong>Eager Loading</strong> 
+      cu opțiunea <code>include</code> din Sequelize!
+    </div>
+
+    <h3>5.2. Request: Create New University</h3>
+    
+    <div class="req">
+      <div class="req-header">
+        <span class="method post">POST</span>
+        <code>{{baseUrl}}/universities</code>
+      </div>
+      
+      <h4>Pași:</h4>
+      <ol>
+        <li>Adaugă un request nou în același folder</li>
+        <li>Nume: <code>Create University</code></li>
+        <li>Metodă: <strong>POST</strong> (selectează din dropdown)</li>
+        <li>URL: <code>{{baseUrl}}/universities</code></li>
+        <li><strong>IMPORTANT - Configurare Body:</strong>
+          <ol type="a">
+            <li>Click pe tab-ul <strong>„Body"</strong> (sub URL bar)</li>
+            <li>Selectează <strong>„raw"</strong> (radio button)</li>
+            <li>În dropdown-ul din dreapta (care arată „Text"), selectează <strong>„JSON"</strong></li>
+            <li>În zona de text, scrie:</li>
+          </ol>
+        </li>
+      </ol>
+      <pre><code>{
+  "name": "UBB",
+  "city": "Cluj-Napoca"
+}</code></pre>
+      <ol start="6">
+        <li>Click <strong>„Send"</strong></li>
+      </ol>
+      
+      <h4>Răspuns așteptat (Status: 201 Created):</h4>
+      <pre><code>{
+  "id": 3,
+  "name": "UBB",
+  "city": "Cluj-Napoca",
+  "updatedAt": "2025-...",
+  "createdAt": "2025-..."
+}</code></pre>
+    </div>
+
+    <!-- ==================== SECTION 6 ==================== -->
+    <h2 id="test3">6. Test 3: One-to-Many (Universitate → Studenți)</h2>
+
+    <h3>6.1. Request: Get Students of University</h3>
+    
+    <div class="req">
+      <div class="req-header">
+        <span class="method get">GET</span>
+        <code>{{baseUrl}}/universities/1/students</code>
+      </div>
+      
+      <h4>Pași:</h4>
+      <ol>
+        <li>Request nou în folderul <code>2. One-to-Many (Universities)</code></li>
+        <li>Nume: <code>Get Students of University 1</code></li>
+        <li>URL: <code>{{baseUrl}}/universities/1/students</code></li>
+        <li>Metodă: <strong>GET</strong></li>
+        <li>Click <strong>„Send"</strong></li>
+      </ol>
+      
+      <h4>Răspuns așteptat:</h4>
+      <pre><code>{
+  "university": {
+    "id": 1,
+    "name": "UPB",
+    "city": "București"
+  },
+  "students": [
+    { "id": 1, "firstName": "Ana", "lastName": "Ionescu", "universityId": 1, ... },
+    { "id": 2, "firstName": "Mihai", "lastName": "Popescu", "universityId": 1, ... }
+  ]
+}</code></pre>
+    </div>
+
+    <h3>6.2. Request: Add Student to University</h3>
+    
+    <div class="req">
+      <div class="req-header">
+        <span class="method post">POST</span>
+        <code>{{baseUrl}}/universities/1/students</code>
+      </div>
+      
+      <h4>Pași:</h4>
+      <ol>
+        <li>Request nou, nume: <code>Add Student to University 1</code></li>
+        <li>Metodă: <strong>POST</strong></li>
+        <li>URL: <code>{{baseUrl}}/universities/1/students</code></li>
+        <li>Tab <strong>Body</strong> → <strong>raw</strong> → <strong>JSON</strong></li>
+        <li>Conținut:</li>
+      </ol>
+      <pre><code>{
+  "firstName": "Radu",
+  "lastName": "Enache"
+}</code></pre>
+      <ol start="6">
+        <li>Click <strong>„Send"</strong></li>
+      </ol>
+      
+      <h4>Răspuns așteptat (Status: 201 Created):</h4>
+      <pre><code>{
+  "id": 5,
+  "firstName": "Radu",
+  "lastName": "Enache",
+  "universityId": 1,
+  "updatedAt": "...",
+  "createdAt": "..."
+}</code></pre>
+      <p>Observă că <code>universityId: 1</code> a fost setat automat!</p>
+    </div>
+
+    <!-- ==================== SECTION 7 ==================== -->
+    <h2 id="test4">7. Test 4: CRUD Student (PUT și DELETE)</h2>
+
+    <h3>7.1. Request: Get All Students</h3>
+    
+    <div class="req">
+      <div class="req-header">
+        <span class="method get">GET</span>
+        <code>{{baseUrl}}/students</code>
+      </div>
+      <p>Acest request returnează toți studenții cu universitățile și cursurile lor (eager loading).</p>
+    </div>
+
+    <h3>7.2. Request: Get Single Student</h3>
+    
+    <div class="req">
+      <div class="req-header">
+        <span class="method get">GET</span>
+        <code>{{baseUrl}}/students/1</code>
+      </div>
+      <p>Returnează studentul cu ID 1 împreună cu universitatea și cursurile sale.</p>
+    </div>
+
+    <h3>7.3. Request: Update Student (PUT)</h3>
+    
+    <div class="req">
+      <div class="req-header">
+        <span class="method put">PUT</span>
+        <code>{{baseUrl}}/students/1</code>
+      </div>
+      
+      <h4>Pași:</h4>
+      <ol>
+        <li>Request nou în folderul <code>3. CRUD Students</code></li>
+        <li>Nume: <code>Update Student 1</code></li>
+        <li>Metodă: <strong>PUT</strong></li>
+        <li>URL: <code>{{baseUrl}}/students/1</code></li>
+        <li>Tab <strong>Body</strong> → <strong>raw</strong> → <strong>JSON</strong></li>
+        <li>Conținut:</li>
+      </ol>
+      <pre><code>{
+  "firstName": "Ana-Maria"
+}</code></pre>
+      <ol start="7">
+        <li>Click <strong>„Send"</strong></li>
+      </ol>
+      
+      <h4>Răspuns așteptat (Status: 200 OK):</h4>
+      <pre><code>{
+  "id": 1,
+  "firstName": "Ana-Maria",
+  "lastName": "Ionescu",
+  "universityId": 1,
+  ...
+}</code></pre>
+      <p>Observă că doar <code>firstName</code> s-a schimbat, restul câmpurilor rămân neschimbate.</p>
+    </div>
+
+    <h3>7.4. Request: Delete Student</h3>
+    
+    <div class="req">
+      <div class="req-header">
+        <span class="method delete">DELETE</span>
+        <code>{{baseUrl}}/students/4</code>
+      </div>
+      
+      <h4>Pași:</h4>
+      <ol>
+        <li>Request nou, nume: <code>Delete Student 4</code></li>
+        <li>Metodă: <strong>DELETE</strong></li>
+        <li>URL: <code>{{baseUrl}}/students/4</code></li>
+        <li>Nu este nevoie de Body pentru DELETE</li>
+        <li>Click <strong>„Send"</strong></li>
+      </ol>
+      
+      <h4>Răspuns așteptat:</h4>
+      <p><strong>Status: 204 No Content</strong> (fără corp de răspuns)</p>
+      
+      <h4>Verificare:</h4>
+      <p>Trimite <code>GET {{baseUrl}}/students/4</code> și ar trebui să primești <strong>404 Not Found</strong>:</p>
+      <pre><code>{
+  "error": "Student inexistent."
+}</code></pre>
+    </div>
+
+    <!-- ==================== SECTION 8 ==================== -->
+    <h2 id="test5">8. Test 5: Many-to-Many (Studenți ↔ Cursuri)</h2>
+
+    <h3>8.1. Request: Get All Courses</h3>
+    
+    <div class="req">
+      <div class="req-header">
+        <span class="method get">GET</span>
+        <code>{{baseUrl}}/courses</code>
+      </div>
+      <p>Returnează toate cursurile cu studenții înscriși la fiecare.</p>
+      
+      <h4>Răspuns parțial:</h4>
+      <pre><code>[
+  {
+    "id": 1,
+    "title": "Tehnologii Web",
+    "semester": "Sem I",
+    "universityId": 1,
+    "Students": [
+      { "id": 1, "firstName": "Ana", ..., "Enrollment": { "grade": "10", ... } },
+      { "id": 3, "firstName": "Ioana", ..., "Enrollment": { "grade": "9", ... } }
+    ]
+  },
+  ...
+]</code></pre>
+      <p>Observă obiectul <code>Enrollment</code> care conține nota din tabela de legătură!</p>
+    </div>
+
+    <h3>8.2. Request: Get Student's Courses</h3>
+    
+    <div class="req">
+      <div class="req-header">
+        <span class="method get">GET</span>
+        <code>{{baseUrl}}/students/1/courses</code>
+      </div>
+      <p>Returnează cursurile la care este înscris studentul 1.</p>
+    </div>
+
+    <h3>8.3. Request: Enroll Student to Course</h3>
+    
+    <div class="req">
+      <div class="req-header">
+        <span class="method post">POST</span>
+        <code>{{baseUrl}}/students/2/courses/3</code>
+      </div>
+      
+      <h4>Pași:</h4>
+      <ol>
+        <li>Request nou în folderul <code>4. Many-to-Many (Courses)</code></li>
+        <li>Nume: <code>Enroll Student 2 to Course 3</code></li>
+        <li>Metodă: <strong>POST</strong></li>
+        <li>URL: <code>{{baseUrl}}/students/2/courses/3</code></li>
+        <li>Tab <strong>Body</strong> → <strong>raw</strong> → <strong>JSON</strong></li>
+        <li>Conținut (opțional - poți trimite și body gol):</li>
+      </ol>
+      <pre><code>{
+  "grade": "8"
+}</code></pre>
+      <ol start="7">
+        <li>Click <strong>„Send"</strong></li>
+      </ol>
+      
+      <h4>Răspuns așteptat (Status: 201 Created):</h4>
+      <pre><code>{
+  "message": "Student înscris la curs."
+}</code></pre>
+      
+      <h4>Verificare:</h4>
+      <p>Trimite <code>GET {{baseUrl}}/students/2/courses</code> și verifică că acum apare cursul 3 în listă.</p>
+    </div>
+
+    <!-- ==================== SECTION 9 ==================== -->
+    <h2 id="test6">9. Test 6: Export și Import JSON</h2>
+
+    <h3>9.1. Request: Export Database</h3>
+    
+    <div class="req">
+      <div class="req-header">
+        <span class="method get">GET</span>
+        <code>{{baseUrl}}/export</code>
+      </div>
+      
+      <h4>Pași:</h4>
+      <ol>
+        <li>Request nou în folderul <code>5. Export-Import</code></li>
+        <li>Nume: <code>Export All Data</code></li>
+        <li>URL: <code>{{baseUrl}}/export</code></li>
+        <li>Click <strong>„Send"</strong></li>
+      </ol>
+      
+      <h4>Răspuns:</h4>
+      <pre><code>{
+  "universities": [
+    { "id": 1, "name": "UPB", "city": "București", ... },
+    { "id": 2, "name": "UVT", "city": "Timișoara", ... }
+  ],
+  "students": [
+    { "id": 1, "firstName": "Ana", "lastName": "Ionescu", "universityId": 1, ... },
+    ...
+  ],
+  "courses": [...],
+  "enrollments": [...]
+}</code></pre>
+      
+      <h4>Salvare ca fișier:</h4>
+      <ol>
+        <li>După ce primești răspunsul, în panoul de răspuns click pe <strong>„Save Response"</strong> (iconița cu dischetă/save, în dreapta)</li>
+        <li>Selectează <strong>„Save to a file"</strong></li>
+        <li>Salvează ca <code>backup-demo.json</code></li>
+      </ol>
+    </div>
+
+    <h3>9.2. Request: Import Database</h3>
+    
+    <div class="req">
+      <div class="req-header">
+        <span class="method post">POST</span>
+        <code>{{baseUrl}}/import</code>
+      </div>
+      
+      <h4>Pași:</h4>
+      <ol>
+        <li>Request nou, nume: <code>Import Data from JSON</code></li>
+        <li>Metodă: <strong>POST</strong></li>
+        <li>URL: <code>{{baseUrl}}/import</code></li>
+        <li>Tab <strong>Body</strong> → <strong>raw</strong> → <strong>JSON</strong></li>
+        <li>Copiază conținutul din fișierul <code>backup-demo.json</code> în câmpul Body</li>
+        <li>Click <strong>„Send"</strong></li>
+      </ol>
+      
+      <h4>Răspuns așteptat:</h4>
+      <pre><code>{
+  "message": "Import realizat cu succes."
+}</code></pre>
+    </div>
+
+    <div class="important">
+      Importul <strong>recreează complet</strong> baza de date cu datele din JSON. 
+      Datele existente sunt șterse!
+    </div>
+
+    <!-- ==================== SECTION 10 ==================== -->
+    <h2 id="troubleshoot">10. Depanare probleme comune</h2>
+
+    <table>
+      <tr>
+        <th>Problemă</th>
+        <th>Cauză probabilă</th>
+        <th>Soluție</th>
+      </tr>
+      <tr>
+        <td><code>Could not send request</code> sau <code>ECONNREFUSED</code></td>
+        <td>Serverul nu rulează</td>
+        <td>Verifică terminalul și rulează <code>npm start</code></td>
+      </tr>
+      <tr>
+        <td><code>{{baseUrl}} is not defined</code></td>
+        <td>Environment-ul nu e selectat</td>
+        <td>Selectează „S10vDEMO-local" din dropdown-ul din dreapta-sus</td>
+      </tr>
+      <tr>
+        <td><code>400 Bad Request</code> la POST</td>
+        <td>Body-ul nu e configurat corect</td>
+        <td>Verifică: Body → raw → JSON (nu Text!)</td>
+      </tr>
+      <tr>
+        <td><code>404 Not Found</code></td>
+        <td>URL greșit sau resursă inexistentă</td>
+        <td>Verifică URL-ul și ID-urile; rulează Reset dacă e necesar</td>
+      </tr>
+      <tr>
+        <td><code>500 Internal Server Error</code></td>
+        <td>Eroare în server</td>
+        <td>Verifică consola terminalului pentru detalii</td>
+      </tr>
+      <tr>
+        <td>JSON invalid în răspuns</td>
+        <td>Sintaxă JSON greșită în Body</td>
+        <td>Verifică ghilimelele duble, virgulele, acoladele</td>
+      </tr>
+    </table>
+
+    <h3>Verificare rapidă a configurării</h3>
+    <div class="step">
+      <h4>Checklist înainte de fiecare sesiune:</h4>
+      <ol>
+        <li>☐ Terminalul arată „S10vDEMO – laborator separat pornit pe http://localhost:3000"</li>
+        <li>☐ În Postman, environment-ul „S10vDEMO-local" este selectat (dreapta-sus)</li>
+        <li>☐ Când scrii <code>{{baseUrl}}</code> în URL și hover, apare valoarea corectă</li>
+        <li>☐ Request-ul GET <code>{{baseUrl}}/universities</code> returnează date</li>
+      </ol>
+    </div>
+
+    <hr>
+    
+    <h2>🎯 Rezumat: Toate request-urile pentru testare rapidă</h2>
+    
+    <table>
+      <tr>
+        <th>Nr.</th>
+        <th>Metodă</th>
+        <th>URL</th>
+        <th>Body (dacă e cazul)</th>
+        <th>Scop</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td><span class="method get">GET</span></td>
+        <td><code>{{baseUrl}}/demo/reset</code></td>
+        <td>-</td>
+        <td>Reset bază de date</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><span class="method get">GET</span></td>
+        <td><code>{{baseUrl}}/universities</code></td>
+        <td>-</td>
+        <td>Lista universități + include</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><span class="method post">POST</span></td>
+        <td><code>{{baseUrl}}/universities</code></td>
+        <td><code>{"name":"UBB","city":"Cluj"}</code></td>
+        <td>Creare universitate</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><span class="method get">GET</span></td>
+        <td><code>{{baseUrl}}/universities/1/students</code></td>
+        <td>-</td>
+        <td>Studenții unei universități</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><span class="method post">POST</span></td>
+        <td><code>{{baseUrl}}/universities/1/students</code></td>
+        <td><code>{"firstName":"X","lastName":"Y"}</code></td>
+        <td>Adaugă student la uni</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><span class="method get">GET</span></td>
+        <td><code>{{baseUrl}}/students</code></td>
+        <td>-</td>
+        <td>Toți studenții + include</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td><span class="method put">PUT</span></td>
+        <td><code>{{baseUrl}}/students/1</code></td>
+        <td><code>{"firstName":"Ana-Maria"}</code></td>
+        <td>Actualizare student</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td><span class="method delete">DELETE</span></td>
+        <td><code>{{baseUrl}}/students/4</code></td>
+        <td>-</td>
+        <td>Ștergere student</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td><span class="method get">GET</span></td>
+        <td><code>{{baseUrl}}/courses</code></td>
+        <td>-</td>
+        <td>Toate cursurile + studenți</td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td><span class="method get">GET</span></td>
+        <td><code>{{baseUrl}}/students/1/courses</code></td>
+        <td>-</td>
+        <td>Cursurile unui student</td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td><span class="method post">POST</span></td>
+        <td><code>{{baseUrl}}/students/2/courses/3</code></td>
+        <td><code>{"grade":"8"}</code></td>
+        <td>Înscriere la curs</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td><span class="method get">GET</span></td>
+        <td><code>{{baseUrl}}/export</code></td>
+        <td>-</td>
+        <td>Export JSON complet</td>
+      </tr>
+      <tr>
+        <td>13</td>
+        <td><span class="method post">POST</span></td>
+        <td><code>{{baseUrl}}/import</code></td>
+        <td>(JSON din export)</td>
+        <td>Import/restaurare date</td>
+      </tr>
+    </table>
+
+    <div class="success">
+      <strong>Felicitări!</strong> Ai parcurs toate operațiile CRUD și relațiile ORM din laborator. 
+      Acum poți experimenta liber cu date proprii!
+    </div>
+
+    <hr>
+    <p style="text-align: center; color: #666;">
+      <em>Ghid creat pentru Postman 11.72.9 | S10vDEMO Lab | ASE-CSIE</em>
+    </p>
+  </div>
+</body>
+</html>
