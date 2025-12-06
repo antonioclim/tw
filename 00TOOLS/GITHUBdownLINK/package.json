@@ -1,0 +1,15 @@
+{
+  "name": "github-directory-downloader",
+  "version": "1.0.0",
+  "description": "Local app to download a GitHub directory as ZIP",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.7",
+    "jszip": "^3.10.0"
+  }
+}

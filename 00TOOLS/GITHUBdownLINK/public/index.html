@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Descărcare director GitHub</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    form { display: flex; flex-direction: column; width: 400px; margin: auto; }
+    label { margin-top: 10px; }
+    input { padding: 5px; font-size: 14px; }
+    button { margin-top: 15px; padding: 10px; font-size: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Descărcare director GitHub</h1>
+  <p>Introduceți URL-ul către un director GitHub (de forma <code>https://github.com/utilizator/repo/tree/ramură/director</code>) și, opțional, token-ul de acces personal. La trimitere veți primi un fișier ZIP cu conținutul acelui director.</p>
+  <form action="/api/download" method="get">
+    <label>
+      URL:
+      <input type="url" name="url" placeholder="https://github.com/user/repo/tree/branch/folder" required />
+    </label>
+    <label>
+      Token (opțional):
+      <input type="text" name="token" placeholder="ghp_xxx..." />
+    </label>
+    <button type="submit">Descarcă arhiva</button>
+  </form>
+</body>
+</html>
