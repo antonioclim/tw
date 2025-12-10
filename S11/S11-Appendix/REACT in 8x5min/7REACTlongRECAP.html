@@ -1,0 +1,2265 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React - Arhitectură, Utilizare și Fundamente | Laborator Tehnic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --accent-react: #61dafb;
+            --accent-jsx: #f7df1e;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --accent-purple: #a855f7;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(97, 218, 251, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(97, 218, 251, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .main-container { display: flex; min-height: 100vh; position: relative; z-index: 1; }
+        .sidebar {
+            width: 300px;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            border-right: 1px solid rgba(97, 218, 251, 0.1);
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--accent-react); border-radius: 2px; }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(97, 218, 251, 0.1);
+        }
+        .logo-icon { font-size: 2rem; animation: spin 10s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-react), var(--accent-jsx));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo-subtitle { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
+        .nav-category { margin-bottom: 1.25rem; }
+        .nav-category-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            padding-left: 0.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 0.2rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .nav-item:hover { background: rgba(97, 218, 251, 0.1); color: var(--text-primary); }
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(97, 218, 251, 0.2), rgba(97, 218, 251, 0.05));
+            color: var(--accent-react);
+            border-left: 3px solid var(--accent-react);
+        }
+        .content { flex: 1; margin-left: 300px; padding: 2rem 3rem; max-width: 1100px; }
+        .section { display: none; animation: fadeIn 0.4s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .section-header { margin-bottom: 2rem; }
+        .section-icon { font-size: 2.5rem; margin-bottom: 0.75rem; display: inline-block; }
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-react));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .section-subtitle { font-size: 1rem; color: var(--text-secondary); max-width: 650px; }
+        .content-card {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border: 1px solid rgba(97, 218, 251, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--accent-react), var(--accent-jsx), var(--accent-purple));
+            border-radius: 12px 12px 0 0;
+        }
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .code-comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+        .code-block {
+            background: var(--bg-primary);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(97, 218, 251, 0.1);
+        }
+        .code-header {
+            padding: 0.6rem 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(97, 218, 251, 0.1);
+        }
+        .code-header.bad { background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.03)); }
+        .code-header.good { background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.03)); }
+        .code-header.neutral { background: linear-gradient(135deg, rgba(97, 218, 251, 0.15), rgba(97, 218, 251, 0.03)); }
+        .code-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .code-header.bad .code-label { color: var(--accent-danger); }
+        .code-header.good .code-label { color: var(--accent-success); }
+        .code-header.neutral .code-label { color: var(--accent-react); }
+        .code-content { padding: 0.9rem; overflow-x: auto; max-height: 450px; overflow-y: auto; }
+        .code-content pre { margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.5; }
+        .code-single { margin: 1rem 0; }
+        .theory-text { font-size: 0.95rem; line-height: 1.75; color: var(--text-secondary); margin-bottom: 1rem; }
+        .theory-text strong { color: var(--accent-react); font-weight: 600; }
+        .theory-text code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(97, 218, 251, 0.1);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: var(--accent-jsx);
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(97, 218, 251, 0.08), rgba(97, 218, 251, 0.02));
+            border-left: 4px solid var(--accent-react);
+            padding: 1.25rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1rem 0;
+        }
+        .highlight-box.warning { background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.02)); border-left-color: var(--accent-warning); }
+        .highlight-box.success { background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.02)); border-left-color: var(--accent-success); }
+        .highlight-box.danger { background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.02)); border-left-color: var(--accent-danger); }
+        .highlight-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .timeline { position: relative; padding-left: 2.5rem; margin: 1.5rem 0; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--accent-react), var(--accent-jsx), var(--accent-purple));
+            border-radius: 2px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+            padding: 1.25rem;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            border: 1px solid rgba(97, 218, 251, 0.1);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.15rem; top: 1.25rem;
+            width: 10px; height: 10px;
+            background: var(--accent-react);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--accent-react);
+        }
+        .timeline-year { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent-jsx); margin-bottom: 0.4rem; }
+        .timeline-title { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+        .timeline-content { color: var(--text-secondary); font-size: 0.9rem; }
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+        .comparison-table th, .comparison-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid rgba(97, 218, 251, 0.1); }
+        .comparison-table th { background: var(--bg-tertiary); font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--accent-react); }
+        .comparison-table tr:hover { background: rgba(97, 218, 251, 0.03); }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(97, 218, 251, 0.1);
+            border-radius: 10px;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover { border-color: var(--accent-react); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(97, 218, 251, 0.1); }
+        .feature-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+        .feature-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin-bottom: 0.4rem; }
+        .feature-desc { color: var(--text-secondary); font-size: 0.85rem; }
+        .pipeline { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 0; flex-wrap: wrap; gap: 0.5rem; }
+        .pipeline-step { display: flex; flex-direction: column; align-items: center; min-width: 90px; }
+        .pipeline-icon {
+            width: 60px; height: 60px;
+            background: var(--bg-tertiary);
+            border: 2px solid rgba(97, 218, 251, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .pipeline-step:hover .pipeline-icon { border-color: var(--accent-react); box-shadow: 0 0 20px rgba(97, 218, 251, 0.3); transform: scale(1.05); }
+        .pipeline-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-secondary); text-align: center; }
+        .pipeline-arrow { font-size: 1.25rem; color: var(--accent-react); animation: arrowPulse 1.5s infinite; }
+        @keyframes arrowPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        .framework-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0; }
+        .framework-card {
+            background: var(--bg-secondary);
+            border: 2px solid rgba(97, 218, 251, 0.1);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+        .framework-card.react { border-color: rgba(97, 218, 251, 0.4); box-shadow: 0 0 20px rgba(97, 218, 251, 0.1); }
+        .framework-logo { font-size: 2.5rem; margin-bottom: 0.75rem; }
+        .framework-name { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 600; margin-bottom: 0.4rem; }
+        .framework-desc { color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 0.75rem; }
+        .framework-features { text-align: left; font-size: 0.8rem; }
+        .framework-feature { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.3rem; color: var(--text-secondary); }
+        .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+        .pros-list, .cons-list { background: var(--bg-secondary); border-radius: 10px; padding: 1.25rem; }
+        .pros-list { border-left: 4px solid var(--accent-success); }
+        .cons-list { border-left: 4px solid var(--accent-danger); }
+        .list-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .pros-list .list-title { color: var(--accent-success); }
+        .cons-list .list-title { color: var(--accent-danger); }
+        .list-item { display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.85rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0; }
+        .stat-card {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border: 1px solid rgba(97, 218, 251, 0.1);
+            border-radius: 10px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-react), var(--accent-jsx));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-label { color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.3rem; }
+        .subsection { margin: 1.5rem 0; padding: 1.25rem; background: rgba(97, 218, 251, 0.02); border-radius: 10px; border: 1px solid rgba(97, 218, 251, 0.05); }
+        .subsection-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--accent-react); }
+        .quote {
+            font-style: italic;
+            color: var(--text-secondary);
+            padding: 1rem 1.25rem;
+            border-left: 3px solid var(--accent-jsx);
+            margin: 1rem 0;
+            background: rgba(247, 223, 30, 0.03);
+            border-radius: 0 8px 8px 0;
+        }
+        .quote-author { font-style: normal; font-weight: 600; color: var(--accent-jsx); margin-top: 0.5rem; font-size: 0.85rem; }
+        .lab-container {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(97, 218, 251, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .lab-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+        .lab-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+        .lab-badge { background: linear-gradient(135deg, var(--accent-react), var(--accent-purple)); padding: 0.2rem 0.6rem; border-radius: 15px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
+        .lab-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+        .lab-btn-primary { background: linear-gradient(135deg, var(--accent-react), var(--accent-purple)); color: var(--bg-primary); }
+        .lab-btn-primary:hover { transform: scale(1.03); box-shadow: 0 4px 15px rgba(97, 218, 251, 0.3); }
+        .lab-btn-secondary { background: var(--bg-tertiary); color: var(--text-secondary); border: 1px solid rgba(97, 218, 251, 0.2); }
+        .lab-preview {
+            background: var(--bg-primary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            min-height: 150px;
+            border: 1px solid rgba(97, 218, 251, 0.1);
+        }
+        .word-counter {
+            position: fixed;
+            bottom: 1rem; right: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(97, 218, 251, 0.3);
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--accent-react);
+            z-index: 100;
+        }
+        @media (max-width: 1024px) {
+            .sidebar { display: none; }
+            .content { margin-left: 0; padding: 1.5rem; }
+            .code-comparison { grid-template-columns: 1fr; }
+            .framework-grid { grid-template-columns: 1fr; }
+            .pros-cons { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="main-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <div class="logo-icon">⚛️</div>
+                <div>
+                    <div class="logo-text">React Fundamentals</div>
+                    <div class="logo-subtitle">Laborator Tehnic S11</div>
+                </div>
+            </div>
+            <nav>
+                <div class="nav-category">
+                    <div class="nav-category-title">📚 Fundamente</div>
+                    <div class="nav-item active" data-section="intro"><span>🎯</span><span>Introducere în React</span></div>
+                    <div class="nav-item" data-section="uistate"><span>⚡</span><span>UI = f(state)</span></div>
+                    <div class="nav-item" data-section="jsx"><span>📝</span><span>JSX în Detaliu</span></div>
+                </div>
+                <div class="nav-category">
+                    <div class="nav-category-title">📜 Istorie & Evoluție</div>
+                    <div class="nav-item" data-section="history"><span>🕰️</span><span>Evoluția JSX</span></div>
+                    <div class="nav-item" data-section="transform"><span>🔄</span><span>Transformarea JSX</span></div>
+                </div>
+                <div class="nav-category">
+                    <div class="nav-category-title">🛠️ Infrastructură</div>
+                    <div class="nav-item" data-section="babel"><span>🔧</span><span>Babel și Transpilare</span></div>
+                    <div class="nav-item" data-section="pipeline"><span>🏗️</span><span>Build Pipeline</span></div>
+                </div>
+                <div class="nav-category">
+                    <div class="nav-category-title">🌐 Context Modern</div>
+                    <div class="nav-item" data-section="spa"><span>📱</span><span>SPA și React</span></div>
+                    <div class="nav-item" data-section="comparison"><span>⚖️</span><span>React vs Angular vs Vue</span></div>
+                    <div class="nav-item" data-section="ecosystem"><span>🌍</span><span>Ecosistem Extins</span></div>
+                </div>
+                <div class="nav-category">
+                    <div class="nav-category-title">⚖️ Evaluare Critică</div>
+                    <div class="nav-item" data-section="pros"><span>✅</span><span>Argumente Pro</span></div>
+                    <div class="nav-item" data-section="cons"><span>⚠️</span><span>Argumente Contra</span></div>
+                    <div class="nav-item" data-section="decision"><span>🎯</span><span>Ghid de Decizie</span></div>
+                </div>
+                <div class="nav-category">
+                    <div class="nav-category-title">🧪 Laboratoare</div>
+                    <div class="nav-item" data-section="labDeclarative"><span>🔬</span><span>Lab: Declarativ vs Imperativ</span></div>
+                    <div class="nav-item" data-section="labComponent"><span>🧩</span><span>Lab: Componentizare</span></div>
+                    <div class="nav-item" data-section="labVirtualDOM"><span>🌳</span><span>Lab: Virtual DOM</span></div>
+                </div>
+            </nav>
+        </aside>
+        <main class="content">
+            <!-- SECTION: Introducere -->
+            <section class="section active" id="intro">
+                <div class="section-header">
+                    <div class="section-icon">⚛️</div>
+                    <h1 class="section-title">Introducere în React</h1>
+                    <p class="section-subtitle">Biblioteca JavaScript pentru construirea interfețelor de utilizator, concepută inițial de Facebook, care a popularizat abordarea declarativă și bazată pe componente în dezvoltarea web.</p>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-value">2013</div><div class="stat-label">Anul lansării</div></div>
+                    <div class="stat-card"><div class="stat-value">19M+</div><div class="stat-label">Descărcări NPM/săpt</div></div>
+                    <div class="stat-card"><div class="stat-value">230K+</div><div class="stat-label">Stars GitHub</div></div>
+                    <div class="stat-card"><div class="stat-value">#1</div><div class="stat-label">Bibliotecă UI</div></div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>📖</span> Ce este React?</h2>
+                    <p class="theory-text"><strong>React</strong> este o bibliotecă JavaScript pentru construirea interfețelor de utilizator, concepută inițial de Facebook (acum Meta), care a popularizat abordarea declarativă și bazată pe componente în dezvoltarea web. Documentația oficială subliniază că React permite dezvoltatorilor să creeze interfețe complexe din piese mici și izolate de cod numite „componente".</p>
+                    <p class="theory-text"><strong>JSX (JavaScript XML)</strong> este sintaxa de suprafață specifică React-ului, ce permite scrierea markup-ului UI direct în cod JavaScript, într-un stil asemănător HTML-ului. Această combinație – React (pentru logica de componentă și stare) și JSX (pentru descrierea UI-ului) – stă la baza unora dintre cele mai utilizate stack-uri pentru aplicații web moderne.</p>
+                    <div class="highlight-box">
+                        <div class="highlight-title">💡 Concept Cheie: Separarea pe Componente</div>
+                        <p class="theory-text" style="margin-bottom: 0;">JSX este o extensie a sintaxei JavaScript menită să descrie aspectul UI-ului, reunind într-un singur loc atât structura de prezentare, cât și logica asociată acesteia. Spre deosebire de abordările clasice cu șabloane separate, React promovează „separarea responsabilităților" la nivel de componentă, nu la nivel de tehnologie (markup vs. logică). Un component React este o unitate independentă ce conține stare, logică de prezentare și, prin JSX, markup-ul care rezultă din aceste date.</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🔄</span> Abordare Tradițională vs React</h2>
+                    <p class="theory-text">Pentru a înțelege de ce React a revoluționat dezvoltarea web, să comparăm cele două abordări fundamentale. În abordarea tradițională, separăm codul pe tehnologii (HTML într-un fișier, JS în altul, CSS în altul). În React, separăm pe responsabilități - fiecare componentă își are markup-ul, logica și stilul propriu.</p>
+                    <div class="code-comparison">
+                        <div class="code-block">
+                            <div class="code-header bad"><span class="code-label">❌ Tradițional - Fișiere Separate</span></div>
+                            <div class="code-content">
+<pre><code class="language-markup">&lt;!-- index.html --&gt;
+&lt;div id="user-profile"&gt;
+    &lt;img id="avatar" /&gt;
+    &lt;h3 id="name"&gt;&lt;/h3&gt;
+    &lt;button id="follow-btn"&gt;Follow&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;!-- profile.js - separat --&gt;
+const avatar = document.getElementById('avatar');
+const name = document.getElementById('name');
+const btn = document.getElementById('follow-btn');
+
+fetch('/api/user/123')
+    .then(res => res.json())
+    .then(user => {
+        avatar.src = user.avatar;
+        name.textContent = user.name;
+        btn.onclick = () => followUser(user.id);
+    });
+
+// Probleme: DOM queries dispersate, greu de urmărit
+// starea, refactorizare dificilă</code></pre>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header good"><span class="code-label">✅ React - Componentă Unificată</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">// UserProfile.jsx - Tot într-un singur loc
+function UserProfile({ userId }) {
+    const [user, setUser] = useState(null);
+    const [isFollowing, setIsFollowing] = useState(false);
+
+    useEffect(() => {
+        fetch(`/api/user/${userId}`)
+            .then(res => res.json())
+            .then(setUser);
+    }, [userId]);
+
+    if (!user) return &lt;LoadingSpinner /&gt;;
+
+    return (
+        &lt;div className="user-profile"&gt;
+            &lt;img src={user.avatar} alt={user.name} /&gt;
+            &lt;h3&gt;{user.name}&lt;/h3&gt;
+            &lt;button onClick={() => setIsFollowing(!isFollowing)}&gt;
+                {isFollowing ? 'Following' : 'Follow'}
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+}
+// Markup + Logică + Stil = O singură componentă</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="highlight-box success">
+                        <div class="highlight-title">✅ Avantajele Colocalizării</div>
+                        <p class="theory-text" style="margin-bottom:0;">Când deschizi o componentă, vezi imediat și cum arată, și cum funcționează. Refactorizările devin mai simple – tot codul relevant e în același loc. Code review mai eficient – un coleg vede modificarea completă într-un singur fișier. Onboarding rapid pentru noii membri ai echipei.</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🧩</span> Componentele - Unitatea Fundamentală</h2>
+                    <p class="theory-text">În React, <strong>componenta</strong> devine unitatea atomică de lucru. Într-un singur fișier ai atât codul care decide ce afișezi (markup-ul JSX), cât și cum reacționezi la evenimente sau cum arată stilistic acel element. Aceasta este fundamentul întregii arhitecturi React.</p>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">📦</div>
+                            <div class="feature-title">Încapsulare</div>
+                            <div class="feature-desc">Fiecare componentă își gestionează propria stare și logică, fără a afecta alte părți ale aplicației.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">♻️</div>
+                            <div class="feature-title">Reutilizare</div>
+                            <div class="feature-desc">Odată create, componentele pot fi folosite în orice parte a aplicației sau chiar în alte proiecte.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🧪</div>
+                            <div class="feature-title">Testabilitate</div>
+                            <div class="feature-desc">Componentele izolate sunt mult mai ușor de testat unitar comparativ cu codul dispersat.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔧</div>
+                            <div class="feature-title">Mentenabilitate</div>
+                            <div class="feature-desc">Modificările într-o componentă nu afectează alte părți ale sistemului dacă interfața rămâne aceeași.</div>
+                        </div>
+                    </div>
+                    <div class="code-single">
+                        <div class="code-block">
+                            <div class="code-header neutral"><span class="code-label">📝 Anatomia unei Componente React</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">// 1. Importuri
+import { useState, useEffect } from 'react';
+import './Button.css';
+
+// 2. Definiția componentei (funcție)
+function Button({ children, variant = 'primary', onClick, disabled = false }) {
+    // 3. Stare locală
+    const [isLoading, setIsLoading] = useState(false);
+
+    // 4. Efecte secundare
+    useEffect(() => {
+        // Cod la montare/actualizare
+        return () => { /* Cleanup */ };
+    }, []);
+
+    // 5. Handler-e de evenimente
+    const handleClick = async (e) => {
+        if (disabled || isLoading) return;
+        setIsLoading(true);
+        try { await onClick?.(e); } 
+        finally { setIsLoading(false); }
+    };
+
+    // 6. JSX - markup-ul returnat
+    return (
+        &lt;button
+            className={`btn btn-${variant} ${isLoading ? 'loading' : ''}`}
+            onClick={handleClick}
+            disabled={disabled || isLoading}
+        &gt;
+            {isLoading ? &lt;Spinner /&gt; : children}
+        &lt;/button&gt;
+    );
+}
+
+// 7. Export
+export default Button;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- SECTION: UI = f(state) -->
+            <section class="section" id="uistate">
+                <div class="section-header">
+                    <div class="section-icon">⚡</div>
+                    <h1 class="section-title">UI = f(state)</h1>
+                    <p class="section-subtitle">Filosofia centrală a React: interfața este o funcție a stării componentei. Fiecărei stări i se asociază un arbore de elemente UI generat declarativ.</p>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🧮</span> Paradigma Declarativă</h2>
+                    <p class="theory-text">Filosofia centrală a React, adesea rezumată prin <strong>UI = f(state)</strong>, afirmă că interfața este o funcție a stării componentei. Aceasta reprezintă o schimbare fundamentală de la programarea imperativă la cea declarativă în construirea interfețelor.</p>
+                    <div class="highlight-box">
+                        <div class="highlight-title">📐 Formula Fundamentală</div>
+                        <p style="font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; text-align: center; color: var(--accent-react); margin: 1rem 0;">UI = f(state)</p>
+                        <p class="theory-text" style="margin-bottom: 0;">Unde <code>f</code> este componenta ta React, <code>state</code> reprezintă datele curente, iar <code>UI</code> este rezultatul vizual. Când <code>state</code> se schimbă, React recalculează automat <code>UI</code>.</p>
+                    </div>
+                    <p class="theory-text">În loc să scriem cod care spune „creează un element &lt;div&gt;, apoi dacă x adaugă un copil &lt;span&gt;, apoi setează-i textul...", scriem pur și simplu ce vrem să vedem în funcție de stare. React se ocupă de actualizarea eficientă a DOM-ului real pentru a reflecta noul rezultat.</p>
+                    <div class="code-comparison">
+                        <div class="code-block">
+                            <div class="code-header bad"><span class="code-label">❌ Imperativ (Vanilla JS / jQuery)</span></div>
+                            <div class="code-content">
+<pre><code class="language-javascript">// Descrii CUM să faci fiecare pas
+let count = 0;
+const button = document.getElementById('btn');
+const display = document.getElementById('display');
+
+function increment() {
+    count++;
+    // Trebuie să actualizezi manual DOM-ul
+    display.textContent = `Count: ${count}`;
+    
+    // Și dacă vrei culoare diferită?
+    if (count > 10) {
+        display.style.color = 'red';
+    } else {
+        display.style.color = 'black';
+    }
+    
+    // Și dacă vrei să ascunzi ceva?
+    if (count > 5) {
+        document.getElementById('warning')
+            .style.display = 'block';
+    }
+}
+button.addEventListener('click', increment);
+
+// Probleme: DOM queries, logica dispersată,
+// greu de urmărit starea, bug-uri frecvente</code></pre>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header good"><span class="code-label">✅ Declarativ (React)</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">// Descrii CE vrei să vezi
+function Counter() {
+    const [count, setCount] = useState(0);
+
+    // UI-ul este o FUNCȚIE a stării
+    return (
+        &lt;div&gt;
+            &lt;p style={{ 
+                color: count > 10 ? 'red' : 'black' 
+            }}&gt;
+                Count: {count}
+            &lt;/p&gt;
+            
+            {/* Afișare condiționată declarativă */}
+            {count > 5 && (
+                &lt;Warning message="Count is high!" /&gt;
+            )}
+            
+            &lt;button onClick={() => setCount(c => c + 1)}&gt;
+                Increment
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Avantaje: O singură sursă de adevăr,
+// UI derivă automat, ușor de înțeles</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="quote">„Modelul declarativ face codul mai previzibil și mai ușor de depanat. În loc să te gândești la tranziții între stări, te gândești doar la starea curentă și cum arată UI-ul pentru acea stare."<div class="quote-author">— Documentația oficială React</div></div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🔄</span> Fluxul de Date Unidirecțional</h2>
+                    <p class="theory-text">În React, datele curg într-o singură direcție: de la componentele părinte către cele copil, prin <strong>props</strong>. Această arhitectură face aplicațiile mult mai predictibile și mai ușor de depanat.</p>
+                    <div class="code-single">
+                        <div class="code-block">
+                            <div class="code-header neutral"><span class="code-label">📊 Flux Unidirecțional de Date</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">// Componenta părinte deține starea
+function App() {
+    const [users, setUsers] = useState([]);
+    const [selectedId, setSelectedId] = useState(null);
+
+    // Datele curg în JOS prin props
+    return (
+        &lt;div className="app"&gt;
+            &lt;UserList 
+                users={users}           // Date în jos
+                onSelect={setSelectedId} // Callback pentru sus
+            /&gt;
+            &lt;UserDetails 
+                user={users.find(u => u.id === selectedId)}
+            /&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Componenta copil primește date prin props
+function UserList({ users, onSelect }) {
+    return (
+        &lt;ul&gt;
+            {users.map(user => (
+                &lt;li key={user.id} onClick={() => onSelect(user.id)}&gt;
+                    {user.name}
+                &lt;/li&gt;
+            ))}
+        &lt;/ul&gt;
+    );
+}
+
+/*  Flux:
+    ┌─────────────────────────────┐
+    │           App               │ ← Deține state-ul
+    └─────────────┬───────────────┘
+                  │ props (în jos)
+        ┌─────────┴─────────┐
+        ▼                   ▼
+    UserList          UserDetails
+        │ callback (în sus)
+        ▼
+     onSelect()                    */</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="highlight-box warning">
+                        <div class="highlight-title">⚠️ De Ce Unidirecțional?</div>
+                        <p class="theory-text" style="margin-bottom: 0;">În modele bidireț­ionale (two-way binding), schimbările pot veni din multiple direcții, făcând dificilă urmărirea sursei unei modificări. Cu fluxul unidirecțional, știi întotdeauna de unde vin datele și cum se propagă schimbările.</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>📊</span> State vs Props</h2>
+                    <p class="theory-text">Înțelegerea diferenței dintre <strong>state</strong> și <strong>props</strong> este fundamentală pentru a gândi în React:</p>
+                    <table class="comparison-table">
+                        <thead><tr><th>Aspect</th><th>State</th><th>Props</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Definiție</strong></td><td>Date interne ale componentei</td><td>Date primite de la părinte</td></tr>
+                            <tr><td><strong>Mutabilitate</strong></td><td>Poate fi schimbat (cu setState)</td><td>Read-only pentru componentă</td></tr>
+                            <tr><td><strong>Proprietar</strong></td><td>Componenta însăși</td><td>Componenta părinte</td></tr>
+                            <tr><td><strong>Inițializare</strong></td><td>useState(initialValue)</td><td>Atribute JSX pe componentă</td></tr>
+                            <tr><td><strong>Când se schimbă</strong></td><td>Acțiuni utilizator, API</td><td>Când părintele re-randează</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="code-single">
+                        <div class="code-block">
+                            <div class="code-header neutral"><span class="code-label">🎯 State vs Props în Acțiune</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">function ProductCard({ product, onAddToCart }) { // ← Props
+    // State local pentru interacțiuni UI
+    const [quantity, setQuantity] = useState(1);    // ← State
+    const [isExpanded, setIsExpanded] = useState(false); // ← State
+    
+    // Props = date din exterior (read-only)
+    // product.name, product.price - nu le poți modifica aici
+    
+    // State = date locale (read-write)
+    // quantity, isExpanded - le controlezi local
+    
+    return (
+        &lt;div className="product-card"&gt;
+            &lt;h3&gt;{product.name}&lt;/h3&gt;
+            &lt;p&gt;${product.price}&lt;/p&gt;
+            
+            &lt;button onClick={() => setIsExpanded(!isExpanded)}&gt;
+                {isExpanded ? 'Hide' : 'Show'} Details
+            &lt;/button&gt;
+            {isExpanded && &lt;p&gt;{product.description}&lt;/p&gt;}
+            
+            &lt;input type="number" value={quantity}
+                onChange={e => setQuantity(Number(e.target.value))} /&gt;
+            
+            &lt;button onClick={() => onAddToCart(product.id, quantity)}&gt;
+                Add to Cart
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- SECTION: JSX în Detaliu -->
+            <section class="section" id="jsx">
+                <div class="section-header">
+                    <div class="section-icon">📝</div>
+                    <h1 class="section-title">JSX în Detaliu</h1>
+                    <p class="section-subtitle">JSX oferă sintaxa prin care funcția de transformare stare → UI este exprimată direct în JavaScript, combinând puterea limbajului cu familiaritatea HTML-ului.</p>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🔮</span> Ce Este JSX?</h2>
+                    <p class="theory-text">JSX (JavaScript XML) este o extensie de sintaxă pentru JavaScript care permite scrierea de markup asemănător HTML-ului direct în codul JavaScript. <strong>Important:</strong> browserele nu înțeleg nativ JSX – acesta trebuie transformat în cod JavaScript standard înainte de execuție prin procesul de transpilare.</p>
+                    <div class="code-comparison">
+                        <div class="code-block">
+                            <div class="code-header neutral"><span class="code-label">📝 Ceea ce scrii (JSX)</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">const element = (
+    &lt;h1 className="greeting"&gt;
+        Hello, world!
+    &lt;/h1&gt;
+);</code></pre>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header neutral"><span class="code-label">⚙️ Ceea ce rulează (JavaScript)</span></div>
+                            <div class="code-content">
+<pre><code class="language-javascript">const element = React.createElement(
+    'h1',
+    { className: 'greeting' },
+    'Hello, world!'
+);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="theory-text">JSX nu introduce o „magie" la runtime, ci este pur și simplu <strong>zahăr sintactic</strong> pentru a crea elemente UI sub forma de apeluri de funcții imbricate. React recomandă folosirea JSX tocmai pentru că face codul UI mai lizibil și mai apropiat de modul de gândire al dezvoltatorilor web, oferind totodată puterea completă a limbajului JavaScript – poți include expresii { } oriunde în markup.</p>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>📐</span> Sintaxa JSX - Reguli Fundamentale</h2>
+                    <div class="subsection">
+                        <h3 class="subsection-title">1️⃣ Expresii JavaScript în Acolade</h3>
+                        <p class="theory-text">Orice expresie JavaScript validă poate fi inserată în JSX folosind acolade <code>{}</code>. Aceasta include variabile, funcții, operații, și chiar alte expresii JSX.</p>
+                        <div class="code-single">
+                            <div class="code-block">
+                                <div class="code-header neutral"><span class="code-label">🔤 Expresii în JSX</span></div>
+                                <div class="code-content">
+<pre><code class="language-jsx">function UserGreeting({ user }) {
+    const formatDate = (date) => date.toLocaleDateString('ro-RO');
+    
+    return (
+        &lt;div&gt;
+            {/* Variabile */}
+            &lt;h1&gt;Bună, {user.name}!&lt;/h1&gt;
+            
+            {/* Expresii */}
+            &lt;p&gt;Ai {user.messages.length} mesaje noi&lt;/p&gt;
+            
+            {/* Apeluri de funcții */}
+            &lt;p&gt;Ultima conectare: {formatDate(user.lastLogin)}&lt;/p&gt;
+            
+            {/* Operații ternare */}
+            &lt;p&gt;Status: {user.isOnline ? '🟢 Online' : '⚫ Offline'}&lt;/p&gt;
+            
+            {/* Template literals în className */}
+            &lt;p className={`status-${user.isOnline ? 'online' : 'offline'}`}&gt;
+                {`Membru din ${user.joinYear}`}
+            &lt;/p&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h3 class="subsection-title">2️⃣ Atribute și className</h3>
+                        <p class="theory-text">JSX folosește convenții ușor diferite de HTML pentru atribute: <code>className</code> în loc de <code>class</code>, <code>htmlFor</code> în loc de <code>for</code>, și camelCase pentru event handlers.</p>
+                        <div class="code-comparison">
+                            <div class="code-block">
+                                <div class="code-header bad"><span class="code-label">❌ HTML Standard</span></div>
+                                <div class="code-content">
+<pre><code class="language-markup">&lt;div class="container"&gt;
+    &lt;label for="email"&gt;Email:&lt;/label&gt;
+    &lt;input type="email" id="email"
+        tabindex="1" onclick="handleClick()" /&gt;
+&lt;/div&gt;</code></pre>
+                                </div>
+                            </div>
+                            <div class="code-block">
+                                <div class="code-header good"><span class="code-label">✅ JSX</span></div>
+                                <div class="code-content">
+<pre><code class="language-jsx">&lt;div className="container"&gt;
+    &lt;label htmlFor="email"&gt;Email:&lt;/label&gt;
+    &lt;input type="email" id="email"
+        tabIndex={1} onClick={handleClick} /&gt;
+&lt;/div&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h3 class="subsection-title">3️⃣ Randare Condiționată</h3>
+                        <p class="theory-text">JSX permite afișarea condiționată a elementelor folosind operatori JavaScript standard:</p>
+                        <div class="code-single">
+                            <div class="code-block">
+                                <div class="code-header neutral"><span class="code-label">🔀 Metode de Randare Condiționată</span></div>
+                                <div class="code-content">
+<pre><code class="language-jsx">function Dashboard({ user, notifications, isLoading, error }) {
+    // 1. Early return pentru loading/error
+    if (isLoading) return &lt;Spinner /&gt;;
+    if (error) return &lt;ErrorMessage error={error} /&gt;;
+    
+    return (
+        &lt;div&gt;
+            {/* 2. Operator ternar pentru if/else */}
+            {user.isAdmin ? &lt;AdminPanel /&gt; : &lt;UserPanel /&gt;}
+            
+            {/* 3. && pentru afișare condiționată (if simplu) */}
+            {notifications.length > 0 && (
+                &lt;NotificationBadge count={notifications.length} /&gt;
+            )}
+            
+            {/* 4. Nullish coalescing pentru fallback */}
+            &lt;p&gt;Bună, {user.nickname ?? user.name ?? 'Vizitator'}&lt;/p&gt;
+            
+            {/* 5. Switch-like cu obiect map */}
+            {{ 'free': &lt;FreePlan /&gt;, 'pro': &lt;ProPlan /&gt;, 
+               'enterprise': &lt;EnterprisePlan /&gt; }[user.plan]}
+        &lt;/div&gt;
+    );
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h3 class="subsection-title">4️⃣ Liste și Key-uri</h3>
+                        <p class="theory-text">Pentru a randa liste de elemente, folosim <code>map()</code>. <strong>Crucial:</strong> fiecare element dintr-o listă trebuie să aibă un <code>key</code> unic pentru ca React să poată urmări eficient modificările.</p>
+                        <div class="code-comparison">
+                            <div class="code-block">
+                                <div class="code-header bad"><span class="code-label">❌ Fără Key sau Index ca Key</span></div>
+                                <div class="code-content">
+<pre><code class="language-jsx">// ❌ Fără key - warning și buguri
+{items.map(item => (
+    &lt;li&gt;{item.name}&lt;/li&gt;
+))}
+
+// ❌ Index ca key - probleme la reordonare
+{items.map((item, index) => (
+    &lt;li key={index}&gt;{item.name}&lt;/li&gt;
+))}
+
+// La reordonare cu index key:
+// - Animațiile nu funcționează corect
+// - State-ul componentelor se confundă
+// - Inputuri își pierd focusul</code></pre>
+                                </div>
+                            </div>
+                            <div class="code-block">
+                                <div class="code-header good"><span class="code-label">✅ Cu Key Stabil</span></div>
+                                <div class="code-content">
+<pre><code class="language-jsx">// ✅ ID unic din date
+{items.map(item => (
+    &lt;li key={item.id}&gt;{item.name}&lt;/li&gt;
+))}
+
+// ✅ Key compus când nu ai ID
+{users.map(user => (
+    &lt;UserCard 
+        key={`${user.email}-${user.dept}`}
+        user={user}
+    /&gt;
+))}
+
+// ✅ Fragment cu key pentru grupuri
+{sections.map(section => (
+    &lt;React.Fragment key={section.id}&gt;
+        &lt;h2&gt;{section.title}&lt;/h2&gt;
+        &lt;p&gt;{section.content}&lt;/p&gt;
+    &lt;/React.Fragment&gt;
+))}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h3 class="subsection-title">5️⃣ Fragmente</h3>
+                        <p class="theory-text">În React 16.2+ (2017), s-au introdus <strong>fragmentele JSX</strong>: notarea <code>&lt;&gt;...&lt;/&gt;</code> ce permite ca o componentă să întoarcă mai mulți copii fără un container suplimentar în DOM.</p>
+                        <div class="code-comparison">
+                            <div class="code-block">
+                                <div class="code-header bad"><span class="code-label">❌ Div Inutil în DOM</span></div>
+                                <div class="code-content">
+<pre><code class="language-jsx">function TableColumns() {
+    return (
+        &lt;div&gt; {/* Div inutil în tabel! */}
+            &lt;td&gt;Cell 1&lt;/td&gt;
+            &lt;td&gt;Cell 2&lt;/td&gt;
+        &lt;/div&gt;
+    );
+}
+// Rezultat invalid: &lt;tr&gt;&lt;div&gt;&lt;td&gt;...&lt;/div&gt;&lt;/tr&gt;</code></pre>
+                                </div>
+                            </div>
+                            <div class="code-block">
+                                <div class="code-header good"><span class="code-label">✅ Fragment</span></div>
+                                <div class="code-content">
+<pre><code class="language-jsx">function TableColumns() {
+    return (
+        &lt;&gt;
+            &lt;td&gt;Cell 1&lt;/td&gt;
+            &lt;td&gt;Cell 2&lt;/td&gt;
+        &lt;/&gt;
+    );
+}
+// Rezultat valid: &lt;tr&gt;&lt;td&gt;...&lt;/td&gt;&lt;td&gt;...&lt;/td&gt;&lt;/tr&gt;
+
+// Cu key pentru liste:
+&lt;React.Fragment key={id}&gt;...&lt;/React.Fragment&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- SECTION: Istoria JSX -->
+            <section class="section" id="history">
+                <div class="section-header">
+                    <div class="section-icon">🕰️</div>
+                    <h1 class="section-title">Istoria și Evoluția JSX</h1>
+                    <p class="section-subtitle">De la experimentele XHP la Facebook până la standardul de facto în dezvoltarea front-end modernă.</p>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>📜</span> Cronologia JSX</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">2010 - 2012</div>
+                            <div class="timeline-title">🔬 Originile: XHP la Facebook</div>
+                            <div class="timeline-content">Ideea din spatele JSX poate fi urmărită până la un experiment intern de la Facebook numit <strong>XHP</strong> - o extensie de sintaxă pentru PHP care permitea inserarea de markup direct în cod. Prin XHP, fiecare nod de markup devine un obiect PHP – permițând validarea la compilare și prevenirea vulnerabilităților XSS. În paralel, inginerul <strong>Jordan Walke</strong> a dezvoltat prototipuri pentru ceea ce va deveni React, inițial sub numele FaxJS sau F-Bolt.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">Mai 2013</div>
+                            <div class="timeline-title">🚀 Lansarea React (Open Source)</div>
+                            <div class="timeline-content">Proiectul React a fost făcut open-source la conferința <strong>JSConf US</strong>. Reacția inițială a comunității tehnice a fost de scepticism – mulți considerând că „HTML în JS" reprezintă un regres conceptual. Totuși, echipa React și-a susținut viziunea, argumentând că separarea strictă a markup-ului de logică nu este necesară dacă ambele pot fi combinate coerent într-un singur modul de componentă.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2014</div>
+                            <div class="timeline-title">📄 Specificația Draft JSX</div>
+                            <div class="timeline-content">Facebook a publicat online documentul "Draft: JSX Specification", care formaliza sintaxa JSX ca extensie XML-like a limbajului ECMAScript, fără semantică proprie, destinată exclusiv consumului de către transpilere (nu ca propunere pentru motorul JavaScript).</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2014 - 2016</div>
+                            <div class="timeline-title">🔧 Babel Devine Standard</div>
+                            <div class="timeline-content"><strong>Babel</strong> se impune ca principalul transpiler care știe să proceseze JSX. Dezvoltatorii pot scrie cod JSX și ES6+ fără griji de compatibilitate – Babel va genera codul "legacy" necesar. Dintr-un „hack" intern, JSX devine un element standard al lanțului de build.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2017</div>
+                            <div class="timeline-title">🧩 React 16.2 - Fragmente JSX</div>
+                            <div class="timeline-content">Introducerea fragmentelor JSX: notarea &lt;&gt;...&lt;/&gt; ce permite unei componente să întoarcă mai mulți copii fără un container suplimentar în DOM. Se elimină necesitatea "div-urilor inutile" pentru gruparea elementelor.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2015 - 2018</div>
+                            <div class="timeline-title">📘 TypeScript Adoptă JSX</div>
+                            <div class="timeline-content">TypeScript introduce extensia de fișier <strong>.tsx</strong> pentru fișiere TypeScript ce conțin markup, oferind suport de tipare (type-checking) pentru elementele JSX. Comunitatea recomandă tot mai mult folosirea lor împreună în proiecte enterprise pentru robustețe sporită.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2020</div>
+                            <div class="timeline-title">⚡ React 17 - Noul JSX Transform</div>
+                            <div class="timeline-content">Echipa React introduce <strong>JSX runtime automat</strong>. Babel transformă JSX în apeluri către funcții speciale din react/jsx-runtime, eliminând necesitatea de a importa React explicit în fiecare fișier. Codul devine mai ușor de optimizat prin tree-shaking.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2024 - 2025</div>
+                            <div class="timeline-title">🎯 React 19 & React Foundation</div>
+                            <div class="timeline-content">React 19 face obligatorie folosirea noului transform JSX automat. Meta anunță formarea <strong>React Foundation</strong> împreună cu Linux Foundation, oferind proiectului o guvernanță open-source formală. JSX devine un artefact de ecosistem administrat colaborativ.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>💬</span> Scepticismul Inițial vs Realitatea</h2>
+                    <div class="quote">„La început, mulți dezvoltatori au considerat că 'HTML în JavaScript' reprezintă un regres conceptual și o încălcare a principiului separării preocupărilor. Ironia este că exact această 'încălcare' s-a dovedit a fi unul dintre cele mai mari atuuri ale React."<div class="quote-author">— Reflecție asupra adoptării React</div></div>
+                    <p class="theory-text">Argumentul echipei React a fost simplu dar revoluționar: <strong>separarea strictă a markup-ului de logică nu este necesară dacă ambele pot fi combinate coerent într-un singur modul de componentă</strong>. În loc să separi pe tehnologii (HTML într-un fișier, JS în altul, CSS în altul), separi pe responsabilități.</p>
+                    <div class="highlight-box success">
+                        <div class="highlight-title">✅ Rezultatul Adoptării</div>
+                        <p class="theory-text" style="margin-bottom: 0;">Astăzi, JSX este un element de <strong>standard de facto</strong> în dezvoltarea front-end modernă. Alte biblioteci și framework-uri au împrumutat conceptul: Preact, Vue.js (opțional), Solid.js, și multe altele. Chiar și în afara ecosistemului React, paradigma declarativă promovată de JSX a influențat întreaga industrie.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: Transformarea JSX -->
+            <section class="section" id="transform">
+                <div class="section-header">
+                    <div class="section-icon">🔄</div>
+                    <h1 class="section-title">Transformarea JSX</h1>
+                    <p class="section-subtitle">De la React.createElement la noul runtime automat – cum JSX devine JavaScript executabil.</p>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>⚙️</span> Transformarea Clasică vs Modernă</h2>
+                    <p class="theory-text">Versiunile inițiale ale transpilerelor foloseau un model simplu: fiecare element JSX era compilat într-un apel <code>React.createElement()</code>. În 2020, React 17 a introdus <strong>JSX runtime automat</strong>, schimbând fundamental modul de compilare.</p>
+                    <div class="code-comparison">
+                        <div class="code-block">
+                            <div class="code-header bad"><span class="code-label">⚠️ Modul Clasic (React < 17)</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">// Trebuia să importăm React!
+import React from 'react'; // ← Obligatoriu!
+
+const profile = (
+    &lt;div&gt;
+        &lt;img src="avatar.png" className="profile" /&gt;
+        &lt;h3&gt;{user.name}&lt;/h3&gt;
+    &lt;/div&gt;
+);
+
+// ↓ Babel transpila în:
+const profile = React.createElement(
+    "div", null,
+    React.createElement("img", { 
+        src: "avatar.png", className: "profile" 
+    }),
+    React.createElement("h3", null, user.name)
+);
+
+// React trebuia importat pentru 
+// React.createElement</code></pre>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header good"><span class="code-label">✅ Modul Automat (React 17+)</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">// NU mai trebuie să importăm React!
+
+const profile = (
+    &lt;div&gt;
+        &lt;img src="avatar.png" className="profile" /&gt;
+        &lt;h3&gt;{user.name}&lt;/h3&gt;
+    &lt;/div&gt;
+);
+
+// ↓ Babel transpila în:
+import { jsx as _jsx, jsxs as _jsxs } 
+    from "react/jsx-runtime"; // Auto!
+
+const profile = _jsxs("div", {
+    children: [
+        _jsx("img", { src: "avatar.png", 
+            className: "profile" }),
+        _jsx("h3", { children: user.name })
+    ]
+});
+
+// Import automat de transpiler!</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="highlight-box success">
+                        <div class="highlight-title">✅ Beneficiile Noului Transform</div>
+                        <p class="theory-text" style="margin-bottom:0;">Nu mai e nevoie de <code>import React</code> în fiecare fișier. Bundle-uri mai mici prin tree-shaking mai eficient. Performanță îmbunătățită la build. Pregătire pentru React Compiler. Cod sursă mai curat și concis.</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🔧</span> Configurarea Babel pentru JSX</h2>
+                    <div class="code-comparison">
+                        <div class="code-block">
+                            <div class="code-header neutral"><span class="code-label">📄 babel.config.js</span></div>
+                            <div class="code-content">
+<pre><code class="language-javascript">module.exports = {
+    presets: [
+        '@babel/preset-env',
+        ['@babel/preset-react', {
+            runtime: 'automatic' // ← Noul transform!
+        }]
+    ]
+};</code></pre>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header neutral"><span class="code-label">📄 .babelrc (minimal)</span></div>
+                            <div class="code-content">
+<pre><code class="language-json">{
+    "presets": [
+        "@babel/preset-env",
+        ["@babel/preset-react", {
+            "runtime": "automatic"
+        }]
+    ]
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- SECTION: Babel și Transpilare -->
+            <section class="section" id="babel">
+                <div class="section-header">
+                    <div class="section-icon">🔧</div>
+                    <h1 class="section-title">Babel și Transpilarea</h1>
+                    <p class="section-subtitle">Browserele web nu înțeleg nativ JSX – acesta trebuie transformat în cod JavaScript standard prin procesul de transpilare.</p>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>❓</span> De Ce Este Necesară Transpilarea?</h2>
+                    <p class="theory-text">Un aspect esențial – deși adesea invizibil – al ecosistemului React/JSX modern este necesitatea unui proces de <strong>transpilare</strong> a codului sursă înainte ca acesta să poată rula în browser. Motivul principal: <strong>browserele web, chiar și cele moderne, nu știu să interpreteze sintaxa JSX</strong>.</p>
+                    <div class="highlight-box warning">
+                        <div class="highlight-title">⚠️ Important de Reținut</div>
+                        <p class="theory-text" style="margin-bottom: 0;">Specificația oficială a JSX clarifică faptul că aceasta <strong>nu este gândită pentru a fi implementată în motoarele JavaScript</strong>, ci strict ca input pentru un compilator care să o transforme în cod JavaScript standard. JSX nu va deveni parte din standardul ECMAScript.</p>
+                    </div>
+                    <p class="theory-text">Mai mult, transpilarea nu rezolvă doar problema JSX-ului, ci și <strong>decalajul de versiune</strong> dintre specificațiile JavaScript și suportul acestora în mediile reale. Standardul ECMAScript evoluează rapid, dar nu toate browserele implementează imediat noile funcționalități.</p>
+                    <div class="code-comparison">
+                        <div class="code-block">
+                            <div class="code-header neutral"><span class="code-label">📝 Ce Scrii Tu (ES2020+ & JSX)</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">// Cod modern cu features noi
+const user = response?.data?.user ?? defaultUser;
+const greeting = `Hello, ${user.name}!`;
+
+const UserCard = ({ user }) => (
+    &lt;div className="card"&gt;
+        &lt;h2&gt;{user.name}&lt;/h2&gt;
+        {user.isAdmin && &lt;Badge type="admin" /&gt;}
+    &lt;/div&gt;
+);
+
+// Features: Optional chaining (?.)
+// Nullish coalescing (??)
+// Template literals, Arrow functions
+// JSX, Destructuring</code></pre>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header neutral"><span class="code-label">⚙️ Ce Rulează în Browser (ES5)</span></div>
+                            <div class="code-content">
+<pre><code class="language-javascript">// Babel transformă în cod compatibil
+var _response$data;
+var user = (_response$data = response === null 
+    || response === void 0 ? void 0 
+    : response.data) !== null 
+    && _response$data !== void 0 
+    ? _response$data.user : defaultUser;
+
+var greeting = "Hello, " + user.name + "!";
+
+var UserCard = function UserCard(_ref) {
+    var user = _ref.user;
+    return React.createElement(
+        "div", { className: "card" },
+        React.createElement("h2", null, user.name),
+        user.isAdmin && 
+            React.createElement(Badge, { type: "admin" })
+    );
+};</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🔨</span> Ce Este Babel?</h2>
+                    <p class="theory-text"><strong>Babel</strong> s-a impus ca principalul transpiler JavaScript în era React. Un transpiler este un <strong>compilator sursă-la-sursă</strong> – un program care ia codul într-o versiune de limbaj și produce cod echivalent într-o versiune diferită a aceluiași limbaj. Arhitectura Babel este modulară, bazată pe plugin-uri și preset-uri configurabile.</p>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🧩</div>
+                            <div class="feature-title">Plugin-uri</div>
+                            <div class="feature-desc">Fiecare transformare e un plugin separat: @babel/plugin-transform-react-jsx pentru JSX, altele pentru arrow functions, etc.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📦</div>
+                            <div class="feature-title">Preset-uri</div>
+                            <div class="feature-desc">Colecții de plugin-uri grupate: @babel/preset-react pentru React, @babel/preset-env pentru ES6+.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🎯</div>
+                            <div class="feature-title">Targets</div>
+                            <div class="feature-desc">Poți specifica browserele țintă, iar Babel activează doar transformările necesare pentru acele browsere.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">⚙️</div>
+                            <div class="feature-title">Configurabil</div>
+                            <div class="feature-desc">Fișiere .babelrc sau babel.config.js permit configurare granulară per proiect sau per folder.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>⚖️</span> Transpilație vs Polyfill</h2>
+                    <table class="comparison-table">
+                        <thead><tr><th>Aspect</th><th>Transpilație</th><th>Polyfill</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Ce face</strong></td><td>Transformă sintaxa nouă în veche</td><td>Adaugă funcționalități lipsă în runtime</td></tr>
+                            <tr><td><strong>Exemple</strong></td><td>Arrow functions → function, JSX → createElement</td><td>Promise, Array.from, fetch, Object.assign</td></tr>
+                            <tr><td><strong>Când se aplică</strong></td><td>La build time (compilare)</td><td>La runtime (în browser)</td></tr>
+                            <tr><td><strong>Cine se ocupă</strong></td><td>Babel (transpiler)</td><td>core-js, regenerator-runtime</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="highlight-box">
+                        <div class="highlight-title">💡 Regulă Simplă</div>
+                        <p class="theory-text" style="margin-bottom: 0;">Dacă e vorba de <strong>sintaxă</strong> (cum scrii codul) → Babel transpilează.<br>Dacă e vorba de <strong>API-uri</strong> (ce funcții există) → Ai nevoie de polyfill.</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>⚠️</span> Costuri și Riscuri ale Transpilării</h2>
+                    <div class="pros-cons">
+                        <div class="pros-list">
+                            <div class="list-title">✅ Beneficii</div>
+                            <div class="list-item"><span>→</span><span><strong>Adoptare rapidă:</strong> Poți folosi imediat feature-uri noi ale limbajului</span></div>
+                            <div class="list-item"><span>→</span><span><strong>Uniformizare:</strong> Toată echipa scrie în același "dialect" de JavaScript</span></div>
+                            <div class="list-item"><span>→</span><span><strong>Compatibilitate:</strong> Codul funcționează în browsere vechi</span></div>
+                            <div class="list-item"><span>→</span><span><strong>Ecosistem matur:</strong> Sute de plugin-uri disponibile</span></div>
+                        </div>
+                        <div class="cons-list">
+                            <div class="list-title">⚠️ Costuri</div>
+                            <div class="list-item"><span>→</span><span><strong>Timp de build:</strong> Transpilarea adaugă timp la fiecare compilare</span></div>
+                            <div class="list-item"><span>→</span><span><strong>Complexitate:</strong> Configurarea corectă poate fi dificilă</span></div>
+                            <div class="list-item"><span>→</span><span><strong>Bug-uri transpilație:</strong> Rar, dar posibil ca Babel să introducă erori</span></div>
+                            <div class="list-item"><span>→</span><span><strong>Debugging:</strong> Source maps necesare pentru a debugga codul original</span></div>
+                        </div>
+                    </div>
+                    <div class="highlight-box warning">
+                        <div class="highlight-title">⚡ Alternative Mai Rapide</div>
+                        <p class="theory-text" style="margin-bottom: 0;">Benchmark-uri recente arată că <strong>SWC</strong> (Rust) poate fi 10-20x mai rapid decât Babel. <strong>esbuild</strong> (Go) este similar de rapid. Pentru proiecte critice de performanță, evaluați aceste alternative – conceptele rămân aceleași.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: Build Pipeline -->
+            <section class="section" id="pipeline">
+                <div class="section-header">
+                    <div class="section-icon">🏗️</div>
+                    <h1 class="section-title">Build Pipeline</h1>
+                    <p class="section-subtitle">Fluxul complet de construire al unei aplicații React/JSX, de la cod sursă la bundle-ul final livrat în browser.</p>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🔄</span> Fluxul de Build</h2>
+                    <p class="theory-text">Într-un proiect React/JSX tipic, codul trece prin mai multe etape înainte de a ajunge în browser. Fiecare etapă transformă codul într-o formă mai apropiată de cea finală.</p>
+                    <div class="pipeline">
+                        <div class="pipeline-step"><div class="pipeline-icon">📝</div><div class="pipeline-label">.jsx / .tsx<br>Cod Sursă</div></div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-step"><div class="pipeline-icon">🔧</div><div class="pipeline-label">Babel/SWC<br>Transpilare</div></div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-step"><div class="pipeline-icon">📦</div><div class="pipeline-label">Webpack/Vite<br>Bundling</div></div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-step"><div class="pipeline-icon">🗜️</div><div class="pipeline-label">Terser<br>Minificare</div></div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-step"><div class="pipeline-icon">🌐</div><div class="pipeline-label">bundle.js<br>Browser</div></div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>⚙️</span> Instrumente Moderne de Build</h2>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">📦</div>
+                            <div class="feature-title">Webpack</div>
+                            <div class="feature-desc">Bundler-ul clasic, foarte configurabil. Suportă code splitting, lazy loading, Hot Module Replacement. Configurație complexă dar flexibilă.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">⚡</div>
+                            <div class="feature-title">Vite</div>
+                            <div class="feature-desc">Build tool modern, extrem de rapid. Folosește ES modules native în development. Configurare minimală, experiență excelentă pentru dezvoltatori.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🎯</div>
+                            <div class="feature-title">esbuild</div>
+                            <div class="feature-desc">Scris în Go, incredibil de rapid (100x mai rapid decât Webpack). Folosit de Vite pentru producție. API simplu.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🦀</div>
+                            <div class="feature-title">SWC</div>
+                            <div class="feature-desc">Transpiler scris în Rust, înlocuiește Babel. 20x mai rapid. Folosit de Next.js 12+. Compatibil cu ecosistemul Babel.</div>
+                        </div>
+                    </div>
+                    <div class="code-comparison">
+                        <div class="code-block">
+                            <div class="code-header neutral"><span class="code-label">📄 webpack.config.js (Clasic)</span></div>
+                            <div class="code-content">
+<pre><code class="language-javascript">const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+    entry: './src/index.jsx',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].[contenthash].js'
+    },
+    module: {
+        rules: [{
+            test: /\.(js|jsx)$/,
+            exclude: /node_modules/,
+            use: {
+                loader: 'babel-loader',
+                options: {
+                    presets: ['@babel/preset-env', 
+                        '@babel/preset-react']
+                }
+            }
+        }]
+    },
+    plugins: [new HtmlWebpackPlugin({
+        template: './public/index.html'
+    })],
+    devServer: { hot: true, port: 3000 }
+};</code></pre>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header good"><span class="code-label">📄 vite.config.js (Modern)</span></div>
+                            <div class="code-content">
+<pre><code class="language-javascript">import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+    plugins: [react()],
+    // Asta e tot! Vite configurează automat:
+    // - Babel/SWC pentru JSX
+    // - Hot Module Replacement
+    // - Code splitting
+    // - Minificare pentru producție
+    server: { port: 3000 },
+    build: { sourcemap: true }
+});
+
+// Pentru a crea un proiect nou:
+// npm create vite@latest my-app -- --template react
+// cd my-app && npm install && npm run dev</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- SECTION: SPA și React -->
+            <section class="section" id="spa">
+                <div class="section-header">
+                    <div class="section-icon">📱</div>
+                    <h1 class="section-title">Single-Page Applications</h1>
+                    <p class="section-subtitle">Cum React a devenit alegerea preferată pentru aplicațiile web moderne cu experiență fluidă.</p>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🔄</span> Multi-Page vs Single-Page</h2>
+                    <p class="theory-text">Aplicațiile web au migrat de la modelul tradițional <strong>multi-page</strong> (MPA) la modelul <strong>Single-Page Application (SPA)</strong>, unde interacțiunile utilizatorului nu mai provoacă refresh complet, ci sunt gestionate client-side prin actualizări incrementale ale DOM-ului.</p>
+                    <div class="code-comparison">
+                        <div class="code-block">
+                            <div class="code-header bad"><span class="code-label">🔄 Multi-Page Application (MPA)</span></div>
+                            <div class="code-content">
+<pre><code class="language-markup">&lt;!-- Fiecare click = Request nou la server --&gt;
+
+1. User click pe "Produse"
+   ↓
+2. Browser trimite GET /products
+   ↓
+3. Server generează HTML complet
+   ↓
+4. Browser încarcă pagina NOUĂ
+   ↓
+5. CSS, JS se re-descarcă/re-parsează
+   ↓
+6. Pagina se re-randează complet
+
+Probleme:
+❌ Ecran alb între pagini
+❌ Pierderea stării (scroll, form input)
+❌ Latență mare (round-trip server)
+❌ Experiență "accidentată"
+❌ Bandă irosită (re-descarcă layout)</code></pre>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header good"><span class="code-label">⚡ Single-Page Application (SPA)</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">// O singură încărcare, apoi client-side
+
+1. User click pe "Produse"
+   ↓
+2. React Router interceptează
+   ↓
+3. URL se schimbă (history API)
+   ↓
+4. Se randează componenta Products
+   ↓
+5. Fetch date via API (JSON mic)
+   ↓
+6. UI se actualizează instant
+
+Beneficii:
+✅ Tranziții fluide, fără ecran alb
+✅ Starea se păstrează
+✅ Doar datele se transferă (nu HTML)
+✅ Experiență ca de aplicație nativă
+✅ Feedback instant la acțiuni</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🌳</span> Virtual DOM - Secretul Performanței</h2>
+                    <p class="theory-text"><strong>Virtual DOM</strong> este o reprezentare în memorie a UI-ului real. Când starea se schimbă, React creează un nou Virtual DOM, îl compară cu cel anterior (proces numit <em>reconciliation</em>), și aplică doar modificările minime necesare în DOM-ul real.</p>
+                    <div class="highlight-box">
+                        <div class="highlight-title">🔄 Algoritmul de Reconciliere</div>
+                        <ol style="color: var(--text-secondary); margin: 0; padding-left: 1.5rem;">
+                            <li>Starea componentei se schimbă (setState)</li>
+                            <li>React creează un nou arbore Virtual DOM</li>
+                            <li>React compară noul arbore cu cel vechi (diffing)</li>
+                            <li>Calculează setul minim de operații DOM</li>
+                            <li>Aplică doar acele operații în DOM-ul real</li>
+                        </ol>
+                    </div>
+                    <div class="code-single">
+                        <div class="code-block">
+                            <div class="code-header neutral"><span class="code-label">🌳 Virtual DOM în Acțiune</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">// Imaginează-ți o listă de 1000 de elemente
+function TodoList({ todos }) {
+    return (
+        &lt;ul&gt;
+            {todos.map(todo => (
+                &lt;li key={todo.id}&gt;
+                    &lt;span&gt;{todo.text}&lt;/span&gt;
+                    &lt;button onClick={() => toggle(todo.id)}&gt;
+                        {todo.done ? '✓' : '○'}
+                    &lt;/button&gt;
+                &lt;/li&gt;
+            ))}
+        &lt;/ul&gt;
+    );
+}
+
+// User-ul marchează TODO #500 ca done
+
+// ❌ FĂRĂ Virtual DOM (jQuery):
+// - Re-randezi toată lista (1000 elemente)
+// - Sau găsești elementul #500 manual cu DOM queries
+
+// ✅ CU Virtual DOM (React):
+// 1. Se re-randează VIRTUAL toată lista (rapid, e doar JS)
+// 2. Diff detectează: "doar TODO #500 s-a schimbat"
+// 3. În DOM-ul real, se modifică DOAR acel element
+// 4. Celelalte 999 elemente rămân neatinse
+
+// Rezultat: Performanță excelentă cu liste mari!</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: Comparație Framework-uri -->
+            <section class="section" id="comparison">
+                <div class="section-header">
+                    <div class="section-icon">⚖️</div>
+                    <h1 class="section-title">React vs Angular vs Vue</h1>
+                    <p class="section-subtitle">Comparația celor trei framework-uri/biblioteci dominante în dezvoltarea front-end modernă.</p>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🏆</span> Triada Dominantă</h2>
+                    <p class="theory-text">Studiile (Vyas, 2022; Emmanni, 2023) plasează <strong>React, Angular și Vue</strong> ca triada dominantă în dezvoltarea front-end. Fiecare are o filozofie diferită și se potrivește pentru scenarii diferite.</p>
+                    <div class="framework-grid">
+                        <div class="framework-card react">
+                            <div class="framework-logo">⚛️</div>
+                            <div class="framework-name">React</div>
+                            <div class="framework-desc">Bibliotecă UI flexibilă, "cutie Lego"</div>
+                            <div class="framework-features">
+                                <div class="framework-feature">✅ Foarte flexibil</div>
+                                <div class="framework-feature">✅ JSX (JavaScript complet)</div>
+                                <div class="framework-feature">✅ Ecosistem vast</div>
+                                <div class="framework-feature">✅ React Native pentru mobile</div>
+                                <div class="framework-feature">⚠️ Decizii multe de luat</div>
+                            </div>
+                        </div>
+                        <div class="framework-card">
+                            <div class="framework-logo">🅰️</div>
+                            <div class="framework-name">Angular</div>
+                            <div class="framework-desc">Framework complet, "baterii incluse"</div>
+                            <div class="framework-features">
+                                <div class="framework-feature">✅ Tot inclus (routing, forms)</div>
+                                <div class="framework-feature">✅ TypeScript by default</div>
+                                <div class="framework-feature">✅ Structură strictă</div>
+                                <div class="framework-feature">✅ Enterprise-ready</div>
+                                <div class="framework-feature">⚠️ Curbă de învățare mare</div>
+                            </div>
+                        </div>
+                        <div class="framework-card">
+                            <div class="framework-logo">💚</div>
+                            <div class="framework-name">Vue</div>
+                            <div class="framework-desc">Progresiv, ușor de învățat</div>
+                            <div class="framework-features">
+                                <div class="framework-feature">✅ Cel mai ușor de învățat</div>
+                                <div class="framework-feature">✅ Single File Components</div>
+                                <div class="framework-feature">✅ Documentație excelentă</div>
+                                <div class="framework-feature">✅ Flexibilitate progresivă</div>
+                                <div class="framework-feature">⚠️ Ecosistem mai mic</div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="comparison-table">
+                        <thead><tr><th>Aspect</th><th>React</th><th>Angular</th><th>Vue</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Tip</strong></td><td>Bibliotecă</td><td>Framework complet</td><td>Framework progresiv</td></tr>
+                            <tr><td><strong>Limbaj</strong></td><td>JavaScript + JSX</td><td>TypeScript</td><td>JavaScript + Templates</td></tr>
+                            <tr><td><strong>Data Binding</strong></td><td>Unidirecțional</td><td>Bidirecțional</td><td>Ambele</td></tr>
+                            <tr><td><strong>DOM</strong></td><td>Virtual DOM</td><td>Real DOM + Change Detection</td><td>Virtual DOM</td></tr>
+                            <tr><td><strong>Curba de învățare</strong></td><td>Moderată</td><td>Abruptă</td><td>Ușoară</td></tr>
+                            <tr><td><strong>Dimensiune bundle</strong></td><td>~42KB</td><td>~143KB</td><td>~33KB</td></tr>
+                            <tr><td><strong>Companie</strong></td><td>Meta (Facebook)</td><td>Google</td><td>Evan You (independent)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🎯</span> Când Să Alegi Ce?</h2>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">⚛️</div>
+                            <div class="feature-title">Alege React când:</div>
+                            <div class="feature-desc">• Vrei flexibilitate maximă<br>• Echipa știe bine JavaScript<br>• Ai nevoie de React Native pentru mobile<br>• Preferi să alegi tu librăriile<br>• Vrei ecosistem mare de componente</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🅰️</div>
+                            <div class="feature-title">Alege Angular când:</div>
+                            <div class="feature-desc">• Proiect enterprise mare<br>• Echipă mare, ai nevoie de structură<br>• Vrei tot inclus din start<br>• TypeScript e obligatoriu<br>• Proiect pe termen lung</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">💚</div>
+                            <div class="feature-title">Alege Vue când:</div>
+                            <div class="feature-desc">• Echipă nouă sau cu experiență HTML<br>• Vrei să începi rapid<br>• Proiect mic-mediu<br>• Preferi template-uri familiare<br>• Documentație excelentă e importantă</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: Ecosistem -->
+            <section class="section" id="ecosystem">
+                <div class="section-header">
+                    <div class="section-icon">🌍</div>
+                    <h1 class="section-title">Ecosistemul React</h1>
+                    <p class="section-subtitle">React/JSX se extinde dincolo de browser: mobile, desktop, server-side rendering și multe altele.</p>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>📱</span> React Native - Mobile Nativ</h2>
+                    <p class="theory-text"><strong>React Native</strong> (lansat în 2015) permite scrierea de aplicații mobile native (iOS/Android) folosind aceeași paradigmă de componente și JSX. Diferența: elementele de bază &lt;View&gt;, &lt;Text&gt; etc. nu sunt transformate în DOM, ci în elemente UI native.</p>
+                    <div class="code-comparison">
+                        <div class="code-block">
+                            <div class="code-header neutral"><span class="code-label">🌐 React (Web)</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">function WelcomeScreen() {
+    return (
+        &lt;div className="container"&gt;
+            &lt;h1&gt;Welcome!&lt;/h1&gt;
+            &lt;p&gt;Great to see you.&lt;/p&gt;
+            &lt;button onClick={handleStart}&gt;
+                Get Started
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+}
+// Randează în: DOM (HTML)
+// &lt;div&gt;, &lt;h1&gt;, &lt;p&gt;, &lt;button&gt;</code></pre>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header neutral"><span class="code-label">📱 React Native (Mobile)</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">function WelcomeScreen() {
+    return (
+        &lt;View style={styles.container}&gt;
+            &lt;Text style={styles.title}&gt;Welcome!&lt;/Text&gt;
+            &lt;Text&gt;Great to see you.&lt;/Text&gt;
+            &lt;Button 
+                title="Get Started"
+                onPress={handleStart}
+            /&gt;
+        &lt;/View&gt;
+    );
+}
+// Randează în: UI Nativ
+// UIView, UILabel, UIButton (iOS)
+// android.view.View, TextView (Android)</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="highlight-box success">
+                        <div class="highlight-title">✅ Beneficiul Principal</div>
+                        <p class="theory-text" style="margin-bottom: 0;">Cunoștințele de React/JSX pot fi refolosite: același concept de componentă, același tip de JSX, aceeași filozofie declarativă. Un dezvoltator React web se poate adapta relativ ușor la React Native.</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🖥️</span> Alte Platforme</h2>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🖥️</div>
+                            <div class="feature-title">Electron</div>
+                            <div class="feature-desc">Aplicații desktop (Windows, macOS, Linux) folosind React. Exemple: VS Code, Slack, Discord, Notion.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🌐</div>
+                            <div class="feature-title">Next.js</div>
+                            <div class="feature-desc">Meta-framework pentru SSR (Server-Side Rendering), SSG (Static Site Generation), și API routes. SEO-friendly.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🚀</div>
+                            <div class="feature-title">Remix</div>
+                            <div class="feature-desc">Full-stack framework React cu focus pe web standards, progressive enhancement, și experiență de dezvoltator.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📺</div>
+                            <div class="feature-title">React TV</div>
+                            <div class="feature-desc">Interfețe pentru smart TV-uri (Samsung Tizen, LG WebOS) folosind componente React familiare.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- SECTION: Argumente Pro -->
+            <section class="section" id="pros">
+                <div class="section-header">
+                    <div class="section-icon">✅</div>
+                    <h1 class="section-title">Argumente Pro React/JSX</h1>
+                    <p class="section-subtitle">De ce merită să folosim React și JSX în dezvoltarea de aplicații web complexe.</p>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>📦</span> 1. Colocalizarea Markup-ului și Logicii</h2>
+                    <p class="theory-text">Într-o componentă React tipică scrisă cu JSX, ai într-un singur loc atât structura UI (JSX-ul), cât și logica aferentă. Această apropiere face ca echipele să trateze componenta ca <strong>unitate fundamentală de lucru</strong>. Mentenabilitatea crește deoarece ușurința de înțelegere (effort expectancy) este un factor critic în decizia de adoptare a framework-urilor.</p>
+                    <div class="highlight-box success">
+                        <div class="highlight-title">✅ Beneficii Practice</div>
+                        <p class="theory-text" style="margin-bottom:0;"><strong>Înțelegere rapidă:</strong> Când deschizi o componentă, vezi imediat și cum arată, și cum funcționează. <strong>Refactorizare ușoară:</strong> Tot codul relevant e în același loc. <strong>Code review eficient:</strong> Un coleg vede modificarea completă într-un singur PR. <strong>Onboarding rapid:</strong> Noii membri ai echipei se orientează mai repede.</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🎯</span> 2. Expresivitate Declarativă</h2>
+                    <p class="theory-text">React a impus un stil declarativ de a construi interfețe. JSX este exact limbajul care exprimă această logică într-o formă aproape de pseudo-cod. Cerințele se traduc direct în cod:</p>
+                    <div class="code-single">
+                        <div class="code-block">
+                            <div class="code-header good"><span class="code-label">✅ Transparență Cerință → Implementare</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">// Cerință: "Dacă e admin, arată AdminBar"
+{user.role === 'admin' && &lt;AdminBar /&gt;}
+
+// Cerință: "Afișează lista de produse"
+{products.map(p => &lt;ProductCard key={p.id} product={p} /&gt;)}
+
+// Cerință: "Loading când se încarcă, eroare dacă eșuează"
+{isLoading ? &lt;Spinner /&gt; : error ? &lt;Error msg={error} /&gt; : &lt;Data /&gt;}
+
+// Codul JSX citește aproape ca specificația!</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🌐</span> 3. Ecosistem Matur și Larg</h2>
+                    <p class="theory-text">React + JSX există în producție de aproape un deceniu și este folosit de nenumărate companii mari și proiecte open-source. Acest lucru are implicații majore pentru proiectele tale:</p>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">📚</div>
+                            <div class="feature-title">Cunoștințe Colective</div>
+                            <div class="feature-desc">Volum imens de pattern-uri, best practices, documentație, și răspunsuri pe StackOverflow pentru orice problemă.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">👥</div>
+                            <div class="feature-title">Talent Pool</div>
+                            <div class="feature-desc">Poți recruta programatori React mult mai ușor datorită popularității. Mulți candidați cunosc deja React.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🧩</div>
+                            <div class="feature-title">Biblioteci UI</div>
+                            <div class="feature-desc">Material UI, Ant Design, Chakra UI, shadcn/ui - zeci de sisteme de componente profesionale gata de folosit.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔧</div>
+                            <div class="feature-title">Tooling</div>
+                            <div class="feature-desc">React DevTools, ESLint plugins, TypeScript support excelent, Storybook pentru documentare componente.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>📘</span> 4. Integrare Excelentă cu TypeScript</h2>
+                    <p class="theory-text">Un argument foarte puternic pro-React este compatibilitatea excelentă cu <strong>TypeScript</strong>. Folosind extensia <code>.tsx</code>, primești verificare de tip pentru props și state, prevenind bug-uri înainte de runtime.</p>
+                    <div class="code-single">
+                        <div class="code-block">
+                            <div class="code-header good"><span class="code-label">📘 TypeScript + React = Siguranță</span></div>
+                            <div class="code-content">
+<pre><code class="language-typescript">interface UserCardProps {
+    user: {
+        id: string;
+        name: string;
+        email: string;
+        role: 'admin' | 'user' | 'guest';
+    };
+    onSelect: (userId: string) => void;
+    showEmail?: boolean; // optional
+}
+
+function UserCard({ user, onSelect, showEmail = false }: UserCardProps) {
+    return (
+        &lt;div onClick={() => onSelect(user.id)}&gt;
+            &lt;h3&gt;{user.name}&lt;/h3&gt;
+            {showEmail && &lt;p&gt;{user.email}&lt;/p&gt;}
+            {/* TypeScript știe că role poate fi doar 'admin' | 'user' | 'guest' */}
+            {user.role === 'admin' && &lt;Badge&gt;Admin&lt;/Badge&gt;}
+        &lt;/div&gt;
+    );
+}
+
+// ❌ Eroare la compilare dacă:
+// - Lipsesc props obligatorii
+// - Tipul datelor e greșit
+// - role nu e una din cele 3 valori permise</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>♻️</span> 5. Reutilizare Sistematică de Componente</h2>
+                    <p class="theory-text">JSX face reutilizarea foarte ușoară și sintactic elegantă: creezi componente modulare (o singură dată) și apoi le folosești oriunde prin simpla lor notare ca tag-uri. Pattern-uri precum Higher-Order Components (HOC) și Render Props devin triviale cu JSX.</p>
+                    <div class="highlight-box">
+                        <div class="highlight-title">💡 Design Systems</div>
+                        <p class="theory-text" style="margin-bottom: 0;">În proiecte enterprise mari, se obișnuiește crearea unor biblioteci interne de componente (un Design System cu butoane, formulare, layout-uri standard). Când vrei să schimbi designul tuturor butoanelor, modifici componenta &lt;Button&gt; într-un singur loc, iar schimbarea se propagă peste tot.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: Argumente Contra -->
+            <section class="section" id="cons">
+                <div class="section-header">
+                    <div class="section-icon">⚠️</div>
+                    <h1 class="section-title">Argumente Contra React/JSX</h1>
+                    <p class="section-subtitle">Limitări, riscuri și situații în care React/JSX poate să nu fie alegerea optimă.</p>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🔧</span> 1. Toolchain Complex și Dependență de Build</h2>
+                    <p class="theory-text">Spre deosebire de a scrie un simplu fișier HTML cu un &lt;script&gt;, adoptarea React/JSX vine la pachet cu un întreg lanț de unelte care trebuie configurate și întreținute: transpiler (Babel/SWC), bundler (Webpack/Vite), server de dezvoltare, configurații pentru testare (Jest/Cypress) și linting (ESLint).</p>
+                    <div class="highlight-box danger">
+                        <div class="highlight-title">⚠️ Costuri Ascunse</div>
+                        <p class="theory-text" style="margin-bottom: 0;">Toate acestea adaugă un cost de configurare inițial și un cost cognitiv pentru dezvoltatori: echipa trebuie să aibă și competențe de DevOps front-end, nu doar de programare. Debugging-ul problemelor de build poate consuma timp considerabil – uneori mai mult decât debugging-ul propriu-zis al logicii aplicației.</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🧹</span> 2. Risc de Code Smells</h2>
+                    <p class="theory-text">Odată cu puterea și libertatea JSX vin și primejdii. React nu impune o structură strictă – poți scrie componente imense, cu JSX foarte complicat, cu logică amestecată în markup. În lipsa disciplinei de echipă și a bunelor practici, un proiect React/JSX poate deveni greu de întreținut.</p>
+                    <div class="code-single">
+                        <div class="code-block">
+                            <div class="code-header bad"><span class="code-label">❌ Anti-Pattern: God Component</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">// ❌ Componentă cu prea multe responsabilități
+function Dashboard({ userId }) {
+    // 15+ hook-uri useState
+    const [users, setUsers] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [orders, setOrders] = useState([]);
+    const [analytics, setAnalytics] = useState({});
+    // ... și multe altele
+    
+    // 10+ useEffect pentru fetch-uri
+    useEffect(() => { /* fetch users */ }, []);
+    useEffect(() => { /* fetch products */ }, []);
+    // ...
+    
+    // 500+ linii de JSX cu logică inline
+    return (
+        &lt;div&gt;
+            {/* Tot UI-ul aplicației într-o singură componentă */}
+        &lt;/div&gt;
+    );
+}
+
+// ✅ Soluția: Extragi în componente mai mici
+// UserSection, ProductSection, OrderSection, etc.</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>📚</span> 3. Curba de Învățare</h2>
+                    <p class="theory-text">React se bazează pe cunoștințe solide de JavaScript și, din ce în ce mai mult, de TypeScript. Pentru echipe din zona back-end sau web clasic, trecerea la gândirea în termeni de React + JSX poate fi abruptă. Hook-urile și conceptul de programare funcțională pot fi un teritoriu nou.</p>
+                    <div class="highlight-box warning">
+                        <div class="highlight-title">⚠️ Nu e Suficient useState</div>
+                        <p class="theory-text" style="margin-bottom: 0;">Nu e suficient să știi useState și useEffect; acum trebuie să știi și contexte, și poate un management de stare globală (Redux, Zustand), și noțiuni de server-side rendering, și TypeScript, și testare, etc. Ecosistemul a crescut semnificativ.</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🔫</span> 4. Overkill pentru Proiecte Simple</h2>
+                    <p class="theory-text">Dacă ai de realizat un site simplu de prezentare, cu puțină interactivitate (poate un formular de contact și un meniu), a alege React/JSX ar putea fi comparat cu a împușca vrăbii cu tunul. În astfel de cazuri, un framework server-side clasic sau un generator de site static ar fi mai potrivit.</p>
+                    <div class="pros-cons">
+                        <div class="cons-list">
+                            <div class="list-title">⚠️ Probleme cu React pentru Site-uri Simple</div>
+                            <div class="list-item"><span>→</span><span><strong>Time To Interactive mare:</strong> Trebuie să încarce tot bundle-ul JS, hydration, etc.</span></div>
+                            <div class="list-item"><span>→</span><span><strong>SEO:</strong> Necesită SSR/SSG pentru indexare corectă</span></div>
+                            <div class="list-item"><span>→</span><span><strong>Complexitate nejustificată:</strong> De ce npm install pentru un site de 3 pagini?</span></div>
+                            <div class="list-item"><span>→</span><span><strong>Overhead de mentenanță:</strong> Dependențe de actualizat, security patches</span></div>
+                        </div>
+                        <div class="pros-list">
+                            <div class="list-title">✅ Alternative Mai Simple</div>
+                            <div class="list-item"><span>→</span><span>HTML + CSS + puțin vanilla JS</span></div>
+                            <div class="list-item"><span>→</span><span>Generatoare de site static (Hugo, Jekyll)</span></div>
+                            <div class="list-item"><span>→</span><span>Framework-uri server-side (Laravel, Django)</span></div>
+                            <div class="list-item"><span>→</span><span>Astro pentru site-uri cu puțin JS</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🔒</span> 5. Lock-in Conceptual și de Ecosistem</h2>
+                    <p class="theory-text">Deși JSX nu e legat exclusiv de React în teorie, în practică cea mai mare parte a ecosistemului este orientată spre React. Odată ce ai pornit pe acest drum, există un cost de switching dacă vrei să schimbi framework-ul. Codul este puternic legat de modul de a gândi al React: hook-uri, componentizare specifică, pattern-uri ca context.</p>
+                </div>
+            </section>
+            <!-- SECTION: Ghid de Decizie -->
+            <section class="section" id="decision">
+                <div class="section-header">
+                    <div class="section-icon">🎯</div>
+                    <h1 class="section-title">Ghid de Decizie</h1>
+                    <p class="section-subtitle">Când are sens React/JSX și cum îi atenuăm limitele în proiecte reale.</p>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>✅</span> Când Merită să Folosești React + JSX</h2>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <div class="feature-title">Aplicație Complexă și Interactivă</div>
+                            <div class="feature-desc">Dashboard-uri cu grafice dinamice, formulare complexe, diverse stări de afișat. React strălucește în SPA-uri complexe.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">♻️</div>
+                            <div class="feature-title">Componentizare Intensă</div>
+                            <div class="feature-desc">Dezvolți o suită de aplicații cu același limbaj de design, sau un produs white-label ce trebuie rebrand-uit ușor.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">👨‍💻</div>
+                            <div class="feature-title">Echipă Orientată JavaScript</div>
+                            <div class="feature-desc">Echipă tânără, entuziastă de JS/TS, dornică să învețe concepte de programare funcțională și hook-uri.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔧</div>
+                            <div class="feature-title">Tooling Avansat Necesar</div>
+                            <div class="feature-desc">Proiectul cere standarde înalte de calitate: lintere, TypeScript, detectoare de smell-uri, testare automată.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>⚠️</span> Când React + JSX E Discutabil</h2>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">📄</div>
+                            <div class="feature-title">Aplicație Foarte Simplă</div>
+                            <div class="feature-desc">Site de prezentare, blog, conținut preponderent static. Un generator static sau framework server-side e mai potrivit.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🚫</div>
+                            <div class="feature-title">Infrastructură DevOps Limitată</div>
+                            <div class="feature-desc">Nu dispui de mediu de CI, sau echipa nu are specialist front-end DevOps. Riscul de setup greșit e mare.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">⏰</div>
+                            <div class="feature-title">Deadline Scurt, Echipă Neexperimentată</div>
+                            <div class="feature-desc">Dacă echipa nu știe React și ai deadline scurt, forțarea adoptării poate fi contraproductivă.</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔄</div>
+                            <div class="feature-title">Echipă Preferă Alte Paradigme</div>
+                            <div class="feature-desc">Dacă echipa preferă template-uri familiare HTML sau drag-and-drop, impunerea React ar genera tensiuni.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>🛡️</span> Cum Atenuăm Dezavantajele</h2>
+                    <p class="theory-text">Dacă decizi să mergi pe React/JSX, aplică aceste măsuri preventive:</p>
+                    <div class="code-single">
+                        <div class="code-block">
+                            <div class="code-header good"><span class="code-label">✅ Best Practices pentru Proiecte React</span></div>
+                            <div class="code-content">
+<pre><code class="language-typescript">// 1. TIPAJ STATIC de la început
+// Folosește .tsx în loc de .jsx
+interface Props {
+    user: User;
+    onSelect: (id: string) => void;
+}
+
+// 2. POLITICI CLARE de componentizare
+// - Max 200-300 linii per componentă
+// - Max 3 niveluri de imbricare JSX
+// - Dacă depășești, extrage subcomponente
+
+// 3. LINTING strict
+// .eslintrc.js
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended" // ← Crucial!
+    ],
+    "rules": {
+        "react-hooks/exhaustive-deps": "error" // Forțează deps corecte
+    }
+}
+
+// 4. SEPARARE logică de JSX
+// În loc de logică inline, extrage în hook-uri custom
+function useUserData(userId: string) {
+    const [user, setUser] = useState&lt;User | null&gt;(null);
+    const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+        fetchUser(userId).then(setUser).finally(() => setLoading(false));
+    }, [userId]);
+    
+    return { user, loading };
+}
+
+// Componenta rămâne simplă
+function UserProfile({ userId }: { userId: string }) {
+    const { user, loading } = useUserData(userId); // Logica extrasă
+    
+    if (loading) return &lt;Spinner /&gt;;
+    return &lt;ProfileCard user={user} /&gt;; // JSX curat
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: Lab Declarativ vs Imperativ -->
+            <section class="section" id="labDeclarative">
+                <div class="section-header">
+                    <div class="section-icon">🔬</div>
+                    <h1 class="section-title">Lab: Declarativ vs Imperativ</h1>
+                    <p class="section-subtitle">Experimentează diferența dintre abordarea imperativă (Vanilla JS) și cea declarativă (React).</p>
+                </div>
+                <div class="lab-container">
+                    <div class="lab-header">
+                        <div class="lab-title">🧪 Counter Interactiv <span class="lab-badge">Interactiv</span></div>
+                        <div>
+                            <button class="lab-btn lab-btn-secondary" onclick="resetCounterLab()">Reset</button>
+                        </div>
+                    </div>
+                    <div class="lab-preview">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                            <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.3);">
+                                <h4 style="color: var(--accent-danger); margin-bottom: 1rem;">❌ Imperativ (Vanilla JS)</h4>
+                                <p id="imperativeDisplay" style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">Count: 0</p>
+                                <p id="imperativeWarning" style="display: none; color: var(--accent-warning);">⚠️ Count > 5!</p>
+                                <button onclick="incrementImperative()" style="padding: 0.5rem 1rem; cursor: pointer;">Increment</button>
+                                <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted);">Fiecare schimbare necesită manipulare manuală a DOM-ului</p>
+                            </div>
+                            <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                                <h4 style="color: var(--accent-success); margin-bottom: 1rem;">✅ Declarativ (React-style)</h4>
+                                <div id="declarativeRoot"></div>
+                                <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted);">UI-ul derivă automat din state</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title"><span>📝</span> Codul din Spatele Experimentului</h2>
+                    <div class="code-comparison">
+                        <div class="code-block">
+                            <div class="code-header bad"><span class="code-label">❌ Imperativ</span></div>
+                            <div class="code-content">
+<pre><code class="language-javascript">let count = 0;
+
+function increment() {
+    count++;
+    // Manual: actualizează textul
+    document.getElementById('display')
+        .textContent = `Count: ${count}`;
+    
+    // Manual: schimbă culoarea
+    if (count > 10) {
+        document.getElementById('display')
+            .style.color = 'red';
+    }
+    
+    // Manual: arată/ascunde warning
+    if (count > 5) {
+        document.getElementById('warning')
+            .style.display = 'block';
+    }
+    // Bug-uri când uiți să actualizezi ceva!
+}</code></pre>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header good"><span class="code-label">✅ Declarativ</span></div>
+                            <div class="code-content">
+<pre><code class="language-jsx">function Counter() {
+    const [count, setCount] = useState(0);
+    
+    // UI-ul e o FUNCȚIE a stării
+    // Descrii CE vrei, nu CUM
+    return (
+        &lt;div&gt;
+            &lt;p style={{ 
+                color: count > 10 ? 'red' : 'inherit' 
+            }}&gt;
+                Count: {count}
+            &lt;/p&gt;
+            
+            {count > 5 && &lt;p&gt;⚠️ Count &gt; 5!&lt;/p&gt;}
+            
+            &lt;button onClick={() => setCount(c => c + 1)}&gt;
+                Increment
+            &lt;/button&gt;
+        &lt;/div&gt;
+    );
+}
+// React se ocupă de actualizări!</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: Lab Componentizare -->
+            <section class="section" id="labComponent">
+                <div class="section-header">
+                    <div class="section-icon">🧩</div>
+                    <h1 class="section-title">Lab: Componentizare</h1>
+                    <p class="section-subtitle">Vizualizează cum o aplicație monolitică se transformă în componente reutilizabile.</p>
+                </div>
+                <div class="lab-container">
+                    <div class="lab-header">
+                        <div class="lab-title">🏗️ Descompunere în Componente <span class="lab-badge">Vizual</span></div>
+                    </div>
+                    <div class="lab-preview">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                            <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 10px;">
+                                <h4 style="color: var(--accent-danger); margin-bottom: 1rem;">❌ Monolitic</h4>
+                                <div style="border: 2px dashed rgba(239, 68, 68, 0.5); padding: 1rem; border-radius: 8px;">
+                                    <div style="background: rgba(239, 68, 68, 0.1); padding: 0.5rem; margin-bottom: 0.5rem;">Header + Nav + Logo + Search + UserMenu</div>
+                                    <div style="background: rgba(239, 68, 68, 0.1); padding: 0.5rem; margin-bottom: 0.5rem;">Sidebar + Categories + Filters</div>
+                                    <div style="background: rgba(239, 68, 68, 0.1); padding: 0.5rem; margin-bottom: 0.5rem;">ProductList + ProductCard × N</div>
+                                    <div style="background: rgba(239, 68, 68, 0.1); padding: 0.5rem;">Footer + Links + Copyright</div>
+                                    <p style="margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted);">Un singur fișier cu 2000+ linii 😱</p>
+                                </div>
+                            </div>
+                            <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 10px;">
+                                <h4 style="color: var(--accent-success); margin-bottom: 1rem;">✅ Componentizat</h4>
+                                <div style="border: 2px solid rgba(16, 185, 129, 0.5); padding: 1rem; border-radius: 8px;">
+                                    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                        <span style="background: rgba(97, 218, 251, 0.2); padding: 0.3rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">&lt;Header&gt;</span>
+                                        <span style="background: rgba(247, 223, 30, 0.2); padding: 0.3rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">&lt;Nav&gt;</span>
+                                        <span style="background: rgba(168, 85, 247, 0.2); padding: 0.3rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">&lt;SearchBar&gt;</span>
+                                    </div>
+                                    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                        <span style="background: rgba(236, 72, 153, 0.2); padding: 0.3rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">&lt;Sidebar&gt;</span>
+                                        <span style="background: rgba(16, 185, 129, 0.2); padding: 0.3rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">&lt;FilterPanel&gt;</span>
+                                    </div>
+                                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                                        <span style="background: rgba(97, 218, 251, 0.2); padding: 0.3rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">&lt;ProductCard&gt;</span>
+                                        <span style="background: rgba(97, 218, 251, 0.2); padding: 0.3rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">&lt;ProductCard&gt;</span>
+                                        <span style="background: rgba(97, 218, 251, 0.2); padding: 0.3rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">&lt;ProductCard&gt;</span>
+                                    </div>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <span style="background: rgba(245, 158, 11, 0.2); padding: 0.3rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">&lt;Footer&gt;</span>
+                                    </div>
+                                    <p style="margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted);">Fiecare componentă: 50-150 linii, testabilă, reutilizabilă ✨</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: Lab Virtual DOM -->
+            <section class="section" id="labVirtualDOM">
+                <div class="section-header">
+                    <div class="section-icon">🌳</div>
+                    <h1 class="section-title">Lab: Virtual DOM</h1>
+                    <p class="section-subtitle">Vizualizează cum React optimizează actualizările DOM-ului prin diffing.</p>
+                </div>
+                <div class="lab-container">
+                    <div class="lab-header">
+                        <div class="lab-title">🔄 Simulare Diffing <span class="lab-badge">Animat</span></div>
+                        <button class="lab-btn lab-btn-primary" onclick="simulateDiff()">Simulează Update</button>
+                    </div>
+                    <div class="lab-preview">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem;">
+                            <div>
+                                <h4 style="color: var(--text-secondary); margin-bottom: 0.75rem; font-size: 0.85rem;">1. Virtual DOM Vechi</h4>
+                                <div id="vdomOld" style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;">
+                                    <div style="color: var(--accent-react);">&lt;ul&gt;</div>
+                                    <div style="padding-left: 1rem;">&lt;li key="1"&gt;Item 1&lt;/li&gt;</div>
+                                    <div style="padding-left: 1rem;">&lt;li key="2"&gt;Item 2&lt;/li&gt;</div>
+                                    <div style="padding-left: 1rem;">&lt;li key="3"&gt;Item 3&lt;/li&gt;</div>
+                                    <div style="color: var(--accent-react);">&lt;/ul&gt;</div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 style="color: var(--text-secondary); margin-bottom: 0.75rem; font-size: 0.85rem;">2. Virtual DOM Nou</h4>
+                                <div id="vdomNew" style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;">
+                                    <div style="color: var(--accent-react);">&lt;ul&gt;</div>
+                                    <div style="padding-left: 1rem;">&lt;li key="1"&gt;Item 1&lt;/li&gt;</div>
+                                    <div id="changedItem" style="padding-left: 1rem;">&lt;li key="2"&gt;Item 2&lt;/li&gt;</div>
+                                    <div style="padding-left: 1rem;">&lt;li key="3"&gt;Item 3&lt;/li&gt;</div>
+                                    <div style="color: var(--accent-react);">&lt;/ul&gt;</div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 style="color: var(--text-secondary); margin-bottom: 0.75rem; font-size: 0.85rem;">3. Operații DOM</h4>
+                                <div id="domOps" style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; font-size: 0.8rem; min-height: 100px;">
+                                    <p style="color: var(--text-muted);">Apasă "Simulează Update" pentru a vedea diffing-ul în acțiune...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight-box success">
+                    <div class="highlight-title">✅ Eficiența Virtual DOM</div>
+                    <p class="theory-text" style="margin-bottom: 0;">În loc să re-randeze întreaga listă (operație costisitoare), React identifică exact ce s-a schimbat și aplică doar acele modificări în DOM-ul real. Pentru liste mari (100+ elemente), diferența de performanță este semnificativă!</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div class="word-counter" id="wordCounter">Cuvinte: ~9000+</div>
+
+    <script>
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const sectionId = item.dataset.section;
+                
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById(sectionId).classList.add('active');
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Imperative Counter Lab
+        let imperativeCount = 0;
+        function incrementImperative() {
+            imperativeCount++;
+            const display = document.getElementById('imperativeDisplay');
+            const warning = document.getElementById('imperativeWarning');
+            
+            display.textContent = `Count: ${imperativeCount}`;
+            
+            if (imperativeCount > 10) {
+                display.style.color = 'var(--accent-danger)';
+            } else {
+                display.style.color = 'var(--text-primary)';
+            }
+            
+            if (imperativeCount > 5) {
+                warning.style.display = 'block';
+            }
+        }
+
+        // Declarative Counter Lab (simulated React)
+        let declarativeState = { count: 0 };
+        
+        function renderDeclarative() {
+            const root = document.getElementById('declarativeRoot');
+            const { count } = declarativeState;
+            
+            root.innerHTML = `
+                <p style="font-size: 2rem; font-weight: bold; margin: 1rem 0; color: ${count > 10 ? 'var(--accent-danger)' : 'var(--text-primary)'}">
+                    Count: ${count}
+                </p>
+                ${count > 5 ? '<p style="color: var(--accent-warning);">⚠️ Count > 5!</p>' : ''}
+                <button onclick="setDeclarativeCount()" style="padding: 0.5rem 1rem; cursor: pointer;">Increment</button>
+            `;
+        }
+        
+        function setDeclarativeCount() {
+            declarativeState.count++;
+            renderDeclarative(); // Re-render (React does this automatically)
+        }
+        
+        renderDeclarative();
+
+        function resetCounterLab() {
+            imperativeCount = 0;
+            declarativeState.count = 0;
+            document.getElementById('imperativeDisplay').textContent = 'Count: 0';
+            document.getElementById('imperativeDisplay').style.color = 'var(--text-primary)';
+            document.getElementById('imperativeWarning').style.display = 'none';
+            renderDeclarative();
+        }
+
+        // Virtual DOM Lab
+        function simulateDiff() {
+            const changedItem = document.getElementById('changedItem');
+            const domOps = document.getElementById('domOps');
+            
+            // Animate change
+            changedItem.style.transition = 'all 0.3s ease';
+            changedItem.style.background = 'rgba(16, 185, 129, 0.3)';
+            changedItem.innerHTML = '&lt;li key="2"&gt;<span style="color: var(--accent-success);">Item 2 UPDATED</span>&lt;/li&gt;';
+            
+            // Show operations
+            domOps.innerHTML = `
+                <div style="color: var(--accent-success); margin-bottom: 0.5rem;">✓ Diff completat!</div>
+                <div style="color: var(--text-secondary); margin-bottom: 0.25rem;">• Comparat 4 noduri virtual</div>
+                <div style="color: var(--text-secondary); margin-bottom: 0.25rem;">• Detectat 1 schimbare (key="2")</div>
+                <div style="color: var(--accent-jsx); margin-bottom: 0.25rem;">→ DOM Op: updateTextContent(li#2)</div>
+                <div style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.75rem;">Doar 1 operație DOM în loc de 4!</div>
+            `;
+            
+            setTimeout(() => {
+                changedItem.style.background = 'transparent';
+            }, 2000);
+        }
+
+        // Prism highlight
+        Prism.highlightAll();
+    </script>
+</body>
+</html>

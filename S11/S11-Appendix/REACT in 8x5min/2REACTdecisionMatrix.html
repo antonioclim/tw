@@ -1,0 +1,659 @@
+<!-- Chosen Palette: "Architectural Blueprint" - Slate Blue (#0f172a), Engineering Orange (#f97316), Success Green (#10b981), and Warning Red (#ef4444) for risk assessment. -->
+
+<!-- Application Structure Plan:
+    Aplicația este construită ca o "Matrice Decizională pentru Arhitecți Software" (CTO / Lead Dev Dashboard).
+    Nu este doar o lecție, ci un instrument de evaluare a tehnologiei.
+    
+    Structură:
+    1.  **Sidebar de Navigare (Traseul Decizional):** Ghidează utilizatorul prin etapele evaluării unei tehnologii:
+        * Definiție & Context (Ce este cu adevărat?)
+        * Analiza ROI (Argumente Pro - Return on Investment)
+        * Analiza Riscurilor (Argumente Contra - Costuri)
+        * Laborator Comparativ (Vanilla JS vs React)
+        * Verdictul (Matricea "Când să folosim")
+    
+    2.  **Zona Principală (Viewprt):**
+        * **Documentație Executivă:** Text detaliat, profesional, bazat pe sursa "1a De ce să folosim React", structurat pe piloni (Colocalizare, Ecosistem, TypeScript).
+        * **Code Diff Viewer:** Un editor split-screen care compară direct abordarea imperativă (jQuery/Vanilla) cu cea declarativă (React) pentru același feature.
+        * **Vizualizări Interactive:**
+            * *Complexity/Utility Graph:* Grafic Chart.js care arată punctul de inflexiune unde React devine mai eficient decât Vanilla JS.
+            * *Component Composition Builder:* Vizualizare a modului în care UI-ul este compus (Atomic Design).
+    
+    Interacțiuni:
+    * Toggle între "Thinking in JS" și "Thinking in React".
+    * Simulator de "Refactoring": Cât de greu e să muți un buton în Vanilla vs React.
+    * Filtru de Scenarii: Utilizatorul selectează tipul proiectului (ex: "Site Prezentare" vs "SaaS Dashboard") și primește o recomandare.
+-->
+
+<!-- Visualization & Content Choices:
+    1.  **Complexity vs. App Size (Chart.js):**
+        * Scop: Vizualizarea argumentului "Overkill".
+        * Metodă: Line Chart.
+        * De ce: Demonstrează vizual că React are un cost inițial mare (tooling), dar curba de mentenanță este mai plată pe măsură ce aplicația crește, spre deosebire de Vanilla JS care devine exponențial mai greu de gestionat ("Spaghetti Code").
+    
+    2.  **Declarative vs Imperative DOM Manipulation:**
+        * Scop: Explicarea diferenței mentale.
+        * Metodă: Animație Canvas/DOM.
+        * De ce: Arată cum Vanilla JS necesită pași manuali (select -> update -> append), în timp ce React necesită doar schimbarea stării.
+
+    3.  **Code Smell Detector (Concept):**
+        * Scop: Evidențierea riscurilor (sursa Ferreira & Valente).
+        * Metodă: Card-uri interactive care explică "Prop Drilling" sau "Huge Components".
+-->
+
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>De ce React? Analiză Arhitecturală</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;700&family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --bg-dark: #0f172a;
+            --bg-panel: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-orange: #f97316;
+            --code-bg: #0d1117;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            overflow: hidden;
+        }
+
+        .font-serif-heading {
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .font-code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 350px;
+            margin: 0 auto;
+        }
+
+        /* Syntax Highlighting Mock */
+        .token-keyword { color: #ff7b72; }
+        .token-function { color: #d2a8ff; }
+        .token-string { color: #a5d6ff; }
+        .token-tag { color: #7ee787; }
+        .token-attr { color: #79c0ff; }
+        .token-comment { color: #8b949e; font-style: italic; }
+
+        /* Animation Classes */
+        .fade-enter {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: enter 0.5s forwards;
+        }
+        @keyframes enter {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .code-diff-container {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) {
+            .code-diff-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="flex h-screen flex-col lg:flex-row">
+
+    <!-- Sidebar Navigation -->
+    <nav class="w-full lg:w-72 bg-[#020617] border-r border-slate-800 flex flex-col h-16 lg:h-full z-20 flex-shrink-0">
+        <div class="p-6 border-b border-slate-800 flex items-center gap-3">
+            <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-bold text-white">R</div>
+            <div>
+                <h1 class="font-bold text-white text-sm tracking-widest uppercase">Decision<span class="text-blue-500">Matrix</span></h1>
+                <p class="text-[10px] text-slate-500">Evaluare Arhitecturală v1.0</p>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Toggle (Hidden on Desktop) -->
+        <button id="mobile-menu-btn" class="lg:hidden absolute right-4 top-4 text-slate-400">
+            ☰
+        </button>
+
+        <!-- Menu Items -->
+        <div class="flex-1 overflow-y-auto py-6 px-3 space-y-2 hidden lg:block" id="sidebar-menu">
+            <!-- Injected via JS -->
+        </div>
+
+        <div class="p-4 border-t border-slate-800 hidden lg:block">
+            <div class="bg-slate-800/50 rounded p-3 text-xs text-slate-400 border border-slate-700">
+                <span class="block font-bold text-slate-200 mb-1">Sursa Analizei:</span>
+                "De ce să folosim React.docx"
+                <br><span class="opacity-50 mt-1 block">Ref: Academia, ScienceDirect</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col bg-slate-900 relative overflow-hidden">
+        
+        <!-- Top Header with Context -->
+        <header class="h-16 border-b border-slate-800 bg-slate-900/95 backdrop-blur flex items-center justify-between px-8 z-10">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                <span class="text-slate-300 font-mono text-sm" id="header-context">Analiză Activă: React Ecosystem</span>
+            </div>
+            <div class="flex gap-4 text-xs text-slate-500">
+                <span>React v18+</span>
+                <span>JSX Transform</span>
+                <span>TypeScript Ready</span>
+            </div>
+        </header>
+
+        <!-- Scrollable Content -->
+        <div id="main-scroll" class="flex-1 overflow-y-auto scroll-smooth p-6 lg:p-12">
+            <div class="max-w-6xl mx-auto space-y-20" id="content-display">
+                <!-- Dynamic Content Loads Here -->
+            </div>
+            
+            <footer class="mt-20 pt-10 border-t border-slate-800 text-center text-slate-600 text-sm pb-10">
+                <p>Generat pe baza analizei arhitecturale a documentului "De ce să folosim React" de Antonio CLIM.</p>
+                <p>Include referințe către Ferreira & Valente [https://doi.org/10.1016/j.infsof.2022.107111], Nunes et al. [https://doi.org/10.1016/j.infsof.2025.107835].</p>
+            </footer>
+        </div>
+    </main>
+
+    <script>
+        // --- DATA STORE: The Knowledge Base ---
+        
+        const modules = [
+            {
+                id: 'context',
+                title: 'Definiție & Context',
+                icon: '🔍',
+                content: {
+                    heading: 'Ce este, de fapt, React + JSX?',
+                    subheading: 'Dincolo de tutoriale: O perspectivă de proiect',
+                    text: `
+                        <p class="mb-6 leading-relaxed text-slate-300">
+                            Dacă reducem React la esență, întrebarea fundamentală pe care ne-o punem ca arhitecți software este: 
+                            <em class="text-white bg-slate-800 px-1 rounded">Merită să introducem un limbaj suplimentar (JSX) și un toolchain complex doar pentru a scrie UI?</em>
+                        </p>
+                        <p class="mb-6 leading-relaxed text-slate-300">
+                            În proiectele reale, React nu este doar o bibliotecă, ci un <strong>Stack Tehnologic</strong>. 
+                            JSX este "limbajul de suprafață" prin care descriem modelul, dar în spate se află un runtime complex.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                            <div class="bg-[#1e293b] p-6 rounded-lg border-l-4 border-blue-500">
+                                <h4 class="text-white font-bold mb-2">Sintaxa (Input)</h4>
+                                <code class="text-sm font-code text-blue-300 block mb-2">&lt;UserCard active={true} /&gt;</code>
+                                <p class="text-sm text-slate-400">O notație declarativă, familiară vizual, dar care "trăiește" în JavaScript.</p>
+                            </div>
+                            <div class="bg-[#1e293b] p-6 rounded-lg border-l-4 border-purple-500">
+                                <h4 class="text-white font-bold mb-2">Runtime (Output)</h4>
+                                <code class="text-sm font-code text-purple-300 block mb-2">jsx(UserCard, { active: true })</code>
+                                <p class="text-sm text-slate-400">Compilat în apeluri de funcții optimizate pentru Virtual DOM.</p>
+                            </div>
+                        </div>
+                        <p class="mb-6 leading-relaxed text-slate-300">
+                            Literatura de specialitate subliniază constant această triadă: <strong>Component-Based + Virtual DOM + JSX</strong> ca fiind motorul scalabilității. Nu folosim React pentru că e "la modă", ci pentru că oferă o abstracție superioară manipulării directe a DOM-ului.
+                        </p>
+                    `,
+                    vizType: 'compilation'
+                }
+            },
+            {
+                id: 'pros',
+                title: 'Argumente PRO (ROI)',
+                icon: '📈',
+                content: {
+                    heading: 'Analiza ROI: De ce merită investiția?',
+                    subheading: 'Argumente validate de industrie și studii',
+                    text: `
+                        <p class="mb-6 text-slate-300">
+                            Adoptarea React vine cu un cost inițial (setup, learning curve), dar beneficiile pe termen lung (Return on Investment) în proiectele complexe sunt semnificative. Iată pilonii principali:
+                        </p>
+                        
+                        <div class="space-y-8">
+                            <!-- Argument 1 -->
+                            <div class="group">
+                                <h3 class="text-xl text-blue-400 font-serif-heading font-bold mb-2 flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded bg-blue-900/50 flex items-center justify-center text-xs">1</span>
+                                    Colocalizarea Markup-ului și a Logicii
+                                </h3>
+                                <p class="text-slate-400 mb-4 pl-8">
+                                    În arhitecturile tradiționale, separăm fișierele pe tehnologii (HTML, CSS, JS). React propune <strong>Separarea pe Interese (Separation of Concerns)</strong>.
+                                    Unitatea de lucru devine "Componenta". Aceasta conține structura (JSX), logica (Hooks) și stilul.
+                                </p>
+                                <div class="bg-slate-800/50 p-4 rounded ml-8 border border-slate-700">
+                                    <p class="text-sm text-green-400 font-mono">✅ Impact:</p>
+                                    <p class="text-sm text-slate-300">Refactorizările sunt mai ieftine. Când ștergi o componentă, ștergi tot codul aferent ei, nu lași în urmă selectori CSS orfani sau listeners JS agățați.</p>
+                                </div>
+                            </div>
+
+                            <!-- Argument 2 -->
+                            <div class="group">
+                                <h3 class="text-xl text-blue-400 font-serif-heading font-bold mb-2 flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded bg-blue-900/50 flex items-center justify-center text-xs">2</span>
+                                    Mentalul Declarativ: UI = f(state)
+                                </h3>
+                                <p class="text-slate-400 mb-4 pl-8">
+                                    Imperativ (jQuery) înseamnă să descrii <em>cum</em> să ajungi la rezultat (selectează div, șterge clasa, adaugă text).
+                                    Declarativ (React) înseamnă să descrii <em>ce</em> vrei să obții pe baza stării curente.
+                                </p>
+                            </div>
+
+                            <!-- Argument 3 -->
+                            <div class="group">
+                                <h3 class="text-xl text-blue-400 font-serif-heading font-bold mb-2 flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded bg-blue-900/50 flex items-center justify-center text-xs">3</span>
+                                    Ecosistem și TypeScript
+                                </h3>
+                                <p class="text-slate-400 mb-4 pl-8">
+                                    JSX permite analiză statică puternică. Instrumente precum <strong>SniffTSX</strong> pot detecta automat "code smells" (mirosuri de cod) specifice, cum ar fi "Prop Drilling" sau componente prea mari, înainte ca ele să ajungă în producție.
+                                </p>
+                            </div>
+                        </div>
+                    `,
+                    vizType: 'chart-complexity'
+                }
+            },
+            {
+                id: 'cons',
+                title: 'Argumente CONTRA (Riscuri)',
+                icon: '⚠️',
+                content: {
+                    heading: 'Analiza Riscurilor și Costurilor',
+                    subheading: 'Unde doare? Limitări în utilizarea reală',
+                    text: `
+                        <p class="mb-6 text-slate-300">
+                            React nu este un "silver bullet". React + JSX aduce propriile probleme, documentate în studii precum <em>Ferreira & Valente (2023)</em>. Este crucial să fim conștienți de ele.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Risc 1 -->
+                            <div class="bg-slate-800/40 p-5 rounded border-t-2 border-red-500 hover:bg-slate-800 transition">
+                                <h4 class="text-red-400 font-bold mb-2">🛠️ Toolchain Complex</h4>
+                                <p class="text-sm text-slate-400 mb-3">
+                                    React nu rulează în browser. Ai nevoie de Node.js, Webpack/Vite, Babel, ESLint, TypeScript config.
+                                </p>
+                                <p class="text-xs text-slate-500 italic">"Fatigue-ul" configurării poate ucide productivitatea pe proiecte mici.</p>
+                            </div>
+
+                            <!-- Risc 2 -->
+                            <div class="bg-slate-800/40 p-5 rounded border-t-2 border-orange-500 hover:bg-slate-800 transition">
+                                <h4 class="text-orange-400 font-bold mb-2">👃 Code Smells Specifice</h4>
+                                <p class="text-sm text-slate-400 mb-3">
+                                    JSX fiind flexibil, încurajează uneori logica complexă în view.
+                                    <strong>Componenta "God Object"</strong> sau <strong>JSX cu 10 condiții imbricate</strong> sunt probleme reale.
+                                </p>
+                            </div>
+
+                            <!-- Risc 3 -->
+                            <div class="bg-slate-800/40 p-5 rounded border-t-2 border-yellow-500 hover:bg-slate-800 transition">
+                                <h4 class="text-yellow-400 font-bold mb-2">📉 Overkill pentru Site-uri Statice</h4>
+                                <p class="text-sm text-slate-400 mb-3">
+                                    Dacă site-ul este predominant document (ex: blog simplu), React aduce un bundle JS mare care întârzie "Time to Interactive" fără beneficii reale.
+                                </p>
+                            </div>
+
+                            <!-- Risc 4 -->
+                            <div class="bg-slate-800/40 p-5 rounded border-t-2 border-purple-500 hover:bg-slate-800 transition">
+                                <h4 class="text-purple-400 font-bold mb-2">🔒 Lock-in Conceptual</h4>
+                                <p class="text-sm text-slate-400 mb-3">
+                                    Un developer "React-only" poate avea dificultăți să înțeleagă cum funcționează web-ul nativ, bazându-se exclusiv pe abstracția React (Synthetic Events, Hooks).
+                                </p>
+                            </div>
+                        </div>
+                    `,
+                    vizType: 'none'
+                }
+            },
+            {
+                id: 'lab',
+                title: 'Laborator: Vanilla vs React',
+                icon: '🧪',
+                content: {
+                    heading: 'Confruntare Directă: Imperativ vs Declarativ',
+                    subheading: 'Studiu de caz: O listă dinamică cu ștergere',
+                    text: `
+                        <p class="mb-4 text-slate-300">
+                            Să analizăm un scenariu simplu: O listă de utilizatori unde poți șterge un element.
+                            Observă diferența de abordare. În Vanilla JS, trebuie să gestionăm manual DOM-ul și să avem grijă să nu "pierdem" legătura dintre date și UI. În React, doar actualizăm datele.
+                        </p>
+                    `,
+                    vizType: 'code-diff'
+                }
+            },
+            {
+                id: 'decision',
+                title: 'Matricea Decizională',
+                icon: '✅',
+                content: {
+                    heading: 'Verdictul: Când folosim React?',
+                    subheading: 'Ghid practic pentru arhitecți',
+                    text: `
+                        <p class="mb-6 text-slate-300">
+                            Decizia nu este binară. Iată o matrice bazată pe complexitatea proiectului și echipa disponibilă.
+                        </p>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm text-slate-400 border-collapse">
+                                <thead class="bg-slate-800 text-slate-200 uppercase font-bold">
+                                    <tr>
+                                        <th class="p-4 border-b border-slate-700">Scenariu</th>
+                                        <th class="p-4 border-b border-slate-700">Recomandare</th>
+                                        <th class="p-4 border-b border-slate-700">De ce?</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800">
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-4 font-semibold text-white">Dashboard SaaS Complex</td>
+                                        <td class="p-4"><span class="bg-green-500/20 text-green-400 px-2 py-1 rounded">React Obligatoriu</span></td>
+                                        <td class="p-4">Stare complexă, interactivitate mare, necesită componentizare.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-4 font-semibold text-white">Blog / Site Prezentare</td>
+                                        <td class="p-4"><span class="bg-red-500/20 text-red-400 px-2 py-1 rounded">Evită / Astro</span></td>
+                                        <td class="p-4">Conținut static. React e overkill și afectează SEO/Performance fără SSR complex.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-4 font-semibold text-white">Echipă Java/C# Backend</td>
+                                        <td class="p-4"><span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded">React + TS</span></td>
+                                        <td class="p-4">TypeScript și tipizarea strictă ajută tranziția backend devs către frontend.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-4 font-semibold text-white">Proof of Concept (1 zi)</td>
+                                        <td class="p-4"><span class="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded">Vanilla / Alpine</span></td>
+                                        <td class="p-4">Setup-ul React durează prea mult pentru un test rapid "aruncabil".</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    `,
+                    vizType: 'none'
+                }
+            }
+        ];
+
+        // --- CODE SNIPPETS ---
+
+        const snippets = {
+            vanilla: `// ❌ IMPERATIV (Vanilla JS)
+// 1. Selectori manuali (fragil)
+const list = document.getElementById('users');
+const btn = document.getElementById('add-btn');
+
+let users = ['Ana', 'Dan'];
+
+function render() {
+  list.innerHTML = ''; // ⚠️ Șterge tot DOM-ul
+  users.forEach((u, i) => {
+    const li = document.createElement('li');
+    li.textContent = u;
+    
+    // 2. Gestionare manuală evenimente
+    const delBtn = document.createElement('button');
+    delBtn.textContent = 'X';
+    delBtn.onclick = () => {
+      users.splice(i, 1); // Modifică date
+      render(); // ⚠️ Re-randează manual tot
+    };
+    
+    li.appendChild(delBtn);
+    list.appendChild(li);
+  });
+}
+
+render(); // Trebuie apelat explicit`,
+            react: `// ✅ DECLARATIV (React)
+function UserList() {
+  // 1. Starea este sursa unică de adevăr
+  const [users, setUsers] = useState(['Ana', 'Dan']);
+
+  const remove = (idx) => {
+    // Modificăm doar datele. UI-ul reacționează automat.
+    setUsers(users.filter((_, i) => i !== idx));
+  };
+
+  return (
+    <ul>
+      {users.map((u, i) => (
+        <li key={i}>
+          {u}
+          {/* 2. Handler colocalizat */}
+          <button onClick={() => remove(i)}>X</button>
+        </li>
+      ))}
+    </ul>
+  );
+}`
+        };
+
+        // --- APP LOGIC ---
+
+        let activeModuleId = 'context';
+
+        function init() {
+            renderSidebar();
+            loadModule('context');
+            
+            // Mobile Menu
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+                const nav = document.querySelector('nav');
+                const menu = document.getElementById('sidebar-menu');
+                menu.classList.toggle('hidden');
+                nav.classList.toggle('h-auto');
+            });
+        }
+
+        function renderSidebar() {
+            const container = document.getElementById('sidebar-menu');
+            container.innerHTML = modules.map(mod => `
+                <button 
+                    onclick="loadModule('${mod.id}')"
+                    class="w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-all duration-200 ${mod.id === activeModuleId ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/50' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}"
+                >
+                    <span class="text-lg">${mod.icon}</span>
+                    <span class="font-medium text-sm">${mod.title}</span>
+                </button>
+            `).join('');
+        }
+
+        function loadModule(id) {
+            activeModuleId = id;
+            renderSidebar();
+            
+            const module = modules.find(m => m.id === id);
+            const container = document.getElementById('content-display');
+            
+            // Animation Reset
+            container.innerHTML = '';
+            
+            const contentHTML = `
+                <div class="fade-enter">
+                    <div class="mb-10 border-b border-slate-800 pb-6">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-2 font-serif-heading">${module.content.heading}</h2>
+                        <p class="text-xl text-blue-400">${module.content.subheading}</p>
+                    </div>
+                    
+                    <div class="prose prose-invert max-w-none mb-12">
+                        ${module.content.text}
+                    </div>
+
+                    ${renderVisualization(module.content.vizType)}
+                </div>
+            `;
+            
+            container.innerHTML = contentHTML;
+
+            // Init Visualization Logic
+            setTimeout(() => {
+                if (module.content.vizType === 'chart-complexity') initChart();
+                if (module.content.vizType === 'compilation') initCompilationViz();
+            }, 50);
+        }
+
+        function renderVisualization(type) {
+            if (type === 'none') return '';
+            
+            if (type === 'code-diff') {
+                return `
+                    <div class="bg-black rounded-xl overflow-hidden border border-slate-700 shadow-2xl mt-8">
+                        <div class="bg-slate-800 px-4 py-2 border-b border-slate-700 flex justify-between items-center">
+                            <span class="text-xs font-mono text-slate-400">DIFF VIEWER</span>
+                            <div class="flex gap-2 text-xs">
+                                <span class="text-red-400">● Vanilla JS</span>
+                                <span class="text-green-400">● React</span>
+                            </div>
+                        </div>
+                        <div class="code-diff-container">
+                            <div class="p-4 border-b md:border-b-0 md:border-r border-slate-800 bg-[#0d1117] overflow-x-auto">
+                                <pre class="text-xs md:text-sm font-code text-slate-300 leading-relaxed">${highlight(snippets.vanilla)}</pre>
+                            </div>
+                            <div class="p-4 bg-[#0d1117] overflow-x-auto">
+                                <pre class="text-xs md:text-sm font-code text-slate-300 leading-relaxed">${highlight(snippets.react)}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-center text-sm text-slate-500 mt-4 italic">Observă cum React elimină gestionarea manuală a DOM-ului (fără <code>createElement</code>, <code>appendChild</code>).</p>
+                `;
+            }
+
+            if (type === 'chart-complexity') {
+                return `
+                    <div class="glass-panel p-6 rounded-xl mt-8">
+                        <h3 class="text-white font-bold mb-4 text-center">Complexitate vs. Dimensiunea Aplicației</h3>
+                        <div class="chart-container">
+                            <canvas id="complexityChart"></canvas>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-4 text-center max-w-lg mx-auto">
+                            Graficul ilustrează punctul de inflexiune. Pentru aplicații mici, React este ineficient (overhead). 
+                            Pentru aplicații mari, curba Vanilla JS devine exponențială (nesustenabilă), în timp ce React rămâne liniar.
+                        </p>
+                    </div>
+                `;
+            }
+
+            if (type === 'compilation') {
+                return `
+                   <div class="mt-8 p-6 bg-slate-800/50 border border-slate-700 rounded-lg flex flex-col items-center">
+                        <div class="flex items-center gap-4 text-2xl font-bold text-slate-600 mb-4">
+                            <span>JSX</span> ➜ <span>Babel/Compiler</span> ➜ <span>JS</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-700 rounded-full overflow-hidden relative">
+                            <div id="compile-bar" class="absolute top-0 left-0 h-full bg-blue-500 w-0 transition-all duration-1000"></div>
+                        </div>
+                        <button onclick="animateCompile()" class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded text-sm transition">Simulează Procesul de Build</button>
+                   </div>
+                `;
+            }
+        }
+
+        // --- VISUALIZATION FUNCTIONS ---
+
+        function initChart() {
+            const ctx = document.getElementById('complexityChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Hello World', 'Landing Page', 'Formular Simplu', 'Dashboard', 'Enterprise App'],
+                    datasets: [
+                        {
+                            label: 'Efort de Mentenanță (Vanilla JS)',
+                            data: [1, 5, 20, 60, 100], // Exponențial
+                            borderColor: '#ef4444',
+                            borderDash: [5, 5],
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Efort de Mentenanță (React)',
+                            data: [10, 15, 20, 30, 40], // Liniar + Cost Inițial
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8' } }
+                    },
+                    scales: {
+                        y: { 
+                            title: { display: true, text: 'Complexitate / Bugs', color: '#64748b' },
+                            grid: { color: '#1e293b' },
+                            ticks: { color: '#64748b' }
+                        },
+                        x: { 
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initCompilationViz() {
+            window.animateCompile = () => {
+                const bar = document.getElementById('compile-bar');
+                bar.style.width = '0%';
+                setTimeout(() => bar.style.width = '100%', 100);
+            };
+        }
+
+        function highlight(code) {
+            // Un parser rudimentar pentru a colora codul în text
+            return code
+                .replace(/\/\/.*/g, '<span class="token-comment">$&</span>')
+                .replace(/\b(const|let|var|function|return|if|else)\b/g, '<span class="token-keyword">$1</span>')
+                .replace(/\b(document|getElementById|createElement|innerHTML|appendChild|useState|map|filter)\b/g, '<span class="token-function">$1</span>')
+                .replace(/'[^']*'/g, '<span class="token-string">$&</span>')
+                .replace(/<([a-zA-Z0-9]+)/g, '<span class="token-tag"><$1</span>')
+                .replace(/<\/([a-zA-Z0-9]+)/g, '<span class="token-tag"></$1</span>');
+        }
+
+        // Init App
+        window.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>

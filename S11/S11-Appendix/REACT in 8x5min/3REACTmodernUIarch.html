@@ -1,0 +1,556 @@
+<!-- Chosen Palette: "Ecosystem Horizon" - Deep Space Blue (#0B1120), Matrix Green (#10B981), Complexity Purple (#8B5CF6) -->
+
+<!-- Application Structure Plan:
+    Corecții față de versiunea anterioară:
+    1.  **Garanția încărcării vizualizărilor:** Am unificat denumirile cheilor (`vizType`) pentru a evita eroarea "Demo".
+    2.  **Interactivitate reală:** Butonul din colțul laboratorului este acum funcțional (Reset/Run).
+    3.  **Feedback vizual:** Containerele au loading states și conținut default pentru a nu părea goale.
+-->
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Modern: Arhitectură & Ecosistem (Fixed)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --bg-deep: #0B1120;
+            --accent-react: #0ea5e9;
+            --grid-color: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: #F3F4F6;
+            overflow: hidden;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
+        .font-code { font-family: 'JetBrains Mono', monospace; }
+
+        .cyber-border {
+            border: 1px solid #374151;
+            position: relative;
+            background: #111827;
+        }
+        .cyber-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-react), transparent);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+
+        /* Animations */
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .scan-effect::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, transparent, rgba(14, 165, 233, 0.1), transparent);
+            animation: scanline 2s linear infinite;
+            pointer-events: none;
+        }
+
+        .highlight-code { color: #a5d6ff; }
+        .keyword { color: #ff7b72; }
+        .string { color: #a5d6ff; }
+        .function { color: #d2a8ff; }
+    </style>
+</head>
+<body class="flex h-screen flex-col lg:flex-row">
+
+    <!-- Sidebar -->
+    <nav class="w-full lg:w-80 bg-[#0f172a]/95 border-r border-slate-800 flex flex-col h-16 lg:h-full z-30 flex-shrink-0 backdrop-blur-md">
+        <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+            <div>
+                <h1 class="font-display font-bold text-xl tracking-tight text-white">Modern<span class="text-sky-400">UI</span>.Arch</h1>
+                <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Centru de Comandă</p>
+            </div>
+            <button id="menu-toggle" class="lg:hidden text-slate-300 text-2xl">☰</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-2 hidden lg:block" id="sidebar-content">
+            <!-- Nav Items Injected JS -->
+        </div>
+    </nav>
+
+    <!-- Main Viewport -->
+    <main class="flex-1 flex flex-col relative overflow-hidden bg-slate-900/80">
+        <!-- Header -->
+        <header class="h-16 border-b border-slate-800 flex items-center justify-between px-8 bg-slate-900/50 backdrop-blur z-20 shrink-0">
+            <div class="flex items-center gap-4">
+                <div class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span id="current-module-title" class="font-display text-lg text-slate-200">System Overview</span>
+            </div>
+            <div class="hidden md:flex gap-2">
+                <span class="px-2 py-1 rounded bg-slate-800 text-xs text-slate-400 border border-slate-700 font-mono">React v18+</span>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div id="content-scroll" class="flex-1 overflow-y-auto scroll-smooth p-6 lg:p-12 relative">
+            <div class="max-w-6xl mx-auto space-y-12 pb-20" id="main-container">
+                <!-- Content Injected Here -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- DATA STORE ---
+        // Cheia 'vizType' este acum unificată și verificată.
+        
+        const courseData = [
+            {
+                id: 'intro',
+                title: '1. UI = f(state)',
+                icon: '💡',
+                vizType: 'formula-viz',
+                content: {
+                    heading: 'Paradigma UI = f(state)',
+                    text: `
+                        <p class="text-lg text-slate-300 leading-relaxed mb-6">
+                            În dezvoltarea modernă, React și JSX materializează filozofia: <strong>Interfața ca funcție pură a stării</strong>.
+                            Nu mai căutăm elemente în DOM pentru a le modifica manual (jQuery). Noi modificăm <em>datele</em> (starea), iar React "repictează" interfața.
+                        </p>
+                        <div class="bg-slate-800/50 p-6 rounded-lg border-l-4 border-sky-500 mb-6">
+                            <h4 class="text-sky-400 font-bold mb-2">Concept Cheie: Colocalizare</h4>
+                            <p class="text-slate-400 text-sm">Markup-ul (JSX), Logica și Stilul trăiesc împreună în componentă. Aceasta este unitatea atomică a interfeței moderne.</p>
+                        </div>
+                    `
+                }
+            },
+            {
+                id: 'spa',
+                title: '2. SPA vs MPA',
+                icon: '⚡',
+                vizType: 'spa-viz',
+                content: {
+                    heading: 'Revoluția Single Page Apps',
+                    text: `
+                        <p class="text-slate-300 mb-6">
+                            Trecerea de la <strong>Multi-Page Applications (MPA)</strong> la <strong>Single-Page Applications (SPA)</strong> a fost condusă de nevoia de performanță percepută.
+                            Într-un SPA, nu reîncărcăm pagina la fiecare click. Cerem doar date JSON și actualizăm DOM-ul local.
+                        </p>
+                    `
+                }
+            },
+            {
+                id: 'triad',
+                title: '3. Triada Framework-urilor',
+                icon: '⚔️',
+                vizType: 'radar-viz',
+                content: {
+                    heading: 'React vs Angular vs Vue',
+                    text: `
+                        <p class="text-slate-300 mb-6">
+                            Analizele comparative plasează React ca fiind "The Library" (flexibilă), Angular ca "The Framework" (rigid, complet) și Vue ca "The Progressive" (hibrid).
+                            React câștigă în ecosistem și flexibilitate arhitecturală.
+                        </p>
+                    `
+                }
+            },
+            {
+                id: 'declarative',
+                title: '4. Declarativ vs Imperativ',
+                icon: '🗣️',
+                vizType: 'code-compare',
+                content: {
+                    heading: 'Puterea JSX',
+                    text: `
+                        <p class="text-slate-300 mb-6">
+                            JSX pare ciudat la început ("HTML în JS?!"), dar permite folosirea puterii JavaScript (map, filter, if) direct în construirea interfeței, eliminând nevoia de directive proprietare (ng-repeat).
+                        </p>
+                    `
+                }
+            },
+            {
+                id: 'cross',
+                title: '5. Cross-Platform',
+                icon: '📱',
+                vizType: 'tree-viz',
+                content: {
+                    heading: 'Learn Once, Write Anywhere',
+                    text: `
+                        <p class="text-slate-300 mb-6">
+                            React nu randează doar în browser. Același model mental (Componente + State) randează aplicații native iOS/Android prin <strong>React Native</strong>. React este doar "motorul"; renderer-ul se schimbă.
+                        </p>
+                    `
+                }
+            }
+        ];
+
+        // --- APP LOGIC ---
+
+        let currentModuleIndex = 0;
+
+        function init() {
+            renderSidebar();
+            loadModule(0);
+            
+            document.getElementById('menu-toggle').onclick = () => {
+                const nav = document.getElementById('sidebar-content');
+                nav.classList.toggle('hidden');
+            };
+        }
+
+        function renderSidebar() {
+            const container = document.getElementById('sidebar-content');
+            container.innerHTML = courseData.map((module, index) => `
+                <button 
+                    onclick="loadModule(${index})"
+                    class="w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-all duration-200 group ${index === currentModuleIndex ? 'bg-slate-800 text-sky-400 border-l-2 border-sky-500 shadow-lg' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'}"
+                >
+                    <span class="text-lg opacity-70 group-hover:opacity-100">${module.icon}</span>
+                    <span class="font-medium text-sm">${module.title}</span>
+                </button>
+            `).join('');
+        }
+
+        function loadModule(index) {
+            currentModuleIndex = index;
+            renderSidebar();
+            
+            const module = courseData[index];
+            const container = document.getElementById('main-container');
+            
+            document.getElementById('current-module-title').innerText = module.title;
+            
+            container.style.opacity = '0';
+            setTimeout(() => {
+                container.innerHTML = `
+                    <div class="prose prose-invert max-w-none">
+                        <h2 class="text-3xl font-display font-bold text-white mb-6">${module.content.heading}</h2>
+                        ${module.content.text}
+                    </div>
+                    
+                    <div class="mt-8 cyber-border rounded-xl p-1 shadow-2xl relative group bg-slate-900 overflow-hidden">
+                        <!-- Top Bar with Real Button -->
+                        <div class="bg-[#0f172a] px-4 py-2 flex items-center justify-between border-b border-slate-700">
+                            <h3 class="text-sm font-mono font-bold text-sky-400 flex items-center gap-2">
+                                <span class="text-lg">🧪</span> Laborator: ${getVizTitle(module.vizType)}
+                            </h3>
+                            <button onclick="triggerVizAction('${module.vizType}')" class="px-3 py-1 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded shadow-lg transition active:scale-95 flex items-center gap-1">
+                                <span>▶</span> Rulează Demo
+                            </button>
+                        </div>
+
+                        <!-- Visualization Container -->
+                        <div id="viz-container" class="p-6 min-h-[350px] flex flex-col items-center justify-center bg-[#0B1120] relative">
+                            <!-- Injected Here -->
+                        </div>
+                    </div>
+                `;
+                
+                initVisualization(module.vizType);
+                container.style.opacity = '1';
+                container.style.transition = 'opacity 0.3s ease-in';
+            }, 200);
+        }
+
+        function getVizTitle(type) {
+            const map = {
+                'formula-viz': 'State Change Simulator',
+                'spa-viz': 'Traffic Analysis (MPA vs SPA)',
+                'radar-viz': 'Framework Comparison Radar',
+                'code-compare': 'Imperative vs Declarative',
+                'tree-viz': 'Cross-Platform Architecture'
+            };
+            return map[type] || 'Interactive Demo';
+        }
+
+        // --- GLOBAL ACTION HANDLER ---
+        // This function is called by the "Rulează Demo" button
+        window.triggerVizAction = (type) => {
+            const container = document.getElementById('viz-container');
+            // Add a quick flash effect to show action
+            container.classList.add('opacity-50');
+            setTimeout(() => container.classList.remove('opacity-50'), 100);
+
+            if (type === 'formula-viz') {
+                // Reset state and run auto sequence
+                window.resetFormulaViz(); 
+            } else if (type === 'spa-viz') {
+                window.runSpaSimulation();
+            } else if (type === 'radar-viz') {
+                window.randomizeRadar();
+            } else if (type === 'code-compare') {
+                window.toggleCodeView();
+            }
+        };
+
+        function initVisualization(type) {
+            const container = document.getElementById('viz-container');
+            container.innerHTML = '';
+
+            if (type === 'formula-viz') renderFormulaViz(container);
+            else if (type === 'spa-viz') renderSpaViz(container);
+            else if (type === 'radar-viz') renderRadarViz(container);
+            else if (type === 'code-compare') renderCodeCompare(container);
+            else if (type === 'tree-viz') renderTreeViz(container);
+        }
+
+        // --- VIZ 1: Formula ---
+        function renderFormulaViz(container) {
+            container.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+                    <!-- State Panel -->
+                    <div class="bg-slate-800 p-4 rounded border border-slate-700 font-mono text-sm">
+                        <div class="text-sky-400 mb-2">// Application State</div>
+                        <div class="text-green-300">const [state, setState] = useState({</div>
+                        <div class="pl-4 text-white">
+                            user: <span id="val-user" class="text-yellow-300">'Guest'</span>,
+                        </div>
+                        <div class="pl-4 text-white">
+                            theme: <span id="val-theme" class="text-purple-300">'dark'</span>
+                        </div>
+                        <div class="text-green-300">});</div>
+                        
+                        <div class="mt-4 flex gap-2">
+                            <button onclick="updateState('user')" class="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-xs hover:bg-slate-600">Toggle User</button>
+                            <button onclick="updateState('theme')" class="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-xs hover:bg-slate-600">Toggle Theme</button>
+                        </div>
+                    </div>
+
+                    <!-- UI Panel -->
+                    <div id="ui-output" class="bg-gray-900 p-6 rounded border border-slate-700 flex flex-col items-center justify-center transition-all duration-500 shadow-xl">
+                        <div class="w-16 h-16 rounded-full bg-gray-700 mb-4 flex items-center justify-center text-2xl" id="ui-avatar">👤</div>
+                        <h3 class="text-xl font-bold text-white mb-2" id="ui-text">Hello, Guest</h3>
+                        <div class="h-2 w-20 bg-gray-700 rounded"></div>
+                    </div>
+                </div>
+            `;
+
+            let state = { user: 'Guest', theme: 'dark' };
+
+            window.updateState = (key) => {
+                if(key === 'user') state.user = state.user === 'Guest' ? 'Admin' : 'Guest';
+                if(key === 'theme') state.theme = state.theme === 'dark' ? 'light' : 'dark';
+                renderStateUI();
+            };
+
+            window.resetFormulaViz = () => {
+                state = { user: 'Guest', theme: 'dark' };
+                renderStateUI();
+            };
+
+            function renderStateUI() {
+                // Update Code
+                document.getElementById('val-user').innerText = `'${state.user}'`;
+                document.getElementById('val-theme').innerText = `'${state.theme}'`;
+                
+                // Update UI
+                const ui = document.getElementById('ui-output');
+                const text = document.getElementById('ui-text');
+                const avatar = document.getElementById('ui-avatar');
+
+                if(state.theme === 'light') {
+                    ui.className = "bg-white p-6 rounded border border-gray-200 flex flex-col items-center justify-center transition-all duration-500";
+                    text.className = "text-xl font-bold text-gray-800 mb-2";
+                    avatar.className = "w-16 h-16 rounded-full bg-gray-200 mb-4 flex items-center justify-center text-2xl shadow-sm";
+                } else {
+                    ui.className = "bg-gray-900 p-6 rounded border border-slate-700 flex flex-col items-center justify-center transition-all duration-500 shadow-xl shadow-purple-900/20";
+                    text.className = "text-xl font-bold text-white mb-2";
+                    avatar.className = "w-16 h-16 rounded-full bg-gray-700 mb-4 flex items-center justify-center text-2xl shadow-inner";
+                }
+
+                text.innerText = `Hello, ${state.user}`;
+                avatar.innerText = state.user === 'Admin' ? '🚀' : '👤';
+            }
+        }
+
+        // --- VIZ 2: SPA ---
+        function renderSpaViz(container) {
+            container.innerHTML = `
+                <div class="w-full max-w-2xl space-y-6">
+                    <!-- MPA Lane -->
+                    <div class="relative">
+                        <div class="flex justify-between text-xs text-slate-400 mb-1">
+                            <span>MPA (Classic)</span>
+                            <span id="mpa-status">Waiting...</span>
+                        </div>
+                        <div class="h-10 bg-slate-800 rounded overflow-hidden flex relative">
+                            <div id="mpa-load" class="h-full bg-red-500/20 w-0 transition-all duration-1000 flex items-center justify-center text-[10px] text-red-200 whitespace-nowrap"></div>
+                        </div>
+                    </div>
+
+                    <!-- SPA Lane -->
+                    <div class="relative">
+                        <div class="flex justify-between text-xs text-slate-400 mb-1">
+                            <span>SPA (React)</span>
+                            <span id="spa-status">Waiting...</span>
+                        </div>
+                        <div class="h-10 bg-slate-800 rounded overflow-hidden flex relative">
+                            <div id="spa-load" class="h-full bg-emerald-500/20 w-0 transition-all duration-300 flex items-center justify-center text-[10px] text-emerald-200 whitespace-nowrap"></div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-center text-xs text-slate-500 mt-4">Apasă "Rulează Demo" pentru a compara viteza de reîncărcare.</p>
+                </div>
+            `;
+
+            window.runSpaSimulation = () => {
+                const mpaBar = document.getElementById('mpa-load');
+                const spaBar = document.getElementById('spa-load');
+                
+                // Reset
+                mpaBar.style.width = '0%'; spaBar.style.width = '0%';
+                mpaBar.innerText = ''; spaBar.innerText = '';
+                
+                // Animate
+                setTimeout(() => {
+                    mpaBar.style.width = '100%';
+                    mpaBar.innerText = 'Reloading HTML... CSS... JS... Images...';
+                    document.getElementById('mpa-status').innerText = '450ms (Full Reload)';
+                }, 100);
+
+                setTimeout(() => {
+                    spaBar.style.width = '15%';
+                    spaBar.innerText = 'JSON Data';
+                    document.getElementById('spa-status').innerText = '40ms (Diff Update)';
+                }, 100);
+            };
+        }
+
+        // --- VIZ 3: Radar ---
+        function renderRadarViz(container) {
+            container.innerHTML = '<div class="relative h-[300px] w-full max-w-[500px]"><canvas id="radarChart"></canvas></div>';
+            
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            window.radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Flexibilitate', 'Ușurință', 'Ecosistem', 'Performanță', 'Strictness'],
+                    datasets: [
+                        {
+                            label: 'React',
+                            data: [90, 70, 95, 85, 20],
+                            backgroundColor: 'rgba(14, 165, 233, 0.2)',
+                            borderColor: '#0ea5e9',
+                            pointBackgroundColor: '#0ea5e9',
+                        },
+                        {
+                            label: 'Angular',
+                            data: [30, 40, 80, 80, 95],
+                            backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                            borderColor: '#ef4444',
+                            pointBackgroundColor: '#ef4444',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: { color: '#9CA3AF', font: { size: 11 } },
+                            ticks: { display: false, backdropColor: 'transparent' }
+                        }
+                    },
+                    plugins: { legend: { labels: { color: '#F3F4F6' } } }
+                }
+            });
+
+            window.randomizeRadar = () => {
+                // Simulează o schimbare de perspectivă
+                window.radarChart.data.datasets[0].data = [95, 60, 90, 90, 25]; // React
+                window.radarChart.update();
+                setTimeout(() => {
+                    window.radarChart.data.datasets[0].data = [90, 70, 95, 85, 20]; // Reset
+                    window.radarChart.update();
+                }, 1000);
+            }
+        }
+
+        // --- VIZ 4: Code Compare ---
+        function renderCodeCompare(container) {
+            container.innerHTML = `
+                <div class="grid grid-cols-2 gap-0 border border-slate-700 rounded bg-[#0d1117] font-code text-xs w-full max-w-3xl overflow-hidden">
+                    <div class="p-4 border-r border-slate-700 bg-red-900/10 transition-colors" id="imperative-box">
+                        <div class="text-red-400 font-bold mb-2 uppercase">Imperativ (Cum?)</div>
+                        <div class="text-slate-400 opacity-70">
+                            const btn = <span class="keyword">document</span>.create('button');<br>
+                            btn.text = 'Click';<br>
+                            btn.onclick = () => {<br>
+                            &nbsp;&nbsp;modal.style.display = 'block';<br>
+                            &nbsp;&nbsp;overlay.classList.add('show');<br>
+                            }
+                        </div>
+                    </div>
+                    <div class="p-4 bg-sky-900/10 transition-colors" id="declarative-box">
+                        <div class="text-sky-400 font-bold mb-2 uppercase">Declarativ (Ce?)</div>
+                        <div class="text-slate-300">
+                            return (<br>
+                            &nbsp;&nbsp;<span class="keyword">&lt;Modal</span> <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="function">isOpen</span>={isOpen} <br>
+                            &nbsp;&nbsp;<span class="keyword">/&gt;</span><br>
+                            )
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            window.toggleCodeView = () => {
+                document.getElementById('declarative-box').classList.add('bg-sky-500/20');
+                setTimeout(() => document.getElementById('declarative-box').classList.remove('bg-sky-500/20'), 500);
+            }
+        }
+
+        // --- VIZ 5: Tree ---
+        function renderTreeViz(container) {
+            container.innerHTML = `
+                <div class="flex flex-col items-center gap-4 w-full">
+                    <div class="p-3 bg-sky-600 text-white rounded font-bold shadow-lg shadow-sky-500/50 z-10 animate-bounce">
+                        React Core Logic (JS)
+                    </div>
+                    <div class="h-8 w-0.5 bg-slate-600"></div>
+                    <div class="w-full max-w-md h-0.5 bg-slate-600 relative">
+                        <div class="absolute left-0 top-0 w-0.5 h-8 bg-slate-600"></div>
+                        <div class="absolute right-0 top-0 w-0.5 h-8 bg-slate-600"></div>
+                        <div class="absolute left-1/2 top-0 w-0.5 h-8 bg-slate-600"></div>
+                    </div>
+                    <div class="flex justify-between w-full max-w-md pt-4">
+                        <div class="text-center">
+                            <div class="text-2xl">🌐</div>
+                            <div class="text-xs text-slate-400">react-dom</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl">📱</div>
+                            <div class="text-xs text-slate-400">react-native</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl">👓</div>
+                            <div class="text-xs text-slate-400">react-vr</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Init
+        window.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>

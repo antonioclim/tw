@@ -1,0 +1,2403 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎬 Movie App S11 — Ghid Complet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       CSS CUSTOM PROPERTIES
+    ═══════════════════════════════════════════════════════════════ */
+    :root {
+      --c-bg-dark: #0c0f1a;
+      --c-bg-card: #151929;
+      --c-bg-elevated: #1c2137;
+      --c-bg-hover: #242a45;
+      --c-accent-primary: #ff6b35;
+      --c-accent-secondary: #f7c948;
+      --c-accent-blue: #4dabf7;
+      --c-accent-green: #51cf66;
+      --c-accent-purple: #be4bdb;
+      --c-accent-red: #ff6b6b;
+      --c-text-primary: #f8f9fa;
+      --c-text-secondary: #adb5bd;
+      --c-text-muted: #6c757d;
+      --c-border: rgba(255,255,255,0.08);
+      --c-border-light: rgba(255,255,255,0.15);
+      --gradient-fire: linear-gradient(135deg, #ff6b35 0%, #f7c948 100%);
+      --gradient-ocean: linear-gradient(135deg, #4dabf7 0%, #be4bdb 100%);
+      --gradient-forest: linear-gradient(135deg, #51cf66 0%, #20c997 100%);
+      --shadow-glow: 0 0 60px rgba(255, 107, 53, 0.15);
+      --shadow-card: 0 8px 32px rgba(0,0,0,0.3);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --radius-xl: 32px;
+      --font-main: 'Space Grotesk', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --transition-fast: 0.2s ease;
+      --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════════════════════════ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      scroll-padding-top: 80px;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: var(--c-bg-dark);
+      color: var(--c-text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       BACKGROUND DECORATIONS
+    ═══════════════════════════════════════════════════════════════ */
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse 100% 80% at 20% 0%, rgba(255, 107, 53, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 60% at 80% 20%, rgba(77, 171, 247, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 50% at 50% 100%, rgba(190, 75, 219, 0.06) 0%, transparent 50%);
+    }
+
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.03;
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       ANIMATIONS
+    ═══════════════════════════════════════════════════════════════ */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeSlideLeft {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .animate-in {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .animate-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stagger-1 { transition-delay: 0.1s; }
+    .stagger-2 { transition-delay: 0.2s; }
+    .stagger-3 { transition-delay: 0.3s; }
+    .stagger-4 { transition-delay: 0.4s; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════════════════════════════ */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       NAVIGATION
+    ═══════════════════════════════════════════════════════════════ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 16px 0;
+      background: rgba(12, 15, 26, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--c-border);
+      transition: var(--transition-smooth);
+    }
+
+    .nav.scrolled {
+      padding: 12px 0;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--c-text-primary);
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      font-size: 1.6rem;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .nav-logo span {
+      background: var(--gradient-fire);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      padding: 10px 18px;
+      color: var(--c-text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+      transition: var(--transition-fast);
+    }
+
+    .nav-link:hover {
+      color: var(--c-text-primary);
+      background: var(--c-bg-elevated);
+    }
+
+    .nav-link.active {
+      color: var(--c-bg-dark);
+      background: var(--gradient-fire);
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      background: var(--c-bg-elevated);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .nav-toggle span {
+      width: 22px;
+      height: 2px;
+      background: var(--c-text-primary);
+      border-radius: 2px;
+      transition: var(--transition-fast);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       HERO SECTION
+    ═══════════════════════════════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--c-bg-card);
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      color: var(--c-accent-primary);
+      border: 1px solid rgba(255, 107, 53, 0.3);
+      margin-bottom: 28px;
+      animation: fadeSlideUp 0.8s ease both;
+    }
+
+    .hero-badge-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--c-accent-primary);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 7vw, 4.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      animation: fadeSlideUp 0.8s ease 0.1s both;
+    }
+
+    .hero-title-accent {
+      background: var(--gradient-fire);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--c-text-secondary);
+      max-width: 580px;
+      margin: 0 auto 40px;
+      animation: fadeSlideUp 0.8s ease 0.2s both;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeSlideUp 0.8s ease 0.3s both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      font-family: var(--font-main);
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--gradient-fire);
+      color: var(--c-bg-dark);
+      box-shadow: 0 4px 24px rgba(255, 107, 53, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 36px rgba(255, 107, 53, 0.45);
+    }
+
+    .btn-secondary {
+      background: var(--c-bg-card);
+      color: var(--c-text-primary);
+      border: 1px solid var(--c-border-light);
+    }
+
+    .btn-secondary:hover {
+      background: var(--c-bg-elevated);
+      border-color: var(--c-accent-primary);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: var(--c-text-muted);
+      font-size: 0.8rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .hero-scroll-icon {
+      width: 28px;
+      height: 44px;
+      border: 2px solid var(--c-text-muted);
+      border-radius: 14px;
+      position: relative;
+    }
+
+    .hero-scroll-icon::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 8px;
+      background: var(--c-accent-primary);
+      border-radius: 2px;
+      animation: pulse 1.5s ease infinite;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SECTIONS
+    ═══════════════════════════════════════════════════════════════ */
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--c-bg-elevated);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--c-accent-blue);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--c-text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       FEATURE CARDS
+    ═══════════════════════════════════════════════════════════════ */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--c-bg-card);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      border: 1px solid var(--c-border);
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-fire);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 107, 53, 0.3);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    .feature-icon.orange { background: rgba(255, 107, 53, 0.15); }
+    .feature-icon.blue { background: rgba(77, 171, 247, 0.15); }
+    .feature-icon.green { background: rgba(81, 207, 102, 0.15); }
+    .feature-icon.purple { background: rgba(190, 75, 219, 0.15); }
+
+    .feature-card h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .feature-card p {
+      color: var(--c-text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       API KEY SECTION
+    ═══════════════════════════════════════════════════════════════ */
+    .api-section {
+      background: linear-gradient(135deg, var(--c-bg-card) 0%, var(--c-bg-elevated) 100%);
+    }
+
+    .steps-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .step {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 24px;
+      top: 56px;
+      bottom: -16px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--c-accent-primary), transparent);
+    }
+
+    .step-number {
+      width: 50px;
+      height: 50px;
+      background: var(--gradient-fire);
+      color: var(--c-bg-dark);
+      font-weight: 700;
+      font-size: 1.2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+      padding-top: 4px;
+    }
+
+    .step-content h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .step-content p {
+      color: var(--c-text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .step-content a {
+      color: var(--c-accent-primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .step-content a:hover {
+      text-decoration: underline;
+    }
+
+    .config-table {
+      margin-top: 50px;
+      background: var(--c-bg-dark);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--c-border);
+    }
+
+    .config-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .config-table th,
+    .config-table td {
+      padding: 16px 20px;
+      text-align: left;
+      border-bottom: 1px solid var(--c-border);
+    }
+
+    .config-table th {
+      background: var(--c-bg-elevated);
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--c-text-secondary);
+    }
+
+    .config-table td {
+      font-size: 0.9rem;
+    }
+
+    .config-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .config-table code {
+      background: var(--c-bg-elevated);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--c-accent-primary);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       KIT TABS
+    ═══════════════════════════════════════════════════════════════ */
+    .kits-tabs {
+      background: var(--c-bg-card);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid var(--c-border);
+    }
+
+    .tabs-nav {
+      display: flex;
+      background: var(--c-bg-dark);
+      border-bottom: 1px solid var(--c-border);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+    }
+
+    .tabs-nav::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .tabs-nav::-webkit-scrollbar-thumb {
+      background: var(--c-accent-primary);
+      border-radius: 2px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: max-content;
+      padding: 20px 28px;
+      background: none;
+      border: none;
+      color: var(--c-text-secondary);
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .tab-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 3px;
+      background: var(--gradient-fire);
+      transition: width 0.3s ease;
+      border-radius: 3px 3px 0 0;
+    }
+
+    .tab-btn:hover {
+      color: var(--c-text-primary);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .tab-btn.active {
+      color: var(--c-accent-primary);
+    }
+
+    .tab-btn.active::after {
+      width: 50%;
+    }
+
+    .tab-panel {
+      display: none;
+      padding: 36px;
+      animation: fadeSlideUp 0.5s ease;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .kit-header {
+      margin-bottom: 28px;
+    }
+
+    .kit-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .kit-tag {
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .kit-tag.frontend { background: rgba(77, 171, 247, 0.15); color: var(--c-accent-blue); }
+    .kit-tag.backend { background: rgba(81, 207, 102, 0.15); color: var(--c-accent-green); }
+    .kit-tag.database { background: rgba(190, 75, 219, 0.15); color: var(--c-accent-purple); }
+    .kit-tag.state { background: rgba(255, 107, 53, 0.15); color: var(--c-accent-primary); }
+
+    .kit-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .kit-desc {
+      color: var(--c-text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .kit-features {
+      list-style: none;
+      margin: 28px 0;
+    }
+
+    .kit-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--c-border);
+      color: var(--c-text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .kit-features li:last-child {
+      border-bottom: none;
+    }
+
+    .kit-features li::before {
+      content: '✓';
+      color: var(--c-accent-green);
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .kit-port {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--c-bg-dark);
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      margin-top: 12px;
+    }
+
+    .kit-port::before {
+      content: '🌐';
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       CODE BLOCKS
+    ═══════════════════════════════════════════════════════════════ */
+    .code-block {
+      background: #0d1117;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin: 24px 0;
+      border: 1px solid var(--c-border);
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--c-border);
+    }
+
+    .code-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .code-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .code-dot.red { background: #ff5f56; }
+    .code-dot.yellow { background: #ffbd2e; }
+    .code-dot.green { background: #27c93f; }
+
+    .code-title {
+      color: var(--c-text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .code-body {
+      padding: 20px;
+      overflow-x: auto;
+    }
+
+    .code-body pre {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: #e6edf3;
+    }
+
+    .code-body .comment { color: #8b949e; }
+    .code-body .keyword { color: #ff7b72; }
+    .code-body .string { color: #a5d6ff; }
+    .code-body .function { color: #d2a8ff; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       COMPARISON TABLE
+    ═══════════════════════════════════════════════════════════════ */
+    .comparison-section {
+      background: var(--c-bg-card);
+    }
+
+    .comparison-table-wrapper {
+      overflow-x: auto;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--c-border);
+      background: var(--c-bg-dark);
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 16px 20px;
+      text-align: left;
+      border-bottom: 1px solid var(--c-border);
+      font-size: 0.9rem;
+    }
+
+    .comparison-table th {
+      background: var(--c-bg-elevated);
+      font-weight: 600;
+      color: var(--c-text-primary);
+      position: sticky;
+      top: 0;
+    }
+
+    .comparison-table th:first-child {
+      min-width: 160px;
+    }
+
+    .comparison-table td {
+      color: var(--c-text-secondary);
+    }
+
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .comparison-table tr:hover td {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-yes { background: rgba(81, 207, 102, 0.15); color: var(--c-accent-green); }
+    .badge-no { background: rgba(255, 107, 107, 0.15); color: var(--c-accent-red); }
+
+    /* ═══════════════════════════════════════════════════════════════
+       EVOLUTION DIAGRAM
+    ═══════════════════════════════════════════════════════════════ */
+    .evolution {
+      margin-top: 60px;
+      background: var(--c-bg-elevated);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      border: 1px solid var(--c-border);
+    }
+
+    .evolution-title {
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--c-accent-primary);
+      margin-bottom: 36px;
+    }
+
+    .evolution-flow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+    }
+
+    .evolution-stage {
+      flex: 1;
+      min-width: 180px;
+      text-align: center;
+      padding: 28px 20px;
+      background: var(--c-bg-dark);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--c-border);
+      transition: var(--transition-smooth);
+    }
+
+    .evolution-stage:hover {
+      transform: translateY(-5px);
+      border-color: var(--c-accent-primary);
+    }
+
+    .evolution-stage h5 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--c-accent-primary);
+    }
+
+    .evolution-stage p {
+      font-size: 0.85rem;
+      color: var(--c-text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .evolution-stage .paradigm {
+      margin-top: 12px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .evolution-stage .paradigm.imperative { color: var(--c-accent-primary); }
+    .evolution-stage .paradigm.declarative { color: var(--c-accent-blue); }
+    .evolution-stage .paradigm.predictable { color: var(--c-accent-green); }
+
+    .evolution-arrow {
+      font-size: 2rem;
+      color: var(--c-accent-primary);
+      flex-shrink: 0;
+      animation: pulse 2s ease infinite;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       ACCORDION
+    ═══════════════════════════════════════════════════════════════ */
+    .accordion {
+      margin-top: 50px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--c-border);
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid var(--c-border);
+    }
+
+    .accordion-item:last-child {
+      border-bottom: none;
+    }
+
+    .accordion-btn {
+      width: 100%;
+      padding: 22px 28px;
+      background: var(--c-bg-dark);
+      border: none;
+      text-align: left;
+      font-family: var(--font-main);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--c-text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: var(--transition-fast);
+    }
+
+    .accordion-btn:hover {
+      background: var(--c-bg-elevated);
+    }
+
+    .accordion-icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--c-accent-primary);
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-item.open .accordion-icon {
+      transform: rotate(180deg);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      background: var(--c-bg-elevated);
+    }
+
+    .accordion-item.open .accordion-content {
+      max-height: 500px;
+    }
+
+    .accordion-inner {
+      padding: 24px 28px;
+      color: var(--c-text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       CURRICULUM SECTION
+    ═══════════════════════════════════════════════════════════════ */
+    .curriculum-table-wrapper {
+      overflow-x: auto;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--c-border);
+    }
+
+    .curriculum-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 500px;
+    }
+
+    .curriculum-table th,
+    .curriculum-table td {
+      padding: 18px 22px;
+      text-align: left;
+      border-bottom: 1px solid var(--c-border);
+    }
+
+    .curriculum-table th {
+      background: var(--c-bg-elevated);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .curriculum-table td {
+      font-size: 0.95rem;
+      color: var(--c-text-secondary);
+    }
+
+    .curriculum-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .curriculum-table tr:hover td {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .stage-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--gradient-fire);
+      color: var(--c-bg-dark);
+      font-weight: 700;
+      border-radius: 50%;
+      font-size: 0.85rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       NOTES SECTION
+    ═══════════════════════════════════════════════════════════════ */
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .note-card {
+      background: var(--c-bg-card);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1px solid var(--c-border);
+      transition: var(--transition-smooth);
+    }
+
+    .note-card:hover {
+      border-color: rgba(255, 107, 53, 0.3);
+    }
+
+    .note-card h4 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .note-card h4 span {
+      font-size: 1.5rem;
+    }
+
+    .note-card p {
+      color: var(--c-text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .note-card code {
+      background: var(--c-bg-dark);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--c-accent-primary);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       RESOURCES
+    ═══════════════════════════════════════════════════════════════ */
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .resource-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      background: var(--c-bg-card);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--c-border);
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+
+    .resource-link:hover {
+      transform: translateX(6px);
+      border-color: var(--c-accent-primary);
+      background: var(--c-bg-elevated);
+    }
+
+    .resource-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--c-bg-elevated);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .resource-info h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--c-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .resource-info p {
+      font-size: 0.85rem;
+      color: var(--c-text-muted);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════════════ */
+    footer {
+      padding: 60px 0 40px;
+      border-top: 1px solid var(--c-border);
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-size: 1.6rem;
+      font-weight: 700;
+      background: var(--gradient-fire);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .footer-text {
+      color: var(--c-text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 28px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--c-text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--c-accent-primary);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       BACK TO TOP
+    ═══════════════════════════════════════════════════════════════ */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 52px;
+      height: 52px;
+      background: var(--gradient-fire);
+      color: var(--c-bg-dark);
+      border: none;
+      border-radius: 50%;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: var(--transition-smooth);
+      box-shadow: 0 4px 24px rgba(255, 107, 53, 0.4);
+      z-index: 99;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(255, 107, 53, 0.5);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       RESPONSIVE — MOBILE (<680px)
+    ═══════════════════════════════════════════════════════════════ */
+    @media (max-width: 680px) {
+      html {
+        font-size: 15px;
+      }
+
+      .container {
+        padding: 0 16px;
+      }
+
+      /* Navigation */
+      .nav {
+        padding: 14px 0;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--c-bg-dark);
+        flex-direction: column;
+        padding: 20px;
+        border-bottom: 1px solid var(--c-border);
+        transform: translateY(-120%);
+        opacity: 0;
+        transition: var(--transition-smooth);
+        z-index: 999;
+      }
+
+      .nav-links.open {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .nav-link {
+        padding: 14px 16px;
+        text-align: center;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      .nav-toggle.open span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .nav-toggle.open span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .nav-toggle.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+      }
+
+      /* Hero */
+      .hero {
+        min-height: auto;
+        padding: 100px 0 60px;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1rem;
+        padding: 0 10px;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        padding: 0 20px;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 16px 24px;
+      }
+
+      .hero-scroll {
+        display: none;
+      }
+
+      /* Sections */
+      section {
+        padding: 60px 0;
+      }
+
+      .section-title {
+        font-size: 1.6rem;
+      }
+
+      .section-header {
+        margin-bottom: 40px;
+      }
+
+      /* Features */
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .feature-card {
+        padding: 24px;
+      }
+
+      /* Steps */
+      .step {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .step:not(:last-child)::after {
+        display: none;
+      }
+
+      .step-number {
+        width: 44px;
+        height: 44px;
+        font-size: 1rem;
+      }
+
+      /* Tabs */
+      .tabs-nav {
+        gap: 0;
+      }
+
+      .tab-btn {
+        padding: 16px 18px;
+        font-size: 0.85rem;
+      }
+
+      .tab-panel {
+        padding: 24px;
+      }
+
+      .kit-title {
+        font-size: 1.2rem;
+      }
+
+      .kit-tags {
+        gap: 8px;
+      }
+
+      .kit-tag {
+        font-size: 0.7rem;
+        padding: 5px 12px;
+      }
+
+      /* Code */
+      .code-block {
+        margin: 16px 0;
+      }
+
+      .code-body {
+        padding: 16px;
+      }
+
+      .code-body pre {
+        font-size: 0.75rem;
+      }
+
+      /* Tables */
+      .comparison-table th,
+      .comparison-table td,
+      .curriculum-table th,
+      .curriculum-table td,
+      .config-table th,
+      .config-table td {
+        padding: 12px 14px;
+        font-size: 0.8rem;
+      }
+
+      /* Evolution */
+      .evolution {
+        padding: 28px 20px;
+      }
+
+      .evolution-flow {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .evolution-arrow {
+        transform: rotate(90deg);
+      }
+
+      .evolution-stage {
+        min-width: 100%;
+      }
+
+      /* Accordion */
+      .accordion-btn {
+        padding: 18px 20px;
+        font-size: 0.95rem;
+      }
+
+      .accordion-inner {
+        padding: 20px;
+      }
+
+      /* Notes */
+      .notes-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .note-card {
+        padding: 22px;
+      }
+
+      /* Resources */
+      .resources-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .resource-link {
+        padding: 16px 20px;
+      }
+
+      /* Footer */
+      footer {
+        padding: 40px 0 30px;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      /* Back to top */
+      .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 46px;
+        height: 46px;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-mesh"></div>
+  <div class="bg-grid"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       NAVIGATION
+  ═══════════════════════════════════════════════════════════════ -->
+  <nav class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">
+        <span class="nav-logo-icon">🎬</span>
+        <span>Movie App S11</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="#intro" class="nav-link">Introducere</a>
+        <a href="#api-key" class="nav-link">API Key</a>
+        <a href="#kits" class="nav-link">Kit-uri</a>
+        <a href="#comparison" class="nav-link">Comparație</a>
+        <a href="#curriculum" class="nav-link">Curriculum</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Meniu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          Seminar S11 • Tehnologii Web • ASE-CSIE
+        </div>
+        <h1 class="hero-title">
+          Ghid Complet<br>
+          <span class="hero-title-accent">Kit-uri Movie App</span>
+        </h1>
+        <p class="hero-subtitle">
+          De la JavaScript Vanilla la React + Redux — explorează toate variantele aplicației Movie App cu instrucțiuni complete de instalare și utilizare.
+        </p>
+        <div class="hero-buttons">
+          <a href="#kits" class="btn btn-primary">
+            🚀 Explorează Kit-urile
+          </a>
+          <a href="#api-key" class="btn btn-secondary">
+            🔑 Obține Cheia API
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-icon"></div>
+      <span>Derulează</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       INTRODUCTION
+  ═══════════════════════════════════════════════════════════════ -->
+  <section id="intro">
+    <div class="container">
+      <div class="section-header animate-in">
+        <span class="section-badge">📖 Prezentare Generală</span>
+        <h2 class="section-title">Ce Veți Învăța</h2>
+        <p class="section-desc">
+          Fiecare kit demonstrează concepte și tehnologii diferite, de la fundamentele DOM până la arhitecturi full-stack complexe.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card animate-in stagger-1">
+          <div class="feature-icon orange">🌐</div>
+          <h3>Manipulare DOM și Evenimente</h3>
+          <p>Învață cum să interacționezi direct cu elementele HTML folosind JavaScript vanilla — querySelector, createElement, addEventListener.</p>
+        </div>
+        <div class="feature-card animate-in stagger-2">
+          <div class="feature-icon blue">⚡</div>
+          <h3>Programare Asincronă</h3>
+          <p>Stăpânește Promises, fetch API și async/await pentru comunicarea cu servicii externe precum TMDB API.</p>
+        </div>
+        <div class="feature-card animate-in stagger-3">
+          <div class="feature-icon green">🔄</div>
+          <h3>Servicii REST și Express</h3>
+          <p>Creează și consumă API-uri RESTful cu Node.js și Express — GET, POST, DELETE pentru gestionarea datelor.</p>
+        </div>
+        <div class="feature-card animate-in stagger-4">
+          <div class="feature-icon purple">⚛️</div>
+          <h3>React + Redux Ecosystem</h3>
+          <p>Descoperă componentizarea, hooks (useState, useEffect), Context API, Redux Toolkit și React Router.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       API KEY SECTION
+  ═══════════════════════════════════════════════════════════════ -->
+  <section id="api-key" class="api-section">
+    <div class="container">
+      <div class="section-header animate-in">
+        <span class="section-badge">🔑 Configurare</span>
+        <h2 class="section-title">Obținerea Cheii API TMDB</h2>
+        <p class="section-desc">
+          Toate aplicațiile folosesc TMDB (The Movie Database) pentru date despre filme. Urmează pașii de mai jos pentru a obține cheia ta personală.
+        </p>
+      </div>
+
+      <div class="steps-container animate-in">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Creează un Cont TMDB</h4>
+            <p>Accesează <a href="https://www.themoviedb.org" target="_blank">themoviedb.org</a>, înregistrează-te cu email și verifică adresa prin link-ul de confirmare.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Navighează la Secțiunea API</h4>
+            <p>Click pe avatar/profil (colțul dreapta-sus) → selectează <strong>Settings</strong> → accesează secțiunea <strong>API</strong>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Solicită o Cheie API</h4>
+            <p>Apasă <strong>"Create"</strong> sau <strong>"Request an API Key"</strong>. Specifică scopul (educațional) și acceptă termenii.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Copiază Cheia API</h4>
+            <p>Cheia va fi afișată în secțiunea API. <span style="color: var(--c-accent-primary);">⚠️ Atenție: Cheia este personală — nu o distribui public!</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="config-table animate-in">
+        <table>
+          <thead>
+            <tr>
+              <th>Kit</th>
+              <th>Fișier Configurare</th>
+              <th>Format</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>S11clim_NoRRwithSQL</td>
+              <td><code>js/config.js</code></td>
+              <td><code>var TMDB_API_KEY = "...";</code></td>
+            </tr>
+            <tr>
+              <td>S11clim_NoRRnoSQL</td>
+              <td><code>.env</code></td>
+              <td><code>VITE_TMDB_API_KEY=...</code></td>
+            </tr>
+            <tr>
+              <td>S11clim_RRnoSQL</td>
+              <td><code>.env</code></td>
+              <td><code>VITE_TMDB_API_KEY=...</code></td>
+            </tr>
+            <tr>
+              <td>S11clim_RRcuSQL3001</td>
+              <td><code>.env</code></td>
+              <td><code>VITE_TMDB_API_KEY=...</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       KITS SECTION
+  ═══════════════════════════════════════════════════════════════ -->
+  <section id="kits">
+    <div class="container">
+      <div class="section-header animate-in">
+        <span class="section-badge">📦 Resurse</span>
+        <h2 class="section-title">Kit-urile Disponibile</h2>
+        <p class="section-desc">
+          Patru variante ale aplicației Movie App, fiecare demonstrând tehnologii și abordări diferite.
+        </p>
+      </div>
+
+      <div class="kits-tabs animate-in">
+        <div class="tabs-nav">
+          <button class="tab-btn active" data-tab="kit1">Kit 1: Vanilla JS</button>
+          <button class="tab-btn" data-tab="kit2">Kit 2: React Context</button>
+          <button class="tab-btn" data-tab="kit3">Kit 3: React Optimized</button>
+          <button class="tab-btn" data-tab="kit4">Kit 4: Full-Stack Redux</button>
+        </div>
+
+        <!-- KIT 1 -->
+        <div class="tab-panel active" id="kit1">
+          <div class="kit-header">
+            <div class="kit-tags">
+              <span class="kit-tag frontend">Vanilla JS</span>
+              <span class="kit-tag backend">Express</span>
+              <span class="kit-tag database">SQLite</span>
+              <span class="kit-tag state">Sequelize ORM</span>
+            </div>
+            <h3 class="kit-title">📁 S11clim_NoRRwithSQL.zip</h3>
+            <p class="kit-desc">Aplicație film Vanilla JS + Node/Express + Sequelize (fără React/Redux)</p>
+          </div>
+
+          <ul class="kit-features">
+            <li>Front-end construit cu HTML5, CSS3 și JavaScript ES5+</li>
+            <li>Back-end Node.js cu Express.js pentru API REST</li>
+            <li>Persistență cu SQLite prin Sequelize ORM</li>
+            <li>Manipulare DOM directă (querySelector, createElement, innerHTML)</li>
+            <li>Pattern IIFE pentru încapsulare cod JavaScript</li>
+            <li>API REST complet: GET, POST, DELETE pentru favorite</li>
+          </ul>
+
+          <div class="kit-port">Port: 4000</div>
+
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots">
+                <span class="code-dot red"></span>
+                <span class="code-dot yellow"></span>
+                <span class="code-dot green"></span>
+              </div>
+              <span class="code-title">Terminal — Instalare și Rulare</span>
+            </div>
+            <div class="code-body">
+<pre><span class="comment"># 1. Dezarhivare</span>
+<span class="function">unzip</span> S11clim_NoRRwithSQL.zip
+<span class="keyword">cd</span> S11clim_NoRRwithSQL
+
+<span class="comment"># 2. Configurare cheie TMDB</span>
+<span class="function">cp</span> js/config.example.js js/config.js
+<span class="comment"># Editează js/config.js cu cheia ta</span>
+
+<span class="comment"># 3. Instalare dependențe</span>
+<span class="function">npm</span> install
+
+<span class="comment"># 4. Pornire aplicație</span>
+<span class="function">npm</span> start
+<span class="comment"># → http://localhost:4000</span></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- KIT 2 -->
+        <div class="tab-panel" id="kit2">
+          <div class="kit-header">
+            <div class="kit-tags">
+              <span class="kit-tag frontend">React 18</span>
+              <span class="kit-tag state">Context API</span>
+              <span class="kit-tag database">LocalStorage</span>
+            </div>
+            <h3 class="kit-title">📁 S11clim_NoRRnoSQL.zip</h3>
+            <p class="kit-desc">Aplicație film React + Context API (fără Redux, fără backend)</p>
+          </div>
+
+          <ul class="kit-features">
+            <li>React 18 cu Vite bundler pentru development rapid</li>
+            <li>React Router v6 pentru navigare SPA</li>
+            <li>Context API pentru state management global</li>
+            <li>LocalStorage pentru persistența favoritelor</li>
+            <li>Hooks: useState, useEffect, useContext</li>
+            <li>Componente modulare și reutilizabile</li>
+          </ul>
+
+          <div class="kit-port">Port: 4000</div>
+
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots">
+                <span class="code-dot red"></span>
+                <span class="code-dot yellow"></span>
+                <span class="code-dot green"></span>
+              </div>
+              <span class="code-title">Terminal — Instalare și Rulare</span>
+            </div>
+            <div class="code-body">
+<pre><span class="comment"># 1. Dezarhivare</span>
+<span class="function">unzip</span> S11clim_NoRRnoSQL.zip
+<span class="keyword">cd</span> S11clim_NoRRnoSQL
+
+<span class="comment"># 2. Configurare cheie TMDB</span>
+<span class="function">mv</span> .env.example.txt .env
+<span class="comment"># Editează .env: VITE_TMDB_API_KEY=cheia_ta</span>
+
+<span class="comment"># 3. Instalare dependențe</span>
+<span class="function">npm</span> install
+
+<span class="comment"># 4. Pornire server dezvoltare</span>
+<span class="function">npm</span> run dev
+<span class="comment"># → http://localhost:4000</span></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- KIT 3 -->
+        <div class="tab-panel" id="kit3">
+          <div class="kit-header">
+            <div class="kit-tags">
+              <span class="kit-tag frontend">React 18</span>
+              <span class="kit-tag state">Context API</span>
+              <span class="kit-tag database">LocalStorage</span>
+            </div>
+            <h3 class="kit-title">📁 S11clim_RRnoSQL.zip</h3>
+            <p class="kit-desc">Aplicație film React + Context API — variantă optimizată</p>
+          </div>
+
+          <ul class="kit-features">
+            <li>Versiune Vite mai stabilă (5.4.10)</li>
+            <li>Fișier .env.example fără sufix .txt confuz</li>
+            <li>Cod refactorizat și organizat mai curat</li>
+            <li>Posibile corecții de bug-uri și edge cases</li>
+            <li>Recomandat pentru studiu React introductiv</li>
+            <li>Structură de proiect exemplară</li>
+          </ul>
+
+          <div class="kit-port">Port: 3000</div>
+
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots">
+                <span class="code-dot red"></span>
+                <span class="code-dot yellow"></span>
+                <span class="code-dot green"></span>
+              </div>
+              <span class="code-title">Terminal — Instalare și Rulare</span>
+            </div>
+            <div class="code-body">
+<pre><span class="comment"># 1. Dezarhivare</span>
+<span class="function">unzip</span> S11clim_RRnoSQL.zip
+<span class="keyword">cd</span> S11clim_RRnoSQL
+
+<span class="comment"># 2. Configurare cheie TMDB</span>
+<span class="function">mv</span> .env.example .env
+<span class="comment"># Editează .env: VITE_TMDB_API_KEY=cheia_ta</span>
+
+<span class="comment"># 3. Instalare dependențe</span>
+<span class="function">npm</span> install
+
+<span class="comment"># 4. Pornire</span>
+<span class="function">npm</span> run dev
+<span class="comment"># → http://localhost:3000</span></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- KIT 4 -->
+        <div class="tab-panel" id="kit4">
+          <div class="kit-header">
+            <div class="kit-tags">
+              <span class="kit-tag frontend">React 18</span>
+              <span class="kit-tag state">Redux Toolkit</span>
+              <span class="kit-tag backend">Express</span>
+              <span class="kit-tag database">SQLite</span>
+            </div>
+            <h3 class="kit-title">📁 S11clim_RRcuSQL3001.zip</h3>
+            <p class="kit-desc">Aplicație Full-Stack: React + Redux Toolkit + Express + Sequelize</p>
+          </div>
+
+          <ul class="kit-features">
+            <li>Arhitectură full-stack completă (SPA + REST API)</li>
+            <li>Redux Toolkit cu createAsyncThunk pentru async ops</li>
+            <li>Dual-server: Frontend (3000) + Backend (3001)</li>
+            <li>Vite proxy pentru redirecționare API</li>
+            <li>Sequelize ORM cu SQLite pentru persistență</li>
+            <li>Redux DevTools pentru debugging avansat</li>
+          </ul>
+
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <div class="kit-port">Frontend: 3000</div>
+            <div class="kit-port">Backend: 3001</div>
+          </div>
+
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots">
+                <span class="code-dot red"></span>
+                <span class="code-dot yellow"></span>
+                <span class="code-dot green"></span>
+              </div>
+              <span class="code-title">Terminal — Instalare și Rulare (2 Terminale!)</span>
+            </div>
+            <div class="code-body">
+<pre><span class="comment"># 1. Dezarhivare și instalare</span>
+<span class="function">unzip</span> S11clim_RRcuSQL3001.zip
+<span class="keyword">cd</span> S11clim_RRcuSQL3001
+<span class="function">npm</span> install
+
+<span class="comment"># 2. Configurare cheie TMDB</span>
+<span class="function">mv</span> .env.example .env
+
+<span class="comment"># 3. Terminal 1 - Pornire Back-end</span>
+<span class="function">npm</span> run server
+<span class="comment"># → API: http://localhost:3001</span>
+
+<span class="comment"># 4. Terminal 2 - Pornire Front-end</span>
+<span class="function">npm</span> run dev
+<span class="comment"># → App: http://localhost:3000</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       COMPARISON SECTION
+  ═══════════════════════════════════════════════════════════════ -->
+  <section id="comparison" class="comparison-section">
+    <div class="container">
+      <div class="section-header animate-in">
+        <span class="section-badge">📊 Analiză</span>
+        <h2 class="section-title">Comparație Detaliată</h2>
+        <p class="section-desc">
+          Compară caracteristicile tehnice ale fiecărui kit pentru a înțelege evoluția conceptelor.
+        </p>
+      </div>
+
+      <div class="comparison-table-wrapper animate-in">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Caracteristică</th>
+              <th>Kit 1</th>
+              <th>Kit 2</th>
+              <th>Kit 3</th>
+              <th>Kit 4</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Front-end</strong></td>
+              <td>Vanilla JS</td>
+              <td>React 18</td>
+              <td>React 18</td>
+              <td>React 18</td>
+            </tr>
+            <tr>
+              <td><strong>Back-end</strong></td>
+              <td><span class="badge badge-yes">Express</span></td>
+              <td><span class="badge badge-no">❌</span></td>
+              <td><span class="badge badge-no">❌</span></td>
+              <td><span class="badge badge-yes">Express</span></td>
+            </tr>
+            <tr>
+              <td><strong>State Management</strong></td>
+              <td>Variabile JS</td>
+              <td>Context API</td>
+              <td>Context API</td>
+              <td>Redux Toolkit</td>
+            </tr>
+            <tr>
+              <td><strong>Persistență</strong></td>
+              <td>SQLite</td>
+              <td>LocalStorage</td>
+              <td>LocalStorage</td>
+              <td>SQLite</td>
+            </tr>
+            <tr>
+              <td><strong>Port(uri)</strong></td>
+              <td>4000</td>
+              <td>4000</td>
+              <td>3000</td>
+              <td>3000 + 3001</td>
+            </tr>
+            <tr>
+              <td><strong>Bundler</strong></td>
+              <td>❌</td>
+              <td>Vite 7.x</td>
+              <td>Vite 5.x</td>
+              <td>Vite 5.x</td>
+            </tr>
+            <tr>
+              <td><strong>Complexitate</strong></td>
+              <td>⭐⭐</td>
+              <td>⭐⭐⭐</td>
+              <td>⭐⭐⭐</td>
+              <td>⭐⭐⭐⭐⭐</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Evolution Diagram -->
+      <div class="evolution animate-in">
+        <h4 class="evolution-title">📈 Evoluția Conceptuală între Kit-uri</h4>
+        <div class="evolution-flow">
+          <div class="evolution-stage">
+            <h5>Kit 1 (Vanilla)</h5>
+            <p>DOM direct</p>
+            <p>innerHTML</p>
+            <p>addEventListener</p>
+            <p>SQLite + Sequelize</p>
+            <div class="paradigm imperative">IMPERATIVE</div>
+          </div>
+          <span class="evolution-arrow">→</span>
+          <div class="evolution-stage">
+            <h5>Kit 2-3 (React)</h5>
+            <p>Componente JSX</p>
+            <p>React Hooks</p>
+            <p>Context API</p>
+            <p>LocalStorage</p>
+            <div class="paradigm declarative">DECLARATIVE</div>
+          </div>
+          <span class="evolution-arrow">→</span>
+          <div class="evolution-stage">
+            <h5>Kit 4 (Full-Stack)</h5>
+            <p>Redux Store</p>
+            <p>Async Thunks</p>
+            <p>dispatch()</p>
+            <p>SQLite + API</p>
+            <div class="paradigm predictable">PREDICTABLE</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accordion for recommendations -->
+      <div class="accordion animate-in">
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span>🎯 Când să folosești Kit 1 (Vanilla JS)?</span>
+            <span class="accordion-icon">▼</span>
+          </button>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              Ideal pentru <strong>începători</strong> care vor să înțeleagă fundamentele: manipulare DOM directă, evenimente JavaScript, comunicare client-server și pattern-uri clasice. Recomandat înainte de a trece la framework-uri moderne.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span>⚛️ Când să folosești Kit 2-3 (React + Context)?</span>
+            <span class="accordion-icon">▼</span>
+          </button>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              Perfect pentru <strong>învățarea React</strong>: componentizare, hooks, Context API și React Router. Kit 3 este recomandat pentru stabilitate. Folosește când vrei state management simplu fără complexitatea Redux.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span>🚀 Când să folosești Kit 4 (Full-Stack Redux)?</span>
+            <span class="accordion-icon">▼</span>
+          </button>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              Recomandat pentru <strong>proiecte avansate</strong> și pregătirea pentru mediul profesional. Învață Redux Toolkit, async thunks, arhitectură dual-server, Vite proxy și integrarea completă frontend-backend.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CURRICULUM SECTION
+  ═══════════════════════════════════════════════════════════════ -->
+  <section id="curriculum">
+    <div class="container">
+      <div class="section-header animate-in">
+        <span class="section-badge">📈 Parcurs</span>
+        <h2 class="section-title">Continuitate Curriculară</h2>
+        <p class="section-desc">
+          Acest parcurs reproduce trecerea naturală prin conceptele predate în cadrul cursului.
+        </p>
+      </div>
+
+      <div class="curriculum-table-wrapper animate-in">
+        <table class="curriculum-table">
+          <thead>
+            <tr>
+              <th>Etapă</th>
+              <th>Concept</th>
+              <th>Kit-uri Relevante</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="stage-number">1</span></td>
+              <td><strong>Obiecte și Programare Asincronă</strong> — Promises, fetch, JSON</td>
+              <td>Toate kit-urile</td>
+            </tr>
+            <tr>
+              <td><span class="stage-number">2</span></td>
+              <td><strong>Evenimente și DOM</strong> — Manipulare DOM în vanilla JS</td>
+              <td>Kit 1</td>
+            </tr>
+            <tr>
+              <td><span class="stage-number">3</span></td>
+              <td><strong>CSS</strong> — Stiluri și organizare vizuală</td>
+              <td>Toate kit-urile</td>
+            </tr>
+            <tr>
+              <td><span class="stage-number">4</span></td>
+              <td><strong>Servicii REST și Express</strong> — Servere Express + API</td>
+              <td>Kit 1, Kit 4</td>
+            </tr>
+            <tr>
+              <td><span class="stage-number">5</span></td>
+              <td><strong>Persistență cu ORM</strong> — Sequelize + SQLite</td>
+              <td>Kit 1, Kit 4</td>
+            </tr>
+            <tr>
+              <td><span class="stage-number">6</span></td>
+              <td><strong>React</strong> — Componentizare, JSX, props, hooks</td>
+              <td>Kit 2, 3, 4</td>
+            </tr>
+            <tr>
+              <td><span class="stage-number">7</span></td>
+              <td><strong>Context API</strong> — State management simplu</td>
+              <td>Kit 2, 3</td>
+            </tr>
+            <tr>
+              <td><span class="stage-number">8</span></td>
+              <td><strong>Redux</strong> — Store global, slices, async thunk</td>
+              <td>Kit 4</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       IMPORTANT NOTES
+  ═══════════════════════════════════════════════════════════════ -->
+  <section id="notes" class="api-section">
+    <div class="container">
+      <div class="section-header animate-in">
+        <span class="section-badge">⚠️ Atenție</span>
+        <h2 class="section-title">Note Importante</h2>
+      </div>
+
+      <div class="notes-grid">
+        <div class="note-card animate-in stagger-1">
+          <h4><span>🔒</span> Securitatea Cheii API</h4>
+          <p>În toate kit-urile, cheia TMDB este stocată pe front-end și poate fi văzută de utilizatori. În producție, proxy-uiți cererile prin backend.</p>
+        </div>
+        <div class="note-card animate-in stagger-2">
+          <h4><span>🔌</span> Porturi</h4>
+          <p>Asigură-te că porturile sunt libere: <code>4000</code> (Kit 1, 2), <code>3000</code> (Kit 3, 4), <code>3001</code> (Kit 4 backend).</p>
+        </div>
+        <div class="note-card animate-in stagger-3">
+          <h4><span>💻</span> Cerințe Sistem</h4>
+          <p><strong>Node.js 18+</strong> recomandat, npm inclus. Browser modern: Chrome, Firefox, Edge sau Safari.</p>
+        </div>
+        <div class="note-card animate-in stagger-4">
+          <h4><span>💾</span> Baza de Date</h4>
+          <p>Fișierul <code>database.sqlite</code> se creează automat la prima rulare (Kit 1 și Kit 4). Nu necesită configurare.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       RESOURCES
+  ═══════════════════════════════════════════════════════════════ -->
+  <section id="resources">
+    <div class="container">
+      <div class="section-header animate-in">
+        <span class="section-badge">📚 Documentație</span>
+        <h2 class="section-title">Resurse și Referințe</h2>
+      </div>
+
+      <div class="resources-grid animate-in">
+        <a href="https://developers.themoviedb.org/3" target="_blank" class="resource-link">
+          <div class="resource-icon">🎬</div>
+          <div class="resource-info">
+            <h4>TMDB API</h4>
+            <p>Documentația oficială API</p>
+          </div>
+        </a>
+        <a href="https://react.dev/" target="_blank" class="resource-link">
+          <div class="resource-icon">⚛️</div>
+          <div class="resource-info">
+            <h4>React Documentation</h4>
+            <p>Ghid oficial React</p>
+          </div>
+        </a>
+        <a href="https://redux-toolkit.js.org/" target="_blank" class="resource-link">
+          <div class="resource-icon">🔄</div>
+          <div class="resource-info">
+            <h4>Redux Toolkit</h4>
+            <p>Ghid Redux modern</p>
+          </div>
+        </a>
+        <a href="https://sequelize.org/" target="_blank" class="resource-link">
+          <div class="resource-icon">💾</div>
+          <div class="resource-info">
+            <h4>Sequelize ORM</h4>
+            <p>Documentație Sequelize</p>
+          </div>
+        </a>
+        <a href="https://expressjs.com/" target="_blank" class="resource-link">
+          <div class="resource-icon">🚀</div>
+          <div class="resource-info">
+            <h4>Express.js</h4>
+            <p>Framework Node.js</p>
+          </div>
+        </a>
+        <a href="https://vitejs.dev/" target="_blank" class="resource-link">
+          <div class="resource-icon">⚡</div>
+          <div class="resource-info">
+            <h4>Vite</h4>
+            <p>Build tool modern</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════════════════════ -->
+  <footer>
+    <div class="container">
+      <div class="footer-logo">🎬 Movie App S11</div>
+      <p class="footer-text">
+        Material didactic pentru Seminarul S11 — Tehnologii Web | ASE-CSIE
+      </p>
+      <div class="footer-links">
+        <a href="https://react.dev/" target="_blank">React Docs</a>
+        <a href="https://vitejs.dev/" target="_blank">Vite Guide</a>
+        <a href="https://expressjs.com/" target="_blank">Express.js</a>
+        <a href="https://reactrouter.com/" target="_blank">React Router</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Înapoi sus">↑</button>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       JAVASCRIPT
+  ═══════════════════════════════════════════════════════════════ -->
+  <script>
+    // ═══════════════════════════════════════════════════════════════
+    // MOBILE NAVIGATION
+    // ═══════════════════════════════════════════════════════════════
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        navToggle.classList.remove('open');
+        navLinks.classList.remove('open');
+      });
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // TAB FUNCTIONALITY
+    // ═══════════════════════════════════════════════════════════════
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // ACCORDION
+    // ═══════════════════════════════════════════════════════════════
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const isOpen = item.classList.contains('open');
+        
+        document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+        
+        if (!isOpen) {
+          item.classList.add('open');
+        }
+      });
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // SCROLL ANIMATIONS
+    // ═══════════════════════════════════════════════════════════════
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -60px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.animate-in').forEach(el => {
+      observer.observe(el);
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // NAVBAR SCROLL EFFECT
+    // ═══════════════════════════════════════════════════════════════
+    const nav = document.getElementById('nav');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.scrollY;
+      
+      if (currentScroll > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+      
+      lastScroll = currentScroll;
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // BACK TO TOP
+    // ═══════════════════════════════════════════════════════════════
+    const backToTopBtn = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 600) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // ACTIVE NAV LINK
+    // ═══════════════════════════════════════════════════════════════
+    const sections = document.querySelectorAll('section[id]');
+    const navLinksAll = document.querySelectorAll('.nav-link');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 150;
+        if (scrollY >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinksAll.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

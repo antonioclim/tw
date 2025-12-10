@@ -1,0 +1,1167 @@
+1
+00:00:00,120 --> 00:00:02,120
+react is a JavaScript library full of
+
+2
+00:00:02,120 --> 00:00:04,480
+fancy terms like reconciliation
+
+3
+00:00:04,480 --> 00:00:07,160
+composition and error boundaries what do
+
+4
+00:00:07,160 --> 00:00:09,240
+all these terms actually mean let's
+
+5
+00:00:09,240 --> 00:00:11,440
+start from the beginning with components
+
+6
+00:00:11,440 --> 00:00:13,000
+components are the building blocks of
+
+7
+00:00:13,000 --> 00:00:15,200
+every react app they allow us to make
+
+8
+00:00:15,200 --> 00:00:16,800
+all the visible parts of our
+
+9
+00:00:16,800 --> 00:00:19,720
+applications like buttons inputs or even
+
+10
+00:00:19,720 --> 00:00:22,560
+entire Pages just like Legos you can use
+
+11
+00:00:22,560 --> 00:00:25,119
+components as many times as you want
+
+12
+00:00:25,119 --> 00:00:27,080
+every react component is a JavaScript
+
+13
+00:00:27,080 --> 00:00:29,519
+function that returns markup but since
+
+14
+00:00:29,519 --> 00:00:31,720
+react is is a JavaScript library react
+
+15
+00:00:31,720 --> 00:00:34,559
+components don't return HTML markup they
+
+16
+00:00:34,559 --> 00:00:37,000
+actually return something called jsx
+
+17
+00:00:37,000 --> 00:00:40,120
+which is Javascript in Disguise jsx is
+
+18
+00:00:40,120 --> 00:00:42,480
+optional but the alternative way to make
+
+19
+00:00:42,480 --> 00:00:44,600
+user interfaces is with the function
+
+20
+00:00:44,600 --> 00:00:46,719
+create element which gets annoying to
+
+21
+00:00:46,719 --> 00:00:49,680
+write pretty fast so everyone just uses
+
+22
+00:00:49,680 --> 00:00:52,760
+jsx since jsx is Javascript you can't
+
+23
+00:00:52,760 --> 00:00:55,359
+write attributes like you would in HTML
+
+24
+00:00:55,359 --> 00:00:57,280
+you have to write them in the camel case
+
+25
+00:00:57,280 --> 00:01:00,079
+style that means HTML attributes like
+
+26
+00:01:00,079 --> 00:01:04,199
+class become class name unlike HTML
+
+27
+00:01:04,199 --> 00:01:06,840
+which is static and unchanging the
+
+28
+00:01:06,840 --> 00:01:09,080
+benefit of using react is that you can
+
+29
+00:01:09,080 --> 00:01:11,600
+use Dynamic JavaScript values in your
+
+30
+00:01:11,600 --> 00:01:14,320
+jsx if you have data you can display it
+
+31
+00:01:14,320 --> 00:01:17,080
+in your jsx using curly braces curly
+
+32
+00:01:17,080 --> 00:01:19,159
+braces accept values like strings and
+
+33
+00:01:19,159 --> 00:01:21,720
+numbers directly you can use them to
+
+34
+00:01:21,720 --> 00:01:24,320
+make your attributes Dynamic and you can
+
+35
+00:01:24,320 --> 00:01:27,000
+style react elements using a JavaScript
+
+36
+00:01:27,000 --> 00:01:29,920
+object within the curly braces since
+
+37
+00:01:29,920 --> 00:01:31,880
+JavaScript functions can only return one
+
+38
+00:01:31,880 --> 00:01:34,399
+thing in react you can only return one
+
+39
+00:01:34,399 --> 00:01:36,600
+parent element from a component so you
+
+40
+00:01:36,600 --> 00:01:38,680
+can't do this without getting a big
+
+41
+00:01:38,680 --> 00:01:40,920
+error we could fix this by wrapping
+
+42
+00:01:40,920 --> 00:01:43,079
+these components in a div but maybe you
+
+43
+00:01:43,079 --> 00:01:44,840
+don't want to add another element to the
+
+44
+00:01:44,840 --> 00:01:47,200
+page instead you can use an empty
+
+45
+00:01:47,200 --> 00:01:50,240
+component called a react fragment okay
+
+46
+00:01:50,240 --> 00:01:52,200
+but what if I want to pass data into
+
+47
+00:01:52,200 --> 00:01:54,360
+another component for that you use
+
+48
+00:01:54,360 --> 00:01:56,880
+something called props to make a prop
+
+49
+00:01:56,880 --> 00:01:58,560
+create a name on the component you want
+
+50
+00:01:58,560 --> 00:02:01,360
+to pass data to and set it equal to some
+
+51
+00:02:01,360 --> 00:02:03,680
+value and that's it you can then use
+
+52
+00:02:03,680 --> 00:02:05,840
+that prop in the component you passed it
+
+53
+00:02:05,840 --> 00:02:08,520
+to props refers to properties on an
+
+54
+00:02:08,520 --> 00:02:10,200
+object which is what you get in the
+
+55
+00:02:10,200 --> 00:02:12,720
+parameters of each component to use the
+
+56
+00:02:12,720 --> 00:02:14,480
+prop take it from the object like a
+
+57
+00:02:14,480 --> 00:02:16,879
+normal JavaScript property think of them
+
+58
+00:02:16,879 --> 00:02:18,840
+like custom attributes you can add to
+
+59
+00:02:18,840 --> 00:02:21,640
+any component so wait can you pass
+
+60
+00:02:21,640 --> 00:02:24,440
+anything as a prop yes you can you can
+
+61
+00:02:24,440 --> 00:02:26,519
+even pass other components as props
+
+62
+00:02:26,519 --> 00:02:28,879
+using the children prop if you make
+
+63
+00:02:28,879 --> 00:02:31,160
+opening and closing tags for a component
+
+64
+00:02:31,160 --> 00:02:33,400
+you can pass other components in between
+
+65
+00:02:33,400 --> 00:02:35,879
+them these pass components are called
+
+66
+00:02:35,879 --> 00:02:38,360
+children and you can access them on the
+
+67
+00:02:38,360 --> 00:02:40,640
+children promp of the parent component
+
+68
+00:02:40,640 --> 00:02:42,000
+and it's great for something called
+
+69
+00:02:42,000 --> 00:02:44,120
+composition which is about organizing
+
+70
+00:02:44,120 --> 00:02:46,239
+our react components in the most optimal
+
+71
+00:02:46,239 --> 00:02:48,480
+way the children prop is really useful
+
+72
+00:02:48,480 --> 00:02:50,920
+for creating layout components when you
+
+73
+00:02:50,920 --> 00:02:52,959
+want your children to have the same
+
+74
+00:02:52,959 --> 00:02:55,920
+common layout the key prop is another
+
+75
+00:02:55,920 --> 00:02:58,720
+built-in prop to react and no unlike the
+
+76
+00:02:58,720 --> 00:03:00,840
+name implies it doesn't unlock anything
+
+77
+00:03:00,840 --> 00:03:03,400
+interesting the key prop is used so
+
+78
+00:03:03,400 --> 00:03:05,840
+react can tell one component apart from
+
+79
+00:03:05,840 --> 00:03:08,040
+another usually when you're creating a
+
+80
+00:03:08,040 --> 00:03:11,080
+list with the map function a key is just
+
+81
+00:03:11,080 --> 00:03:13,879
+a unique string or number to identify a
+
+82
+00:03:13,879 --> 00:03:15,799
+component you'll usually know when you
+
+83
+00:03:15,799 --> 00:03:17,879
+need to add a key because react will
+
+84
+00:03:17,879 --> 00:03:20,599
+warn you in the console fortunately if
+
+85
+00:03:20,599 --> 00:03:22,319
+you don't have a unique value for each
+
+86
+00:03:22,319 --> 00:03:24,720
+item you can always use the current
+
+87
+00:03:24,720 --> 00:03:27,560
+index from the map function but how does
+
+88
+00:03:27,560 --> 00:03:30,040
+react take all my amazing code and make
+
+89
+00:03:30,040 --> 00:03:32,879
+it display something in the browser that
+
+90
+00:03:32,879 --> 00:03:35,480
+process is called rendering react does
+
+91
+00:03:35,480 --> 00:03:37,560
+this for us but it's important to know
+
+92
+00:03:37,560 --> 00:03:40,040
+how it works because sometimes we can do
+
+93
+00:03:40,040 --> 00:03:42,439
+a bad thing and cause it to infinitely
+
+94
+00:03:42,439 --> 00:03:45,799
+reender which crashes our app the way
+
+95
+00:03:45,799 --> 00:03:48,239
+react knows how and when to render our
+
+96
+00:03:48,239 --> 00:03:50,200
+application is using something called
+
+97
+00:03:50,200 --> 00:03:54,319
+the virtual Dom also known as the vdom
+
+98
+00:03:54,319 --> 00:03:56,959
+okay but what does Dom mean Dom stands
+
+99
+00:03:56,959 --> 00:03:59,799
+for document object model which is what
+
+100
+00:03:59,799 --> 00:04:02,720
+every browser uses to model all the HTML
+
+101
+00:04:02,720 --> 00:04:05,400
+elements on a web page and when you draw
+
+102
+00:04:05,400 --> 00:04:07,879
+it out it kind of looks like a tree
+
+103
+00:04:07,879 --> 00:04:10,000
+here's the complete rendering process in
+
+104
+00:04:10,000 --> 00:04:12,159
+react if the state of our react app
+
+105
+00:04:12,159 --> 00:04:14,760
+changes then react updates the virtual
+
+106
+00:04:14,760 --> 00:04:16,840
+Dom which is quicker to update than the
+
+107
+00:04:16,840 --> 00:04:19,959
+real Dom then react uses a process
+
+108
+00:04:19,959 --> 00:04:22,240
+called diffing to compare the updated
+
+109
+00:04:22,240 --> 00:04:24,720
+virtual Dom to a previous version to see
+
+110
+00:04:24,720 --> 00:04:27,000
+what's changed once it sees what's
+
+111
+00:04:27,000 --> 00:04:29,120
+different react uses a process called
+
+112
+00:04:29,120 --> 00:04:32,160
+reconcil iation to update the real Dom
+
+113
+00:04:32,160 --> 00:04:34,960
+with the changes that it found whenever
+
+114
+00:04:34,960 --> 00:04:37,680
+someone uses our app tons of events take
+
+115
+00:04:37,680 --> 00:04:39,960
+place like clicks Mouse movements and
+
+116
+00:04:39,960 --> 00:04:42,000
+key presses many of which we need to
+
+117
+00:04:42,000 --> 00:04:44,160
+detect event handling is how we take
+
+118
+00:04:44,160 --> 00:04:46,039
+those user events and do something with
+
+119
+00:04:46,039 --> 00:04:48,320
+them react has a lot of built-in events
+
+120
+00:04:48,320 --> 00:04:51,680
+such as onclick onchange and onsubmit
+
+121
+00:04:51,680 --> 00:04:53,120
+these three events are ones you'll
+
+122
+00:04:53,120 --> 00:04:55,720
+probably use the most if we want to
+
+123
+00:04:55,720 --> 00:04:58,400
+alert users when a button is clicked we
+
+124
+00:04:58,400 --> 00:05:00,960
+would add the onclick prop to the button
+
+125
+00:05:00,960 --> 00:05:03,120
+and connect it to a function that would
+
+126
+00:05:03,120 --> 00:05:04,320
+show that
+
+127
+00:05:04,320 --> 00:05:07,360
+alert to manage data in our react apps
+
+128
+00:05:07,360 --> 00:05:09,919
+we need to use State not that kind of
+
+129
+00:05:09,919 --> 00:05:12,639
+state though state is like a snapshot
+
+130
+00:05:12,639 --> 00:05:14,800
+from a camera it's a picture of our app
+
+131
+00:05:14,800 --> 00:05:17,320
+at any given time to manage State we
+
+132
+00:05:17,320 --> 00:05:19,840
+also can't use JavaScript variables they
+
+133
+00:05:19,840 --> 00:05:22,479
+don't cause our app to render instead we
+
+134
+00:05:22,479 --> 00:05:24,720
+use special functions like use State and
+
+135
+00:05:24,720 --> 00:05:28,160
+use reducer use State takes an argument
+
+136
+00:05:28,160 --> 00:05:30,360
+that serves as the starting value value
+
+137
+00:05:30,360 --> 00:05:32,919
+of the state variable which is likes in
+
+138
+00:05:32,919 --> 00:05:36,039
+this example and returns an array
+
+139
+00:05:36,039 --> 00:05:38,560
+containing the state variable and a
+
+140
+00:05:38,560 --> 00:05:41,479
+function to update that state using our
+
+141
+00:05:41,479 --> 00:05:43,800
+button example we could also update the
+
+142
+00:05:43,800 --> 00:05:45,479
+number of times the button's been
+
+143
+00:05:45,479 --> 00:05:47,960
+clicked with the update function set
+
+144
+00:05:47,960 --> 00:05:51,199
+clicks and display it in the button with
+
+145
+00:05:51,199 --> 00:05:53,080
+the state variable
+
+146
+00:05:53,080 --> 00:05:55,919
+likes controlled components use State
+
+147
+00:05:55,919 --> 00:05:59,199
+values to have more predictable Behavior
+
+148
+00:05:59,199 --> 00:06:00,840
+here's an example of a controlled
+
+149
+00:06:00,840 --> 00:06:03,120
+component where the value typed into the
+
+150
+00:06:03,120 --> 00:06:05,600
+input is being put into State and
+
+151
+00:06:05,600 --> 00:06:09,039
+controlled by the state variable value
+
+152
+00:06:09,039 --> 00:06:11,800
+here's how it works the user types and
+
+153
+00:06:11,800 --> 00:06:13,960
+set value puts what the user typed into
+
+154
+00:06:13,960 --> 00:06:17,319
+State the state value is then updated
+
+155
+00:06:17,319 --> 00:06:20,360
+and finally the input uses that updated
+
+156
+00:06:20,360 --> 00:06:23,280
+State as its value controlled components
+
+157
+00:06:23,280 --> 00:06:25,440
+are a great pattern to use because if we
+
+158
+00:06:25,440 --> 00:06:27,720
+want to change the component's behavior
+
+159
+00:06:27,720 --> 00:06:29,720
+we just need to change the state that
+
+160
+00:06:29,720 --> 00:06:32,840
+controls it UST state is an example of a
+
+161
+00:06:32,840 --> 00:06:35,280
+react hook which allow us to hook into
+
+162
+00:06:35,280 --> 00:06:37,840
+features such as state within function
+
+163
+00:06:37,840 --> 00:06:40,080
+components there are five main types of
+
+164
+00:06:40,080 --> 00:06:42,560
+hooks State hooks like use State and use
+
+165
+00:06:42,560 --> 00:06:44,680
+reducer help you manage state within
+
+166
+00:06:44,680 --> 00:06:47,599
+react components context hooks such as
+
+167
+00:06:47,599 --> 00:06:50,680
+use context let you Ed data pass through
+
+168
+00:06:50,680 --> 00:06:54,360
+react context ref hooks such as use ref
+
+169
+00:06:54,360 --> 00:06:56,840
+let you reference things like HTML
+
+170
+00:06:56,840 --> 00:06:59,840
+elements effect hooks like use effect
+
+171
+00:06:59,840 --> 00:07:01,680
+let you connect with external systems
+
+172
+00:07:01,680 --> 00:07:04,639
+like browser apis and performance hooks
+
+173
+00:07:04,639 --> 00:07:07,120
+like use memo and use callback which can
+
+174
+00:07:07,120 --> 00:07:08,840
+improve performance by preventing
+
+175
+00:07:08,840 --> 00:07:11,560
+unnecessary work you'll use all of these
+
+176
+00:07:11,560 --> 00:07:13,680
+hooks at some point but the majority of
+
+177
+00:07:13,680 --> 00:07:15,599
+the time you'll likely use just three
+
+178
+00:07:15,599 --> 00:07:18,400
+hooks in your react components use State
+
+179
+00:07:18,400 --> 00:07:21,759
+use effect and use ref when you think of
+
+180
+00:07:21,759 --> 00:07:23,560
+the word purity you might think of
+
+181
+00:07:23,560 --> 00:07:26,280
+something like purified water Purity is
+
+182
+00:07:26,280 --> 00:07:28,280
+a term used to describe how react
+
+183
+00:07:28,280 --> 00:07:30,520
+components should work work but this
+
+184
+00:07:30,520 --> 00:07:32,199
+type of Purity is more like how
+
+185
+00:07:32,199 --> 00:07:34,840
+mathematical formulas are pure pure
+
+186
+00:07:34,840 --> 00:07:36,720
+react components mean that the same
+
+187
+00:07:36,720 --> 00:07:38,599
+input should always return the same
+
+188
+00:07:38,599 --> 00:07:41,759
+output to keep a react component pure
+
+189
+00:07:41,759 --> 00:07:45,120
+they should only return their jsx and
+
+190
+00:07:45,120 --> 00:07:47,800
+not change any objects or variables that
+
+191
+00:07:47,800 --> 00:07:49,879
+existed before rendering the cup
+
+192
+00:07:49,879 --> 00:07:52,280
+component in this example is impure
+
+193
+00:07:52,280 --> 00:07:54,319
+because it changes the variable count
+
+194
+00:07:54,319 --> 00:07:57,000
+during render which exists outside the
+
+195
+00:07:57,000 --> 00:07:59,479
+component this leads to the jsx have
+
+196
+00:07:59,479 --> 00:08:01,960
+having the wrong output when it is used
+
+197
+00:08:01,960 --> 00:08:04,479
+more than once to help make sure we
+
+198
+00:08:04,479 --> 00:08:06,440
+don't run into errors like this we can
+
+199
+00:08:06,440 --> 00:08:08,720
+use something called strict mode strict
+
+200
+00:08:08,720 --> 00:08:10,560
+mode is a special component which tells
+
+201
+00:08:10,560 --> 00:08:12,840
+us about mistakes as we develop our
+
+202
+00:08:12,840 --> 00:08:14,840
+react apps it's really convenient
+
+203
+00:08:14,840 --> 00:08:16,840
+because it's just a component we usually
+
+204
+00:08:16,840 --> 00:08:19,319
+wrap around our app component and it'll
+
+205
+00:08:19,319 --> 00:08:21,479
+tell us when we really shouldn't do
+
+206
+00:08:21,479 --> 00:08:23,720
+something but what if we need to do
+
+207
+00:08:23,720 --> 00:08:26,240
+something outside our react app your app
+
+208
+00:08:26,240 --> 00:08:28,599
+might need to talk with the browser API
+
+209
+00:08:28,599 --> 00:08:31,360
+or make a request to a server if you do
+
+210
+00:08:31,360 --> 00:08:33,159
+have an external system you're going to
+
+211
+00:08:33,159 --> 00:08:36,200
+need a way to step outside of react
+
+212
+00:08:36,200 --> 00:08:38,320
+effects are code that reach outside of
+
+213
+00:08:38,320 --> 00:08:41,159
+our react application usually effects
+
+214
+00:08:41,159 --> 00:08:43,240
+also known as side effects can be done
+
+215
+00:08:43,240 --> 00:08:45,959
+within event handlers for example to
+
+216
+00:08:45,959 --> 00:08:48,640
+make an HTTP request when you submit a
+
+217
+00:08:48,640 --> 00:08:51,440
+form or click on a button if you can't
+
+218
+00:08:51,440 --> 00:08:53,880
+run your effects within an event handler
+
+219
+00:08:53,880 --> 00:08:55,600
+then you can run them using the use
+
+220
+00:08:55,600 --> 00:08:58,560
+effect hook for example a common pattern
+
+221
+00:08:58,560 --> 00:09:00,760
+is to fetch dat data when components
+
+222
+00:09:00,760 --> 00:09:04,000
+first load with the use effect hook like
+
+223
+00:09:04,000 --> 00:09:05,920
+effects sometimes you want to step
+
+224
+00:09:05,920 --> 00:09:08,480
+outside react and work directly with the
+
+225
+00:09:08,480 --> 00:09:11,519
+Dom to reference an actual Dom element
+
+226
+00:09:11,519 --> 00:09:13,959
+you can use what's called a ref you can
+
+227
+00:09:13,959 --> 00:09:16,519
+create a ref with the Ed ref hook and to
+
+228
+00:09:16,519 --> 00:09:19,120
+get access to a Dom element use the ref
+
+229
+00:09:19,120 --> 00:09:22,200
+prop on any react element for some tasks
+
+230
+00:09:22,200 --> 00:09:24,240
+such as focusing an input it's much
+
+231
+00:09:24,240 --> 00:09:26,200
+easier to reference the actual Dom
+
+232
+00:09:26,200 --> 00:09:28,440
+element instead of attempting to do it
+
+233
+00:09:28,440 --> 00:09:30,040
+the react way
+
+234
+00:09:30,040 --> 00:09:32,720
+context is a powerful way to pass prop
+
+235
+00:09:32,720 --> 00:09:35,200
+data through your apps components most
+
+236
+00:09:35,200 --> 00:09:37,279
+react apps have tons of nested
+
+237
+00:09:37,279 --> 00:09:39,720
+components to get data down multiple
+
+238
+00:09:39,720 --> 00:09:42,440
+levels involves passing the same props
+
+239
+00:09:42,440 --> 00:09:44,440
+through components that don't actually
+
+240
+00:09:44,440 --> 00:09:47,160
+need it context lets us jump through the
+
+241
+00:09:47,160 --> 00:09:49,920
+component tree and use data at any level
+
+242
+00:09:49,920 --> 00:09:52,720
+without making props to use context you
+
+243
+00:09:52,720 --> 00:09:55,040
+first create context in a parent
+
+244
+00:09:55,040 --> 00:09:57,120
+component then wrap your parent
+
+245
+00:09:57,120 --> 00:09:59,560
+component in a special context component
+
+246
+00:09:59,560 --> 00:10:02,360
+called a context provider put the data
+
+247
+00:10:02,360 --> 00:10:05,160
+you want to pass down on the provider
+
+248
+00:10:05,160 --> 00:10:07,399
+and finally access that data in any
+
+249
+00:10:07,399 --> 00:10:10,200
+child component with the used context
+
+250
+00:10:10,200 --> 00:10:13,000
+hook portals on the other hand are kind
+
+251
+00:10:13,000 --> 00:10:15,720
+of like context but for components
+
+252
+00:10:15,720 --> 00:10:17,680
+portals let you move react components
+
+253
+00:10:17,680 --> 00:10:21,000
+into any HTML element you select portals
+
+254
+00:10:21,000 --> 00:10:22,600
+are great for components that can't be
+
+255
+00:10:22,600 --> 00:10:24,240
+displayed properly because of their
+
+256
+00:10:24,240 --> 00:10:26,640
+parents component styles for example for
+
+257
+00:10:26,640 --> 00:10:29,399
+displaying modals drop-down menus and
+
+258
+00:10:29,399 --> 00:10:32,440
+tool tips to create a portal just use
+
+259
+00:10:32,440 --> 00:10:34,800
+the create portal function pass your
+
+260
+00:10:34,800 --> 00:10:37,480
+component to it and choose the HTML
+
+261
+00:10:37,480 --> 00:10:39,040
+element where you'd like your react
+
+262
+00:10:39,040 --> 00:10:41,920
+component to appear suspense is a
+
+263
+00:10:41,920 --> 00:10:43,560
+special component that helps you handle
+
+264
+00:10:43,560 --> 00:10:46,839
+loading a component or its data suspense
+
+265
+00:10:46,839 --> 00:10:48,880
+is helpful for components that take some
+
+266
+00:10:48,880 --> 00:10:51,519
+time to fetch data it provides a better
+
+267
+00:10:51,519 --> 00:10:53,720
+user experience to show a fallback
+
+268
+00:10:53,720 --> 00:10:55,920
+component like a loading spinner until
+
+269
+00:10:55,920 --> 00:10:58,560
+the data is available instead of nothing
+
+270
+00:10:58,560 --> 00:11:00,720
+suspense is also useful if you're lazily
+
+271
+00:11:00,720 --> 00:11:03,200
+loading a component which lets us load a
+
+272
+00:11:03,200 --> 00:11:06,320
+component only when it's needed since
+
+273
+00:11:06,320 --> 00:11:08,639
+react apps are all JavaScript errors
+
+274
+00:11:08,639 --> 00:11:10,560
+that happen during rendering can totally
+
+275
+00:11:10,560 --> 00:11:12,760
+break your app airor boundaries are
+
+276
+00:11:12,760 --> 00:11:14,440
+components that let you catch app
+
+277
+00:11:14,440 --> 00:11:16,279
+breaking errors and show a fallback
+
+278
+00:11:16,279 --> 00:11:18,279
+component to tell the user about what
+
+279
+00:11:18,279 --> 00:11:21,160
+happened for example our app will crash
+
+280
+00:11:21,160 --> 00:11:23,480
+if we run this code because it throws an
+
+281
+00:11:23,480 --> 00:11:25,959
+error when there's no user to prevent
+
+282
+00:11:25,959 --> 00:11:28,200
+our app from crashing we'll first add an
+
+283
+00:11:28,200 --> 00:11:30,320
+error boundary to display a fallback
+
+284
+00:11:30,320 --> 00:11:32,440
+component with a more helpful error
+
+285
+00:11:32,440 --> 00:11:35,680
+message to be displayed to the user now
+
+286
+00:11:35,680 --> 00:11:37,680
+if you really want to dive deep into
+
+287
+00:11:37,680 --> 00:11:40,000
+react I've put together a complete boot
+
+288
+00:11:40,000 --> 00:11:41,959
+camp to help you master every one of
+
+289
+00:11:41,959 --> 00:11:44,200
+these Concepts from front to back you
+
+290
+00:11:44,200 --> 00:11:47,639
+can get started now at react boot camp.
+
+291
+00:11:47,639 --> 00:11:49,440
+I hope you learned a lot in this video
+
+292
+00:11:49,440 --> 00:11:54,240
+and I'll see you in the next one

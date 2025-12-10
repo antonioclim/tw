@@ -1,0 +1,723 @@
+<!-- Chosen Palette: React Dark Mode (Navy #23272F, React Blue #61DAFB, Text Alb, Accente Gri) -->
+
+<!-- Application Structure Plan:
+    Aplicația este concepută ca un dashboard imersiv de "Seminar pentru Dezvoltatori".
+    Se concentrează pe un parcurs de învățare neliniar, dar ghidat, trecând de la Concepte de Bază la o Analiză Profundă a Hook-urilor (conform cerinței).
+    
+    Structură:
+    1.  **Navigare Laterală (Programa):** Navigare persistentă care permite utilizatorului să sară între module (Intro, Core, Hooks, Tipare, Performanță).
+    2.  **Scena Principală (Zona de Conținut):**
+        * **Secțiunea Hero:** Rezumat la nivel înalt al modulului curent.
+        * **Dashboard Concepte:** Vizualizări interactive (Canvas/Chart.js) care explică concepte abstracte precum Virtual DOM sau Ciclul de viață al Hook-urilor.
+        * **Cursul (Conținut Text):** Conținut text detaliat (îndeplinind cerința de "seminar") explicând 'De ce'-ul și 'Cum'-ul.
+        * **Laborator de Cod:** Snippet-uri cu evidențiere de sintaxă care arată implementarea practică.
+    
+    Interacțiuni Cheie:
+    * **Simulator "Virtual DOM Diffing":** Utilizatorii schimbă starea și văd cum se actualizează arborele (Vanilla JS simulând logica React).
+    * **Vizualizator Ciclu de Viață Hook-uri:** Un timeline Chart.js care arată când se declanșează efectele relativ la randări.
+    * **Calculator de Performanță:** Intrări pentru a demonstra costul re-randărilor vs. useMemo.
+-->
+
+<!-- Visualization & Content Choices:
+    1.  **Arbore Virtual DOM (Core):** * Scop: Explicarea Reconcilierii.
+        * Metodă: HTML/CSS Grid cu comutare clase JS.
+        * De ce: Arată diferența dintre actualizările "Virtuale" (rapide) și cele "DOM" (lente). Fără SVG.
+    
+    2.  **Fluxul Hook-urilor (Hooks):**
+        * Scop: Vizualizarea ordinii operațiilor pentru useEffect/useLayoutEffect.
+        * Metodă: Chart.js Bubble Chart (Timeline conceptual).
+        * De ce: Începătorii se luptă cu "când rulează asta?". Un timeline clarifică secvența.
+    
+    3.  **Analizor Array Dependențe (Hooks):**
+        * Scop: Explicarea egalității referențiale.
+        * Metodă: Câmpuri HTML Input interactive care declanșează logică JS pentru comparare.
+        * De ce: Este sursa #1 de bug-uri în React.
+    
+    4.  **Ierarhie Componente (Tipare):**
+        * Scop: Prop Drilling vs Context.
+        * Metodă: Containere Flexbox imbricate care se aprind la transmiterea datelor.
+-->
+
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminar Avansat React.js: Concepte & Hook-uri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #23272F; /* React Docs Dark */
+            color: #F6F7F9;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Stilizare Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #16181D;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #404756;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #565E6D;
+        }
+
+        /* React Blue Glow */
+        .react-glow {
+            box-shadow: 0 0 15px rgba(97, 218, 251, 0.3);
+        }
+        
+        .code-block {
+            background-color: #16181D;
+            border: 1px solid #343A46;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+
+        .concept-card {
+            background-color: #343A46;
+            transition: all 0.2s ease;
+        }
+        .concept-card:hover {
+            transform: translateY(-2px);
+            border-color: #61DAFB;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        /* Stilizare Noduri Interactive */
+        .node {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #404756;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #565E6D;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .node.active {
+            background: #61DAFB;
+            color: #23272F;
+            border-color: #fff;
+            box-shadow: 0 0 15px #61DAFB;
+        }
+        .node-connector {
+            position: absolute;
+            background: #565E6D;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+    <!-- Navigare Laterală -->
+    <nav class="w-64 bg-[#16181D] flex flex-col border-r border-[#343A46] flex-shrink-0 z-20 transition-all duration-300 transform -translate-x-full md:translate-x-0 fixed md:relative h-full" id="sidebar">
+        <div class="p-6 border-b border-[#343A46] flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-[#23272F] flex items-center justify-center border border-[#61DAFB] react-glow">
+                    <span class="text-[#61DAFB] font-bold text-lg">⚛</span>
+                </div>
+                <h1 class="font-bold text-lg tracking-tight">React<span class="text-[#61DAFB]">Seminar</span></h1>
+            </div>
+            <button id="closeSidebar" class="md:hidden text-gray-400 hover:text-white">✕</button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto py-4 space-y-1" id="nav-container">
+            <!-- Elemente de navigare injectate prin JS -->
+        </div>
+
+        <div class="p-4 border-t border-[#343A46]">
+            <div class="text-xs text-gray-400 mb-2">Progres Seminar</div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+                <div id="progressBar" class="bg-[#61DAFB] h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Zona Principală de Conținut -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-[#23272F] relative w-full">
+        <!-- Header Mobil -->
+        <header class="md:hidden h-14 bg-[#16181D] border-b border-[#343A46] flex items-center px-4 justify-between flex-shrink-0">
+            <button id="openSidebar" class="text-white">☰ Meniu</button>
+            <span class="font-bold text-[#61DAFB]">Concepte React Deep Dive</span>
+        </header>
+
+        <!-- Zona de Scroll Conținut -->
+        <div id="content-area" class="flex-1 overflow-y-auto scroll-smooth">
+            <div class="max-w-5xl mx-auto p-6 md:p-10 space-y-12">
+                
+                <!-- Container Conținut Dinamic -->
+                <div id="dynamic-content">
+                    <!-- Conținut injectat aici -->
+                </div>
+
+                <!-- Footer -->
+                <footer class="pt-12 pb-6 border-t border-[#343A46] text-center text-gray-500 text-sm">
+                    <p>Generat Antonio Clim pe baza seminarului "S11aREACTconcept12".</p>
+                    <p>Focus: Principii Core & Tipare Avansate de Hook-uri.</p>
+                </footer>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- Management Date & Stare ---
+
+        const state = {
+            currentModuleId: 'intro',
+            progress: 0,
+            domUpdates: 0,
+            renderCount: 0
+        };
+
+        const modules = [
+            {
+                id: 'intro',
+                title: 'Introducere & Filozofie',
+                icon: '👋',
+                content: {
+                    title: 'Filozofia React',
+                    intro: 'Bun venit la acest seminar aprofundat. React nu este doar o bibliotecă; este o schimbare de model mental. Trecem de la a spune browserului *cum* să schimbe lucrurile (imperativ) la a-i spune *ce* vrem să vedem (declarativ).',
+                    sections: [
+                        {
+                            heading: 'De ce React?',
+                            text: `În era manipulării DOM tradiționale (jQuery), selectam manual elemente și le modificam. Acest lucru ducea la "Cod Spaghetti" unde starea era împrăștiată prin tot DOM-ul. React rezolvă asta prin <strong>Componente</strong>. <br><br> Componentele sunt blocurile LEGO ale aplicației tale. Sunt bucăți de UI reutilizabile, independente și compozabile care își gestionează propria stare.`,
+                            type: 'text'
+                        },
+                        {
+                            heading: 'Virtual DOM & Reconciliere',
+                            text: `React menține o copie ușoară a DOM-ului numită Virtual DOM. Când starea se schimbă, React creează un nou arbore Virtual DOM, îl compară cu cel vechi (Diffing) și calculează setul minim de modificări necesare pentru DOM-ul real. Acest proces se numește <strong>Reconciliere</strong>.`,
+                            type: 'visualization',
+                            vizType: 'virtualDom'
+                        }
+                    ]
+                }
+            },
+            {
+                id: 'jsx-props',
+                title: 'JSX, Props & State',
+                icon: '🏗️',
+                content: {
+                    title: 'Blocuri de Construcție: JSX & Fluxul Datelor',
+                    intro: 'Înainte de a stăpâni Hook-urile, trebuie să stăpânim fluxul datelor. React se bazează pe "Flux Unidirecțional de Date" - datele curg în jos, evenimentele urcă (bubble up).',
+                    sections: [
+                        {
+                            heading: 'JSX: JavaScript XML',
+                            text: `JSX arată ca HTML, dar este "zahăr sintactic" pentru JavaScript. Ne permite să scriem logică de UI alături de logica de randare. În spate, un compilator (precum Babel) transformă <code>&lt;div&gt;</code> în <code>React.createElement('div')</code>.`,
+                            type: 'code',
+                            code: `// JSX
+const element = <h1 className="salut">Salut, lume!</h1>;
+
+// Rezultatul Transpilat
+const element = React.createElement(
+  'h1',
+  {className: 'salut'},
+  'Salut, lume!'
+);`
+                        },
+                        {
+                            heading: 'Props vs. State',
+                            text: `<strong>Props (Proprietăți)</strong> sunt read-only (doar citire). Sunt modul prin care părinții vorbesc cu copiii. Gândește-te la ele ca la argumente de funcție.<br><strong>State (Starea)</strong> este internă și mutabilă. Este memoria componentei. Când starea se schimbă, componenta se randează din nou (re-render).`,
+                            type: 'comparison',
+                            vizType: 'propsState'
+                        }
+                    ]
+                }
+            },
+            {
+                id: 'hooks-intro',
+                title: 'Hook-uri: Schimbarea de Paradigmă',
+                icon: '🪝',
+                content: {
+                    title: 'Revoluția Hook-urilor',
+                    intro: 'Introduse în React 16.8, Hook-urile îți permit să folosești starea și alte funcționalități React fără a scrie o clasă. Ele îți permit să te "agăți" (hook into) de starea React și de ciclul de viață din componente funcționale.',
+                    sections: [
+                        {
+                            heading: 'De ce Hook-uri?',
+                            text: `Clasele erau confuze atât pentru oameni, cât și pentru mașini. Făceau reutilizarea codului dificilă (Higher Order Components, Render Props hell) și legarea lui ` + " `this` " + ` era un coșmar. Hook-urile îți permit să reutilizezi <strong>logică cu stare (stateful logic)</strong>, nu doar UI.`,
+                            type: 'text'
+                        },
+                        {
+                            heading: 'Cele Două Reguli ale Hook-urilor',
+                            text: `
+                            <ul class="list-disc pl-5 space-y-2 text-gray-300">
+                                <li><strong>Apelează Hook-uri doar la nivelul superior (Top Level).</strong> Nu apela Hook-uri în bucle, condiții sau funcții imbricate. Acest lucru asigură că hook-urile sunt apelate în aceeași ordine la fiecare randare.</li>
+                                <li><strong>Apelează Hook-uri doar din componente funcționale React.</strong> Nu apela Hook-uri din funcții JavaScript obișnuite.</li>
+                            </ul>`,
+                            type: 'highlight'
+                        }
+                    ]
+                }
+            },
+            {
+                id: 'usestate',
+                title: 'Deep Dive: useState',
+                icon: '1️⃣',
+                content: {
+                    title: 'Stăpânirea useState',
+                    intro: 'Cel mai important hook. Oferă componentelor funcționale o "memorie".',
+                    sections: [
+                        {
+                            heading: 'Mecanica',
+                            text: `Apelarea <code>useState</code> declară o "variabilă de stare". Păstrează această valoare între apelurile funcției.`,
+                            type: 'code',
+                            code: `const [contor, setContor] = useState(0); // Destructurare Array`
+                        },
+                        {
+                            heading: 'Batching & Actualizări Funcționale',
+                            text: `React poate grupa (batch) multiple apeluri <code>setState()</code> într-o singură actualizare pentru performanță. Dacă noua stare depinde de starea anterioară, folosește întotdeauna forma funcțională.`,
+                            type: 'code',
+                            code: `// ❌ Greșit dacă e apelat rapid de mai multe ori
+setContor(contor + 1);
+
+// ✅ Corect (Actualizare Funcțională)
+setContor(prevContor => prevContor + 1);`
+                        },
+                        {
+                            heading: 'Laborator Interactiv de Stare',
+                            text: 'Apasă butonul de mai jos. Observă cum componenta se randează din nou (flash galben) ori de câte ori starea se schimbă. Acesta este declanșatorul pentru actualizarea UI-ului.',
+                            type: 'visualization',
+                            vizType: 'stateLab'
+                        }
+                    ]
+                }
+            },
+            {
+                id: 'useeffect',
+                title: 'Deep Dive: useEffect',
+                icon: '⚡',
+                content: {
+                    title: 'Stăpânirea useEffect',
+                    intro: 'Acest hook îți permite să efectuezi efecte secundare (preluare date, abonamente, manipulare manuală DOM) în componente funcționale. Servește același scop ca componentDidMount, componentDidUpdate și componentWillUnmount combinate.',
+                    sections: [
+                        {
+                            heading: 'Array-ul de Dependențe',
+                            text: `Al doilea argument pentru <code>useEffect</code> este crucial. <br>
+                            - <code>[]</code>: Rulează o singură dată (Montare). <br>
+                            - <code>[prop, stare]</code>: Rulează la Montare + când prop/stare se schimbă. <br>
+                            - <strong>Fără Array</strong>: Rulează după FIECARE randare (ATT! Periculos).`,
+                            type: 'text'
+                        },
+                        {
+                            heading: 'Funcția de Cleanup (Curățare)',
+                            text: `Efectele creează adesea resurse care trebuie curățate (precum un abonament sau timer) pentru a evita scurgerile de memorie. Returnează o funcție din efectul tău pentru a gestiona asta.`,
+                            type: 'code',
+                            code: `useEffect(() => {
+  const timer = setInterval(tick, 1000);
+  
+  // Funcția de Cleanup
+  return () => clearInterval(timer);
+}, []);`
+                        },
+                        {
+                            heading: 'Vizualizator Ciclu de Viață',
+                            text: 'Observă când se declanșează efectul relativ la ciclul de randare.',
+                            type: 'visualization',
+                            vizType: 'effectChart'
+                        }
+                    ]
+                }
+            },
+            {
+                id: 'advanced-hooks',
+                title: 'useMemo & useCallback',
+                icon: '🧠',
+                content: {
+                    title: 'Hook-uri de Performanță',
+                    intro: 'Aceste hook-uri sunt despre optimizare și egalitate referențială. Folosește-le pentru a preveni calcule costisitoare și randări inutile ale copiilor.',
+                    sections: [
+                        {
+                            heading: 'useMemo',
+                            text: `Returnează o <strong>valoare memoizată</strong>. Gândește-te la ea ca la un cache. Recalculează valoarea doar dacă dependențele se schimbă.`,
+                            type: 'code',
+                            code: `const valoareScumpa = useMemo(() => {
+  return calculeazaValoareScumpa(a, b);
+}, [a, b]);`
+                        },
+                        {
+                            heading: 'useCallback',
+                            text: `Returnează o <strong>funcție callback memoizată</strong>. Utilă când transmiți callback-uri către componente copil optimizate care se bazează pe egalitatea referențială pentru a preveni randări inutile.`,
+                            type: 'text'
+                        },
+                        {
+                            heading: 'Costul Re-randării',
+                            text: 'Vizualizează cum memoizarea economisește putere de procesare.',
+                            type: 'visualization',
+                            vizType: 'memoViz'
+                        }
+                    ]
+                }
+            },
+            {
+                id: 'patterns',
+                title: 'Tipare Avansate',
+                icon: '🏗️',
+                content: {
+                    title: 'Context, Portals & Boundaries',
+                    intro: 'Dincolo de baze, aplicațiile din lumea reală au nevoie de o arhitectură robustă.',
+                    sections: [
+                        {
+                            heading: 'Context API',
+                            text: `Context oferă o modalitate de a transmite date prin arborele de componente fără a fi nevoie să transmiți props manual la fiecare nivel ("Prop Drilling").`,
+                            type: 'text'
+                        },
+                        {
+                            heading: 'Error Boundaries (Granițe de Eroare)',
+                            text: `O eroare JavaScript într-o parte a UI-ului nu ar trebui să strice toată aplicația. Error boundaries prind erorile oriunde în arborele componentelor copil și afișează un UI de fallback. *Notă: Momentan, Error Boundaries trebuie scrise tot ca și Componente de Tip Clasă.*`,
+                            type: 'highlight'
+                        },
+                         {
+                            heading: 'Portaluri (Portals)',
+                            text: `Portalurile oferă o modalitate first-class de a randa copii într-un nod DOM care există în afara ierarhiei DOM a componentei părinte (ex: Modale, Tooltip-uri).`,
+                            type: 'code',
+                            code: `createPortal(copil, container)`
+                        }
+                    ]
+                }
+            }
+        ];
+
+        // --- Logică & Randare ---
+
+        function init() {
+            renderSidebar();
+            loadModule(modules[0].id);
+            setupMobileMenu();
+        }
+
+        function renderSidebar() {
+            const container = document.getElementById('nav-container');
+            container.innerHTML = '';
+            
+            modules.forEach((mod, index) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left px-6 py-3 text-sm font-medium flex items-center gap-3 transition-colors ${state.currentModuleId === mod.id ? 'bg-[#343A46] text-[#61DAFB] border-r-4 border-[#61DAFB]' : 'text-gray-400 hover:bg-[#23272F] hover:text-white'}`;
+                btn.innerHTML = `<span>${mod.icon}</span> ${mod.title}`;
+                btn.onclick = () => {
+                    loadModule(mod.id);
+                    state.progress = ((index + 1) / modules.length) * 100;
+                    document.getElementById('progressBar').style.width = `${state.progress}%`;
+                    if(window.innerWidth < 768) toggleSidebar();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function loadModule(id) {
+            state.currentModuleId = id;
+            renderSidebar(); // Actualizare stare activă
+            
+            const module = modules.find(m => m.id === id);
+            const container = document.getElementById('dynamic-content');
+            
+            // Efect de fade out ar putea fi aici
+            container.innerHTML = `
+                <div class="mb-8 animate-fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">${module.content.title}</h2>
+                    <p class="text-xl text-gray-400 leading-relaxed max-w-3xl">${module.content.intro}</p>
+                </div>
+                <div class="space-y-12">
+                    ${module.content.sections.map(section => renderSection(section)).join('')}
+                </div>
+            `;
+
+            // Inițializare Vizualizări după injecția în DOM
+            requestAnimationFrame(() => {
+                module.content.sections.forEach(section => {
+                    if (section.type === 'visualization') {
+                        initVisualization(section.vizType);
+                    }
+                });
+            });
+        }
+
+        function renderSection(section) {
+            let content = '';
+
+            if (section.type === 'text') {
+                content = `<div class="prose prose-invert max-w-none text-gray-300 leading-7">${section.text}</div>`;
+            } else if (section.type === 'code') {
+                content = `
+                    <div class="mb-4 text-gray-300">${section.text}</div>
+                    <div class="code-block group relative">
+                        <div class="absolute top-2 right-2 text-xs text-gray-500 font-mono">JS / JSX</div>
+                        <pre class="text-sm font-mono text-[#E5C07B]">${escapeHtml(section.code)}</pre>
+                    </div>`;
+            } else if (section.type === 'highlight') {
+                content = `<div class="bg-[#343A46] border-l-4 border-[#61DAFB] p-6 rounded-r-lg shadow-lg">${section.text}</div>`;
+            } else if (section.type === 'visualization') {
+                content = `
+                    <div class="mb-4 text-gray-300">${section.text}</div>
+                    <div id="viz-${section.vizType}" class="bg-[#16181D] border border-[#343A46] rounded-xl p-6 shadow-2xl overflow-hidden">
+                        <!-- Vizualizare injectată aici -->
+                    </div>`;
+            } else if (section.type === 'comparison') {
+                 content = `
+                    <div class="mb-4 text-gray-300">${section.text}</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-[#282C34] p-6 rounded-lg border border-red-500/30">
+                            <h4 class="text-red-400 font-bold mb-2">Props (Read-Only)</h4>
+                            <p class="text-sm text-gray-400">Transmise de la părinte. Imutabile pentru cel care primește.</p>
+                            <div class="mt-4 p-3 bg-black/30 font-mono text-xs rounded">props.nume = "Nou" ❌ Eroare</div>
+                        </div>
+                        <div class="bg-[#282C34] p-6 rounded-lg border border-green-500/30">
+                            <h4 class="text-green-400 font-bold mb-2">State (Mutabil)</h4>
+                            <p class="text-sm text-gray-400">Gestionat intern. Declanșează re-randare.</p>
+                            <div class="mt-4 p-3 bg-black/30 font-mono text-xs rounded">setState("Nou") ✅ Re-randare</div>
+                        </div>
+                    </div>`;
+            }
+
+            return `
+                <section class="animate-slide-up">
+                    <h3 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="text-[#61DAFB]">#</span> ${section.heading}
+                    </h3>
+                    ${content}
+                </section>
+            `;
+        }
+
+        // --- Logică Vizualizare ---
+
+        function initVisualization(type) {
+            const container = document.getElementById(`viz-${type}`);
+            if (!container) return;
+
+            if (type === 'virtualDom') {
+                setupVirtualDomViz(container);
+            } else if (type === 'stateLab') {
+                setupStateLab(container);
+            } else if (type === 'effectChart') {
+                setupEffectChart(container);
+            } else if (type === 'memoViz') {
+                setupMemoViz(container);
+            }
+        }
+
+        function setupVirtualDomViz(container) {
+            container.innerHTML = `
+                <div class="flex flex-col md:flex-row gap-8 items-center justify-center">
+                    <div class="text-center">
+                        <h4 class="text-gray-400 mb-4 font-mono text-sm">VIRTUAL DOM (Ciornă)</h4>
+                        <div id="vdom-tree" class="relative w-40 h-40 border-2 border-dashed border-[#61DAFB] rounded-lg p-2 flex items-center justify-center">
+                            <div class="node w-12 h-12 bg-[#61DAFB] text-black font-bold">Root</div>
+                        </div>
+                    </div>
+                    <div class="text-2xl text-gray-600">➡ Diff ➡</div>
+                    <div class="text-center">
+                        <h4 class="text-gray-400 mb-4 font-mono text-sm">REAL DOM (Browser)</h4>
+                        <div id="real-dom-tree" class="relative w-40 h-40 border-2 border-gray-600 rounded-lg p-2 flex items-center justify-center bg-white/5">
+                            <div class="node w-12 h-12 bg-gray-500 text-white font-bold transition-colors duration-500" id="real-node">Root</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-center gap-4">
+                    <button id="update-btn" class="bg-[#61DAFB] text-[#23272F] px-4 py-2 rounded font-bold hover:bg-white transition-colors">Actualizează Starea</button>
+                    <div id="update-log" class="font-mono text-xs text-green-400 flex items-center"></div>
+                </div>
+            `;
+
+            document.getElementById('update-btn').onclick = () => {
+                const log = document.getElementById('update-log');
+                const realNode = document.getElementById('real-node');
+                
+                // Simulare VDOM calc
+                log.innerText = "Calcul Diff: Schimbare Culoare...";
+                
+                // Simulare Batching delay
+                setTimeout(() => {
+                    log.innerText = "Commit în DOM!";
+                    realNode.style.backgroundColor = '#61DAFB';
+                    realNode.style.color = '#000';
+                    realNode.style.transform = 'scale(1.1)';
+                    
+                    setTimeout(() => {
+                         realNode.style.backgroundColor = 'gray';
+                         realNode.style.color = 'white';
+                         realNode.style.transform = 'scale(1)';
+                         log.innerText = "";
+                    }, 1000);
+                }, 300);
+            };
+        }
+
+        function setupStateLab(container) {
+            container.innerHTML = `
+                <div class="flex flex-col items-center gap-6">
+                    <div class="relative bg-white text-[#23272F] p-8 rounded shadow-2xl text-center w-64 transition-all duration-100" id="render-box">
+                        <div class="text-xs text-gray-500 mb-2 font-mono">MyComponent</div>
+                        <div class="text-4xl font-bold mb-4" id="count-display">0</div>
+                        <div class="text-xs text-gray-400">Contor Randări: <span id="render-counter">0</span></div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="bg-[#23272F] border border-[#61DAFB] text-[#61DAFB] px-4 py-2 rounded hover:bg-[#61DAFB] hover:text-black transition" onclick="updateCount(1)">Incrementează (+)</button>
+                    </div>
+                </div>
+            `;
+            
+            // Atribuire la window pentru acces onclick inline
+            window.updateCount = (amt) => {
+                const display = document.getElementById('count-display');
+                const box = document.getElementById('render-box');
+                const rCounter = document.getElementById('render-counter');
+                
+                const current = parseInt(display.innerText);
+                display.innerText = current + amt;
+                
+                // Simulare Flash Randare
+                box.style.backgroundColor = '#FFF59D'; // Flash galben
+                state.renderCount++;
+                rCounter.innerText = state.renderCount;
+                
+                setTimeout(() => {
+                    box.style.backgroundColor = 'white';
+                }, 300);
+            };
+        }
+
+        function setupEffectChart(container) {
+            container.innerHTML = '<div class="chart-container"><canvas id="effectCanvas"></canvas></div><p class="text-center text-xs text-gray-500 mt-2">Timp (ms) →</p>';
+            
+            const ctx = document.getElementById('effectCanvas').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Montare', 'Update 1', 'Update 2', 'Demontare'],
+                    datasets: [
+                        {
+                            label: 'Faza de Randare (Pictare DOM)',
+                            data: [10, 10, 10, 10],
+                            backgroundColor: '#61DAFB',
+                            barPercentage: 0.5
+                        },
+                        {
+                            label: 'Execuție useEffect',
+                            data: [15, 15, 15, 0], // Întârziat vizual deliberat
+                            backgroundColor: '#98C379',
+                            barPercentage: 0.3,
+                            type: 'line',
+                            pointRadius: 6
+                        },
+                        {
+                            label: 'Execuție Cleanup',
+                            data: [0, 5, 5, 5],
+                            backgroundColor: '#E06C75',
+                            type: 'bubble',
+                            radius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { display: false },
+                        x: { grid: { color: '#343A46' }, ticks: { color: '#9CA3AF' } }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#F6F7F9' } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    if(context.dataset.label === 'Execuție useEffect') return 'Logica Effect rulează DUPĂ pictare';
+                                    if(context.dataset.label === 'Execuție Cleanup') return 'Cleanup rulează ÎNAINTE de următorul effect';
+                                    return context.dataset.label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function setupMemoViz(container) {
+            container.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-[#16181D] p-4 rounded border border-gray-700">
+                        <h5 class="text-[#E06C75] font-bold mb-2">Fără useMemo</h5>
+                        <div class="h-2 bg-gray-700 rounded overflow-hidden mb-1">
+                            <div class="h-full bg-[#E06C75] animate-pulse w-full"></div>
+                        </div>
+                        <div class="text-xs text-gray-400">Calculul rulează la FIECARE randare</div>
+                    </div>
+                    <div class="bg-[#16181D] p-4 rounded border border-gray-700">
+                        <h5 class="text-[#98C379] font-bold mb-2">Cu useMemo</h5>
+                        <div class="h-2 bg-gray-700 rounded overflow-hidden mb-1">
+                            <div class="h-full bg-[#98C379] w-[10%] transition-all duration-500" id="memo-bar"></div>
+                        </div>
+                        <div class="text-xs text-gray-400">Calculul rulează DOAR când input-ul se schimbă</div>
+                    </div>
+                </div>
+                <div class="mt-4 flex gap-4">
+                    <input type="text" placeholder="Schimbă o stare fără legătură..." class="bg-[#23272F] border border-gray-600 rounded px-3 py-1 text-sm text-white w-full">
+                    <button class="bg-[#61DAFB] text-black px-3 py-1 rounded text-sm font-bold whitespace-nowrap" onclick="triggerMemoDemo()">Rerandare</button>
+                </div>
+            `;
+            
+            window.triggerMemoDemo = () => {
+                const bar = document.getElementById('memo-bar');
+                // Simulare "Cached" - bara rămâne mică
+                bar.style.width = '10%';
+                
+                // Feedback vizual
+                const btn = event.target;
+                const originalText = btn.innerText;
+                btn.innerText = "Randat!";
+                setTimeout(() => btn.innerText = originalText, 500);
+            };
+        }
+
+        // --- Utilitare ---
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        }
+
+        function setupMobileMenu() {
+            document.getElementById('openSidebar').onclick = toggleSidebar;
+            document.getElementById('closeSidebar').onclick = toggleSidebar;
+        }
+
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // --- Init ---
+        window.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>

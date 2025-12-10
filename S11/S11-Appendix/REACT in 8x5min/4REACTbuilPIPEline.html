@@ -1,0 +1,696 @@
+<!-- Chosen Palette: "Compiler Core" - Amber (#F59E0B) for tooling, Electric Blue (#3B82F6) for transformation, Slate (#0F172A) for background. -->
+
+<!-- Application Structure Plan:
+    Aplicația este un "Simulator de Build Pipeline".
+    
+    Structură:
+    1.  **Sidebar "Pipeline Config":** Navigare prin etapele transpilării (De ce Transpilare?, Arhitectura Babel, Transformarea JSX, Ecosistem, Costuri/Riscuri).
+    2.  **Viewport "Compiler Output":**
+        * **Deep Dive Text:** Conținut academic detaliat bazat pe documentul sursă (3a), explicând conceptele de AST, Plugin-uri și Polyfills.
+        * **Interactive Compiler Sandbox:** Un editor split-screen real-time care simulează Babel. Utilizatorul scrie ESNext/JSX în stânga, vede ES5 în dreapta.
+        * **Visualizers:**
+            * *AST Explorer Simplified:* Vizualizarea arborelui sintactic abstract.
+            * *Plugin Pipeline:* Animație care arată cum codul trece prin plugin-uri secvențial.
+            * *Build Time Simulator:* Compararea vitezei Babel vs SWC/esbuild (grafic).
+    
+    Interacțiuni Cheie:
+    * **"Transpile Now" Button:** Declanșează animația de procesare.
+    * **Toggle "Classic vs Automatic Runtime":** Schimbă output-ul JSX pentru a arăta diferența istorică.
+    * **Polyfill Injector:** Buton care "adaugă" suport pentru browsere vechi și crește vizual mărimea bundle-ului.
+-->
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infrastructură: Rolul Babel în React</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --bg-core: #0F172A;
+            --accent-tool: #F59E0B; /* Amber 500 */
+            --accent-code: #3B82F6; /* Blue 500 */
+            --text-main: #E2E8F0;
+            --code-bg: #1E293B;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-core);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-core); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+        /* Code Editor Simulation */
+        .code-editor {
+            background-color: var(--code-bg);
+            border: 1px solid #334155;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .line-numbers {
+            color: #475569;
+            text-align: right;
+            padding-right: 10px;
+            user-select: none;
+            border-right: 1px solid #334155;
+        }
+
+        /* Syntax Highlighting Mock */
+        .t-keyword { color: #C678DD; }
+        .t-tag { color: #E06C75; }
+        .t-string { color: #98C379; }
+        .t-func { color: #61AFEF; }
+        .t-attr { color: #D19A66; }
+        .t-comment { color: #5C6370; font-style: italic; }
+
+        /* Animations */
+        @keyframes flow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .pipeline-flow::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.2), transparent);
+            animation: flow 2s infinite linear;
+            pointer-events: none;
+        }
+
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body class="flex h-screen flex-col lg:flex-row">
+
+    <!-- Sidebar Navigation -->
+    <nav class="w-full lg:w-80 bg-[#020617] border-r border-slate-800 flex flex-col h-16 lg:h-full z-30 flex-shrink-0">
+        <div class="p-6 border-b border-slate-800 flex items-center gap-3">
+            <div class="w-10 h-10 bg-yellow-500 rounded flex items-center justify-center font-bold text-black text-xl shadow-[0_0_15px_rgba(245,158,11,0.4)]">B</div>
+            <div>
+                <h1 class="font-bold text-white text-sm tracking-widest uppercase">Build<span class="text-yellow-500">Pipeline</span></h1>
+                <p class="text-[10px] text-slate-500">Infrastructură & Transpilare</p>
+            </div>
+            <button id="mobile-menu" class="lg:hidden ml-auto text-slate-400">☰</button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto py-4 px-2 space-y-1 hidden lg:block" id="nav-content">
+            <!-- Nav Items Injected JS -->
+        </div>
+
+        <div class="p-4 border-t border-slate-800 hidden lg:block">
+            <div class="text-[10px] text-slate-500">
+                Sursă: "Infrastructură şi instrumente REACT" de Antonio CLIM<br>
+                DOI: 10.1016/j.ssaho.2025.101401, 10.1109/SANER56733.2023.00058
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col bg-slate-900 relative overflow-hidden">
+        
+        <!-- Header -->
+        <header class="h-16 border-b border-slate-800 bg-[#0f172a]/90 backdrop-blur flex items-center justify-between px-8 z-20 shrink-0">
+            <div class="flex items-center gap-3">
+                <span class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+                <span id="module-title" class="font-bold text-slate-200">System Ready</span>
+            </div>
+            <div class="hidden md:flex gap-4 text-xs font-mono text-slate-500">
+                <span class="flex items-center gap-1"><span class="text-green-500">●</span> Babel v7.x</span>
+                <span class="flex items-center gap-1"><span class="text-blue-500">●</span> ESNext Enabled</span>
+            </div>
+        </header>
+
+        <!-- Scrollable Area -->
+        <div id="content-scroll" class="flex-1 overflow-y-auto scroll-smooth p-6 lg:p-12 relative">
+            <div class="max-w-6xl mx-auto pb-20 fade-in" id="main-container">
+                <!-- Content injected here -->
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- DATA STORE ---
+        // Conținut bazat pe documentul 3a
+        
+        const modules = [
+            {
+                id: 'why',
+                title: '1. De ce Transpilare?',
+                icon: '❓',
+                vizType: 'browser-compatibility',
+                content: {
+                    heading: 'Incompatibilitatea Fundamentală',
+                    text: `
+                        <p class="text-lg text-slate-300 mb-6">
+                            În infrastructura modernă React, transpilarea este "mecanismul invizibil". De ce este necesară? Din două motive critice:
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <div class="bg-slate-800 p-5 rounded border-l-4 border-red-500">
+                                <h4 class="text-white font-bold mb-2">1. Browserele NU știu JSX</h4>
+                                <p class="text-sm text-slate-400">Specificația JSX definește o "extensie de sintaxă XML fără semantică proprie". Browserele (Chrome, Firefox) înțeleg doar JavaScript standard. Dacă arunci <code>&lt;div&gt;</code> direct în consolă, primești <code>SyntaxError</code>.</p>
+                            </div>
+                            <div class="bg-slate-800 p-5 rounded border-l-4 border-yellow-500">
+                                <h4 class="text-white font-bold mb-2">2. Evoluția Limbajului (ESNext)</h4>
+                                <p class="text-sm text-slate-400">Standardul ECMAScript evoluează mai repede decât implementările din browsere. Dezvoltatorii vor să folosească <code>Optional Chaining (?.)</code> sau <code>Async/Await</code> astăzi, chiar dacă utilizatorul are un browser vechi de 2 ani.</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-400">
+                            <strong>Soluția:</strong> Scriem într-un "superset" de limbaj (JSX + ESNext), iar pipeline-ul de build produce un artefact "lowest common denominator".
+                        </p>
+                    `
+                }
+            },
+            {
+                id: 'babel-tech',
+                title: '2. Ce este Babel?',
+                icon: '⚙️',
+                vizType: 'compiler-pipeline',
+                content: {
+                    heading: 'Babel: Compiler Sursă-la-Sursă',
+                    text: `
+                        <p class="text-slate-300 mb-6">
+                            Babel este un <strong>Transpiler</strong>. Spre deosebire de un compilator clasic (care transformă cod sursă în cod mașină binar), Babel transformă cod sursă în <em>alt</em> cod sursă, la același nivel de abstractizare.
+                        </p>
+                        <div class="bg-[#161b22] p-4 rounded border border-slate-700 mb-6 font-mono text-sm text-slate-300">
+                            <span class="text-yellow-500">Input:</span> Modern JS (ES2024) + JSX <br>
+                            <span class="text-blue-500">Process:</span> Parse -> Transform (AST) -> Generate <br>
+                            <span class="text-green-500">Output:</span> Old JS (ES5)
+                        </div>
+                        <p class="text-slate-400 mb-4">
+                            Arhitectura este bazată pe <strong>Plugin-uri</strong> și <strong>Preset-uri</strong>. Babel singur nu face nimic; plugin-urile fac treaba.
+                        </p>
+                        <ul class="list-disc pl-5 space-y-2 text-slate-400">
+                            <li><strong>Plugin:</strong> O transformare individuală (ex: transformă funcțiile săgeată).</li>
+                            <li><strong>Preset:</strong> O colecție de plugin-uri (ex: <code>@babel/preset-react</code> conține tot ce e necesar pentru JSX).</li>
+                        </ul>
+                    `
+                }
+            },
+            {
+                id: 'jsx-transform',
+                title: '3. Transformarea JSX',
+                icon: '🔄',
+                vizType: 'jsx-live-editor',
+                content: {
+                    heading: 'De la XML la Apeluri de Funcții',
+                    text: `
+                        <p class="text-slate-300 mb-6">
+                            Acesta este rolul principal al Babel în React: demistificarea JSX-ului. 
+                            Există două "ere" ale transformării JSX, iar înțelegerea lor este crucială pentru debugging și configurare.
+                        </p>
+                        <h3 class="text-xl text-white font-bold mt-6 mb-3">Runtime Clasic vs. Automatic</h3>
+                        <p class="text-slate-400 mb-6">
+                            Până la React 17, JSX se transforma în <code>React.createElement</code>. De aceea trebuia să imporți React în fiecare fișier, chiar dacă nu îl foloseai explicit.
+                            Noul "Automatic Runtime" importă automat funcții din <code>react/jsx-runtime</code>, permițând optimizări mai bune și fișiere mai curate.
+                        </p>
+                    `
+                }
+            },
+            {
+                id: 'ecosystem',
+                title: '4. Integrarea în Ecosistem',
+                icon: '🌐',
+                vizType: 'bundler-map',
+                content: {
+                    heading: 'Unde se așază Babel?',
+                    text: `
+                        <p class="text-slate-300 mb-6">
+                            Babel rareori lucrează singur. Într-un proiect real, el este o "rotiță" într-un mecanism mai mare numit <strong>Bundler</strong> (Webpack, Vite, Rollup).
+                        </p>
+                        <p class="text-slate-400 mb-6">
+                            Fluxul tipic este:
+                            <br>1. <strong>Sursă:</strong> Fișiere .jsx/.tsx
+                            <br>2. <strong>Loader:</strong> Webpack întâlnește fișierul și îl trimite la Babel (babel-loader).
+                            <br>3. <strong>Transpilare:</strong> Babel elimină tipurile (dacă e TS), transformă JSX, coboară versiunea de JS.
+                            <br>4. <strong>Bundling:</strong> Webpack unește modulele într-un singur fișier (bundle.js).
+                        </p>
+                    `
+                }
+            },
+            {
+                id: 'costs',
+                title: '5. Costuri și Riscuri',
+                icon: '⚠️',
+                vizType: 'speed-benchmark',
+                content: {
+                    heading: 'Prețul Abstracției',
+                    text: `
+                        <p class="text-slate-300 mb-6">
+                            Transpilarea nu este gratuită. Studiile recente (Prasetya et al., 2025) compară Babel cu alternative moderne scrise în Rust (SWC, esbuild).
+                        </p>
+                        <div class="bg-slate-800/50 p-6 rounded mb-6">
+                            <h4 class="text-white font-bold mb-2">Babel vs SWC/esbuild</h4>
+                            <p class="text-slate-400 text-sm mb-4">
+                                Babel este scris în JavaScript. SWC este scris în Rust. 
+                                Rust poate fi de <strong>10-20x mai rapid</strong> la procesare.
+                            </p>
+                            <p class="text-slate-400 text-sm">
+                                Totuși, Babel rămâne dominant datorită maturității ecosistemului de plugin-uri și stabilității.
+                            </p>
+                        </div>
+                        <p class="text-slate-400">
+                            <strong>Riscul TransFuzz:</strong> Transpilerele pot avea bug-uri. Uneori, codul transpilat se comportă diferit de sursă în cazuri marginale. Testarea pe artefactul final (build) este obligatorie.
+                        </p>
+                    `
+                }
+            }
+        ];
+
+        // --- APP LOGIC ---
+
+        let activeModule = 0;
+
+        function init() {
+            renderNav();
+            loadModule(0);
+            
+            document.getElementById('mobile-menu').onclick = () => {
+                document.getElementById('nav-content').classList.toggle('hidden');
+            };
+        }
+
+        function renderNav() {
+            const container = document.getElementById('nav-content');
+            container.innerHTML = modules.map((mod, idx) => `
+                <button onclick="loadModule(${idx})" 
+                    class="w-full text-left px-4 py-3 rounded flex items-center gap-3 transition-colors ${activeModule === idx ? 'bg-yellow-500/10 text-yellow-500 border-l-2 border-yellow-500' : 'text-slate-400 hover:bg-slate-800'}">
+                    <span>${mod.icon}</span>
+                    <span class="text-sm font-medium">${mod.title}</span>
+                </button>
+            `).join('');
+        }
+
+        function loadModule(idx) {
+            activeModule = idx;
+            renderNav();
+            const mod = modules[idx];
+            document.getElementById('module-title').innerText = mod.title;
+            
+            const main = document.getElementById('main-container');
+            main.style.opacity = 0;
+            
+            setTimeout(() => {
+                main.innerHTML = `
+                    <section class="prose prose-invert max-w-none mb-12">
+                        <h2 class="text-3xl font-bold text-white mb-6">${mod.content.heading}</h2>
+                        ${mod.content.text}
+                    </section>
+                    
+                    <section class="mt-8 border border-slate-700 bg-[#0B1120] rounded-lg overflow-hidden shadow-2xl">
+                        <div class="bg-slate-800 px-4 py-2 border-b border-slate-700 flex justify-between items-center">
+                            <span class="text-xs font-mono font-bold text-yellow-500 flex items-center gap-2">
+                                <span>⚡</span> Laborator: ${getVizTitle(mod.vizType)}
+                            </span>
+                            <div class="flex gap-2">
+                                <button onclick="triggerVizAction('${mod.vizType}')" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded flex items-center gap-1 transition">
+                                    <span>▶</span> Rulează Simulare
+                                </button>
+                            </div>
+                        </div>
+                        <div id="viz-container" class="p-6 min-h-[400px] flex flex-col items-center justify-center relative bg-slate-900">
+                            <!-- Visualization Injected Here -->
+                        </div>
+                    </section>
+                `;
+                initViz(mod.vizType);
+                main.style.opacity = 1;
+                main.style.transition = "opacity 0.3s";
+            }, 200);
+        }
+
+        function getVizTitle(type) {
+            const map = {
+                'browser-compatibility': 'Browser Time Machine',
+                'compiler-pipeline': 'Fluxul AST (Abstract Syntax Tree)',
+                'jsx-live-editor': 'JSX Transpiler Sandbox',
+                'bundler-map': 'Build Chain Visualizer',
+                'speed-benchmark': 'Babel vs SWC Race'
+            };
+            return map[type];
+        }
+
+        // --- VISUALIZATION LOGIC ---
+
+        function triggerVizAction(type) {
+            const container = document.getElementById('viz-container');
+            container.classList.add('opacity-50');
+            setTimeout(() => container.classList.remove('opacity-50'), 150);
+
+            if (type === 'browser-compatibility') window.runBrowserSim();
+            if (type === 'compiler-pipeline') window.runPipelineAnim();
+            if (type === 'jsx-live-editor') window.transpileCode();
+            if (type === 'bundler-map') window.animateBundler();
+            if (type === 'speed-benchmark') window.runRace();
+        }
+
+        function initViz(type) {
+            const container = document.getElementById('viz-container');
+            container.innerHTML = '';
+
+            if (type === 'browser-compatibility') renderBrowserCompat(container);
+            if (type === 'compiler-pipeline') renderCompilerPipeline(container);
+            if (type === 'jsx-live-editor') renderJsxEditor(container);
+            if (type === 'bundler-map') renderBundlerMap(container);
+            if (type === 'speed-benchmark') renderBenchmark(container);
+        }
+
+        // 1. Browser Compatibility
+        function renderBrowserCompat(container) {
+            container.innerHTML = `
+                <div class="w-full max-w-3xl space-y-6">
+                    <div class="flex justify-between items-end border-b border-slate-700 pb-2">
+                        <div class="text-sm font-mono text-blue-400">Cod Sursă (ES2023)</div>
+                        <div class="text-xs text-slate-500">const user = res?.data?.user ?? 'Guest';</div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- Chrome Modern -->
+                        <div class="flex items-center gap-4">
+                            <div class="w-24 text-right text-xs text-slate-400">Chrome 120</div>
+                            <div class="flex-1 h-8 bg-slate-800 rounded relative overflow-hidden">
+                                <div id="bar-chrome" class="h-full bg-green-500/20 w-full flex items-center px-3 text-[10px] text-green-300">
+                                    Supported Natively
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- IE11 -->
+                        <div class="flex items-center gap-4">
+                            <div class="w-24 text-right text-xs text-slate-400">Internet Explorer 11</div>
+                            <div class="flex-1 h-8 bg-slate-800 rounded relative overflow-hidden">
+                                <div id="bar-ie" class="h-full bg-red-500/20 w-full flex items-center px-3 text-[10px] text-red-300">
+                                    SyntaxError: Unexpected token '.'
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-6 border-t border-slate-700">
+                        <div class="flex justify-center mb-4">
+                            <span class="px-3 py-1 bg-yellow-600 text-white text-xs font-bold rounded">Apply Babel Transpilation</span>
+                        </div>
+                        <div id="transpiled-output" class="font-mono text-xs text-yellow-400 bg-black p-4 rounded opacity-0 transition-opacity duration-500">
+                            var _res$data; <br>
+                            var user = (_res$data = res === null || res === void 0 ? void 0 : res.data) === null || _res$data === void 0 ? void 0 : _res$data.user; <br>
+                            if (user === void 0) { user = 'Guest'; }
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            window.runBrowserSim = () => {
+                const ieBar = document.getElementById('bar-ie');
+                const output = document.getElementById('transpiled-output');
+                
+                output.style.opacity = 0;
+                ieBar.className = "h-full bg-red-500/20 w-full flex items-center px-3 text-[10px] text-red-300 transition-colors duration-500";
+                ieBar.innerText = "SyntaxError: Unexpected token '.'";
+
+                setTimeout(() => {
+                    output.style.opacity = 1;
+                    ieBar.className = "h-full bg-green-500/20 w-full flex items-center px-3 text-[10px] text-green-300 transition-colors duration-500";
+                    ieBar.innerText = "Supported (via Transpilation)";
+                }, 800);
+            };
+        }
+
+        // 2. Compiler Pipeline (AST)
+        function renderCompilerPipeline(container) {
+            container.innerHTML = `
+                <div class="flex flex-col items-center w-full max-w-4xl relative">
+                    <!-- Stages -->
+                    <div class="flex justify-between w-full mb-12 relative z-10">
+                        <div class="w-32 bg-slate-800 p-3 rounded border border-slate-600 text-center flex flex-col gap-2">
+                            <span class="text-2xl">📝</span>
+                            <span class="text-xs font-bold text-white">Source Code</span>
+                        </div>
+                        
+                        <div class="w-32 bg-slate-800 p-3 rounded border border-yellow-600 text-center flex flex-col gap-2 shadow-[0_0_15px_rgba(202,138,4,0.2)]">
+                            <span class="text-2xl">🌳</span>
+                            <span class="text-xs font-bold text-yellow-500">AST (Parse)</span>
+                        </div>
+
+                        <div class="w-32 bg-slate-800 p-3 rounded border border-blue-600 text-center flex flex-col gap-2 shadow-[0_0_15px_rgba(37,99,235,0.2)]">
+                            <span class="text-2xl">🔧</span>
+                            <span class="text-xs font-bold text-blue-500">Transform</span>
+                        </div>
+
+                        <div class="w-32 bg-slate-800 p-3 rounded border border-green-600 text-center flex flex-col gap-2">
+                            <span class="text-2xl">📄</span>
+                            <span class="text-xs font-bold text-green-500">Output Code</span>
+                        </div>
+                    </div>
+
+                    <!-- Connection Line -->
+                    <div class="absolute top-10 left-0 w-full h-1 bg-slate-700 z-0">
+                        <div id="pipeline-beam" class="h-full bg-yellow-500 w-2 absolute top-0 left-0 shadow-[0_0_10px_#EAB308]" style="display:none"></div>
+                    </div>
+
+                    <!-- Detail View -->
+                    <div id="pipeline-detail" class="w-full bg-[#0d1117] p-4 rounded border border-slate-700 font-mono text-xs text-slate-300 min-h-[100px] flex items-center justify-center">
+                        Apasă "Rulează Simulare" pentru a vedea fluxul.
+                    </div>
+                </div>
+            `;
+
+            window.runPipelineAnim = () => {
+                const beam = document.getElementById('pipeline-beam');
+                const detail = document.getElementById('pipeline-detail');
+                
+                beam.style.display = 'block';
+                beam.style.transition = 'none';
+                beam.style.left = '5%';
+                
+                // Stage 1: Source
+                detail.innerHTML = '<span class="text-slate-400">const x = () => 1;</span>';
+                
+                setTimeout(() => {
+                    // Stage 2: AST
+                    beam.style.transition = 'left 1s linear';
+                    beam.style.left = '30%';
+                    detail.innerHTML = `
+                        <span class="text-yellow-500">{</span><br>
+                        &nbsp;&nbsp;type: "ArrowFunctionExpression",<br>
+                        &nbsp;&nbsp;params: [],<br>
+                        &nbsp;&nbsp;body: { type: "Literal", value: 1 }<br>
+                        <span class="text-yellow-500">}</span>
+                    `;
+                }, 1000);
+
+                setTimeout(() => {
+                    // Stage 3: Transform
+                    beam.style.left = '60%';
+                    detail.innerHTML = `
+                        <span class="text-blue-400">// Plugin: transform-arrow-functions</span><br>
+                        <span class="text-slate-500">Vizitator modifică nodul AST...</span><br>
+                        type: "FunctionExpression"
+                    `;
+                }, 2500);
+
+                setTimeout(() => {
+                    // Stage 4: Generate
+                    beam.style.left = '90%';
+                    detail.innerHTML = '<span class="text-green-400">var x = function() { return 1; };</span>';
+                }, 4000);
+                
+                setTimeout(() => {
+                    beam.style.display = 'none';
+                }, 5000);
+            };
+        }
+
+        // 3. JSX Editor
+        function renderJsxEditor(container) {
+            container.innerHTML = `
+                <div class="flex flex-col w-full h-full gap-2">
+                    <div class="flex justify-end mb-2">
+                        <select id="runtime-select" class="bg-slate-800 text-xs text-white border border-slate-600 rounded px-2 py-1" onchange="transpileCode()">
+                            <option value="classic">Runtime Clasic (React 16)</option>
+                            <option value="automatic">Runtime Automat (React 17+)</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 h-[300px]">
+                        <!-- Input -->
+                        <div class="code-editor p-2 font-mono text-xs text-slate-300">
+                            <div class="text-slate-500 border-b border-slate-700 mb-2 pb-1">Input (JSX)</div>
+                            <div class="whitespace-pre">
+<span class="t-keyword">const</span> App = () => (
+  <span class="t-tag">&lt;div</span> <span class="t-attr">className</span>=<span class="t-string">"box"</span><span class="t-tag">&gt;</span>
+    <span class="t-tag">&lt;h1&gt;</span>Hello<span class="t-tag">&lt;/h1&gt;</span>
+  <span class="t-tag">&lt;/div&gt;</span>
+);
+                            </div>
+                        </div>
+                        <!-- Output -->
+                        <div class="code-editor p-2 font-mono text-xs text-yellow-200/80 bg-black">
+                            <div class="text-slate-500 border-b border-slate-700 mb-2 pb-1">Babel Output</div>
+                            <div id="editor-output" class="whitespace-pre">Waiting...</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            // Initial run
+            setTimeout(window.transpileCode, 100);
+
+            window.transpileCode = () => {
+                const mode = document.getElementById('runtime-select').value;
+                const output = document.getElementById('editor-output');
+                
+                if (mode === 'classic') {
+                    output.innerHTML = `
+<span class="t-keyword">var</span> App = <span class="t-keyword">function</span> App() {
+  <span class="t-keyword">return</span> React.createElement(
+    <span class="t-string">"div"</span>,
+    { className: <span class="t-string">"box"</span> },
+    React.createElement(
+      <span class="t-string">"h1"</span>,
+      null,
+      <span class="t-string">"Hello"</span>
+    )
+  );
+};`;
+                } else {
+                    output.innerHTML = `
+<span class="t-keyword">import</span> { jsx <span class="t-keyword">as</span> _jsx } <span class="t-keyword">from</span> <span class="t-string">"react/jsx-runtime"</span>;
+
+<span class="t-keyword">var</span> App = <span class="t-keyword">function</span> App() {
+  <span class="t-keyword">return</span> _jsx(<span class="t-string">"div"</span>, {
+    className: <span class="t-string">"box"</span>,
+    children: _jsx(<span class="t-string">"h1"</span>, {
+      children: <span class="t-string">"Hello"</span>
+    })
+  });
+};`;
+                }
+            };
+        }
+
+        // 4. Bundler Map
+        function renderBundlerMap(container) {
+            container.innerHTML = `
+                <div class="relative w-full h-[300px] bg-[#0d1117] rounded border border-slate-700 p-4 flex items-center justify-center overflow-hidden">
+                    <!-- Files -->
+                    <div id="file-1" class="absolute left-10 top-10 w-16 h-20 bg-blue-900/50 border border-blue-500 rounded flex items-center justify-center text-xs text-blue-300 transition-all duration-1000">App.js</div>
+                    <div id="file-2" class="absolute left-10 top-36 w-16 h-20 bg-blue-900/50 border border-blue-500 rounded flex items-center justify-center text-xs text-blue-300 transition-all duration-1000">Util.js</div>
+                    
+                    <!-- Babel Machine -->
+                    <div class="absolute left-1/3 w-32 h-32 bg-slate-800 border-2 border-yellow-500 rounded-full flex items-center justify-center z-10 shadow-[0_0_20px_rgba(234,179,8,0.2)]">
+                        <div class="text-center">
+                            <div class="text-2xl animate-spin-slow">⚙️</div>
+                            <div class="text-xs font-bold text-yellow-500">babel-loader</div>
+                        </div>
+                    </div>
+
+                    <!-- Bundle -->
+                    <div id="bundle-file" class="absolute right-10 top-24 w-24 h-32 bg-green-900/50 border border-green-500 rounded flex flex-col items-center justify-center text-xs text-green-300 opacity-0 transform scale-50 transition-all duration-500">
+                        <span class="text-2xl mb-2">📦</span>
+                        bundle.js
+                    </div>
+                </div>
+            `;
+
+            window.animateBundler = () => {
+                const f1 = document.getElementById('file-1');
+                const f2 = document.getElementById('file-2');
+                const bundle = document.getElementById('bundle-file');
+
+                // Reset
+                f1.style.transform = 'translate(0,0) scale(1)';
+                f1.style.opacity = 1;
+                f2.style.transform = 'translate(0,0) scale(1)';
+                f2.style.opacity = 1;
+                bundle.style.opacity = 0;
+                bundle.style.transform = 'scale(0.5)';
+
+                setTimeout(() => {
+                    // Move to Babel
+                    f1.style.transform = 'translate(120px, 50px) scale(0.5)';
+                    f1.style.opacity = 0;
+                    f2.style.transform = 'translate(120px, -50px) scale(0.5)';
+                    f2.style.opacity = 0;
+                }, 500);
+
+                setTimeout(() => {
+                    // Output Bundle
+                    bundle.style.opacity = 1;
+                    bundle.style.transform = 'scale(1)';
+                }, 1500);
+            };
+        }
+
+        // 5. Benchmark
+        function renderBenchmark(container) {
+            container.innerHTML = `
+                <div class="w-full max-w-2xl space-y-6">
+                    <div>
+                        <div class="flex justify-between text-xs text-slate-400 mb-1">
+                            <span>Babel (JavaScript)</span>
+                            <span id="babel-time"></span>
+                        </div>
+                        <div class="h-8 bg-slate-800 rounded relative">
+                            <div id="race-babel" class="h-full bg-yellow-600 w-0 transition-all ease-out rounded text-right pr-2 text-[10px] text-white flex items-center justify-end"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs text-slate-400 mb-1">
+                            <span>SWC (Rust)</span>
+                            <span id="swc-time"></span>
+                        </div>
+                        <div class="h-8 bg-slate-800 rounded relative">
+                            <div id="race-swc" class="h-full bg-orange-600 w-0 transition-all ease-out rounded text-right pr-2 text-[10px] text-white flex items-center justify-end"></div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-4 text-center">Timp necesar pentru build (mai mic e mai bine)</p>
+                </div>
+            `;
+
+            window.runRace = () => {
+                const babel = document.getElementById('race-babel');
+                const swc = document.getElementById('race-swc');
+                
+                babel.style.width = '0%'; swc.style.width = '0%';
+                babel.innerText = ''; swc.innerText = '';
+                document.getElementById('babel-time').innerText = '';
+                document.getElementById('swc-time').innerText = '';
+
+                setTimeout(() => {
+                    // SWC finishes fast
+                    swc.style.width = '10%'; // small bar = fast time
+                    swc.innerText = 'Done';
+                    swc.style.transitionDuration = '0.3s';
+                    document.getElementById('swc-time').innerText = '0.3s';
+                }, 100);
+
+                setTimeout(() => {
+                    // Babel finishes later
+                    babel.style.width = '80%'; // long bar = slow time
+                    babel.innerText = 'Done';
+                    babel.style.transitionDuration = '2s';
+                    document.getElementById('babel-time').innerText = '2.1s';
+                }, 100);
+            };
+        }
+
+        // Init
+        window.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>

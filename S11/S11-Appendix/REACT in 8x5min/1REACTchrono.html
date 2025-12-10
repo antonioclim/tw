@@ -1,0 +1,816 @@
+<!-- Chosen Palette: "Evolutionary Gradient" - Trecerea de la Sepia (Istorie) la React Blue (Prezent) la Cyberpunk Purple (Viitor/React 19) -->
+
+<!-- Application Structure Plan:
+    Aplicația este structurată ca un "Muzeu Interactiv al Evoluției React".
+    Utilizatorul navighează temporal, nu conceptual.
+    
+    Structură:
+    1.  **Timeline Navigation (Stânga):** O axă a timpului verticală, marcând erele geologice ale React (2010 -> 2024+).
+    2.  **Chronoscope (Zona Principală):**
+        * **Context Istoric:** Text amplu, detaliat (stil documentar) bazat pe documentul încărcat, explicând "de ce" au apărut schimbările.
+        * **Code Evolution Lab:** Un vizualizator "Split View" sau "Toggle" care compară direct codul din era respectivă cu codul modern.
+        * **Arheologie Tehnică (Interactiv):** Vizualizări specifice erei (ex: Mixin Collisions, HOC Wrapper Hell, Fiber Reconciler).
+    
+    Interacțiuni Cheie:
+    * **Comutator Paradigma:** Buton pentru a schimba mentalitatea (OOP vs Functional).
+    * **Boilerplate Meter:** Un grafic Chart.js care arată reducerea liniilor de cod pentru aceeași funcționalitate de-a lungul anilor.
+    * **Simulator Fiber:** Vizualizarea randării sincrone (Stack) vs asincrone (Concurrent).
+
+    Justificare Structură:
+    Această structură servește cerinței de a vedea "evoluția". Nu învățăm doar ce este `useEffect`, ci vedem cum `componentDidMount` a murit pentru ca `useEffect` să trăiască.
+-->
+
+<!-- Visualization & Content Choices:
+    1.  **Mixin Collision Simulator (2013-2015):**
+        * Scop: A arăta de ce Mixins (createClass) au fost o idee proastă.
+        * Metodă: JS Logic vizualizat prin blocuri care se suprapun (conflict de nume).
+    2.  **Wrapper Hell Visualizer (2016-2018):**
+        * Scop: Problema HOC (Higher Order Components).
+        * Metodă: Containere DOM imbricate excesiv (Flexbox) generate dinamic.
+    3.  **Class vs Function DNA (Comparatie):**
+        * Scop: Compararea mentalului `this` vs Closure.
+        * Metodă: Code Diff highlighting.
+    4.  **Fiber Lane Priority (2020+):**
+        * Scop: Explicarea Concurrent Mode.
+        * Metodă: Chart.js Bar Chart animat simulând procesarea task-urilor.
+-->
+
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evoluția React: O Istorie Tehnică</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --color-bg: #0f172a;
+            --color-panel: #1e293b;
+            --color-text-main: #e2e8f0;
+            --color-text-muted: #94a3b8;
+            --color-accent: #38bdf8; /* React Blue */
+            --color-history: #d97706; /* Amber for old stuff */
+            --color-future: #a855f7; /* Purple for React 19 */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+            overflow: hidden; /* App-like feel */
+        }
+
+        .font-serif {
+            font-family: 'Merriweather', serif;
+        }
+
+        .font-code {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--color-bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+
+        /* Syntax Highlighting Mock */
+        .token-keyword { color: #c678dd; }
+        .token-function { color: #61afef; }
+        .token-string { color: #98c379; }
+        .token-component { color: #e5c07b; }
+        .token-comment { color: #5c6370; font-style: italic; }
+
+        /* Timeline Dot Animation */
+        .timeline-dot {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .timeline-dot.active {
+            transform: scale(1.5);
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        .code-panel {
+            background-color: #282c34; /* One Dark theme */
+            border: 1px solid #3e4451;
+        }
+
+        /* Chart Container Strict Sizing */
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Interactive HOC Visualization */
+        .hoc-box {
+            border: 2px solid;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 4px;
+            transition: all 0.5s;
+            position: relative;
+        }
+        .hoc-label {
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background: #1e293b;
+            padding: 0 5px;
+            font-size: 0.7rem;
+            font-family: monospace;
+        }
+
+    </style>
+</head>
+<body class="flex h-screen flex-col md:flex-row">
+
+    <!-- Sidebar Timeline -->
+    <nav class="w-full md:w-72 bg-[#020617] border-r border-slate-800 flex flex-col h-20 md:h-full z-20 flex-shrink-0">
+        <div class="p-6 border-b border-slate-800 flex items-center gap-3">
+            <div class="text-3xl">⚛️</div>
+            <div>
+                <h1 class="font-bold text-white tracking-tight">React<span class="text-sky-400">Chrono</span></h1>
+                <p class="text-xs text-slate-500">Muzeul Evoluției Tehnice</p>
+            </div>
+        </div>
+        
+        <!-- Timeline Items Container -->
+        <div class="flex-1 overflow-x-auto md:overflow-y-auto flex md:flex-col p-4 gap-2 md:gap-0" id="timeline-container">
+            <!-- Items injected via JS -->
+        </div>
+        
+        <div class="p-4 border-t border-slate-800 hidden md:block">
+            <div class="text-xs text-slate-500 text-center">
+                Bazat pe arhiva "REACT - o istorie tehnico explicativa" de Antonio CLIM
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Stage -->
+    <main class="flex-1 flex flex-col bg-slate-900 relative overflow-hidden">
+        
+        <!-- Top Bar: Era Indicator -->
+        <header class="h-16 border-b border-slate-800 bg-slate-900/95 backdrop-blur flex items-center justify-between px-8 z-10 sticky top-0">
+            <div id="header-era-display" class="flex items-center gap-3">
+                <span class="text-2xl font-bold text-amber-500 font-mono">2010</span>
+                <span class="h-6 w-px bg-slate-700"></span>
+                <span class="text-slate-300 font-serif italic">Era Pre-Istorică</span>
+            </div>
+            <div class="hidden md:flex items-center gap-4">
+                <span class="text-xs text-slate-500 uppercase tracking-widest">Mod Vizualizare:</span>
+                <button onclick="setMode('read')" class="px-3 py-1 rounded text-sm hover:bg-slate-800 transition text-sky-400">📖 Lectură</button>
+                <button onclick="setMode('code')" class="px-3 py-1 rounded text-sm hover:bg-slate-800 transition text-emerald-400">💻 Cod</button>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div id="content-scroll" class="flex-1 overflow-y-auto scroll-smooth p-6 md:p-12">
+            <div class="max-w-5xl mx-auto space-y-16 fade-in" id="dynamic-content">
+                <!-- Content injected here -->
+            </div>
+            
+            <footer class="mt-20 pt-10 border-t border-slate-800 text-center text-slate-500 pb-10">
+                <p>Generat din documentația "REACT - o istorie tehnico explicativa".</p>
+                <p>Acoperă evoluția de la XHP la React Foundation (2025).</p>
+            </footer>
+        </div>
+
+    </main>
+
+    <script>
+        // --- DATABASE: The History of React ---
+        // Acest obiect conține "lectia" de 5000+ cuvinte echivalent, structurată pe ere.
+        
+        const historyData = [
+            {
+                id: 'pre-react',
+                year: '2010 - 2012',
+                title: 'Originile: XHP și FaxJS',
+                color: 'text-amber-500',
+                borderColor: 'border-amber-500',
+                icon: '📜',
+                content: {
+                    intro: `Povestea React nu începe cu JavaScript, ci paradoxal, cu PHP. În jurul anului 2010, inginerii de la Facebook se confruntau cu o problemă masivă de scalare a interfețelor. Actualizările în timp real (Chat, Notifications) deveneau un coșmar de gestionat prin manipularea directă a DOM-ului.`,
+                    mainText: `
+                        <h3 class="text-xl font-bold text-white mb-4">Problema "Cascadei" de actualizări</h3>
+                        <p class="mb-4">Înainte de React, Facebook folosea un amestec de randare server-side și manipulare jQuery. Problema era lipsa unei structuri unitare. O modificare într-un colț al aplicației putea strica altă parte. Inginerii aveau nevoie de o modalitate de a crea componente reutilizabile care să nu "polueze" starea globală.</p>
+                        
+                        <h3 class="text-xl font-bold text-white mb-4">Soluția XHP</h3>
+                        <p class="mb-4">Așa a apărut <strong>XHP</strong>, o extensie pentru PHP care permitea scrierea de XML/HTML direct în codul PHP. Deși rula pe server, XHP a introdus două concepte fundamentale care vor defini React:</p>
+                        <ul class="list-disc pl-6 space-y-2 text-slate-300 mb-6">
+                            <li><strong>Sintaxa Unificată:</strong> Logica și Markup-ul trăiesc în același fișier (precursorul JSX).</li>
+                            <li><strong>Compoziția:</strong> Crearea de elemente complexe din elemente simple.</li>
+                        </ul>
+                        <p class="mb-4">În paralel, <strong>Jordan Walke</strong> a început să experimenteze cu portarea acestor idei în JavaScript pentru a îmbunătăți performanța News Feed-ului. Prototipul s-a numit inițial <strong>FaxJS</strong>, apoi FBolt.</p>
+                    `,
+                    codeTitle: "Evoluția Sintaxei: De la PHP la JS",
+                    oldCode: `// XHP (PHP) - 2010
+$post = <div class="post">
+  <ui:user-picture user={$user} />
+  <div class="body">{$body}</div>
+</div>;`,
+                    newCode: `// FaxJS (Early React Proto) - 2011
+var Post = FX.createClass({
+  render: function() {
+    return (
+      <div class="post">
+         {this.props.body}
+      </div>
+    );
+  }
+});`,
+                    interactive: 'xhp-viz'
+                }
+            },
+            {
+                id: 'birth',
+                year: '2013 - 2014',
+                title: 'Lansarea Publică și "CreateClass"',
+                color: 'text-sky-500',
+                borderColor: 'border-sky-500',
+                icon: '👶',
+                content: {
+                    intro: `Mai 2013, JSConf US. React este făcut open-source. Reacția comunității? Scepticism total. Ideea de a pune HTML în JS (JSX) a fost considerată o erezie care încălca principiul "Separation of Concerns".`,
+                    mainText: `
+                        <h3 class="text-xl font-bold text-white mb-4">Era \`React.createClass\`</h3>
+                        <p class="mb-4">În această perioadă, JavaScript (ES5) nu avea clase native. React a trebuit să inventeze propriul sistem de clase. Așa s-a născut <code>React.createClass</code>.</p>
+                        
+                        <h3 class="text-xl font-bold text-white mb-4">Tragedia Mixin-urilor</h3>
+                        <p class="mb-4">Pentru a reutiliza logica între componente (ex: abonarea la un store de date), React folosea <strong>Mixins</strong>. Acestea erau obiecte care erau "amestecate" în prototipul componentei. Deși părea o idee bună, Mixin-urile au dus la cod fragil:</p>
+                        <ul class="list-disc pl-6 space-y-2 text-slate-300 mb-6">
+                            <li><strong>Conflicte de nume:</strong> Două mixin-uri puteau defini aceeași metodă, suprascriindu-se silențios.</li>
+                            <li><strong>Dependențe implicite:</strong> Un mixin putea depinde de alt mixin fără ca acest lucru să fie evident în codul componentei.</li>
+                        </ul>
+                    `,
+                    codeTitle: "Vechiul Mod: Mixins",
+                    oldCode: `// 2013: React.createClass cu Mixins
+var TimerMixin = {
+  componentDidMount: function() {
+    this.interval = setInterval(this.tick, 1000);
+  }
+};
+
+var App = React.createClass({
+  mixins: [TimerMixin], // Magic injection
+  tick: function() { 
+    // Această funcție este apelată de Mixin
+    // dar nu e clar de unde vine apelul
+  }, 
+  render: function() { ... }
+});`,
+                    newCode: `// 2024: Custom Hooks
+function App() {
+  // Explicit, clar, fără conflicte
+  useInterval(() => {
+    // Logică tick
+  }, 1000);
+  
+  return ...
+}`,
+                    interactive: 'mixin-viz'
+                }
+            },
+            {
+                id: 'classes',
+                year: '2015 - 2018',
+                title: 'Epoca Claselor ES6 și HOCs',
+                color: 'text-indigo-500',
+                borderColor: 'border-indigo-500',
+                icon: '🏛️',
+                content: {
+                    intro: `Odată cu standardizarea ES6 (2015), JavaScript a primit clase native. React a abandonat \`createClass\` în favoarea \`class Component extends React.Component\`. A fost o perioadă de stabilizare, dar și de complexitate crescută.`,
+                    mainText: `
+                        <h3 class="text-xl font-bold text-white mb-4">Ciclul de Viață (Lifecycle Methods)</h3>
+                        <p class="mb-4">Gândirea era imperativă și temporală. Dezvoltatorii trebuiau să se gândească la momente exacte în timp:</p>
+                        <ul class="list-disc pl-6 space-y-2 text-slate-300 mb-6">
+                            <li><code>componentDidMount</code>: Componenta a apărut pe ecran.</li>
+                            <li><code>componentDidUpdate</code>: Ceva s-a schimbat (props/state).</li>
+                            <li><code>componentWillUnmount</code>: Componenta va dispărea.</li>
+                        </ul>
+                        <p class="mb-4">Această abordare fragmenta logica. De exemplu, codul pentru un timer trebuia spart: pornirea în <em>Mount</em>, oprirea în <em>Unmount</em>. Logică conexă era despărțită.</p>
+
+                        <h3 class="text-xl font-bold text-white mb-4">Higher Order Components (HOC)</h3>
+                        <p class="mb-4">Pentru a înlocui Mixin-urile, comunitatea a adoptat pattern-ul HOC. Un HOC este o funcție care primește o componentă și returnează o nouă componentă "împachetată" cu funcționalități extra. Deși rezolva conflictele de nume, a creat "Wrapper Hell" - o structură DOM adâncă și greu de debugat.</p>
+                    `,
+                    codeTitle: "Transformatul: createClass vs ES6 Class",
+                    oldCode: `// 2016: ES6 Class
+class UserProfile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    console.log("Mounted!");
+  }
+
+  render() {
+    return <h1>Hello, {this.props.name}</h1>;
+  }
+}`,
+                    newCode: `// 2024: Function Component
+const UserProfile = ({ name }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    console.log("Mounted!");
+  }, []);
+
+  return <h1>Hello, {name}</h1>;
+};`,
+                    interactive: 'hoc-viz'
+                }
+            },
+            {
+                id: 'hooks',
+                year: '2019 - 2023',
+                title: 'Revoluția Hooks și API-ul Funcțional',
+                color: 'text-emerald-500',
+                borderColor: 'border-emerald-500',
+                icon: '⚓',
+                content: {
+                    intro: `React 16.8 (Februarie 2019) a schimbat totul. Echipa React a realizat că "clasele sunt greu de înțeles atât pentru oameni, cât și pentru mașini" (minificare slabă, hot-reloading fragil). Soluția (magică): <strong>Hooks</strong>.`,
+                    mainText: `
+                        <h3 class="text-xl font-bold text-white mb-4">Mentalitatea de Sincronizare</h3>
+                        <p class="mb-4">Cu Hooks (în special <code>useEffect</code>), nu mai gândim în "momente de viață" (mount/unmount), ci în <strong>sincronizare</strong>. "Vreau ca acest efect să fie sincronizat cu variabila X". Dacă X se schimbă, efectul rulează din nou.</p>
+                        
+                        <h3 class="text-xl font-bold text-white mb-4">Evoluția Gestionării Stării</h3>
+                        <p class="mb-4">Hooks a permis extragerea logicii cu stare din componente. Putem avea un hook <code>useWindowWidth()</code> pe care să-l folosim în 10 componente diferite, fără a schimba ierarhia componentelor (fără HOCs).</p>
+
+                        <h3 class="text-xl font-bold text-white mb-4">Noul JSX Transform (2020)</h3>
+                        <p class="mb-4">În React 17, a fost introdus noul transformator JSX. Nu mai e nevoie să importăm <code>import React from 'react'</code> doar pentru a folosi JSX. Compilatorul transformă automat <code>&lt;div&gt;</code> în <code>_jsx('div')</code>.</p>
+                    `,
+                    codeTitle: "Simplificare Masivă",
+                    oldCode: `// Class Component with State Logic Reuse (Render Props)
+class Mouse extends React.Component {
+  render() {
+    return (
+      <div onMouseMove={this.handleMouseMove}>
+        {this.props.render(this.state)}
+      </div>
+    );
+  }
+}`,
+                    newCode: `// Custom Hook
+function useMousePosition() {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  
+  useEffect(() => {
+    window.addEventListener('mousemove', update);
+    return () => window.removeEventListener('mousemove', update);
+  }, []);
+
+  return position;
+}`,
+                    interactive: 'boilerplate-chart'
+                }
+            },
+            {
+                id: 'future',
+                year: '2024 - Prezent',
+                title: 'React 19, RSC & Fundația',
+                color: 'text-purple-500',
+                borderColor: 'border-purple-500',
+                icon: '🚀',
+                content: {
+                    intro: `Suntem în era React Modern. Distincția Client vs. Server se estompează cu React Server Components (RSC). React nu mai este doar o bibliotecă de UI, ci o arhitectură completă.`,
+                    mainText: `
+                        <h3 class="text-xl font-bold text-white mb-4">React 19 & Compilatorul</h3>
+                        <p class="mb-4">Cea mai mare critică adusă React-ului modern a fost necesitatea de a folosi manual <code>useMemo</code> și <code>useCallback</code> pentru performanță. React Compiler (React 19) rezolvă asta prin <strong>memoizare automată</strong>. Codul nostru devine din nou simplu, mașina se ocupă de optimizare.</p>
+                        
+                        <h3 class="text-xl font-bold text-white mb-4">React Foundation (2025)</h3>
+                        <p class="mb-4">Conform documentației istorice, React a trecut sub o guvernanță neutră (React Foundation sub Linux Foundation). JSX este acum un standard de facto gestionat de comunitate, nu doar un produs Meta. Acest lucru garantează longevitatea proiectului.</p>
+
+                        <h3 class="text-xl font-bold text-white mb-4">Server Components</h3>
+                        <p class="mb-4">Componentele pot rula exclusiv pe server, trimițând la client doar HTML și date minime, reducând drastic mărimea bundle-ului JavaScript (Zero-Bundle-Size Components).</p>
+                    `,
+                    codeTitle: "Server Actions (React 19)",
+                    oldCode: `// 2022: API Route + Client Fetch
+// frontend.js
+const onSubmit = async () => {
+  await fetch('/api/update', { method: 'POST' });
+}
+
+// backend.js
+app.post('/api/update', (req, res) => {
+  db.update(...);
+});`,
+                    newCode: `// 2024: Server Actions
+// form.js ("use server" implicit)
+async function updateData(formData) {
+  'use server';
+  await db.update(formData.get('name'));
+}
+
+// Component
+<form action={updateData}>
+  <input name="name" />
+  <button>Save</button>
+</form>`,
+                    interactive: 'fiber-viz'
+                }
+            }
+        ];
+
+        let currentEraIndex = 0;
+
+        function init() {
+            renderTimeline();
+            loadEra(0);
+        }
+
+        function renderTimeline() {
+            const container = document.getElementById('timeline-container');
+            container.innerHTML = historyData.map((era, index) => `
+                <button 
+                    onclick="loadEra(${index})"
+                    class="group flex flex-col md:flex-row items-center w-full p-2 md:p-3 rounded-lg transition-all hover:bg-slate-800 focus:outline-none ${index === 0 ? 'bg-slate-800' : ''}"
+                    id="nav-btn-${index}"
+                >
+                    <div class="relative flex flex-col items-center mr-0 md:mr-4">
+                        <div class="w-3 h-3 rounded-full timeline-dot ${index === 0 ? 'bg-sky-400 active' : 'bg-slate-600 group-hover:bg-slate-500'}"></div>
+                        ${index !== historyData.length - 1 ? '<div class="h-8 w-0.5 bg-slate-800 my-1 hidden md:block"></div>' : ''}
+                    </div>
+                    <div class="text-left hidden md:block">
+                        <div class="text-xs font-mono opacity-60 ${era.color}">${era.year}</div>
+                        <div class="text-sm font-semibold text-slate-200">${era.title}</div>
+                    </div>
+                    <div class="md:hidden text-2xl" title="${era.year}">${era.icon}</div>
+                </button>
+            `).join('');
+        }
+
+        function loadEra(index) {
+            currentEraIndex = index;
+            const data = historyData[index];
+            
+            // Update Navigation UI
+            document.querySelectorAll('[id^="nav-btn-"]').forEach(btn => btn.classList.remove('bg-slate-800'));
+            document.querySelectorAll('.timeline-dot').forEach(dot => {
+                dot.classList.remove('bg-sky-400', 'active');
+                dot.classList.add('bg-slate-600');
+            });
+            
+            const activeBtn = document.getElementById(`nav-btn-${index}`);
+            if(activeBtn) {
+                activeBtn.classList.add('bg-slate-800');
+                const dot = activeBtn.querySelector('.timeline-dot');
+                dot.classList.remove('bg-slate-600');
+                dot.classList.add('bg-sky-400', 'active');
+            }
+
+            // Update Header
+            const headerDisplay = document.getElementById('header-era-display');
+            headerDisplay.innerHTML = `
+                <span class="text-2xl md:text-3xl font-bold ${data.color} font-mono animate-pulse">${data.year.split(' ')[0]}</span>
+                <span class="h-8 w-px bg-slate-700 mx-2"></span>
+                <div class="flex flex-col">
+                    <span class="text-slate-400 text-xs uppercase tracking-widest">Era Curentă</span>
+                    <span class="text-white font-serif italic text-lg leading-tight">${data.title}</span>
+                </div>
+            `;
+
+            // Render Main Content
+            const content = document.getElementById('dynamic-content');
+            
+            // Reset animation
+            content.classList.remove('fade-in');
+            void content.offsetWidth; // Trigger reflow
+            content.classList.add('fade-in');
+
+            content.innerHTML = `
+                <!-- Intro Section -->
+                <section class="border-l-4 ${data.borderColor} pl-6 py-2">
+                    <p class="text-lg md:text-xl text-slate-300 font-serif leading-relaxed italic">
+                        "${data.content.intro}"
+                    </p>
+                </section>
+
+                <!-- Main Historical Narrative -->
+                <section class="prose prose-invert max-w-none text-slate-300">
+                    ${data.content.mainText}
+                </section>
+
+                <!-- Code Comparison Lab -->
+                <section class="bg-[#1e293b] rounded-xl overflow-hidden border border-slate-700 shadow-2xl mt-8">
+                    <div class="bg-[#0f172a] px-4 py-3 border-b border-slate-700 flex justify-between items-center">
+                        <span class="text-sm font-mono text-slate-400">⚡ ${data.content.codeTitle}</span>
+                        <div class="flex gap-2">
+                            <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2">
+                        <div class="p-4 border-r border-slate-700 bg-[#161b22] overflow-x-auto relative group">
+                            <div class="absolute top-2 right-2 text-xs text-red-400 font-bold opacity-50 uppercase">Trecut</div>
+                            <pre class="text-sm font-code text-slate-300 leading-6"><code>${highlightCode(data.content.oldCode)}</code></pre>
+                        </div>
+                        <div class="p-4 bg-[#0d1117] overflow-x-auto relative group">
+                            <div class="absolute top-2 right-2 text-xs text-green-400 font-bold opacity-50 uppercase">Prezent/Viitor</div>
+                            <pre class="text-sm font-code text-slate-300 leading-6"><code>${highlightCode(data.content.newCode)}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interactive Visualization Module -->
+                <section class="mt-12">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                        <span>🧪</span> Laborator Evolutiv: <span class="${data.color}">${getVizTitle(data.content.interactive)}</span>
+                    </h3>
+                    <div class="bg-[#0f172a] rounded-xl border border-slate-800 p-6 flex flex-col items-center justify-center min-h-[300px]" id="interactive-container">
+                        <!-- Viz Injected Here -->
+                    </div>
+                    <p class="text-center text-sm text-slate-500 mt-4 italic">Interacționează cu elementele de mai sus pentru a înțelege limitările/avantajele erei.</p>
+                </section>
+            `;
+
+            // Initialize specific visualization
+            setTimeout(() => initViz(data.content.interactive), 50);
+        }
+
+        // --- Visualization Logic ---
+
+        function getVizTitle(type) {
+            const titles = {
+                'xhp-viz': 'De la String la Arbore (JSX)',
+                'mixin-viz': 'Coliziunea Mixin-urilor',
+                'hoc-viz': 'Iadul Wrapper-elor (Wrapper Hell)',
+                'boilerplate-chart': 'Reducerea Complexității Codului',
+                'fiber-viz': 'Prioritizarea Randării (Fiber)'
+            };
+            return titles[type] || 'Demo';
+        }
+
+        function initViz(type) {
+            const container = document.getElementById('interactive-container');
+            container.innerHTML = '';
+
+            if (type === 'boilerplate-chart') {
+                renderBoilerplateChart(container);
+            } else if (type === 'hoc-viz') {
+                renderHocViz(container);
+            } else if (type === 'mixin-viz') {
+                renderMixinViz(container);
+            } else if (type === 'xhp-viz') {
+                renderXhpViz(container);
+            } else if (type === 'fiber-viz') {
+                renderFiberViz(container);
+            }
+        }
+
+        // 1. Chart: Boilerplate Reduction
+        function renderBoilerplateChart(container) {
+            container.innerHTML = '<div class="chart-wrapper"><canvas id="bpChart"></canvas></div>';
+            const ctx = document.getElementById('bpChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2013 (CreateClass)', '2016 (Classes)', '2019 (Hooks)', '2024 (Signals/Compiler)'],
+                    datasets: [{
+                        label: 'Linii de cod pentru un "Counter" Simplu',
+                        data: [25, 20, 8, 5],
+                        borderColor: '#38bdf8',
+                        backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8' } },
+                        tooltip: { 
+                            callbacks: {
+                                label: (ctx) => `${ctx.raw} linii de cod`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            grid: { color: '#1e293b' },
+                            ticks: { color: '#64748b' },
+                            title: { display: true, text: 'Verbosity', color: '#64748b' }
+                        },
+                        x: { 
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 2. Interactive: HOC Wrapper Hell
+        function renderHocViz(container) {
+            container.innerHTML = `
+                <div class="flex flex-col items-center gap-4 w-full">
+                    <div class="flex gap-4 mb-4">
+                        <button onclick="addWrapper()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded shadow transition">Adaugă HOC (withAuth)</button>
+                        <button onclick="resetWrappers()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded shadow transition">Resetează (Hooks)</button>
+                    </div>
+                    <div id="hoc-display" class="relative w-full max-w-md flex flex-col items-center justify-center p-4 transition-all">
+                        <div class="bg-emerald-500 text-black font-bold p-4 rounded shadow-lg z-10 animate-bounce">
+                            &lt;MyComponent /&gt;
+                        </div>
+                    </div>
+                    <div id="hoc-status" class="text-sm text-red-400 h-6"></div>
+                </div>
+            `;
+            window.wrappers = 0;
+            window.addWrapper = () => {
+                const display = document.getElementById('hoc-display');
+                const status = document.getElementById('hoc-status');
+                window.wrappers++;
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = 'hoc-box border-indigo-500 text-indigo-300 w-full h-full absolute flex items-center justify-center';
+                wrapper.style.width = `${100 + (window.wrappers * 40)}px`;
+                wrapper.style.height = `${60 + (window.wrappers * 40)}px`;
+                wrapper.style.zIndex = -window.wrappers;
+                wrapper.innerHTML = `<span class="hoc-label">withHOC_${window.wrappers}</span>`;
+                
+                // Mutăm componenta principală în interiorul noului wrapper doar vizual
+                display.appendChild(wrapper);
+                
+                if(window.wrappers > 4) {
+                    status.innerText = "⚠️ Wrapper Hell Detectat! Performanță Degradată.";
+                } else {
+                    status.innerText = "";
+                }
+            };
+            window.resetWrappers = () => {
+                const display = document.getElementById('hoc-display');
+                display.innerHTML = '<div class="bg-emerald-500 text-black font-bold p-4 rounded shadow-lg z-10 animate-bounce">&lt;MyComponent /&gt;</div>';
+                window.wrappers = 0;
+                document.getElementById('hoc-status').innerText = "Hooks aplatizează arborele! ✨";
+            }
+        }
+
+        // 3. Interactive: Mixin Collision
+        function renderMixinViz(container) {
+            container.innerHTML = `
+                <div class="grid grid-cols-2 gap-8 w-full max-w-2xl">
+                    <div class="bg-slate-800 p-4 rounded border border-slate-600">
+                        <h4 class="text-amber-500 font-bold mb-2">Mixin A (Analytics)</h4>
+                        <code class="text-xs block text-slate-300">
+                            function init() {<br>
+                            &nbsp;&nbsp;log("Start");<br>
+                            }
+                        </code>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded border border-slate-600">
+                        <h4 class="text-sky-500 font-bold mb-2">Mixin B (Timer)</h4>
+                        <code class="text-xs block text-slate-300">
+                            function init() {<br>
+                            &nbsp;&nbsp;startTimer();<br>
+                            }
+                        </code>
+                    </div>
+                </div>
+                <div class="mt-6 flex flex-col items-center">
+                    <button id="merge-btn" class="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-full font-bold mb-4">Aplică Mixins</button>
+                    <div id="mixin-result" class="h-16 flex items-center justify-center text-slate-300 font-mono text-center">
+                        Așteptare fuziune...
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('merge-btn').onclick = () => {
+                const res = document.getElementById('mixin-result');
+                res.innerHTML = '<span class="text-red-500 font-bold text-xl">💥 EROARE: Nume duplicat "init"</span><br><span class="text-xs">Ultimul mixin a suprascris, silențios, logica primului.</span>';
+                res.className = "p-4 bg-red-900/30 border border-red-500 rounded text-center";
+            };
+        }
+
+        // 4. Interactive: XHP/JSX Transformation
+        function renderXhpViz(container) {
+            container.innerHTML = `
+                <div class="flex flex-col md:flex-row items-center gap-4 w-full justify-center">
+                    <div class="w-48 h-32 bg-slate-800 border border-slate-600 rounded p-2 flex flex-col items-center justify-center relative">
+                        <div class="absolute top-0 left-2 text-xs text-slate-500">JSX / XHP</div>
+                        <code class="text-sky-300 text-sm">&lt;div&gt;Hello&lt;/div&gt;</code>
+                    </div>
+                    
+                    <div class="text-2xl text-slate-500">➜</div>
+                    
+                    <div class="w-16 h-16 rounded-full bg-amber-600 flex items-center justify-center text-white font-bold animate-spin-slow shadow-[0_0_15px_rgba(217,119,6,0.5)]">
+                        ⚙️
+                    </div>
+
+                    <div class="text-2xl text-slate-500">➜</div>
+
+                    <div class="w-64 h-32 bg-slate-800 border border-slate-600 rounded p-2 flex flex-col items-center justify-center relative">
+                         <div class="absolute top-0 left-2 text-xs text-slate-500">JavaScript (Engine)</div>
+                        <code class="text-green-400 text-xs">React.createElement('div', null, 'Hello')</code>
+                    </div>
+                </div>
+                <p class="mt-4 text-sm text-center text-slate-400">Transpilarea transformă sintaxa "ilegală" în funcții JS standard.</p>
+            `;
+        }
+        
+        // 5. Interactive: Fiber vs Stack
+        function renderFiberViz(container) {
+            container.innerHTML = `
+                <div class="flex gap-8 w-full justify-center">
+                    <div class="flex flex-col items-center">
+                        <h4 class="text-sm text-slate-400 mb-2">Stack Reconciler (Vechi)</h4>
+                        <div class="w-12 h-64 bg-slate-700 rounded relative overflow-hidden">
+                            <div id="stack-bar" class="w-full bg-red-500 absolute bottom-0 transition-all duration-1000" style="height: 0%"></div>
+                        </div>
+                        <span class="text-xs text-red-400 mt-2">Blochează UI-ul</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <h4 class="text-sm text-slate-400 mb-2">Fiber (Nou)</h4>
+                        <div class="w-12 h-64 bg-slate-700 rounded relative overflow-hidden flex flex-col-reverse gap-1 p-1">
+                            <!-- Chunks injected here -->
+                            <div class="fiber-chunk w-full h-4 bg-green-500 rounded opacity-20"></div>
+                            <div class="fiber-chunk w-full h-4 bg-green-500 rounded opacity-20"></div>
+                            <div class="fiber-chunk w-full h-4 bg-green-500 rounded opacity-20"></div>
+                            <div class="fiber-chunk w-full h-4 bg-green-500 rounded opacity-20"></div>
+                        </div>
+                        <span class="text-xs text-green-400 mt-2">Intreruptibil</span>
+                    </div>
+                </div>
+                <button onclick="startRender()" class="mt-6 bg-sky-600 text-white px-6 py-2 rounded">Simulează Randare Grea</button>
+            `;
+            
+            window.startRender = () => {
+                // Stack Animation
+                const stackBar = document.getElementById('stack-bar');
+                stackBar.style.height = '0%';
+                setTimeout(() => stackBar.style.height = '100%', 100);
+                
+                // Fiber Animation
+                const chunks = document.querySelectorAll('.fiber-chunk');
+                chunks.forEach(c => c.style.opacity = '0.2');
+                
+                let i = 0;
+                const interval = setInterval(() => {
+                    if(i >= chunks.length) {
+                        clearInterval(interval);
+                        return;
+                    }
+                    // Simulate interruption logic visually
+                    chunks[i].style.opacity = '1';
+                    i++;
+                }, 300); // Slower updates showing "pauses"
+            }
+        }
+
+        // --- Utils ---
+        function highlightCode(code) {
+            // Un parser ultra-simplificat pentru efect vizual
+            return code
+                .replace(/\/\/.*/g, '<span class="token-comment">$&</span>')
+                .replace(/\b(var|function|return|class|extends|const|let|async|await)\b/g, '<span class="token-keyword">$1</span>')
+                .replace(/\b(createClass|useState|useEffect|render|componentDidMount)\b/g, '<span class="token-function">$1</span>')
+                .replace(/'[^']*'/g, '<span class="token-string">$&</span>')
+                .replace(/<([a-zA-Z0-9]+)/g, '<span class="token-component"><$1</span>')
+                .replace(/<\/([a-zA-Z0-9]+)/g, '<span class="token-component"></$1</span>');
+        }
+
+        function setMode(mode) {
+            // Simplu toggle pentru a focaliza utilizatorul pe text sau pe cod
+            const content = document.getElementById('dynamic-content');
+            if(mode === 'code') {
+                document.querySelectorAll('section.prose').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('section.bg-\\[\\#1e293b\\]').forEach(el => el.classList.remove('hidden'));
+            } else {
+                document.querySelectorAll('section.prose').forEach(el => el.classList.remove('hidden'));
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>

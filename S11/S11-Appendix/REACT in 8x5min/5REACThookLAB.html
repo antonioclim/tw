@@ -1,0 +1,1075 @@
+<!-- 
+    Titlu: React Hooks Research Center (RO) - Ultimate Edition
+    Arhitectură: Single Page Application (SPA)
+    Stil: "Deep Space Research Lab" - Dark Mode, Neon Accents, High Density Information.
+    
+    Hook-uri acoperite (Teorie + Lab + Code Diff):
+    1. useState (Core State)
+    2. useReducer (Complex Logic - SHOPPING CART FUNCTIONAL)
+    3. useEffect (Synchronization)
+    4. useRef (Mutable Values) - NOU
+    5. useMemo (Performance) - NOU
+    6. useOptimistic (React 19 UI Patterns) - NOU
+-->
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Research Center: Hooks Masterclass</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg-void: #020617; /* Slate 950 */
+            --bg-panel: #0f172a; /* Slate 900 */
+            --border-dim: #1e293b;
+            --text-main: #e2e8f0;
+            
+            /* Cromatică semantică pentru Hooks */
+            --c-state: #06b6d4;   /* Cyan */
+            --c-effect: #8b5cf6;  /* Violet */
+            --c-ref: #f59e0b;     /* Amber */
+            --c-memo: #10b981;    /* Emerald */
+            --c-next: #ec4899;    /* Pink (R19) */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-void);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-void); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Background Grid */
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .flash-update { animation: flash 0.6s ease-out; }
+        @keyframes flash {
+            0% { background-color: rgba(56, 189, 248, 0.2); box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
+            100% { background-color: transparent; box-shadow: none; }
+        }
+
+        /* Lab Specifics */
+        .lab-panel {
+            background: #0B1120;
+            border: 1px solid #1e293b;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+        }
+        
+        .nav-item.active {
+            background-color: rgba(15, 23, 42, 1);
+            border-left-color: currentColor;
+            color: white;
+        }
+    </style>
+</head>
+<body class="flex h-screen flex-col lg:flex-row">
+
+    <!-- Sidebar -->
+    <nav class="w-full lg:w-80 bg-[#0a0a0a] border-r border-gray-800 flex flex-col h-16 lg:h-full z-30 flex-shrink-0">
+        <div class="p-6 border-b border-gray-800 flex items-center gap-3">
+            <div class="w-10 h-10 bg-gradient-to-br from-cyan-600 to-blue-700 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-[0_0_15px_rgba(6,182,212,0.3)]">R</div>
+            <div>
+                <h1 class="font-bold text-white text-lg tracking-wide">HOOKS<span class="text-cyan-400">.LAB</span></h1>
+                <p class="text-[10px] text-slate-500 uppercase tracking-widest">Research Center v2.1</p>
+            </div>
+            <button id="menu-toggle" class="lg:hidden ml-auto text-2xl text-slate-400">☰</button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 space-y-8 hidden lg:block" id="sidebar-content">
+            <!-- Navigation injected via JS -->
+        </div>
+
+        <div class="p-4 border-t border-gray-800 text-[10px] text-gray-600 hidden lg:block">
+            <p>Engine: Vanilla JS simulating React Fiber.</p>
+            <p>Ref: React Docs (2024) by Antonio CLIM.</p>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col relative bg-[#020617] grid-bg">
+        
+        <!-- Header -->
+        <header class="h-16 border-b border-gray-800 bg-[#020617]/90 backdrop-blur flex items-center justify-between px-8 z-20 shrink-0">
+            <div class="flex items-center gap-4">
+                <span id="header-icon" class="text-2xl"></span>
+                <h2 id="header-title" class="font-bold text-xl text-gray-200">System Ready</h2>
+            </div>
+            <div class="flex gap-3">
+                <div class="px-3 py-1 rounded bg-slate-900 border border-slate-700 text-xs text-slate-400 font-mono flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Live Simulation
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div id="content-scroll" class="flex-1 overflow-y-auto scroll-smooth p-6 lg:p-12 relative">
+            <div class="max-w-7xl mx-auto space-y-16 pb-24" id="main-container">
+                <!-- Injected Content -->
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- DATA STORE (Enciclopedia Hook-urilor) ---
+        const hooksDB = {
+            state: {
+                title: "Gestiunea Stării (State)",
+                color: "text-cyan-400",
+                border: "border-cyan-500",
+                hooks: [
+                    {
+                        id: 'useState',
+                        name: 'useState',
+                        icon: '💾',
+                        labType: 'useStateLab',
+                        summary: 'Memoria atomică a componentei.',
+                        theory: `
+                            <h3 class="text-2xl font-bold text-white mb-4">1. Mecanică: Cum funcționează memoria?</h3>
+                            <p class="mb-4 text-slate-300 leading-relaxed">
+                                <code>useState</code> este fundamentul. Când apelezi acest hook, React rezervă o celulă de memorie în structura Fiber asociată componentei. 
+                                La fiecare re-randare, componenta "cere" valoarea curentă din acea celulă. Fără <code>useState</code>, variabilele locale ar fi șterse (garbage collected) după ce funcția componentă termină execuția.
+                            </p>
+                            <h3 class="text-xl font-bold text-cyan-400 mb-2">2. Batching Automat</h3>
+                            <p class="mb-4 text-slate-300">
+                                React 18+ grupează automat mai multe apeluri <code>setState</code> într-o singură randare pentru performanță, chiar și în promise-uri sau timeout-uri.
+                            </p>
+                            <h3 class="text-xl font-bold text-red-400 mb-2">3. Anti-Pattern: Stări Derivate</h3>
+                            <p class="mb-4 text-slate-300">
+                                Nu stoca în state date care pot fi calculate din props sau alt state.
+                                <br>Ex: Dacă ai <code>firstName</code> și <code>lastName</code>, <strong>nu</strong> crea un state pentru <code>fullName</code>. Calculează-l simplu: <code>const fullName = firstName + ' ' + lastName</code> în corpul funcției.
+                            </p>
+                        `,
+                        codeBad: `// ❌ REDUNDANȚĂ
+const [firstName, setFirst] = useState('Ion');
+const [lastName, setLast] = useState('Popescu');
+// Greșit: Trebuie actualizat manual la fiecare schimbare de nume
+const [fullName, setFull] = useState('Ion Popescu');`,
+                        codeGood: `// ✅ CALCULAT (DERIVAT)
+const [firstName, setFirst] = useState('Ion');
+const [lastName, setLast] = useState('Popescu');
+
+// Corect: Se recalculează automat la fiecare render
+const fullName = \`\${firstName} \${lastName}\`;`
+                    },
+                    {
+                        id: 'useReducer',
+                        name: 'useReducer',
+                        icon: '⚙️',
+                        labType: 'useReducerLab',
+                        summary: 'Logică complexă & tranzacțională.',
+                        theory: `
+                            <h3 class="text-2xl font-bold text-white mb-4">1. Arhitectura Reducer</h3>
+                            <p class="mb-4 text-slate-300 leading-relaxed">
+                                <code>useReducer</code> implementează pattern-ul <em>Command</em>. În loc să modifici starea direct (imperativ), componenta emite o comandă (acțiune) care descrie "ce s-a întâmplat" (ex: <code>ADDED_TO_CART</code>). 
+                                Reducer-ul (o funcție pură) decide "cum se schimbă starea" ca răspuns.
+                            </p>
+                            <h3 class="text-xl font-bold text-cyan-400 mb-2">2. Când să-l folosești?</h3>
+                            <ul class="list-disc pl-5 space-y-2 text-slate-300 mb-4">
+                                <li>Starea are o structură complexă (obiecte imbricate, array-uri).</li>
+                                <li>Următoarea stare depinde critic de cea anterioară.</li>
+                                <li>Vrei să decuplezi logica de business de UI (pentru testare).</li>
+                            </ul>
+                        `,
+                        codeBad: `// ❌ Logică dispersată în Event Handlers
+function handleCheckout() {
+  setLoading(true);
+  setTotal(0);
+  setItems([]);
+  // Dacă uităm una din ele, UI-ul devine inconsistent
+}`,
+                        codeGood: `// ✅ Logică centralizată (Tranzacțională)
+function reducer(state, action) {
+  switch (action.type) {
+    case 'CHECKOUT':
+      return { loading: true, total: 0, items: [] }; 
+      // Toate actualizările se întâmplă atomic
+  }
+}`
+                    }
+                ]
+            },
+            effect: {
+                title: "Efecte & Sincronizare",
+                color: "text-violet-400",
+                border: "border-violet-500",
+                hooks: [
+                    {
+                        id: 'useEffect',
+                        name: 'useEffect',
+                        icon: '⚡',
+                        labType: 'useEffectLab',
+                        summary: 'Conectarea cu sisteme externe.',
+                        theory: `
+                            <h3 class="text-2xl font-bold text-white mb-4">1. Mentalitatea de Sincronizare</h3>
+                            <p class="mb-4 text-slate-300">
+                                <code>useEffect</code> nu este un ciclu de viață. Este un mecanism de sincronizare. 
+                                Întrebarea nu este "când rulează?" (mount/update), ci "cu ce stare trebuie să fie sincronizat acest efect?".
+                            </p>
+                            <h3 class="text-xl font-bold text-violet-400 mb-2">2. Dependențele (The Array)</h3>
+                            <p class="mb-4 text-slate-300">
+                                Lista de dependențe <code>[prop, state]</code> controlează reactivitatea efectului. React compară (shallow) valorile din listă cu cele de la randarea anterioară. Dacă diferă, efectul rulează.
+                            </p>
+                            <h3 class="text-xl font-bold text-red-400 mb-2">3. Riscul: Infinite Loops</h3>
+                            <p class="mb-4 text-slate-300">
+                                Dacă un efect actualizează o stare care se află în propria sa listă de dependențe, creezi o buclă infinită: 
+                                Render -> Effect -> Set State -> Render -> Effect...
+                            </p>
+                        `,
+                        codeBad: `// ❌ BUCLĂ INFINITĂ
+useEffect(() => {
+  const newData = fetchData();
+  setData(newData); // Declanșează render
+}, [data]); // 'data' se schimbă -> efectul rulează din nou -> infinit`,
+                        codeGood: `// ✅ CORECT
+useEffect(() => {
+  let ignore = false;
+  async function load() {
+    const res = await fetch(url);
+    if (!ignore) setData(res);
+  }
+  load();
+  return () => { ignore = true; }; // Cleanup pentru race conditions
+}, [url]);`
+                    }
+                ]
+            },
+            ref: {
+                title: "Referințe (Refs)",
+                color: "text-amber-400",
+                border: "border-amber-500",
+                hooks: [
+                    {
+                        id: 'useRef',
+                        name: 'useRef',
+                        icon: '📌',
+                        labType: 'useRefLab',
+                        summary: 'Valori mutabile persistente fără randare.',
+                        theory: `
+                            <h3 class="text-2xl font-bold text-white mb-4">1. Cutia de Evadare din Reactivitate</h3>
+                            <p class="mb-4 text-slate-300">
+                                <code>useRef</code> returnează un obiect <code>{ current: initialValue }</code>. Acest obiect persistă pe toată durata de viață a componentei. 
+                                <strong>Crucial:</strong> Modificarea <code>ref.current</code> NU declanșează o re-randare. Este perfect pentru a stoca date "invizibile" pentru utilizator dar necesare logicii.
+                            </p>
+                            <h3 class="text-xl font-bold text-amber-400 mb-2">2. Cazuri de Utilizare</h3>
+                            <ul class="list-disc pl-5 space-y-2 text-slate-300 mb-4">
+                                <li>Stocarea ID-urilor de <code>setTimeout</code> / <code>setInterval</code>.</li>
+                                <li>Accesarea directă a elementelor DOM (ex: <code>input.focus()</code>).</li>
+                                <li>Stocarea valorii anterioare a unui prop (pentru comparație).</li>
+                            </ul>
+                        `,
+                        codeBad: `// ❌ FOLOSIRE REF PENTRU AFIȘARE
+function Counter() {
+  const count = useRef(0);
+  
+  const handleClick = () => {
+    count.current = count.current + 1; 
+    // React NU știe că s-a schimbat ceva.
+    // UI-ul va arăta mereu 0.
+  };
+
+  return <button onClick={handleClick}>{count.current}</button>;
+}`,
+                        codeGood: `// ✅ FOLOSIRE REF PENTRU PERSISTENȚĂ
+function Timer() {
+  const intervalRef = useRef(null); // Stocăm ID-ul timerului
+
+  const start = () => {
+    // Nu vrem randare când salvăm ID-ul
+    intervalRef.current = setInterval(() => { ... }, 1000);
+  };
+
+  const stop = () => {
+    clearInterval(intervalRef.current);
+  };
+}`
+                    }
+                ]
+            },
+            perf: {
+                title: "Optimizare (Memo)",
+                color: "text-emerald-400",
+                border: "border-emerald-500",
+                hooks: [
+                    {
+                        id: 'useMemo',
+                        name: 'useMemo',
+                        icon: '🧠',
+                        labType: 'useMemoLab',
+                        summary: 'Memoizarea calculelor costisitoare.',
+                        theory: `
+                            <h3 class="text-2xl font-bold text-white mb-4">1. Prevenirea Calculelor Inutile</h3>
+                            <p class="mb-4 text-slate-300">
+                                <code>useMemo</code> cache-uiește rezultatul unei funcții. Recalculează valoarea doar dacă una dintre dependențe s-a schimbat. Dacă componenta se randează din cauza părintelui, dar datele pentru calculul greu sunt aceleași, <code>useMemo</code> returnează rezultatul vechi instantaneu.
+                            </p>
+                            <h3 class="text-xl font-bold text-emerald-400 mb-2">2. Integritate Referențială</h3>
+                            <p class="mb-4 text-slate-300">
+                                În JS, <code>{} === {}</code> este false. Dacă treci un obiect creat în timpul randării către o componentă copil optimizată (<code>React.memo</code>), optimizarea eșuează. 
+                                <code>useMemo</code> garantează că primești aceeași <em>instanță</em> a obiectului, permițând optimizărilor din copil să funcționeze.
+                            </p>
+                        `,
+                        codeBad: `// ❌ OBIECT NOU LA FIECARE RENDER
+function Parent() {
+  // Acest obiect are o nouă adresă în memorie la fiecare render
+  const style = { color: 'red' }; 
+  
+  // Child se va reranda mereu, chiar dacă e memoizat
+  return <Child style={style} />;
+}`,
+                        codeGood: `// ✅ REFERINȚĂ STABILĂ
+function Parent() {
+  // Obiectul este creat o singură dată
+  const style = useMemo(() => ({ color: 'red' }), []); 
+  
+  return <Child style={style} />;
+}`
+                    }
+                ]
+            },
+            next: {
+                title: "React 19 (Experimental)",
+                color: "text-pink-400",
+                border: "border-pink-500",
+                hooks: [
+                    {
+                        id: 'useOptimistic',
+                        name: 'useOptimistic',
+                        icon: '🚀',
+                        labType: 'useOptimisticLab',
+                        summary: 'UI Optimist nativ.',
+                        theory: `
+                            <h3 class="text-2xl font-bold text-white mb-4">1. Feedback Instantaneu</h3>
+                            <p class="mb-4 text-slate-300">
+                                Într-o aplicație modernă, nu așteptăm serverul pentru a arăta utilizatorului rezultatul acțiunii sale. Presupunem succesul ("Optimistic UI"). 
+                                <code>useOptimistic</code> simplifică gestionarea stării temporare care trebuie afișată în timp ce o acțiune asincronă este în curs (pending).
+                            </p>
+                            <h3 class="text-xl font-bold text-pink-400 mb-2">2. Rollback Automat</h3>
+                            <p class="mb-4 text-slate-300">
+                                Dacă acțiunea server-side eșuează, React face automat "rollback" la starea reală, eliminând starea optimistă.
+                            </p>
+                        `,
+                        codeBad: `// ❌ GESTIUNE MANUALĂ (Complicat)
+const [messages, setMessages] = useState([]);
+
+async function send(msg) {
+  const old = [...messages];
+  setMessages([...messages, msg]); // Adăugăm optimist
+  
+  try {
+    await api.send(msg);
+  } catch {
+    setMessages(old); // Revert manual în caz de eroare
+    showToast('Error');
+  }
+}`,
+                        codeGood: `// ✅ REACT 19 (Declarativ)
+const [optimisticMsgs, addOptimistic] = useOptimistic(
+  messages,
+  (state, newMsg) => [...state, { text: newMsg, sending: true }]
+);
+
+// Când apelăm addOptimistic, UI-ul se actualizează instant.
+// Când serverul răspunde, React reconciliază automat.`
+                    }
+                ]
+            }
+        };
+
+        // --- APP ENGINE ---
+
+        let currentHook = null;
+
+        function init() {
+            renderSidebar();
+            loadHook('state', 0); // Default load
+            
+            document.getElementById('menu-toggle').addEventListener('click', () => {
+                const sb = document.getElementById('sidebar-content');
+                sb.classList.toggle('hidden');
+            });
+        }
+
+        function renderSidebar() {
+            const container = document.getElementById('sidebar-content');
+            container.innerHTML = Object.entries(hooksDB).map(([key, category]) => `
+                <div class="mb-6">
+                    <h3 class="text-xs font-bold uppercase tracking-wider ${category.color} mb-3 pl-2 border-l-2 ${category.border} border-opacity-50">
+                        ${category.title}
+                    </h3>
+                    <div class="space-y-1">
+                        ${category.hooks.map((hook, idx) => `
+                            <button onclick="loadHook('${key}', ${idx}, this)" 
+                                class="nav-item w-full text-left px-3 py-2 rounded text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-all flex items-center gap-3 border-l-2 border-transparent">
+                                <span class="opacity-70">${hook.icon}</span>
+                                ${hook.name}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadHook(catKey, hookIdx, btnElement) {
+            const hook = hooksDB[catKey].hooks[hookIdx];
+            const category = hooksDB[catKey];
+            currentHook = hook;
+
+            // Active State in Sidebar
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('active', category.color.replace('text-', 'bg-').replace('400', '900/20'));
+                el.style.borderLeftColor = 'transparent';
+            });
+            if(btnElement) {
+                btnElement.classList.add('active');
+                btnElement.style.borderLeftColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-' + catKey);
+            }
+
+            // Update Header
+            document.getElementById('header-title').innerText = hook.name;
+            document.getElementById('header-icon').innerText = hook.icon;
+
+            const main = document.getElementById('main-container');
+            main.style.opacity = '0';
+
+            setTimeout(() => {
+                main.innerHTML = `
+                    <!-- Theory Section -->
+                    <section class="fade-in">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="px-3 py-1 rounded bg-slate-900 border border-slate-700 text-xs text-slate-300 font-mono">React Hook</span>
+                            <span class="text-sm text-slate-500 italic border-l border-slate-700 pl-3">${hook.summary}</span>
+                        </div>
+                        <div class="prose prose-invert max-w-none border-l-4 border-slate-800 pl-6 py-2">
+                            ${hook.theory}
+                        </div>
+                    </section>
+
+                    <!-- Code Comparison -->
+                    <section class="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-12 fade-in" style="animation-delay: 0.1s">
+                        <div class="bg-[#0b0d12] rounded-xl border border-red-900/30 overflow-hidden shadow-lg">
+                            <div class="bg-red-950/20 px-4 py-2 border-b border-red-900/20 text-xs font-bold text-red-400 flex justify-between tracking-wide">
+                                <span>❌ Legacy / Anti-Pattern</span>
+                            </div>
+                            <pre class="p-4 text-xs font-code text-slate-300 overflow-x-auto custom-scroll"><code class="language-jsx">${escapeHtml(hook.codeBad)}</code></pre>
+                        </div>
+                        <div class="bg-[#0b0d12] rounded-xl border border-emerald-900/30 overflow-hidden shadow-lg">
+                            <div class="bg-emerald-950/20 px-4 py-2 border-b border-emerald-900/20 text-xs font-bold text-emerald-400 flex justify-between tracking-wide">
+                                <span>✅ Modern / Best Practice</span>
+                            </div>
+                            <pre class="p-4 text-xs font-code text-slate-300 overflow-x-auto custom-scroll"><code class="language-jsx">${escapeHtml(hook.codeGood)}</code></pre>
+                        </div>
+                    </section>
+
+                    <!-- Interactive Lab -->
+                    <section class="mt-16 fade-in" style="animation-delay: 0.2s">
+                        <div class="bg-slate-900 rounded-t-xl border border-slate-800 p-4 flex justify-between items-center">
+                            <h3 class="font-bold text-white flex items-center gap-2">
+                                <span class="text-blue-500 text-xl">⚡</span> Laborator Interactiv
+                            </h3>
+                            <button onclick="resetLab()" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-xs rounded border border-slate-700 transition text-slate-300">Resetează Simulare</button>
+                        </div>
+                        <div id="lab-container" class="lab-panel p-8 min-h-[400px] rounded-b-xl border-x border-b border-slate-800 flex flex-col items-center justify-center relative">
+                            <!-- Lab Content Injected Here -->
+                        </div>
+                    </section>
+                `;
+                
+                Prism.highlightAll();
+                initLab(hook.labType);
+                main.style.opacity = '1';
+            }, 200);
+        }
+
+        // --- LAB LOGIC ---
+
+        function initLab(type) {
+            const container = document.getElementById('lab-container');
+            container.innerHTML = '';
+
+            if (type === 'useStateLab') renderUseStateLab(container);
+            if (type === 'useReducerLab') renderUseReducerLab(container);
+            if (type === 'useEffectLab') renderUseEffectLab(container);
+            if (type === 'useRefLab') renderUseRefLab(container);
+            if (type === 'useMemoLab') renderUseMemoLab(container);
+            if (type === 'useOptimisticLab') renderUseOptimisticLab(container);
+        }
+
+        function resetLab() {
+            if(currentHook) initLab(currentHook.labType);
+        }
+
+        // --- 1. LAB: useState (Status Machine) ---
+        function renderUseStateLab(container) {
+            container.innerHTML = `
+                <div class="w-full max-w-lg bg-[#050505] p-6 rounded-lg border border-slate-800 shadow-2xl">
+                    <h4 class="text-cyan-400 font-mono text-sm mb-6 border-b border-slate-800 pb-2">Status Machine Simulator</h4>
+                    
+                    <div class="flex gap-8 items-center">
+                        <!-- Visual -->
+                        <div class="flex-1 flex justify-center">
+                            <div id="status-orb" class="w-24 h-24 rounded-full border-4 border-slate-700 bg-slate-900 flex items-center justify-center text-3xl transition-all duration-500 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                                💤
+                            </div>
+                        </div>
+                        
+                        <!-- Controls -->
+                        <div class="flex-1 space-y-3">
+                            <div class="text-xs text-slate-500 mb-2">setState(status):</div>
+                            <button onclick="setStatus('idle')" class="w-full text-left px-3 py-2 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 transition">Idle</button>
+                            <button onclick="setStatus('loading')" class="w-full text-left px-3 py-2 rounded bg-blue-900/20 hover:bg-blue-900/40 text-blue-400 text-xs border border-blue-900/40 transition">Loading</button>
+                            <button onclick="setStatus('success')" class="w-full text-left px-3 py-2 rounded bg-emerald-900/20 hover:bg-emerald-900/40 text-emerald-400 text-xs border border-emerald-900/40 transition">Success</button>
+                            <button onclick="setStatus('error')" class="w-full text-left px-3 py-2 rounded bg-red-900/20 hover:bg-red-900/40 text-red-400 text-xs border border-red-900/40 transition">Error</button>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-black p-3 rounded font-mono text-xs text-slate-500 border border-slate-800">
+                        <div>// Component State</div>
+                        <div class="text-white mt-1">const [status, setStatus] = useState(<span id="status-text" class="text-yellow-400">'idle'</span>);</div>
+                    </div>
+                </div>
+            `;
+
+            window.setStatus = (status) => {
+                const orb = document.getElementById('status-orb');
+                const text = document.getElementById('status-text');
+                
+                text.innerText = `'${status}'`;
+                text.parentElement.classList.remove('flash-update');
+                void text.parentElement.offsetWidth; // trigger reflow
+                text.parentElement.classList.add('flash-update');
+                
+                // Visual Logic
+                orb.className = "w-24 h-24 rounded-full border-4 flex items-center justify-center text-3xl transition-all duration-500 shadow-[0_0_30px_rgba(0,0,0,0.5)]";
+                
+                if(status === 'idle') {
+                    orb.innerHTML = "💤";
+                    orb.classList.add('border-slate-700', 'bg-slate-900', 'text-slate-500');
+                } else if(status === 'loading') {
+                    orb.innerHTML = "⚙️";
+                    orb.classList.add('border-blue-500', 'bg-blue-900/20', 'text-blue-400', 'animate-spin');
+                } else if(status === 'success') {
+                    orb.innerHTML = "✅";
+                    orb.classList.add('border-emerald-500', 'bg-emerald-900/20', 'text-emerald-400');
+                } else if(status === 'error') {
+                    orb.innerHTML = "⚠️";
+                    orb.classList.add('border-red-500', 'bg-red-900/20', 'text-red-400', 'animate-pulse');
+                }
+            }
+        }
+
+        // --- 2. LAB: useReducer (Shopping Cart - FULLY FUNCTIONAL) ---
+        function renderUseReducerLab(container) {
+            // Initializăm starea pentru acest laborator
+            window.cartState = {
+                items: [],
+                total: 0,
+                history: []
+            };
+
+            container.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl">
+                    <!-- SHOP INTERFACE -->
+                    <div class="bg-[#050505] rounded-lg border border-slate-800 p-5 flex flex-col h-[450px]">
+                        <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-2">
+                            <h4 class="text-slate-300 text-sm font-bold">Magazin Componente</h4>
+                            <span class="text-xs text-slate-500 bg-slate-900 px-2 py-1 rounded">Component UI</span>
+                        </div>
+                        
+                        <div class="space-y-3 mb-6 flex-1 overflow-y-auto pr-2 custom-scroll">
+                            <div class="flex justify-between items-center p-3 bg-slate-900/50 hover:bg-slate-900 rounded border border-slate-800 transition">
+                                <div>
+                                    <div class="text-sm text-slate-200">React License</div>
+                                    <div class="text-xs text-slate-500">Core library access</div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-cyan-400 text-sm font-mono">$100</span>
+                                    <button onclick="dispatchCart({type: 'ADD', payload: {name: 'React License', price: 100}})" class="w-8 h-8 bg-blue-600 hover:bg-blue-500 text-white rounded flex items-center justify-center transition shadow-lg shadow-blue-900/20">+</button>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-slate-900/50 hover:bg-slate-900 rounded border border-slate-800 transition">
+                                <div>
+                                    <div class="text-sm text-slate-200">Hook Premium</div>
+                                    <div class="text-xs text-slate-500">Advanced patterns</div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-cyan-400 text-sm font-mono">$50</span>
+                                    <button onclick="dispatchCart({type: 'ADD', payload: {name: 'Hook Premium', price: 50}})" class="w-8 h-8 bg-blue-600 hover:bg-blue-500 text-white rounded flex items-center justify-center transition shadow-lg shadow-blue-900/20">+</button>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-slate-900/50 hover:bg-slate-900 rounded border border-slate-800 transition">
+                                <div>
+                                    <div class="text-sm text-slate-200">Debug Tool</div>
+                                    <div class="text-xs text-slate-500">Performance profiler</div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-cyan-400 text-sm font-mono">$25</span>
+                                    <button onclick="dispatchCart({type: 'ADD', payload: {name: 'Debug Tool', price: 25}})" class="w-8 h-8 bg-blue-600 hover:bg-blue-500 text-white rounded flex items-center justify-center transition shadow-lg shadow-blue-900/20">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900 p-4 rounded-lg border border-slate-800">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-slate-400 text-sm">Total Coș:</span>
+                                <span id="cart-total" class="text-2xl font-bold text-white">$0</span>
+                            </div>
+                            <button onclick="dispatchCart({type: 'CLEAR'})" class="w-full py-2 bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold rounded hover:bg-red-500/20 transition">DISPATCH: { type: 'CLEAR' }</button>
+                        </div>
+                    </div>
+
+                    <!-- REDUCER INTERNALS -->
+                    <div class="bg-[#0f1115] rounded-lg border border-slate-800 flex flex-col h-[450px] shadow-2xl">
+                        <div class="bg-black px-4 py-3 border-b border-slate-800 flex justify-between items-center">
+                            <span class="text-xs font-mono text-slate-500">Reducer Inspector</span>
+                            <span class="text-xs font-mono text-cyan-500 bg-cyan-900/20 px-2 py-1 rounded">state, action => newState</span>
+                        </div>
+                        
+                        <div class="flex-1 overflow-y-auto p-4 font-mono text-xs space-y-6 custom-scroll">
+                            <!-- State View -->
+                            <div>
+                                <div class="text-slate-500 mb-2 flex items-center gap-2">
+                                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span> Current State Tree
+                                </div>
+                                <div id="state-tree" class="text-emerald-400 bg-slate-900/50 p-3 rounded border border-slate-800 whitespace-pre overflow-x-auto">
+{
+  "items": [],
+  "total": 0
+}
+                                </div>
+                            </div>
+
+                            <!-- Action Log -->
+                            <div>
+                                <div class="text-slate-500 mb-2 flex items-center gap-2">
+                                    <span class="w-2 h-2 bg-violet-500 rounded-full"></span> Action Log (History)
+                                </div>
+                                <div id="action-log" class="space-y-2 h-32 overflow-y-auto pr-1">
+                                    <div class="text-slate-600 italic px-2">Așteptare acțiuni...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Reducer Logic Simulated
+            window.dispatchCart = (action) => {
+                // 1. Calculăm noua stare (Pure Logic)
+                if(action.type === 'ADD') {
+                    window.cartState.items.push(action.payload);
+                    window.cartState.total += action.payload.price;
+                } else if (action.type === 'CLEAR') {
+                    window.cartState.items = [];
+                    window.cartState.total = 0;
+                }
+
+                // 2. Actualizăm UI (React Render)
+                document.getElementById('cart-total').innerText = `$${window.cartState.total}`;
+                
+                // 3. Actualizăm Inspectorul (DevTools)
+                const stateDisplay = {
+                    items: window.cartState.items.map(i => i.name),
+                    total: window.cartState.total
+                };
+                
+                const tree = document.getElementById('state-tree');
+                tree.innerText = JSON.stringify(stateDisplay, null, 2);
+                tree.parentElement.classList.remove('flash-update');
+                void tree.parentElement.offsetWidth;
+                tree.parentElement.classList.add('flash-update');
+
+                // 4. Add to Log
+                const log = document.getElementById('action-log');
+                if(log.children[0]?.classList.contains('italic')) log.innerHTML = '';
+                
+                const entry = document.createElement('div');
+                entry.className = "bg-slate-900 border-l-2 border-violet-500 p-2 text-slate-300 animate-fadeIn";
+                entry.innerHTML = `<span class="text-violet-400 font-bold">${action.type}</span> <span class="opacity-50">payload:</span> ${action.payload ? action.payload.name : '{}'}`;
+                
+                log.prepend(entry);
+            }
+        }
+
+        // --- 3. LAB: useRef (Mutable & Silent) ---
+        function renderUseRefLab(container) {
+            container.innerHTML = `
+                <div class="w-full max-w-3xl space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- STATE (Renders) -->
+                        <div class="bg-slate-900 border border-cyan-900/30 p-6 rounded-lg text-center shadow-lg">
+                            <h4 class="text-cyan-400 text-xs font-bold uppercase mb-4 tracking-widest">useState Counter</h4>
+                            <div id="state-disp" class="text-5xl font-bold text-white mb-6 font-mono">0</div>
+                            <button onclick="incState()" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold py-3 rounded transition shadow-lg shadow-cyan-900/20">
+                                setState(c + 1) <br><span class="opacity-70 font-normal">Declanșează RENDER</span>
+                            </button>
+                        </div>
+
+                        <!-- REF (Silent) -->
+                        <div class="bg-slate-900 border border-amber-900/30 p-6 rounded-lg text-center shadow-lg relative overflow-hidden">
+                            <div class="absolute top-2 right-2 text-[10px] text-amber-500/50 border border-amber-500/20 px-2 rounded">No Re-render</div>
+                            <h4 class="text-amber-400 text-xs font-bold uppercase mb-4 tracking-widest">useRef Counter</h4>
+                            <!-- We simulate that this value in JSX doesn't update until render -->
+                            <div id="ref-disp" class="text-5xl font-bold text-slate-600 mb-6 font-mono transition-colors duration-300" title="Valoare vizibilă în UI">0</div>
+                            <button onclick="incRef()" class="w-full bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold py-3 rounded transition shadow-lg shadow-amber-900/20">
+                                ref.current++ <br><span class="opacity-70 font-normal">Modificare SILENȚIOASĂ</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-black p-5 rounded border border-slate-800 font-mono text-xs flex justify-between items-center">
+                        <div>
+                            <span class="text-slate-500 block mb-1">Render Cycles (Component Updates):</span>
+                            <span id="ref-render-count" class="text-2xl text-white font-bold">0</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-slate-500 block mb-1">Real Ref Value (In Memory):</span>
+                            <span id="ref-real-val" class="text-2xl text-amber-400 font-bold">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-900/50 p-4 rounded text-center text-xs text-slate-400 border border-slate-800">
+                        <strong class="text-white">Instrucțiuni:</strong> Apasă butonul <span class="text-amber-400">Ref</span> de mai multe ori. Vei vedea că memoria se actualizează (jos), dar numărul gri de sus rămâne neschimbat. Apoi apasă <span class="text-cyan-400">State</span> o singură dată. Randarea forțată va actualiza tot UI-ul, dezvăluind valoarea curentă a Ref-ului.
+                    </div>
+                </div>
+            `;
+
+            window.sVal = 0;
+            window.rVal = 0; // The Ref
+            window.rRenders = 0;
+
+            window.incState = () => {
+                window.sVal++;
+                window.rRenders++;
+                updateRefUI(); // Re-render updates everything visible
+            };
+
+            window.incRef = () => {
+                window.rVal++;
+                // Update ONLY the memory inspector, NOT the main UI component visualization
+                document.getElementById('ref-real-val').innerText = window.rVal;
+                
+                // Optional: Flash memory value
+                const memVal = document.getElementById('ref-real-val');
+                memVal.classList.remove('flash-update');
+                void memVal.offsetWidth;
+                memVal.classList.add('flash-update');
+            };
+
+            function updateRefUI() {
+                document.getElementById('state-disp').innerText = window.sVal;
+                
+                // Now we reveal the ref value because render happened
+                const refDisplay = document.getElementById('ref-disp');
+                refDisplay.innerText = window.rVal; 
+                refDisplay.className = "text-5xl font-bold text-white mb-6 font-mono flash-update"; // Flash white to show update happened
+                
+                document.getElementById('ref-render-count').innerText = window.rRenders;
+            }
+        }
+
+        // --- 4. LAB: useMemo (Optimization) ---
+        function renderUseMemoLab(container) {
+            container.innerHTML = `
+                <div class="w-full max-w-3xl bg-slate-900 rounded-lg border border-slate-800 overflow-hidden shadow-2xl">
+                    <!-- Controls -->
+                    <div class="p-5 border-b border-slate-800 flex gap-4 bg-[#050505] items-end">
+                        <div class="flex-1">
+                            <label class="text-xs text-slate-500 mb-1 block">Filter Items (Dependency)</label>
+                            <input type="text" id="memo-input" placeholder="Type 'item'..." class="w-full bg-slate-800 border border-slate-700 text-white px-3 py-2 rounded text-sm focus:border-emerald-500 outline-none transition" oninput="filterList()">
+                        </div>
+                        <div class="flex-1">
+                            <label class="text-xs text-slate-500 mb-1 block">Unrelated State</label>
+                            <button onclick="forceRenderMemo()" class="w-full bg-slate-800 border border-slate-700 text-slate-300 px-3 py-2 rounded text-sm hover:bg-slate-700 transition">
+                                Force Re-render (Theme/User)
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 flex gap-8">
+                        <!-- List View -->
+                        <div class="flex-1">
+                            <h4 class="text-xs font-bold text-emerald-500 mb-3 uppercase tracking-wider flex justify-between">
+                                <span>Filtered List</span>
+                                <span class="bg-emerald-900/30 text-emerald-400 px-2 rounded text-[10px]">Memoized</span>
+                            </h4>
+                            <div class="bg-black rounded border border-slate-800 p-2 h-40 overflow-y-auto custom-scroll">
+                                <ul id="memo-list" class="space-y-1 text-xs text-slate-400">
+                                    <!-- Items -->
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Stats Panel -->
+                        <div class="w-48 border-l border-slate-800 pl-6 flex flex-col justify-center gap-8">
+                            <div>
+                                <div class="text-[10px] text-slate-500 uppercase tracking-widest mb-1">Filter Calculation</div>
+                                <div id="calc-count" class="text-4xl font-bold text-emerald-400 font-mono">0</div>
+                                <div class="text-[10px] text-emerald-600 mt-1">Execuții (Expensive)</div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] text-slate-500 uppercase tracking-widest mb-1">App Renders</div>
+                                <div id="app-renders" class="text-4xl font-bold text-white font-mono">0</div>
+                                <div class="text-[10px] text-slate-600 mt-1">Total Randări</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-emerald-900/10 p-3 text-center text-xs text-emerald-200/50 border-t border-emerald-900/20">
+                        Observă: "Filter Calculation" crește doar când tastezi. Când apeși "Force Re-render", numărul de randări crește, dar calculul greu este sărit (memorat).
+                    </div>
+                </div>
+            `;
+
+            // Generate dummy data
+            const items = Array.from({length: 5000}, (_, i) => `Data Item #${i + 1}`);
+            window.calcRuns = 0;
+            window.appRuns = 0;
+            window.filterTerm = '';
+
+            function updateList() {
+                // Expensive Calculation Simulation
+                window.calcRuns++;
+                const filtered = items.filter(i => i.toLowerCase().includes(window.filterTerm.toLowerCase()));
+                
+                const ul = document.getElementById('memo-list');
+                ul.innerHTML = filtered.slice(0, 50).map(i => `<li>${i}</li>`).join('') + (filtered.length > 50 ? '<li class="text-xs opacity-30 italic mt-2">...and many more...</li>' : '');
+                
+                // Visual Update
+                const counter = document.getElementById('calc-count');
+                counter.innerText = window.calcRuns;
+                
+                // Flash animation for calc
+                counter.parentElement.classList.remove('flash-update');
+                void counter.offsetWidth;
+                counter.parentElement.classList.add('flash-update');
+            }
+
+            window.filterList = () => {
+                window.filterTerm = document.getElementById('memo-input').value;
+                window.appRuns++;
+                updateList(); // Dependency changed, run calc
+                updateStats();
+            };
+
+            window.forceRenderMemo = () => {
+                window.appRuns++;
+                // Dependency did NOT change, so updateList() is skipped (Memoization works)
+                updateStats();
+                
+                // Flash App Renders only
+                const ar = document.getElementById('app-renders');
+                ar.parentElement.classList.remove('flash-update');
+                void ar.offsetWidth;
+                ar.parentElement.classList.add('flash-update');
+            };
+
+            function updateStats() {
+                document.getElementById('app-renders').innerText = window.appRuns;
+            }
+
+            // Init
+            updateList();
+        }
+
+        // --- 5. LAB: useOptimistic (React 19) ---
+        function renderUseOptimisticLab(container) {
+            container.innerHTML = `
+                <div class="w-full max-w-md bg-[#0a0a0a] border border-gray-800 rounded-lg overflow-hidden shadow-2xl">
+                    <!-- Chat Header -->
+                    <div class="bg-gray-900 p-4 border-b border-gray-800 flex justify-between items-center">
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Chat Optimist</h4>
+                            <span class="text-xs text-pink-400">useOptimistic()</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                            <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Messages Area -->
+                    <div id="chat-msgs" class="h-64 overflow-y-auto p-4 space-y-3 bg-[#050505] flex flex-col">
+                        <div class="self-start bg-gray-800 text-gray-300 text-sm px-3 py-2 rounded-lg rounded-tl-none max-w-[80%]">
+                            Salut! Scrie un mesaj. Voi simula o latență de rețea de 2 secunde.
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="p-3 bg-gray-900 border-t border-gray-800 flex gap-2">
+                        <input type="text" id="msg-input" placeholder="Type message..." class="flex-1 bg-black border border-gray-700 rounded px-3 text-sm text-white focus:border-pink-500 outline-none transition" onkeypress="handleEnter(event)">
+                        <button onclick="sendMessage()" class="bg-pink-600 hover:bg-pink-500 text-white px-4 py-2 rounded text-sm transition font-bold shadow-lg shadow-pink-900/20">Send</button>
+                    </div>
+                    
+                    <!-- Network Status -->
+                    <div class="px-4 py-2 bg-black text-[10px] text-gray-500 flex justify-between border-t border-gray-800">
+                        <span>Network Latency: 2000ms</span>
+                        <span>Server Success Rate: 70%</span>
+                    </div>
+                </div>
+            `;
+
+            window.handleEnter = (e) => {
+                if (e.key === 'Enter') sendMessage();
+            };
+
+            window.sendMessage = async () => {
+                const input = document.getElementById('msg-input');
+                const text = input.value;
+                if(!text) return;
+                input.value = '';
+
+                const chat = document.getElementById('chat-msgs');
+                
+                // 1. OPTIMISTIC UPDATE (Instant)
+                // React 19 useOptimistic would do this automatically. Here we simulate it.
+                const optimisticId = 'opt-' + Date.now();
+                const optMsg = document.createElement('div');
+                optMsg.id = optimisticId;
+                optMsg.className = "self-end flex items-center gap-2 opacity-70 animate-fade-in";
+                optMsg.innerHTML = `
+                    <span class="text-[10px] text-gray-500 italic">Sending...</span>
+                    <div class="bg-pink-900/40 text-pink-200 text-sm px-3 py-2 rounded-lg rounded-tr-none border border-pink-500/30">
+                        ${escapeHtml(text)}
+                    </div>
+                `;
+                chat.appendChild(optMsg);
+                chat.scrollTop = chat.scrollHeight;
+
+                // 2. SERVER SIMULATION (Async)
+                try {
+                    await new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            Math.random() > 0.3 ? resolve() : reject();
+                        }, 2000);
+                    });
+
+                    // SUCCESS: Confirm message (make solid)
+                    const el = document.getElementById(optimisticId);
+                    if(el) {
+                        el.className = "self-end opacity-100 transition-all duration-500";
+                        el.innerHTML = `
+                            <div class="bg-pink-600 text-white text-sm px-3 py-2 rounded-lg rounded-tr-none shadow-md">
+                                ${escapeHtml(text)}
+                            </div>
+                        `;
+                    }
+
+                } catch (e) {
+                    // ERROR: Revert / Show Error
+                    const el = document.getElementById(optimisticId);
+                    if(el) {
+                        el.className = "self-end opacity-100 animate-pulse";
+                        el.innerHTML = `
+                            <div class="bg-red-900/50 text-red-200 text-sm px-3 py-2 rounded-lg rounded-tr-none border border-red-500 flex items-center gap-2">
+                                <span>❌</span> Failed to send
+                            </div>
+                        `;
+                    }
+                }
+            };
+        }
+
+        // --- 6. LAB: useEffect (Deps) ---
+        function renderUseEffectLab(container) {
+            container.innerHTML = `
+                <div class="w-full max-w-3xl space-y-6">
+                    <div class="bg-slate-900 p-4 rounded border border-slate-800 flex items-center justify-between">
+                        <div class="flex gap-4 items-center">
+                            <span class="text-xs text-slate-400 uppercase tracking-widest">Dependency Array:</span>
+                            <select id="dep-mode" class="bg-black border border-slate-700 text-violet-300 text-sm rounded px-3 py-1 outline-none focus:border-violet-500" onchange="runEffect()">
+                                <option value="mount">[] (Run once on Mount)</option>
+                                <option value="update">[count] (Run on Update)</option>
+                            </select>
+                        </div>
+                        <button onclick="incrementEffectCount()" class="bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold px-4 py-2 rounded transition shadow-lg shadow-violet-900/20">
+                            Count++ (Trigger Render)
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Component View -->
+                        <div class="bg-black p-6 rounded-lg border border-slate-800 text-center">
+                            <div class="text-xs text-slate-500 mb-2 uppercase tracking-widest">Render Count</div>
+                            <div id="render-cnt" class="text-4xl font-bold text-white">0</div>
+                        </div>
+                        <!-- Effect View -->
+                        <div class="bg-black p-6 rounded-lg border border-slate-800 text-center relative overflow-hidden">
+                            <div id="effect-flash" class="absolute inset-0 bg-violet-500/20 opacity-0 pointer-events-none transition-opacity duration-500"></div>
+                            <div class="text-xs text-slate-500 mb-2 uppercase tracking-widest">Effect Runs</div>
+                            <div id="effect-cnt" class="text-4xl font-bold text-violet-400">0</div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-center text-xs text-slate-500 max-w-lg mx-auto">
+                        <strong>Experiment:</strong> Setează dependența la <code>[]</code> și apasă butonul. Vei vedea că randările cresc, dar Efectul rămâne la 1. Schimbă la <code>[count]</code> și efectul se va sincroniza cu fiecare randare.
+                    </p>
+                </div>
+            `;
+
+            window.renderCount = 0;
+            window.effectRuns = 0;
+
+            window.incrementEffectCount = () => {
+                window.renderCount++;
+                document.getElementById('render-cnt').innerText = window.renderCount;
+                
+                const mode = document.getElementById('dep-mode').value;
+                
+                // Logic Simulator
+                let shouldRun = false;
+                if (window.renderCount === 1) shouldRun = true; // Mount always runs
+                else if (mode === 'update') shouldRun = true; // Depend on count
+
+                if (shouldRun) {
+                    window.effectRuns++;
+                    document.getElementById('effect-cnt').innerText = window.effectRuns;
+                    
+                    // Flash effect
+                    const flash = document.getElementById('effect-flash');
+                    flash.style.opacity = 1;
+                    setTimeout(() => flash.style.opacity = 0, 500);
+                }
+            }
+            
+            // Initial mount simulation
+            setTimeout(() => window.incrementEffectCount(), 100);
+        }
+
+        // Utils
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // Boot
+        window.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>
