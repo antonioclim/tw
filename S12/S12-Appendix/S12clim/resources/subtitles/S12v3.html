@@ -1,0 +1,1031 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>S12 · Pasul 3 — Redux (store global, acţiuni, reduceri)</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: rgba(255,255,255,0.06);
+      --panel2: rgba(255,255,255,0.085);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.68);
+      --accent: #7dd3fc;
+      --accent2: #a78bfa;
+      --ok: #34d399;
+      --warn: #fbbf24;
+      --bad: #fb7185;
+      --border: rgba(255,255,255,0.12);
+      --codebg: rgba(0,0,0,0.35);
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --radius: 14px;
+      --radius2: 10px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    html, body {
+      margin: 0; padding: 0;
+      background: radial-gradient(1200px 800px at 10% 10%, rgba(167,139,250,0.18), transparent 60%),
+                  radial-gradient(900px 700px at 90% 20%, rgba(125,211,252,0.16), transparent 55%),
+                  radial-gradient(900px 700px at 50% 90%, rgba(52,211,153,0.12), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.55;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 18px;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+    header.hero {
+      grid-column: 1 / -1;
+      padding: 18px 18px 14px 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(167,139,250,0.16), rgba(125,211,252,0.12));
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    header.hero::after {
+      content: "";
+      position: absolute;
+      inset: -60px -80px auto auto;
+      width: 260px; height: 260px;
+      background: radial-gradient(circle at 40% 40%, rgba(125,211,252,0.22), transparent 60%);
+      transform: rotate(12deg);
+      pointer-events: none;
+    }
+    .kicker {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .pill {
+      padding: 2px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.15);
+    }
+    h1 {
+      margin: 10px 0 6px 0;
+      font-size: 28px;
+      letter-spacing: 0.2px;
+    }
+    .sub {
+      margin: 0;
+      color: var(--muted);
+      max-width: 80ch;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .meta {
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      background: rgba(0,0,0,0.15);
+      padding: 10px 12px;
+    }
+    .meta .label { color: var(--muted); font-size: 12px; }
+    .meta .value { margin-top: 4px; font-family: var(--mono); font-size: 13px; color: rgba(255,255,255,0.88); }
+    aside {
+      position: sticky;
+      top: 14px;
+      align-self: start;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(0,0,0,0.15);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .aside-head {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+    }
+    .aside-head strong { display:block; }
+    .aside-head span { color: var(--muted); font-size: 12px; }
+    nav.toc {
+      padding: 8px 8px 12px 8px;
+    }
+    nav.toc a {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 10px;
+      color: rgba(255,255,255,0.86);
+      border: 1px solid transparent;
+      font-size: 14px;
+    }
+    nav.toc a:hover {
+      background: rgba(255,255,255,0.04);
+      border-color: var(--border);
+    }
+    main {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(0,0,0,0.12);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    section {
+      padding: 18px 18px 4px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    section:last-child { border-bottom: none; padding-bottom: 18px; }
+    h2 {
+      margin: 0 0 8px 0;
+      font-size: 20px;
+    }
+    h3 {
+      margin: 16px 0 8px 0;
+      font-size: 16px;
+      color: rgba(255,255,255,0.92);
+    }
+    p {
+      margin: 0 0 12px 0;
+      color: rgba(255,255,255,0.88);
+    }
+    ul, ol {
+      margin: 0 0 12px 18px;
+      color: rgba(255,255,255,0.88);
+    }
+    .callout {
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      background: rgba(255,255,255,0.04);
+      border-radius: 12px;
+      padding: 12px 12px;
+      margin: 12px 0 14px 0;
+    }
+    .callout.warn { border-left-color: var(--warn); }
+    .callout.ok { border-left-color: var(--ok); }
+    .callout.bad { border-left-color: var(--bad); }
+    .muted { color: var(--muted); }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(0,0,0,0.16);
+      padding: 12px 12px;
+    }
+    .card h4 {
+      margin: 0 0 6px 0;
+      font-size: 14px;
+      color: rgba(255,255,255,0.92);
+    }
+    .code-card {
+      margin: 10px 0 14px 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(0,0,0,0.20);
+    }
+    .code-card figcaption {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+    }
+    .code-meta {
+      font-size: 12px;
+      color: rgba(255,255,255,0.85);
+      display: inline-flex;
+      gap: 10px;
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+    .copy {
+      font-size: 12px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.25);
+      color: rgba(255,255,255,0.9);
+      border-radius: 10px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+    .copy:hover { background: rgba(255,255,255,0.04); }
+    pre {
+      margin: 0;
+      padding: 12px 12px;
+      overflow: auto;
+      background: var(--codebg);
+    }
+    code {
+      font-family: var(--mono);
+      font-size: 12.5px;
+    }
+    details {
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 12px;
+      background: rgba(0,0,0,0.14);
+      padding: 10px 10px;
+      margin: 10px 0 14px 0;
+    }
+    summary {
+      cursor: pointer;
+      list-style: none;
+      font-weight: 600;
+      color: rgba(255,255,255,0.92);
+    }
+    summary::-webkit-details-marker { display: none; }
+    .tagrow {
+      display:flex; flex-wrap:wrap; gap:8px;
+      margin: 10px 0 6px 0;
+    }
+    .tag {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.18);
+      color: rgba(255,255,255,0.84);
+    }
+    .footer {
+      padding: 14px 18px 18px 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    @media (max-width: 980px) {
+      .wrap { grid-template-columns: 1fr; }
+      aside { position: static; }
+      .meta-grid { grid-template-columns: 1fr; }
+      .grid2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="kicker">
+        <span class="pill">Seminarul 12</span>
+        <span class="pill">Pasul 3</span>
+        <span class="pill">Redux (sincron)</span>
+        <span class="pill">Vite + React</span>
+      </div>
+      <h1>Pasul 3 — Construim o aplicaţie Redux „clasică”: store, acţiuni, reduceri, componente conectate</h1>
+      <p class="sub">
+        În acest pas consolidăm ideea de <em>stare globală</em> şi exersăm fluxul complet Redux:
+        <strong>UI → dispatch(action) → reducer → store → UI</strong>.
+        Ne vom concentra pe un scenariu <em>sincron</em> (adăugare / ştergere note), pregătind terenul pentru pasul următor (asincron).
+      </p>
+
+      <div class="meta-grid">
+        <div class="meta">
+          <div class="label">Port (rulare prin dashboard)</div>
+          <div class="value">http://localhost:3003</div>
+        </div>
+        <div class="meta">
+          <div class="label">Loc în kit</div>
+          <div class="value">steps/step3_redux</div>
+        </div>
+        <div class="meta">
+          <div class="label">Ultima actualizare a ghidului</div>
+          <div class="value">2025-12-15</div>
+        </div>
+      </div>
+
+      <div class="tagrow" aria-label="Concepte cheie">
+        <span class="tag">Redux store</span>
+        <span class="tag">actions & action creators</span>
+        <span class="tag">reducers & immutability</span>
+        <span class="tag">react-redux hooks</span>
+        <span class="tag">UI state vs global state</span>
+      </div>
+    </header>
+
+    <aside>
+      <div class="aside-head">
+        <strong>Cuprins (navigare rapidă)</strong>
+        <span>Ghid didactic — fără transcript</span>
+      </div>
+      <nav class="toc">
+        <a href="#orientare">1) Orientare: ce urmărim aici</a>
+        <a href="#harta">2) Harta proiectului şi rolul fişierelor</a>
+        <a href="#model">3) Modelul mental: fluxul Redux</a>
+        <a href="#store">4) Store: de ce există, cum îl construim</a>
+        <a href="#actions">5) Acţiuni: „cereri de schimbare”</a>
+        <a href="#reducers">6) Reduceri: „reguli pure” de transformare</a>
+        <a href="#reactredux">7) Conectarea la React: Provider, useSelector, useDispatch</a>
+        <a href="#ui">8) Comportamente observabile în UI: add / delete</a>
+        <a href="#diag">9) Diagnosticare: DevTools, loguri, erori frecvente</a>
+        <a href="#practice">10) Best practices & variaţii realiste</a>
+        <a href="#exercitii">11) Exerciţii şi mini-studii de caz</a>
+      </nav>
+    </aside>
+
+    <main>
+      <section id="orientare">
+        <h2>1) Orientare: ce urmărim aici</h2>
+        <p>
+          În pasul 2 am văzut că putem gestiona stări „mai grele” local, prin <code>useReducer</code>.
+          Acum facem un pas conceptual: <strong>mutăm o parte din stare în afara componentelor</strong>, într-un
+          <em>magazin global</em> (store) accesibil întregii aplicaţii.
+        </p>
+        <div class="grid2">
+          <div class="card">
+            <h4>La finalul pasului, ar trebui să puteţi…</h4>
+            <ul>
+              <li>explica diferenţa dintre <em>UI state</em> (local) şi <em>global state</em> (Redux)</li>
+              <li>descrie traseul complet al unei acţiuni: UI → dispatch → reducer → store → UI</li>
+              <li>scrie un reducer <em>pur</em> care respectă imutabilitatea</li>
+              <li>conecta componente la store folosind <code>Provider</code>, <code>useSelector</code>, <code>useDispatch</code></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>De ce nu rămânem doar cu Context?</h4>
+            <p class="muted">
+              Context + hooks poate fi suficient pentru aplicaţii mici. În aplicaţii mari însă,
+              Redux (mai ales în varianta modernă, cu Toolkit) oferă un ecosistem matur:
+              convenţii de arhitectură, instrumentare (DevTools), middlewares, testabilitate şi un vocabular comun pentru echipe.
+            </p>
+          </div>
+        </div>
+
+        <div class="callout warn">
+          <strong>Observaţie de curriculum.</strong>
+          Păstrăm un Redux „clasic” (store + reduceri + acţiuni) pentru claritate didactică.
+          În proiecte moderne veţi întâlni frecvent <em>Redux Toolkit</em>, care reduce boilerplate-ul şi încurajează practici mai sigure.
+        </div>
+      </section>
+
+      <section id="harta">
+        <h2>2) Harta proiectului şi rolul fişierelor</h2>
+        <p>
+          În kit, pasul 3 este în <code>steps/step3_redux</code>. Structura urmăreşte o separare „pe roluri” (actions / reducers / store / components).
+          În proiecte enterprise veţi întâlni adesea o organizare „pe feature” (de exemplu, <code>features/notes/...</code>),
+          dar aici este mai util să vedem clar piesele de bază.
+        </p>
+
+        <details>
+          <summary>Harta minimală a fişierelor relevante</summary>
+          <ul>
+            <li><code>src/actions/actions.js</code> — „creatori” de acţiuni (add / delete)</li>
+            <li><code>src/reducers/list-reducer.js</code> — logica de actualizare a listei de note</li>
+            <li><code>src/reducers/index.js</code> — combinarea reducerilor</li>
+            <li><code>src/stores/store.js</code> — crearea store-ului</li>
+            <li><code>src/index.jsx</code> — integrarea store-ului în React prin <code>Provider</code></li>
+            <li><code>src/components/NoteList.jsx</code> — UI conectat la Redux (select + dispatch)</li>
+            <li><code>src/components/App.jsx</code> — compoziţia aplicaţiei</li>
+          </ul>
+        </details>
+
+        <div class="callout ok">
+          <strong>Ideea centrală:</strong> fiecare fişier are o responsabilitate clară. Când apar bug-uri,
+          această separare vă ajută să localizaţi rapid unde este „defectul”: acţiunea? reducerul? componenta? store-ul?
+        </div>
+      </section>
+
+      <section id="model">
+        <h2>3) Modelul mental: fluxul Redux</h2>
+        <p>
+          Redux este, în esenţă, un sistem de <em>actualizare deterministă</em> a stării.
+          Când „cerem” o schimbare, nu modificăm direct starea, ci trimitem o descriere a intenţiei (acţiunea).
+          Reducerul interpretează intenţia şi produce <strong>o nouă stare</strong>, iar UI se re-randează pe baza ei.
+        </p>
+
+        <div class="grid2">
+          <div class="card">
+            <h4>Fluxul în 5 paşi (gândit ca un circuit)</h4>
+            <ol>
+              <li>Utilizatorul apasă un buton („Add” / „Delete”).</li>
+              <li>Componenta declanşează <code>dispatch(action)</code>.</li>
+              <li>Store-ul trimite acţiunea către reducer(e).</li>
+              <li>Reducerul calculează noua stare (fără mutaţii).</li>
+              <li>Componentele care selectează din store se re-randează.</li>
+            </ol>
+          </div>
+          <div class="card">
+            <h4>Ce înseamnă „reducer pur”?</h4>
+            <ul>
+              <li>aceleaşi intrări → aceeaşi ieşire (determinism)</li>
+              <li>fără efecte secundare (fără fetch, fără random direct, fără timeouts)</li>
+              <li>fără mutaţii asupra parametrului <code>state</code></li>
+            </ul>
+          </div>
+        </div>
+
+        <details>
+          <summary>Mini-experiment (observaţie de laborator)</summary>
+          <p>
+            Rulaţi pasul 3, adăugaţi 2–3 note, ştergeţi una, apoi reîncărcaţi pagina.
+            Întrebaţi-vă: de ce se „pierde” starea? În forma aceasta, store-ul trăieşte doar în memorie.
+            Persistenţa (localStorage / server / IndexedDB) este o extensie realistă, nu un „default”.
+          </p>
+        </details>
+      </section>
+
+      <section id="store">
+        <h2>4) Store: de ce există, cum îl construim</h2>
+        <p>
+          Store-ul este „single source of truth”: locul în care starea globală a aplicaţiei este păstrată.
+          În acest pas îl construim cu <code>createStore</code> (Redux clasic), folosind reducerul agregat.
+        </p>
+        
+    <figure class="code-card" id="code-4146398276">
+      <figcaption>
+        <div class="code-meta"><strong>Store Redux (clasic)</strong> · <span class='muted'>steps/step3_redux/src/stores/store.js</span></div>
+        <button class="copy" data-target="code-4146398276">Copy</button>
+      </figcaption>
+      <pre><code class="lang-javascript">import { createStore } from &#x27;redux&#x27;
+import reducer from &#x27;../reducers&#x27;
+
+const store = createStore(reducer)
+
+export default store</code></pre>
+    </figure>
+    
+
+        <div class="callout warn">
+          <strong>Notă de actualitate:</strong>
+          în Redux modern, <code>createStore</code> este înlocuit frecvent cu <code>configureStore</code> (Redux Toolkit),
+          care configurează implicit middleware utile şi verificări (de ex. serializabilitate).
+          Aici rămânem la varianta minimală pentru a nu ascunde mecanica.
+        </div>
+      </section>
+
+      <section id="actions">
+        <h2>5) Acţiuni: „cereri de schimbare”</h2>
+        <p>
+          O acţiune este un obiect care <em>descrie</em> o schimbare. În mod tradiţional are un <code>type</code> şi, opţional, un <code>payload</code>.
+          Observaţi că acţiunea nu „execută” schimbarea; ea doar declară intenţia.
+        </p>
+        
+    <figure class="code-card" id="code-2135832724">
+      <figcaption>
+        <div class="code-meta"><strong>Action creators pentru note</strong> · <span class='muted'>steps/step3_redux/src/actions/actions.js</span></div>
+        <button class="copy" data-target="code-2135832724">Copy</button>
+      </figcaption>
+      <pre><code class="lang-javascript">export function addNote(content) {
+  return {
+    type: &#x27;ADD_NOTE&#x27;,
+    payload: content
+  }
+}
+
+export function deleteNote(id) {
+  return {
+    type: &#x27;DELETE_NOTE&#x27;,
+    payload: id
+  }
+}</code></pre>
+    </figure>
+    
+
+        <details>
+          <summary>Ce am putea îmbunătăţi într-un proiect real?</summary>
+          <p>
+            În aplicaţii mari, tipurile de acţiuni se standardizează şi se evită „string-uri ad-hoc”.
+            Mai mult, note „ca string” sunt convenabile didactic, dar în practică veţi dori id-uri, timestamp-uri, eventual autor etc.
+          </p>
+          
+    <figure class="code-card" id="code-6930316129">
+      <figcaption>
+        <div class="code-meta"><strong>Variantă mai robustă: tipuri + id</strong> · <span class='muted'>(exemplu generic)</span></div>
+        <button class="copy" data-target="code-6930316129">Copy</button>
+      </figcaption>
+      <pre><code class="lang-javascript">// actions/types.js (o practică des întâlnită în proiecte mari)
+export const ADD_NOTE = &#x27;notes/add&#x27;;
+export const DELETE_NOTE = &#x27;notes/delete&#x27;;
+
+// actions/notes.js
+import { ADD_NOTE, DELETE_NOTE } from &#x27;./types&#x27;;
+
+export const addNote = (content) =&gt; ({
+  type: ADD_NOTE,
+  payload: { id: crypto.randomUUID(), content, createdAt: Date.now() }
+});
+
+export const deleteNote = (id) =&gt; ({
+  type: DELETE_NOTE,
+  payload: { id }
+});</code></pre>
+    </figure>
+    
+        </details>
+      </section>
+
+      <section id="reducers">
+        <h2>6) Reduceri: „reguli pure” de transformare</h2>
+        <p>
+          Reducerul este funcţia care primeşte <code>(state, action)</code> şi întoarce <strong>noua stare</strong>.
+          Atenţie: nu modificăm <code>state</code> „pe loc”; creăm o versiune nouă folosind <em>copiere imutabilă</em>.
+        </p>
+        
+    <figure class="code-card" id="code-1753827662">
+      <figcaption>
+        <div class="code-meta"><strong>Reducer pentru lista de note</strong> · <span class='muted'>steps/step3_redux/src/reducers/list-reducer.js</span></div>
+        <button class="copy" data-target="code-1753827662">Copy</button>
+      </figcaption>
+      <pre><code class="lang-javascript">const INITIAL_STATE = {
+  notes: []
+}
+
+export default function (state = INITIAL_STATE, action) {
+  switch (action.type) {
+    case &#x27;ADD_NOTE&#x27;:
+      return { ...state, notes: [...state.notes, action.payload] }
+
+    case &#x27;DELETE_NOTE&#x27;:
+      // Delete by note.id (stable identifier), not by array index.
+      return { ...state, notes: state.notes.filter((n) =&gt; n.id !== action.payload) }
+
+    default:
+      return state
+  }
+}</code></pre>
+    </figure>
+    
+
+        <div class="callout ok">
+          <strong>Observaţi tehnica:</strong> pentru „adăugare” folosim <code>[...state.notes, payload]</code>, nu <code>push</code>.
+          Este o diferenţă mică în sintaxă, dar uriaşă ca semnificaţie: Redux se bazează pe schimbarea de referinţă pentru a detecta actualizări.
+        </div>
+
+        <details>
+          <summary>O extensie realistă: ştergere după id, nu după index</summary>
+          <p>
+            În kit, folosim indexul ca identificator didactic, însă în aplicaţii reale indexul se schimbă uşor
+            (sortare, filtrare, paginare). Un <code>id</code> stabil este mai sigur.
+          </p>
+          
+    <figure class="code-card" id="code-7995877782">
+      <figcaption>
+        <div class="code-meta"><strong>Reducer robust: ştergere după id</strong> · <span class='muted'>(exemplu generic)</span></div>
+        <button class="copy" data-target="code-7995877782">Copy</button>
+      </figcaption>
+      <pre><code class="lang-javascript">// reducers/list-reducer.js (variantă mai robustă: note ca obiecte, ştergere după id)
+import { ADD_NOTE, DELETE_NOTE } from &#x27;../actions/types&#x27;;
+
+const INITIAL_STATE = { notes: [] };
+
+export default function listReducer(state = INITIAL_STATE, action) {
+  switch (action.type) {
+    case ADD_NOTE:
+      return { ...state, notes: [...state.notes, action.payload] };
+
+    case DELETE_NOTE:
+      return { ...state, notes: state.notes.filter(n =&gt; n.id !== action.payload.id) };
+
+    default:
+      return state;
+  }
+}</code></pre>
+    </figure>
+    
+        </details>
+
+        <h3>Combinarea reducerilor</h3>
+        <p>
+          Chiar dacă avem un singur reducer, învăţăm o idee scalabilă: store-ul primeşte un reducer „agregat”.
+          Când aplicaţia creşte, adăugăm reduceri pe domenii (notes, auth, settings etc.).
+        </p>
+        
+    <figure class="code-card" id="code-9863255215">
+      <figcaption>
+        <div class="code-meta"><strong>combineReducers</strong> · <span class='muted'>steps/step3_redux/src/reducers/index.js</span></div>
+        <button class="copy" data-target="code-9863255215">Copy</button>
+      </figcaption>
+      <pre><code class="lang-javascript">import { combineReducers } from &#x27;redux&#x27;
+import list from &#x27;./list-reducer&#x27;
+
+export default combineReducers({
+    list
+})</code></pre>
+    </figure>
+    
+      </section>
+
+      <section id="reactredux">
+        <h2>7) Conectarea la React: Provider, useSelector, useDispatch</h2>
+        <p>
+          În React, store-ul devine util doar dacă îl „injectăm” în arborele de componente.
+          Aceasta se face cu <code>&lt;Provider store=...&gt;</code>.
+          Apoi componentele folosesc două instrumente-cheie: <code>useSelector</code> (citire) şi <code>useDispatch</code> (scriere).
+        </p>
+
+        
+    <figure class="code-card" id="code-6415066960">
+      <figcaption>
+        <div class="code-meta"><strong>Provider: store disponibil în aplicaţie</strong> · <span class='muted'>steps/step3_redux/src/index.jsx</span></div>
+        <button class="copy" data-target="code-6415066960">Copy</button>
+      </figcaption>
+      <pre><code class="lang-javascript">import React from &#x27;react&#x27;;
+import ReactDOM from &#x27;react-dom/client&#x27;;
+import &#x27;./index.css&#x27;;
+import App from &#x27;./components/App&#x27;;
+import { Provider } from &#x27;react-redux&#x27;
+import store from &#x27;./stores/store&#x27;
+
+const root = ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;));
+root.render(
+  &lt;React.StrictMode&gt;
+    &lt;Provider store={store}&gt;
+      &lt;App /&gt;
+    &lt;/Provider&gt;
+  &lt;/React.StrictMode&gt;
+);</code></pre>
+    </figure>
+    
+
+        <h3>UI conectat: NoteList</h3>
+        <p>
+          Acum vedem concret cum se leagă UI-ul de store:
+          <strong>selectăm</strong> lista din state şi <strong>dispecerizăm</strong> acţiuni la interacţiuni.
+          Observaţi, totodată, că input-ul de formular (<code>content</code>) rămâne local (este UI state).
+        </p>
+
+        
+    <figure class="code-card" id="code-3792867397">
+      <figcaption>
+        <div class="code-meta"><strong>NoteList: useSelector + useDispatch</strong> · <span class='muted'>steps/step3_redux/src/components/NoteList.jsx</span></div>
+        <button class="copy" data-target="code-3792867397">Copy</button>
+      </figcaption>
+      <pre><code class="lang-javascript">import { useMemo, useState } from &#x27;react&#x27;;
+import { useDispatch, useSelector } from &#x27;react-redux&#x27;;
+import { addNote, deleteNote } from &#x27;../actions/actions&#x27;;
+
+const notesSelector = (state) =&gt; state.list.notes;
+const listSliceSelector = (state) =&gt; state.list;
+
+function NoteList() {
+  const [note, setNote] = useState(&#x27;&#x27;);
+
+  const notes = useSelector(notesSelector);
+  const listSlice = useSelector(listSliceSelector);
+  const dispatch = useDispatch();
+
+  const stateAsJson = useMemo(() =&gt; JSON.stringify(listSlice, null, 2), [listSlice]);
+
+  const handleAdd = () =&gt; {
+    const trimmed = note.trim();
+    if (!trimmed) return;
+    dispatch(addNote(trimmed));
+    setNote(&#x27;&#x27;);
+  };
+
+  return (
+    &lt;div className=&quot;grid&quot;&gt;
+      &lt;section className=&quot;card&quot;&gt;
+        &lt;h2&gt;UI (listă locală, fără server)&lt;/h2&gt;
+        &lt;p className=&quot;muted&quot;&gt;
+          În acest pas, &lt;strong&gt;Redux&lt;/strong&gt; gestionează starea globală.
+          Nu folosim încă request-uri către server. Ştergerea unei note este un exemplu de acţiune sincronă.
+        &lt;/p&gt;
+
+        &lt;div className=&quot;row&quot;&gt;
+          &lt;input
+            value={note}
+            placeholder=&quot;Scrie o notiţă...&quot;
+            onChange={(e) =&gt; setNote(e.target.value)}
+            onKeyDown={(e) =&gt; {
+              if (e.key === &#x27;Enter&#x27;) handleAdd();
+            }}
+          /&gt;
+          &lt;button onClick={handleAdd} aria-label=&quot;Adaugă notiţă&quot;&gt;
+            Add
+          &lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div className=&quot;badgeRow&quot;&gt;
+          &lt;span className=&quot;badge&quot;&gt;notes: {notes.length}&lt;/span&gt;
+          &lt;span className=&quot;badge&quot;&gt;pattern: reducer + actions + store&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;ul className=&quot;list&quot;&gt;
+          {notes.map((e) =&gt; (
+            &lt;li key={e.id} className=&quot;listItem&quot;&gt;
+              &lt;div className=&quot;listItemMain&quot;&gt;
+                &lt;strong&gt;#{e.id}&lt;/strong&gt;
+                &lt;span className=&quot;mono&quot;&gt;{e.value}&lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button className=&quot;danger&quot; onClick={() =&gt; dispatch(deleteNote(e.id))}&gt;
+                Delete
+              &lt;/button&gt;
+            &lt;/li&gt;
+          ))}
+
+          {notes.length === 0 &amp;&amp; (
+            &lt;li className=&quot;muted&quot;&gt;
+              (Nu există note. Adaugă una pentru a vedea cum se actualizează store-ul.)
+            &lt;/li&gt;
+          )}
+        &lt;/ul&gt;
+      &lt;/section&gt;
+
+      &lt;section className=&quot;card&quot;&gt;
+        &lt;h2&gt;Redux state (slice)&lt;/h2&gt;
+        &lt;p className=&quot;muted&quot;&gt;
+          Aici afişăm &lt;code&gt;state.list&lt;/code&gt; pentru a face vizibil efectul acţiunilor.
+          În practică, acesta este „adevărul” aplicaţiei.
+        &lt;/p&gt;
+
+        &lt;pre className=&quot;code&quot;&gt;{stateAsJson}&lt;/pre&gt;
+
+        &lt;div className=&quot;callout&quot;&gt;
+          &lt;p&gt;&lt;strong&gt;Ce exemplificăm&lt;/strong&gt;&lt;/p&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;code&gt;dispatch(addNote(value))&lt;/code&gt; → action → reducer → stare nouă (immutability)&lt;/li&gt;
+            &lt;li&gt;&lt;code&gt;useSelector&lt;/code&gt; pentru citirea stării din store&lt;/li&gt;
+            &lt;li&gt;&lt;code&gt;useDispatch&lt;/code&gt; pentru declanşarea acţiunilor&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default NoteList;</code></pre>
+    </figure>
+    
+
+        
+    <figure class="code-card" id="code-5254454863">
+      <figcaption>
+        <div class="code-meta"><strong>App: compoziţie minimală</strong> · <span class='muted'>steps/step3_redux/src/components/App.jsx</span></div>
+        <button class="copy" data-target="code-5254454863">Copy</button>
+      </figcaption>
+      <pre><code class="lang-javascript">import NoteList from &#x27;./NoteList&#x27;;
+
+function App() {
+  return (
+    &lt;div className=&quot;container&quot;&gt;
+      &lt;header className=&quot;header&quot;&gt;
+        &lt;h1&gt;Step 3 – Redux (sync)&lt;/h1&gt;
+        &lt;p className=&quot;muted&quot;&gt;
+          În acest pas construim structura clasică Redux: &lt;strong&gt;store&lt;/strong&gt;,
+          &lt;strong&gt; reducers&lt;/strong&gt;, &lt;strong&gt;actions&lt;/strong&gt; şi conectarea UI-ului
+          prin &lt;code&gt;useSelector&lt;/code&gt; / &lt;code&gt;useDispatch&lt;/code&gt;.
+        &lt;/p&gt;
+      &lt;/header&gt;
+
+      &lt;section className=&quot;card&quot;&gt;
+        &lt;h2&gt;Ce demonstrăm&lt;/h2&gt;
+        &lt;ul&gt;
+          &lt;li&gt;
+            Stare globală în Redux (lista de notiţe) şi actualizări imutabile (prin reducer).
+          &lt;/li&gt;
+          &lt;li&gt;
+            Flux sincron: &lt;code&gt;dispatch(action)&lt;/code&gt; → &lt;code&gt;reducer&lt;/code&gt; → UI re-randat.
+          &lt;/li&gt;
+          &lt;li&gt;
+            Ştergere locală (fără server): &lt;em&gt;delete note (local)&lt;/em&gt;.
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/section&gt;
+
+      &lt;NoteList /&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+    </figure>
+    
+
+        <div class="callout warn">
+          <strong>Atenţionare:</strong> <code>useSelector</code> determină re-randări când rezultatul selecţiei se schimbă.
+          În aplicaţii mari, selectorii prea „largi” pot produce re-randări costisitoare.
+          O regulă utilă: <em>selectaţi cât mai puţin, cât mai specific</em>.
+        </div>
+      </section>
+
+      <section id="ui">
+        <h2>8) Comportamente observabile în UI: add / delete</h2>
+        <p>
+          În acest moment, UI-ul devine un mic „laborator” pentru a valida modelul Redux.
+          Să încercăm să privim fiecare interacţiune ca pe o ipoteză testabilă:
+          dacă dispecerizez acţiunea X, reducerul va produce starea Y, iar UI-ul va reflecta Y.
+        </p>
+
+        <details>
+          <summary>Scenariu A: adăugare de notă</summary>
+          <ol>
+            <li>Scrieţi un text în câmpul „content”.</li>
+            <li>Apăsaţi „add”.</li>
+            <li>Verificaţi că lista creşte cu un element.</li>
+            <li>Observaţi: <code>useState</code> gestionează input-ul, Redux gestionează colecţia.</li>
+          </ol>
+        </details>
+
+        <details>
+          <summary>Scenariu B: ştergere de notă (în kit)</summary>
+          <ol>
+            <li>Adăugaţi 2–3 note (de exemplu: A, B, C).</li>
+            <li>Apăsaţi „delete” lângă B.</li>
+            <li>Verificaţi că B dispare şi că reducerul a produs o nouă listă.</li>
+            <li>Discutaţi critic: în această versiune ştergerea se face după index. Ce se întâmplă dacă sortăm sau filtrăm?</li>
+          </ol>
+        </details>
+
+        <div class="callout ok">
+          <strong>Legătura cu pasul 4:</strong>
+          aici acţiunile sunt sincrone (se întâmplă „instant” în UI). În pasul 4, aceeaşi idee se extinde la acţiuni
+          care depind de reţea (fetch), unde apar stări precum <em>pending</em>, <em>fulfilled</em>, <em>rejected</em>.
+        </div>
+      </section>
+
+      <section id="diag">
+        <h2>9) Diagnosticare: DevTools, loguri, erori frecvente</h2>
+        <p>
+          O parte din valoarea Redux, în practică, este <em>instrumentarea</em>.
+          În timp ce aplicaţia e mică, puteţi „ghici” ce s-a întâmplat. Când aplicaţia creşte,
+          aveţi nevoie de urme (traces): acţiuni, stări, diffs.
+        </p>
+
+        <div class="grid2">
+          <div class="card">
+            <h4>Recomandare: Redux DevTools</h4>
+            <ul>
+              <li>instalaţi extensia Redux DevTools în browser</li>
+              <li>observaţi istoricul acţiunilor (time-travel debugging)</li>
+              <li>verificaţi payload-urile şi forma state-ului</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Erori tipice (şi cum le recunoaştem)</h4>
+            <ul>
+              <li><strong>UI nu se actualizează</strong> → reducerul mută state-ul (referinţa nu se schimbă)</li>
+              <li><strong>Selector greşit</strong> → <code>state.list</code> vs <code>state.notes</code> (forma store-ului contează)</li>
+              <li><strong>Provider lipsă</strong> → erori de tip „could not find react-redux context value”</li>
+            </ul>
+          </div>
+        </div>
+
+        <details>
+          <summary>De ce Redux insistă pe imutabilitate?</summary>
+          <p>
+            În mod practic, pentru că schimbarea de referinţă permite detectarea eficientă a actualizărilor.
+            În mod conceptual, pentru că reduce o clasă întreagă de bug-uri (efecte neaşteptate, aliasing, mutaţii accidentale).
+          </p>
+        </details>
+      </section>
+
+      <section id="practice">
+        <h2>10) Best practices & variaţii realiste</h2>
+        <p>
+          Acum vedem ca o implementare „de manual” este utilă didactic, dar în practică trebuie să ţinem cont de scalare,
+          de consistenţă şi de mentenanţă. Să încercăm să traducem pasul 3 în „limbaj enterprise”.
+        </p>
+
+        <div class="grid2">
+          <div class="card">
+            <h4>Best practices (minimum pragmatic)</h4>
+            <ul>
+              <li>state serializabil (evitaţi obiecte DOM, instanţe de clase, Date ca obiect etc.)</li>
+              <li>id-uri stabile pentru entităţi; evitaţi indexul ca identificator</li>
+              <li>selectorii să fie mici şi bine ţintiţi</li>
+              <li>naming coerent al acţiunilor (de ex. <code>notes/add</code>, <code>notes/delete</code>)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Trade-offs: pros & cons</h4>
+            <ul>
+              <li><strong>Pro:</strong> trasabilitate, testabilitate, convenţii de echipă</li>
+              <li><strong>Pro:</strong> ecosistem matur (middleware, devtools)</li>
+              <li><strong>Contra:</strong> boilerplate în varianta clasică</li>
+              <li><strong>Contra:</strong> supra-inginerie pentru aplicaţii mici</li>
+            </ul>
+          </div>
+        </div>
+
+        <details>
+          <summary>Variantă modernă (opţional): Redux Toolkit</summary>
+          <p>
+            Dacă aţi putea extinde acest pas într-un proiect real, un upgrade natural este Redux Toolkit.
+            Observaţi cum dispar multe „piese ceremoniale”, iar reducerii devin mai uşor de scris.
+          </p>
+          
+    <figure class="code-card" id="code-1488575875">
+      <figcaption>
+        <div class="code-meta"><strong>Exemplu generic: createSlice</strong> · <span class='muted'>(opţional, modern)</span></div>
+        <button class="copy" data-target="code-1488575875">Copy</button>
+      </figcaption>
+      <pre><code class="lang-javascript">// notesSlice.js (Redux Toolkit) — recomandarea curentă în multe proiecte enterprise
+import { createSlice, nanoid } from &#x27;@reduxjs/toolkit&#x27;;
+
+const notesSlice = createSlice({
+  name: &#x27;notes&#x27;,
+  initialState: { notes: [] },
+  reducers: {
+    noteAdded: {
+      reducer(state, action) {
+        state.notes.push(action.payload);
+      },
+      prepare(content) {
+        return { payload: { id: nanoid(), content, createdAt: Date.now() } };
+      }
+    },
+    noteDeleted(state, action) {
+      state.notes = state.notes.filter(n =&gt; n.id !== action.payload);
+    }
+  }
+});
+
+export const { noteAdded, noteDeleted } = notesSlice.actions;
+export default notesSlice.reducer;</code></pre>
+    </figure>
+    
+        </details>
+
+        <div class="callout warn">
+          <strong>Capcană frecventă:</strong> „punem totul în Redux”.
+          În realitate, multe stări sunt mai potrivite local (de ex. valoarea curentă a unui input, starea unui dialog, un hover).
+          Redux este excelent pentru <em>date partajate</em> şi <em>consistenţă globală</em>.
+        </div>
+      </section>
+
+      <section id="exercitii">
+        <h2>11) Exerciţii şi mini-studii de caz</h2>
+        <p>
+          Propuneri de lucru (individual sau în echipe mici). Fiecare exerciţiu are un „scop” şi o „dovadă” (ce vedeţi în UI / devtools).
+        </p>
+
+        <details>
+          <summary>Exerciţiu 1: adăugaţi un timestamp afişat lângă notă</summary>
+          <ul>
+            <li>Schimbaţi forma notei din string în obiect: <code>{ id, content, createdAt }</code>.</li>
+            <li>Actualizaţi reducerul şi UI-ul astfel încât să afişaţi ora adăugării.</li>
+            <li>Observaţi în DevTools că payload-ul acţiunii conţine metadate.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Exerciţiu 2: preveniţi adăugarea de note goale</summary>
+          <ul>
+            <li>Implementaţi o validare în UI (buton „add” dezactivat sau mesaj).</li>
+            <li>Discutaţi: validarea e UI-only sau şi în reducer? (în general, validarea este UI + server; reducerul rămâne simplu)</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Exerciţiu 3: pregătire pentru pasul 4 — stări de încărcare</summary>
+          <p>
+            Simulaţi o întârziere (fără fetch) şi adăugaţi în store un câmp <code>fetching</code>.
+            În UI, afişaţi un indicator „Loading…”.
+            În pasul 4, această idee devine naturală când apelăm serverul.
+          </p>
+        </details>
+
+        <div class="callout ok">
+          <strong>Recapitulare:</strong>
+          dacă puteţi explica fluxul complet pentru un singur buton (de la click la noua stare),
+          sunteţi pregătiţi pentru complexitatea asincronă din pasul următor.
+        </div>
+      </section>
+
+      <div class="footer">
+        <p>
+          Document didactic generat pentru kit-ul Seminar 12 (Redux), pasul 3.
+          Conţinutul este formulat ca explicaţie extinsă şi structurată (fără transcript).
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      function copyToClipboard(text) {
+        return navigator.clipboard.writeText(text);
+      }
+
+      document.querySelectorAll('button.copy').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const targetId = btn.getAttribute('data-target');
+          const fig = document.getElementById(targetId);
+          if (!fig) return;
+          const code = fig.querySelector('pre code');
+          if (!code) return;
+          const text = code.innerText;
+          try {
+            await copyToClipboard(text);
+            const old = btn.innerText;
+            btn.innerText = 'Copied ✓';
+            setTimeout(() => btn.innerText = old, 900);
+          } catch (e) {
+            alert('Nu am putut copia în clipboard. (Browser-ul poate bloca această acţiune.)');
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

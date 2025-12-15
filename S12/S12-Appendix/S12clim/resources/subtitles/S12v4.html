@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>S12 · Pasul 4 — Redux asincron (middleware + API)</title>
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#0f1730; --card:#111c3a; --ink:#e9eefc; --muted:#b9c3e6;
+      --accent:#7aa2ff; --accent2:#72f1b8; --warn:#ffcc66; --danger:#ff6b6b;
+      --border:rgba(255,255,255,.10); --shadow:0 10px 25px rgba(0,0,0,.35);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:var(--sans); background:radial-gradient(1200px 700px at 15% 10%, #13224a 0%, var(--bg) 55%), var(--bg); color:var(--ink);}
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    header{
+      padding:24px 18px 12px;
+      border-bottom:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(15,23,48,.85), rgba(11,16,32,.3));
+      position:sticky; top:0; backdrop-filter: blur(8px); z-index:10;
+    }
+    header .kicker{color:var(--muted); font-size:.95rem}
+    header h1{margin:.35rem 0 .25rem; font-size:1.55rem; letter-spacing:.2px}
+    header .sub{color:var(--muted); line-height:1.45; max-width:1100px}
+    main{max-width:1100px; margin:0 auto; padding:18px}
+    .grid{display:grid; grid-template-columns: 320px 1fr; gap:16px}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} header{position:relative}}
+    .toc{
+      background:rgba(17,28,58,.65);
+      border:1px solid var(--border);
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      padding:14px;
+      position:sticky; top:92px; align-self:start;
+    }
+    @media (max-width: 980px){ .toc{position:relative; top:auto}}
+    .toc h2{font-size:1rem; margin:0 0 10px; color:var(--muted); letter-spacing:.2px}
+    .toc ol{margin:0; padding-left:18px; color:var(--muted)}
+    .toc li{margin:8px 0}
+    .toc .mini{margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); font-size:.92rem}
+    .pill{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:6px 10px; border-radius:999px;
+      background:rgba(122,162,255,.12); border:1px solid rgba(122,162,255,.25);
+      color:var(--ink); font-size:.9rem; margin:6px 8px 0 0;
+    }
+    .pill b{color:var(--accent2)}
+    section{
+      background:rgba(17,28,58,.55);
+      border:1px solid var(--border);
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      padding:16px;
+      margin-bottom:16px;
+    }
+    section h2{margin:0 0 10px; font-size:1.2rem}
+    section h3{margin:16px 0 8px; font-size:1.05rem; color:var(--ink)}
+    p{margin:10px 0; color:var(--ink); line-height:1.62}
+    ul{margin:10px 0 10px 20px; color:var(--ink); line-height:1.58}
+    li{margin:6px 0}
+    .callout{
+      border-left:4px solid rgba(122,162,255,.8);
+      background:rgba(122,162,255,.10);
+      padding:10px 12px; border-radius:10px; margin:12px 0;
+    }
+    .callout.warn{border-left-color:rgba(255,204,102,.95); background:rgba(255,204,102,.10)}
+    .callout.danger{border-left-color:rgba(255,107,107,.95); background:rgba(255,107,107,.12)}
+    .callout.ok{border-left-color:rgba(114,241,184,.95); background:rgba(114,241,184,.08)}
+    .kbd{font-family:var(--mono); font-size:.92em; padding:.1em .4em; border:1px solid var(--border); border-bottom-color:rgba(255,255,255,.18);
+         border-radius:6px; background:rgba(0,0,0,.25)}
+    .cols{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    @media (max-width: 980px){ .cols{grid-template-columns:1fr} }
+    details{
+      border:1px solid var(--border);
+      background:rgba(15,23,48,.55);
+      border-radius:12px;
+      padding:10px 12px;
+      margin:10px 0;
+    }
+    details summary{cursor:pointer; color:var(--muted); font-weight:650}
+    details summary:hover{color:var(--ink)}
+    pre{
+      background:rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:12px;
+      padding:12px;
+      overflow:auto;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
+    }
+    code{font-family:var(--mono); font-size:.92rem; color:#e6ebff}
+    .codehdr{
+      display:flex; align-items:center; justify-content:space-between;
+      margin:10px 0 6px;
+      color:var(--muted); font-size:.92rem
+    }
+    .codehdr .path{font-family:var(--mono)}
+    .copybtn{
+      border:1px solid var(--border);
+      background:rgba(17,28,58,.75);
+      color:var(--ink);
+      border-radius:10px;
+      padding:6px 10px;
+      cursor:pointer;
+      font-weight:650;
+    }
+    .copybtn:hover{border-color:rgba(122,162,255,.55)}
+    .minirow{display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 2px}
+    .tag{font-size:.86rem; color:var(--muted); padding:3px 8px; border:1px solid var(--border); border-radius:999px; background:rgba(0,0,0,.18)}
+    .hr{height:1px; background:var(--border); margin:14px 0}
+    .quiz{
+      border:1px dashed rgba(114,241,184,.55);
+      background:rgba(114,241,184,.05);
+      border-radius:12px;
+      padding:12px;
+      margin:12px 0;
+    }
+    .quiz b{color:var(--accent2)}
+    footer{color:var(--muted); text-align:center; padding:20px 0 30px}
+    .small{color:var(--muted); font-size:.95rem}
+  </style>
+</head>
+<body>
+<header>
+  <div class="kicker">Seminarul 12 · Redux</div>
+  <h1>Pasul 4 — Redux asincron: middleware, promisiuni şi integrare cu un API</h1>
+  <div class="sub">
+    În acest pas trecem de la <em>stare locală</em> şi <em>acţiuni sincrone</em> la un scenariu realist: datele provin dintr-un serviciu HTTP.
+    Ne interesează nu doar „cum luăm datele”, ci şi <strong>cum modelăm incertitudinea</strong> (pending/fulfilled/rejected), cum evităm efecte secundare
+    necontrolate şi cum transformăm o operaţie asincronă într-un flux Redux predictibil.
+  </div>
+  <div class="minirow" aria-label="meta">
+    <span class="pill"><b>UI</b> http://localhost:3004</span>
+    <span class="pill"><b>API</b> http://localhost:8080</span>
+    <span class="pill"><b>Dashboard</b> http://localhost:3000</span>
+    <span class="pill"><b>Kit</b> <span class="kbd">steps/step4_redux_async</span></span>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+    <aside class="toc" aria-label="Cuprins">
+      <h2>Parcurgere rapidă</h2>
+      <ol>
+        <li><a href="#pozitionare">Unde suntem în kit şi ce pornim</a></li>
+        <li><a href="#ideea">Ideea centrală: „asincron” în Redux</a></li>
+        <li><a href="#middleware">Middleware-ul ca traducător: promise → 3 acţiuni</a></li>
+        <li><a href="#actiuni">Acţiunea asincronă (getNotes) şi „contractul” API</a></li>
+        <li><a href="#reducer">Reducerul: stări intermediare şi erori</a></li>
+        <li><a href="#componenta">Componenta: încărcare la montare + UI robust</a></li>
+        <li><a href="#debug">Observare şi diagnosticare</a></li>
+        <li><a href="#postman">Testare în paralel (Postman / Postman‑lite din dashboard)</a></li>
+        <li><a href="#best">Best practices, capcane, variaţiuni „enterprise”</a></li>
+        <li><a href="#exercitii">Exerciţii ghidate şi extensii realiste</a></li>
+      </ol>
+      <div class="mini small">
+        Sugestie didactică: mergeţi <em>pe rând</em>. La fiecare secţiune, rulaţi o mică probă în browser şi validaţi
+        ipotezele (nu doar „a mers”, ci <em>de ce</em> a mers).
+      </div>
+    </aside>
+
+    <div>
+      <section id="pozitionare">
+        <h2>1) Unde suntem în kit şi ce pornim</h2>
+        <p>
+          În kit, pasul 4 este în directorul <span class="kbd">steps/step4_redux_async</span>.
+          El depinde de un server HTTP (API) care rulează pe <span class="kbd">http://localhost:8080</span>.
+        </p>
+
+        <div class="cols">
+          <div>
+            <h3>Ce procese rulează în paralel</h3>
+            <ul>
+              <li><strong>Dashboard</strong> (port 3000): hub de navigare, explicaţii, lansare paşi.</li>
+              <li><strong>Step 4 UI</strong> (port 3004): aplicaţia React+Redux cu încărcare asincronă.</li>
+              <li><strong>Notes API</strong> (port 8080): un backend minimal pentru note.</li>
+            </ul>
+            <div class="callout ok">
+              Acum vedem că „asincron” nu este o magie în React: e doar o interfaţă către un proces separat (server),
+              cu propriile sale latenţe, erori şi constrângeri.
+            </div>
+          </div>
+          <div>
+            <h3>Fişiere cheie (ce merită deschis în VS Code)</h3>
+            <ul>
+              <li><span class="kbd">src/stores/store.js</span> — configurarea store-ului + middleware.</li>
+              <li><span class="kbd">src/actions/actions.js</span> — acţiuni cu payload asincron (Promise).</li>
+              <li><span class="kbd">src/reducers/list-reducer.js</span> — stări pending/fulfilled/rejected.</li>
+              <li><span class="kbd">src/components/NoteList.jsx</span> — încărcare la montare, randare, ştergere.</li>
+              <li><span class="kbd">servers/notes-api/index.js</span> (la nivel de kit) — endpoint‑uri HTTP.</li>
+            </ul>
+            <div class="callout warn">
+              Dacă UI porneşte dar lista rămâne goală, primul suspect este <strong>API-ul</strong>:
+              fie nu rulează, fie URL-ul diferă, fie există o eroare de reţea/CORS.
+            </div>
+          </div>
+        </div>
+
+        <details>
+          <summary>Checklist de pornire (Windows 11)</summary>
+          <ul>
+            <li>Într-un terminal: <span class="kbd">install_all.bat</span> (o singură dată, după extragerea kitului).</li>
+            <li>Apoi: <span class="kbd">run_dashboard.bat</span> (porneşte dashboard + paşii + API).</li>
+            <li>Deschideţi: <span class="kbd">http://localhost:3004</span> (Step 4).</li>
+            <li>Verificaţi: <span class="kbd">http://localhost:8080/health</span> (API).</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="ideea">
+        <h2>2) Ideea centrală: „asincron” în Redux</h2>
+        <p>
+          Redux, în forma sa clasică, este construit în jurul unei idei: <strong>un action este un obiect</strong>, iar reducerul este o funcţie pură.
+          Operaţiile asincrone (fetch, timeouts, I/O) contrazic această simplitate, deoarece introduc:
+        </p>
+        <ul>
+          <li><strong>timp</strong> (întârziere, latenţă, ordini de execuţie variabile);</li>
+          <li><strong>incertitudine</strong> (eşecuri de reţea, timeouts, răspunsuri invalide);</li>
+          <li><strong>stări intermediare</strong> (încărcare în curs, date parţiale, reîncărcări).</li>
+        </ul>
+
+        <div class="callout">
+          Sa încercăm să formulăm problema: cum facem ca o operaţie asincronă să fie totuşi „vizibilă” ca un flux predictibil de acţiuni?
+          Răspunsul didactic aici: <strong>prin middleware</strong>, care „traduce” rezultatul asincron în acţiuni clasice.
+        </div>
+
+        <div class="quiz">
+          <b>Mini‑provocare (înainte de cod):</b>
+          Dacă UI are nevoie să afişeze un spinner cât timp serverul răspunde, <em>unde</em> ţii această informaţie?
+          În state local? În Redux? În ambele? Discutăm răspunsul la secţiunea despre reducer.
+        </div>
+      </section>
+
+      <section id="middleware">
+        <h2>3) Middleware: traducerea Promise → PENDING/FULFILLED/REJECTED</h2>
+        <p>
+          În acest pas folosim <span class="kbd">redux-promise-middleware</span>. Conceptual, el introduce o convenţie:
+          dacă payload-ul unei acţiuni este o <strong>promisiune</strong> (sau un obiect/funcţie ce produce o promisiune),
+          middleware-ul emite automat trei acţiuni:
+        </p>
+        <ul>
+          <li><span class="kbd">*_PENDING</span> — când promisiunea este „în zbor”;</li>
+          <li><span class="kbd">*_FULFILLED</span> — când promisiunea se rezolvă cu succes;</li>
+          <li><span class="kbd">*_REJECTED</span> — când promisiunea eşuează (throw/reject).</li>
+        </ul>
+
+        <details>
+          <summary>De ce e util acest model?</summary>
+          <ul>
+            <li>Reducerul devine un <em>automat de stări</em> uşor de urmărit: pending → fulfilled/rejected.</li>
+            <li>UI poate decide „ce vede studentul” în fiecare stare: loading, date, eroare.</li>
+            <li>Codul rămâne modular: aceeaşi acţiune poate fi folosită din mai multe componente.</li>
+          </ul>
+          <div class="callout warn">
+            Atenţie: middleware-ul nu este „soluţia universală”. Este o alegere didactică bună pentru a înţelege
+            separarea responsabilităţilor. În proiecte mari, veţi întâlni frecvent <em>Redux Toolkit</em> (RTK),
+            <em>thunks</em>, <em>sagas</em> sau <em>RTK Query</em>.
+          </div>
+        </details>
+
+        <div class="codehdr">
+          <span class="path">src/stores/store.js</span>
+          <button class="copybtn" data-copy="code-store">Copy</button>
+        </div>
+        <pre><code id="code-store">import { createStore, applyMiddleware } from 'redux'
+import reducer from '../reducers'
+import promise from 'redux-promise-middleware'
+
+const store = createStore(reducer, applyMiddleware(promise))
+
+export default store</code></pre>
+
+        <p class="small">
+          Observaţi că <span class="kbd">applyMiddleware(promise)</span> este un „punct de extensie”: aici se ataşează comportamente transversale
+          (logare, audit, caching, raportare de erori). În enterprise, această zonă devine adesea un <em>hub</em> de politici globale.
+        </p>
+      </section>
+
+      <section id="actiuni">
+        <h2>4) Acţiunea asincronă: citirea notiţelor din API</h2>
+        <p>
+          Acum vedem cum arată o acţiune „care pare normală”, dar ascunde o promisiune. Observaţi că acţiunea păstrează o semnătură simplă:
+          <span class="kbd">type</span> şi <span class="kbd">payload</span>.
+        </p>
+
+        <div class="codehdr">
+          <span class="path">src/actions/actions.js</span>
+          <button class="copybtn" data-copy="code-actions">Copy</button>
+        </div>
+        <pre><code id="code-actions">const SERVER = import.meta.env.VITE_API_BASE || 'http://localhost:8080'
+
+export function getNotes() {
+  return {
+    type: 'GET_NOTES',
+    payload: fetch(`${SERVER}/notes`).then(r =&gt; {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`)
+      return r.json()
+    })
+  }
+}
+
+export function deleteNote(id) {
+  return {
+    type: 'DELETE_NOTE',
+    payload: fetch(`${SERVER}/notes/${id}`, { method: 'DELETE' }).then(r =&gt; {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`)
+      return r.json()
+    })
+  }
+}</code></pre>
+
+        <div class="callout ok">
+          Sa încercăm să citim intenţia: <strong>UI nu ştie nimic despre fetch</strong>; UI doar declanşează o acţiune.
+          Invers, acţiunea nu ştie nimic despre HTML — ea descrie <em>o intenţie de a interacţiona cu API-ul</em>.
+        </div>
+
+        <details>
+          <summary>De ce folosim <span class="kbd">VITE_API_BASE</span>?</summary>
+          <p class="small">
+            În practică, acelaşi front-end rulează în mai multe medii (local / staging / producţie). Nu vrem să „hard‑codăm” URL‑ul serverului
+            în codul sursă. În Vite, variabilele de mediu expuse clientului sunt prefixate <span class="kbd">VITE_</span>.
+          </p>
+          <ul class="small">
+            <li>Local: <span class="kbd">VITE_API_BASE=http://localhost:8080</span></li>
+            <li>Într-un proiect real: poate fi un API gateway, un reverse proxy sau un domeniu public.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Contractul minim al API-ului</summary>
+          <ul>
+            <li><span class="kbd">GET /health</span> — verifică dacă serverul este „viu”.</li>
+            <li><span class="kbd">GET /notes</span> — întoarce lista de note (JSON array).</li>
+            <li><span class="kbd">POST /notes</span> — adaugă o notă (body JSON).</li>
+            <li><span class="kbd">DELETE /notes/:id</span> — şterge o notă.</li>
+          </ul>
+          <div class="callout warn">
+            Dacă API-ul foloseşte o altă formă a datelor (de exemplu <span class="kbd">{records: [...], count: n}</span>),
+            reducerul şi UI trebuie adaptate. În enterprise, această „aliniere a contractului” este o sursă clasică de bug-uri.
+          </div>
+        </details>
+      </section>
+
+      <section id="reducer">
+        <h2>5) Reducerul: modelarea stărilor intermediare</h2>
+        <p>
+          Reducerul nu mai ţine doar „note”. Într-un scenariu asincron, starea utilă include:
+          <strong>fetching</strong> (suntem în proces?), <strong>fetched</strong> (am reuşit vreodată?) şi <strong>error</strong> (ce a mers prost?).
+          Aceste variabile nu sunt decorative: ele permit UI-ului să fie <em>clar</em> şi <em>predictibil</em>.
+        </p>
+
+        <div class="codehdr">
+          <span class="path">src/reducers/list-reducer.js</span>
+          <button class="copybtn" data-copy="code-reducer">Copy</button>
+        </div>
+        <pre><code id="code-reducer">const INITIAL_STATE = {
+  notes: [],
+  error: null,
+  fetching: false,
+  fetched: false
+}
+
+export default function (state = INITIAL_STATE, action) {
+  switch (action.type) {
+    case 'GET_NOTES_PENDING':
+    case 'DELETE_NOTE_PENDING':
+      return { ...state, error: null, fetching: true, fetched: false }
+
+    case 'GET_NOTES_FULFILLED':
+      return { ...state, notes: action.payload, fetching: false, fetched: true }
+
+    case 'DELETE_NOTE_FULFILLED':
+      // tipic: backend-ul întoarce lista actualizată; alternativ, am putea filtra local
+      return { ...state, notes: action.payload, fetching: false, fetched: true }
+
+    case 'GET_NOTES_REJECTED':
+    case 'DELETE_NOTE_REJECTED':
+      return { ...state, error: action.payload, fetching: false, fetched: false }
+
+    default:
+      return state
+  }
+}</code></pre>
+
+        <div class="quiz">
+          <b>Observaţie fină:</b> am grupat mai multe acţiuni în aceleaşi ramuri.
+          Practic, reducerul tratează „familia” <span class="kbd">*_PENDING</span> la fel.
+          Sa încercăm să explicăm de ce: UI vrea să ştie că „se întâmplă ceva”, indiferent că e fetch sau delete.
+        </div>
+
+        <details>
+          <summary>Variaţiune realistă: „optimistic update” la ştergere</summary>
+          <p class="small">
+            În loc să aşteptăm răspunsul serverului (şi eventual lista completă), am putea şterge local imediat, iar la eşec să revenim.
+            Este un compromis: UI pare mai rapid, dar complexitatea creşte (trebuie rollback şi reconciliere).
+          </p>
+          <pre><code>// idee: în DELETE_NOTE_PENDING
+return { ...state, notes: state.notes.filter(n =&gt; n.id !== action.meta.id), fetching: true }</code></pre>
+          <div class="callout warn">
+            În practică, optimistic update necesită strategie pentru conflicte (dacă alt client a modificat resursa între timp).
+          </div>
+        </details>
+      </section>
+
+      <section id="componenta">
+        <h2>6) Componenta: încărcare la montare + UI robust</h2>
+        <p>
+          În React, <span class="kbd">useEffect</span> este mecanismul natural pentru „când componenta apare, fă un side‑effect”.
+          În acest pas, side‑effect‑ul este: <strong>declanşează getNotes()</strong>.
+          Observaţi că nu apelăm direct API-ul din componentă; apelăm o acţiune.
+        </p>
+
+        <div class="codehdr">
+          <span class="path">src/components/NoteList.jsx</span>
+          <button class="copybtn" data-copy="code-component">Copy</button>
+        </div>
+        <pre><code id="code-component">import { useSelector, useDispatch, shallowEqual } from 'react-redux'
+import { useEffect } from 'react'
+import { getNotes, deleteNote } from '../actions/actions'
+
+const noteListSelector = state =&gt; state.list.notes
+const fetchingSelector = state =&gt; state.list.fetching
+const errorSelector = state =&gt; state.list.error
+
+function NoteList() {
+  const notes = useSelector(noteListSelector, shallowEqual)
+  const fetching = useSelector(fetchingSelector)
+  const error = useSelector(errorSelector)
+  const dispatch = useDispatch()
+
+  useEffect(() =&gt; {
+    dispatch(getNotes())
+  }, [dispatch])
+
+  return (
+    &lt;div&gt;
+      &lt;h3&gt;Notes (loaded from API)&lt;/h3&gt;
+
+      {fetching &amp;&amp; &lt;div&gt;Loading...&lt;/div&gt;}
+      {error &amp;&amp; &lt;div&gt;Error: {String(error)}&lt;/div&gt;}
+
+      {notes.map(n =&gt; (
+        &lt;div key={n.id}&gt;
+          {n.content}
+          &lt;button onClick={() =&gt; dispatch(deleteNote(n.id))}&gt;Delete&lt;/button&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  )
+}
+
+export default NoteList</code></pre>
+
+        <div class="callout ok">
+          Acum vedem clar diferenţa dintre <em>declarativ</em> şi <em>imperativ</em>:
+          componenta declară „când mă montez, vreau note”, iar store-ul/mediaware/reducerul gestionează „cum”.
+        </div>
+
+        <details>
+          <summary>Ce se întâmplă dacă scoatem <span class="kbd">[dispatch]</span> din dependenţe?</summary>
+          <p class="small">
+            În practică, <span class="kbd">dispatch</span> este stabil, însă regula de bază este să păstrăm dependenţele corecte,
+            pentru a evita efecte neaşteptate la refactorizare. Aici disciplina ajută mai mult decât „merge şi aşa”.
+          </p>
+        </details>
+      </section>
+
+      <section id="debug">
+        <h2>7) Observare şi diagnosticare: cum „vedem” asincronul</h2>
+        <p>
+          Într-un proiect real, productivitatea vine din capacitatea de a <em>vedea</em> starea şi evenimentele.
+          În acest pas, avem câteva instrumente simple:
+        </p>
+        <ul>
+          <li><strong>Network tab</strong> în DevTools: cereri către <span class="kbd">/notes</span>, status codes, timpi.</li>
+          <li><strong>Console</strong>: erori de parse, CORS, URL greşit.</li>
+          <li><strong>UI state flags</strong>: <span class="kbd">fetching</span> şi <span class="kbd">error</span> (prin reducer).</li>
+        </ul>
+
+        <details>
+          <summary>Exerciţiu de diagnostic (controlat)</summary>
+          <ol>
+            <li>Opriţi serverul API (port 8080).</li>
+            <li>Reîncărcaţi Step 4 (port 3004).</li>
+            <li>Observaţi: apare eroare? se blochează UI? se vede <span class="kbd">fetching</span> prea mult timp?</li>
+            <li>Pornim din nou API-ul şi observăm revenirea.</li>
+          </ol>
+          <div class="callout danger">
+            Dacă UI nu tratează explicit erorile, studentul rămâne cu impresia că „nu funcţionează”, fără să ştie <em>de ce</em>.
+            De aceea, modelarea erorii ca stare este esenţială.
+          </div>
+        </details>
+      </section>
+
+      <section id="postman">
+        <h2>8) Testare în paralel: Postman şi „Postman‑lite” din dashboard</h2>
+        <p>
+          Un obicei profesional util: să validaţi API-ul <em>independent</em> de UI. Astfel separaţi problemele:
+          „API e jos” vs „UI a interpretat greşit datele”.
+        </p>
+
+        <div class="cols">
+          <div>
+            <h3>Postman (workflow recomandat)</h3>
+            <ol>
+              <li>Creaţi un <strong>Workspace</strong> pentru seminar (ex.: <span class="kbd">S12_Redux</span>).</li>
+              <li>Creaţi o <strong>Collection</strong> (ex.: <span class="kbd">Notes API</span>).</li>
+              <li>Adăugaţi request‑uri:
+                <ul>
+                  <li><span class="kbd">GET</span> <span class="kbd">http://localhost:8080/health</span></li>
+                  <li><span class="kbd">GET</span> <span class="kbd">http://localhost:8080/notes</span></li>
+                  <li><span class="kbd">POST</span> <span class="kbd">http://localhost:8080/notes</span> cu Body JSON</li>
+                  <li><span class="kbd">DELETE</span> <span class="kbd">http://localhost:8080/notes/:id</span></li>
+                </ul>
+              </li>
+              <li>Salvaţi exemple de Body (ex.: <span class="kbd">{ "content": "Test din Postman" }</span>).</li>
+            </ol>
+          </div>
+          <div>
+            <h3>Postman‑lite (în kit)</h3>
+            <p class="small">
+              În dashboard există un panou simplificat care reproduce ideea de „trimite request şi vezi răspuns”.
+              Este util la curs pentru ritm: nu depindeţi de instalări sau conturi, iar studenţii înţeleg imediat legătura UI ↔ API.
+            </p>
+            <ul class="small">
+              <li>Încercaţi întâi <span class="kbd">GET /health</span> ca test de „server alive”.</li>
+              <li>Apoi <span class="kbd">GET /notes</span> pentru a vedea forma datelor.</li>
+              <li>Faceţi <span class="kbd">POST /notes</span>, reîncărcaţi Step 4 şi observaţi noua notă.</li>
+              <li>Ştergeţi cu <span class="kbd">DELETE</span> şi observaţi efectul în UI.</li>
+            </ul>
+            <div class="callout ok">
+              Acum vedem o idee pedagogică: acelaşi obiect (o notă) poate fi observat din două lentile — API şi UI —
+              iar consistenţa între ele devine criteriul de corectitudine.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="best">
+        <h2>9) Best practices, capcane şi variaţiuni enterprise</h2>
+
+        <h3>Capcane frecvente (şi cum le prevenim)</h3>
+        <ul>
+          <li><strong>URL hard‑codat</strong> → folosiţi variabile de mediu (ex. <span class="kbd">VITE_API_BASE</span>).</li>
+          <li><strong>UI fără stare de eroare</strong> → includeţi <span class="kbd">error</span> în reducer şi afişaţi-l.</li>
+          <li><strong>„Refetch” excesiv</strong> → la volume mari, introduceţi caching, memoizare, invalidare controlată.</li>
+          <li><strong>Răspunsuri nevalidate</strong> → validaţi schema (în proiecte serioase: runtime validation, contract tests).</li>
+        </ul>
+
+        <details>
+          <summary>Unde se aşază acest pas în lumea actuală (2024–2025)</summary>
+          <p class="small">
+            În practica modernă, multe echipe aleg <strong>Redux Toolkit</strong> (RTK) pentru a reduce boilerplate,
+            iar pentru date remote folosesc <strong>RTK Query</strong>, care tratează caching, invalidare şi stări de request.
+            În acest seminar, păstrăm însă varianta „clasică” ca să înţelegeţi mecanismele de bază — apoi migrarea către RTK devine intuitivă.
+          </p>
+        </details>
+
+        <details>
+          <summary>Pro şi contra pentru Redux (într-un mod matur)</summary>
+          <ul class="small">
+            <li><strong>Pro:</strong> predictibilitate, testabilitate (reducer pur), instrumentare bună (DevTools), convenţii clare.</li>
+            <li><strong>Contra:</strong> overhead, boilerplate (în special fără RTK), risc de „global state abuse”.</li>
+            <li><strong>Decizie practică:</strong> când starea este transversală şi complexă (autentificare, coş, preferinţe, cache),
+              Redux devine atractiv. Pentru stări locale simple, React state poate fi suficient.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="exercitii">
+        <h2>10) Exerciţii ghidate şi extensii realiste</h2>
+
+        <details open>
+          <summary>Exerciţiul A — „Resetare controlată”</summary>
+          <p class="small">
+            Adăugaţi o acţiune <span class="kbd">CLEAR_ERROR</span> şi un buton „Dismiss” în UI.
+            Scop: să exersaţi proiectarea unui flux UX mic, dar complet (acţiune → reducer → UI).
+          </p>
+          <pre><code>// reducer: case 'CLEAR_ERROR': return { ...state, error: null }</code></pre>
+        </details>
+
+        <details>
+          <summary>Exerciţiul B — „Debounce” la reload (scenariu enterprise)</summary>
+          <p class="small">
+            Imaginaţi-vă că aveţi un filtru text şi nu vreţi request la fiecare tastă.
+            Introduceţi o întârziere (debounce) şi discutaţi avantajele/dezavantajele: UX vs trafic vs consistenţă.
+          </p>
+        </details>
+
+        <details>
+          <summary>Exerciţiul C — POST /notes din UI</summary>
+          <p class="small">
+            Extindeţi Step 4 astfel încât să puteţi adăuga o notă din UI (nu doar din Postman).
+            Păstraţi acelaşi model: <span class="kbd">ADD_NOTE</span> → <span class="kbd">ADD_NOTE_PENDING</span> etc.
+          </p>
+        </details>
+
+        <details>
+          <summary>Exerciţiul D — „Ce se întâmplă dacă API-ul returnează alt format?”</summary>
+          <p class="small">
+            Modificaţi serverul să returneze <span class="kbd">{ records: [...], count: n }</span>.
+            Ajustaţi reducerul şi UI. Scop: să exersaţi „contract negotiation” între front-end şi back-end.
+          </p>
+        </details>
+
+        <div class="hr"></div>
+        <p class="small">
+          Într-un proiect real, veţi întâlni şi alte variaţiuni: autentificare (JWT), rate limiting, pagination, caching,
+          retries, backoff, abort signals. Nu le implementăm pe toate aici, dar acum aveţi un „schelet mental” robust.
+        </p>
+      </section>
+
+      <footer>
+        <div>Seminarul 12 · Pasul 4 — material de curs (HTML). Versiune fără transcript.</div>
+        <div class="small">Sugestie: păstraţi acest fişier lângă kit şi folosiţi-l ca ghid în timpul explicaţiilor live.</div>
+      </footer>
+    </div>
+  </div>
+</main>
+
+<script>
+  // copy buttons
+  function copyText(text){
+    if(navigator.clipboard && window.isSecureContext){
+      return navigator.clipboard.writeText(text);
+    }
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.style.top = '-9999px';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+    return Promise.resolve();
+  }
+
+  document.querySelectorAll('.copybtn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = btn.getAttribute('data-copy');
+      const el = document.getElementById(id);
+      if(!el) return;
+      const text = el.innerText;
+      await copyText(text);
+      const old = btn.innerText;
+      btn.innerText = 'Copied ✓';
+      setTimeout(() => btn.innerText = old, 1100);
+    });
+  });
+</script>
+</body>
+</html>

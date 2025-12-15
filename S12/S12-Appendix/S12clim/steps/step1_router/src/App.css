@@ -1,0 +1,9 @@
+/* Minimal styling for clarity; feel free to extend. */
+body {
+  padding: 24px;
+}
+
+button {
+  padding: 8px 12px;
+  cursor: pointer;
+}

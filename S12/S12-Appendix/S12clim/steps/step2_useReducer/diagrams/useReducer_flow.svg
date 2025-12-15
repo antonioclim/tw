@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="220" viewBox="0 0 900 220">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#222" />
+    </marker>
+  </defs>
+
+  <rect x="40" y="70" width="160" height="80" rx="10" ry="10" fill="#f4f4f4" stroke="#222" stroke-width="2"/>
+  <text x="120" y="105" text-anchor="middle" font-family="Arial" font-size="16" fill="#111">Action</text>
+  <text x="120" y="128" text-anchor="middle" font-family="Arial" font-size="12" fill="#111">{ type: ... }</text>
+
+  <rect x="240" y="70" width="160" height="80" rx="10" ry="10" fill="#f4f4f4" stroke="#222" stroke-width="2"/>
+  <text x="320" y="105" text-anchor="middle" font-family="Arial" font-size="16" fill="#111">Dispatch</text>
+  <text x="320" y="128" text-anchor="middle" font-family="Arial" font-size="12" fill="#111">dispatch(action)</text>
+
+  <rect x="440" y="70" width="160" height="80" rx="10" ry="10" fill="#f4f4f4" stroke="#222" stroke-width="2"/>
+  <text x="520" y="105" text-anchor="middle" font-family="Arial" font-size="16" fill="#111">Reducer</text>
+  <text x="520" y="128" text-anchor="middle" font-family="Arial" font-size="12" fill="#111">(state, action) → newState</text>
+
+  <rect x="640" y="70" width="200" height="80" rx="10" ry="10" fill="#f4f4f4" stroke="#222" stroke-width="2"/>
+  <text x="740" y="105" text-anchor="middle" font-family="Arial" font-size="16" fill="#111">State</text>
+  <text x="740" y="128" text-anchor="middle" font-family="Arial" font-size="12" fill="#111">{ count, history }</text>
+
+  <line x1="200" y1="110" x2="240" y2="110" stroke="#222" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="400" y1="110" x2="440" y2="110" stroke="#222" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="600" y1="110" x2="640" y2="110" stroke="#222" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <path d="M740,150 C740,190 160,190 160,150" fill="none" stroke="#222" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="450" y="205" text-anchor="middle" font-family="Arial" font-size="12" fill="#111">Re-render uses updated state</text>
+</svg>

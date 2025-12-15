@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Seminar 12 – Step 3: Redux (sync)</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="container prose">
+      <div class="header">
+        <h1>Step 3 – Redux (sync)</h1>
+        <p class="subtitle">
+          Acum trecem de la <em>stare locală</em> (useReducer) la <em>stare globală</em>: definim un <code>store</code>, una sau mai multe <code>reducers</code>
+          şi un set de <code>actions</code>. UI-ul se conectează prin <code>Provider</code> + <code>useSelector</code> / <code>useDispatch</code>.
+        </p>
+        <div>
+          <a class="btn" href="/">← Înapoi la Dashboard</a>
+          <a class="btn" href="http://localhost:3003" target="_blank" rel="noreferrer">Open Step 3 (app)</a>
+        </div>
+      </div>
+
+      <div class="card toc">
+        <h3>Cuprins</h3>
+        <ul>
+          <li><a href="#rezultat">Rezultat observabil</a></li>
+          <li><a href="#concepte">Concepte cheie (şi de ce avem nevoie de ele)</a></li>
+          <li><a href="#flux">Fluxul complet: UI → action → reducer → UI</a></li>
+          <li><a href="#sniplete">Ce scriem (sniplete) şi cum le citim</a></li>
+          <li><a href="#incercam">Să încercăm (micro-scenarii)</a></li>
+          <li><a href="#best">Best practices & atenţionări</a></li>
+          <li><a href="#extinderi">Extinderi realiste</a></li>
+        </ul>
+      </div>
+
+      <div id="rezultat" class="card">
+        <h2>Rezultat observabil</h2>
+        <ul>
+          <li>Există o listă de note stocată în Redux (o “sursă unică de adevăr”).</li>
+          <li>UI-ul poate adăuga note (sync) şi poate şterge note (sync), fără server.</li>
+          <li>În dreapta se afişează explicit starea din store (ca să vedem efectul reducer-ului).</li>
+        </ul>
+        <div class="callout tip">
+          <b>Idee didactică:</b> aici păstrăm intenţionat exemplul “local-only”, ca să izolăm mecanismul Redux. În Step 4 mutăm operaţiile în zona async.
+        </div>
+      </div>
+
+      <div id="concepte" class="card">
+        <h2>Concepte cheie (şi de ce avem nevoie de ele)</h2>
+        <div class="grid2">
+          <div class="callout">
+            <b>Store (magazin global)</b>
+            <p>
+              Un obiect central care conţine “starea aplicaţiei”. Avantajul didactic: UI-ul nu mai are “bucăţi” disparate de stare; în schimb, există un loc unic
+              unde putem observa şi modifica predictibil.
+            </p>
+          </div>
+          <div class="callout">
+            <b>Reducer (funcţie pură)</b>
+            <p>
+              Primeşte <code>(state, action)</code> şi întoarce un <code>newState</code>. Este “motorul” care garantează: aceeaşi intrare → aceeaşi ieşire.
+              Nu facem efecte secundare în reducer.
+            </p>
+          </div>
+          <div class="callout">
+            <b>Action (eveniment semantic)</b>
+            <p>
+              Un obiect simplu care exprimă intenţia: <code>{ type, payload }</code>. Practic, transformăm “click-uri” şi “evenimente UI” în mesaje clare.
+            </p>
+          </div>
+          <div class="callout">
+            <b>React-Redux bindings</b>
+            <p>
+              <code>&lt;Provider&gt;</code> injectează store-ul în arbore. <code>useSelector</code> citeşte date, iar <code>useDispatch</code> trimite acţiuni.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div id="flux" class="card">
+        <h2>Fluxul complet: UI → action → reducer → UI</h2>
+        <ol>
+          <li><b>UI</b>: utilizatorul scrie o notă şi apasă <em>Add</em>.</li>
+          <li><b>Action creator</b>: construim <code>addNote(value)</code> şi apelăm <code>dispatch(addNote(value))</code>.</li>
+          <li><b>Reducer</b>: primeşte acţiunea şi produce un nou <code>state</code> (fără mutaţii).</li>
+          <li><b>Re-render</b>: componentele care selectează acea porţiune din state se re-render-ează.</li>
+        </ol>
+        <div class="callout warn">
+          <b>Atenţie:</b> Redux nu “forţează” re-render; re-render-ul este declanşat de faptul că selectorul vede o nouă referinţă (de aici importanţa imutabilităţii).
+        </div>
+      </div>
+
+      <div id="sniplete" class="card">
+        <h2>Ce scriem (sniplete) şi cum le citim</h2>
+
+        <h3>1) Store-ul</h3>
+        <p>
+          În exemplul din seminar folosim API-ul “clasic” (<code>createStore</code>) ca să evidenţiem mecanica. În proiecte reale, veţi vedea frecvent
+          <em>Redux Toolkit</em> pentru a reduce boilerplate-ul.
+        </p>
+        <pre><code>// steps/step3_redux/src/stores/store.js
+import { createStore } from "redux";
+import reducers from "../reducers";
+
+const store = createStore(reducers);
+
+export default store;
+</code></pre>
+        <div class="callout best">
+          <b>Notă de proiect real:</b> aici aţi introduce middleware (logger, thunk, promise, etc.) şi DevTools. În Step 4 exact asta facem.
+        </div>
+
+        <h3>2) Reducer-ul (imutable update)</h3>
+        <pre><code>// steps/step3_redux/src/reducers/list-reducer.js
+const initialState = {
+  notes: []
+};
+
+export default function (state = initialState, action) {
+  switch (action.type) {
+    case "ADD_NOTE": {
+      return { ...state, notes: [...state.notes, action.payload] };
+    }
+    case "DELETE_NOTE": {
+      return {
+        ...state,
+        notes: state.notes.filter((n, i) =&gt; i !== action.payload)
+      };
+    }
+    default:
+      return state;
+  }
+}
+</code></pre>
+
+        <div class="callout warn">
+          <b>De ce “...state” şi “...state.notes”?</b>
+          <ul>
+            <li>Vrem o <b>nouă referinţă</b> la obiect şi la array pentru ca React-Redux să detecteze schimbarea.</li>
+            <li>Evitaţi <code>push</code>/<code>splice</code> direct pe array-ul din state (mutaţie).</li>
+          </ul>
+        </div>
+
+        <details>
+          <summary>Variaţie realistă: note cu ID (în loc de index)</summary>
+          <div class="callout">
+            <p>
+              Ştergerea după index funcţionează didactic, dar într-un UI real lista poate fi sortată/filtrată, iar indexul devine instabil.
+              Un model mai robust este <code>{ id, text }</code> şi ştergere după <code>id</code>.
+            </p>
+            <pre><code>// reducer (variantă)
+case "DELETE_NOTE": {
+  return { ...state, notes: state.notes.filter(n =&gt; n.id !== action.payload) };
+}
+
+// action creator
+export const deleteNote = (id) =&gt; ({ type: "DELETE_NOTE", payload: id });
+</code></pre>
+          </div>
+        </details>
+
+        <h3>3) Acţiunile (action creators)</h3>
+        <pre><code>// steps/step3_redux/src/actions/actions.js
+export const addNote = (note) =&gt; {
+  return { type: "ADD_NOTE", payload: note };
+};
+
+export const deleteNote = (idx) =&gt; {
+  return { type: "DELETE_NOTE", payload: idx };
+};
+</code></pre>
+        <div class="callout tip">
+          <b>Acum vedem că…</b> acţiunile sunt intenţionat simple. Complexitatea ar trebui să stea în reducer (pentru update determinist) sau în middleware (pentru async).
+        </div>
+
+        <h3>4) Conectarea UI-ului</h3>
+        <pre><code>// steps/step3_redux/src/components/NoteList.jsx
+const notes = useSelector((state) =&gt; state.list.notes);
+const dispatch = useDispatch();
+
+// ...
+&lt;button onClick={() =&gt; dispatch(deleteNote(idx))}&gt;Delete&lt;/button&gt;
+</code></pre>
+        <div class="callout">
+          <p>
+            <b>Interpretare:</b> UI-ul nu manipulează direct state-ul. El emite acţiuni. Reducer-ul este singurul loc unde se decide “cum se schimbă starea”.
+            Asta face comportamentul replicabil şi uşor de testat.
+          </p>
+        </div>
+      </div>
+
+      <div id="incercam" class="card">
+        <h2>Să încercăm (micro-scenarii)</h2>
+        <ol>
+          <li>Adăugaţi 2–3 note. Observaţi în panoul “Redux state” cum array-ul creşte.</li>
+          <li>Ştergeţi o notă din mijloc. Observaţi că <code>filter</code> produce un array nou, fără elementul respectiv.</li>
+          <li>
+            Întrebare de analiză: de ce state-ul UI poate fi recalculat integral din store?
+            (Hint: store-ul devine “adevărul”, UI-ul este o proiecţie.)
+          </li>
+        </ol>
+        <div class="callout exercise">
+          <b>Exerciţiu scurt:</b> adăugaţi un buton “Clear all”. Care ar fi acţiunea? Cum ar arăta cazul în reducer?
+        </div>
+      </div>
+
+      <div id="best" class="card">
+        <h2>Best practices & atenţionări</h2>
+        <ul>
+          <li><b>Serializabilitate:</b> evitaţi să puneţi în Redux funcţii, instanţe de clase, obiecte DOM. Starea trebuie să fie uşor de inspectat şi de persistat.</li>
+          <li><b>State minim:</b> nu salvaţi în store date care pot fi derivate ieftin (de ex. “count = notes.length”).</li>
+          <li><b>Selectori:</b> pentru calcule mai scumpe, folosiţi selectori memoizaţi (în proiecte mari: reselect / RTK).</li>
+          <li><b>Chei stabile:</b> în liste UI, folosiţi chei stabile (id). Indexul e acceptabil doar în demo-uri fără reordonare.</li>
+          <li><b>Structură:</b> în proiecte reale veţi grupa “slice”-uri (notes, user, ui) şi veţi normaliza entităţile (IDs + map).</li>
+        </ul>
+      </div>
+
+      <div id="extinderi" class="card">
+        <h2>Extinderi realiste</h2>
+        <ul>
+          <li><b>Persistenţă:</b> salvaţi notele în <code>localStorage</code> (atenţie la sincronizare şi migrarea schemelor).</li>
+          <li><b>Editare:</b> adăugaţi acţiuni <code>UPDATE_NOTE</code> şi un form controlat.</li>
+          <li><b>Filtrare/sortare:</b> implementaţi filtrare în UI fără a modifica store-ul (derivare), apoi comparaţi cu varianta “store-driven”.</li>
+          <li><b>Audit / istoric:</b> păstraţi un log de acţiuni (sau folosiţi DevTools) ca să arătaţi “time travel”.</li>
+        </ul>
+
+        <div class="callout best">
+          <b>Variaţie pe care o veţi întâlni frecvent:</b> Redux Toolkit.
+          <p>
+            În practică, reducerea boilerplate-ului contează. Un “slice” RTK defineşte reducer + actions într-un singur loc, iar update-urile pot fi scrise
+            în stil mutativ (folosind Immer) fără a compromite imutabilitatea.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Seminarul 12 · Pasul 1 — Rutare în React cu React Router (fundamente)</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a33;
+      --panel2: #0f1730;
+      --text: #e7ecff;
+      --muted: #b8c0e6;
+      --accent: #7aa2ff;
+      --accent2: #8bd5ca;
+      --warn: #f5a97f;
+      --danger: #ed8796;
+      --border: rgba(255,255,255,.12);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --line: 1.55;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 700px at 30% 10%, rgba(122,162,255,.18), transparent 55%),
+                  radial-gradient(900px 500px at 80% 20%, rgba(139,213,202,.14), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: var(--line);
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header {
+      padding: 26px 22px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(18,26,51,.86), rgba(18,26,51,.45));
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+    }
+    header h1 {
+      font-size: 20px;
+      margin: 0 0 6px 0;
+      letter-spacing: .2px;
+    }
+    header .meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 310px 1fr;
+      gap: 18px;
+      padding: 18px;
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+    nav {
+      background: rgba(18,26,51,.68);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      position: sticky;
+      top: 92px;
+      height: calc(100vh - 110px);
+      overflow: auto;
+    }
+    nav .nav-title {
+      font-weight: 700;
+      margin: 4px 0 10px;
+      color: var(--text);
+    }
+    nav input {
+      width: 100%;
+      padding: 10px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(15,23,48,.8);
+      color: var(--text);
+      outline: none;
+      margin-bottom: 10px;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    nav li {
+      margin: 0;
+      padding: 0;
+    }
+    nav a {
+      display: block;
+      padding: 10px 10px;
+      border-radius: 10px;
+      color: var(--muted);
+      border: 1px solid transparent;
+    }
+    nav a:hover {
+      background: rgba(122,162,255,.12);
+      color: var(--text);
+      border-color: rgba(122,162,255,.25);
+      text-decoration: none;
+    }
+
+    main {
+      min-width: 0;
+    }
+    .section {
+      background: rgba(18,26,51,.62);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 18px;
+      margin-bottom: 14px;
+    }
+    .section h2 {
+      margin-top: 0;
+      font-size: 18px;
+      letter-spacing: .2px;
+    }
+    .section h3 {
+      margin-bottom: 8px;
+      margin-top: 18px;
+      font-size: 15px;
+      color: var(--text);
+    }
+    .lead {
+      font-size: 15px;
+      color: var(--text);
+    }
+    code {
+      font-family: var(--mono);
+      font-size: 0.95em;
+      background: rgba(15,23,48,.75);
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    pre {
+      margin: 0;
+      padding: 12px 12px;
+      overflow: auto;
+      border-radius: 12px;
+      background: rgba(10,16,32,.9);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      font-size: 12.8px;
+      color: #e7ecff;
+    }
+    .code-block {
+      margin: 12px 0 14px;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 0 0 8px 0;
+    }
+    .code-title {
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .copy-btn {
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(122,162,255,.16);
+      color: var(--text);
+      cursor: pointer;
+    }
+    .copy-btn:hover {
+      background: rgba(122,162,255,.26);
+    }
+    .callout {
+      border-radius: 14px;
+      padding: 12px 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(15,23,48,.72);
+      margin: 12px 0;
+    }
+    .callout.info {
+      border-color: rgba(122,162,255,.30);
+      background: rgba(122,162,255,.10);
+    }
+    .callout.warning {
+      border-color: rgba(245,169,127,.35);
+      background: rgba(245,169,127,.10);
+    }
+    .callout.tip {
+      border-color: rgba(139,213,202,.35);
+      background: rgba(139,213,202,.10);
+    }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .card {
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(15,23,48,.55);
+      border-radius: 14px;
+      padding: 12px 12px;
+    }
+    .card h3, .card h4 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      color: var(--text);
+    }
+    details {
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(10,16,32,.55);
+      border-radius: 14px;
+      padding: 10px 10px;
+      margin: 10px 0;
+    }
+    details summary {
+      cursor: pointer;
+      color: var(--text);
+      font-weight: 700;
+    }
+    details p {
+      color: var(--muted);
+    }
+    .file-list {
+      padding-left: 18px;
+    }
+    .file-list li {
+      margin: 6px 0;
+    }
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        position: relative;
+        top: 0;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Seminarul 12 · Pasul 1 — Rutare în React cu React Router (fundamente)</h1>
+  <div class="meta">Ghid interactiv pentru studenţi · construit pe baza explicaţiilor din materialul video (transformat, fără transcript) · 2025-12-15</div>
+</header>
+
+<div class="layout">
+  <nav>
+    <div class="nav-title">Cuprins</div>
+    <input id="navSearch" type="text" placeholder="Caută în secţiuni… (ex.: params, 404, navigate)"/>
+    <ul id="navList">
+      <li><a href="#overview">1. Orientare</a></li>
+      <li><a href="#concepts">2. Model conceptual</a></li>
+      <li><a href="#setup">3. Setup & rulare</a></li>
+      <li><a href="#build">4. Piese de bază</a></li>
+      <li><a href="#routes">5. Declararea rutelor</a></li>
+      <li><a href="#nav">6. Navigare</a></li>
+      <li><a href="#notfound">7. NotFound (404)</a></li>
+      <li><a href="#params">8. Parametri de rută</a></li>
+      <li><a href="#mapping">9. Mapare către kit</a></li>
+      <li><a href="#exercises">10. Exerciţii</a></li>
+      <li><a href="#enterprise">11. Perspective enterprise</a></li>
+      <li><a href="#faq">12. FAQ & debugging</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    
+    <section id="overview" class="section">
+      <h2>Orientare şi scop didactic</h2>
+      
+<p class="lead">
+În acest pas construim (şi înţelegem) mecanismul de rutare într-o aplicaţie React de tip SPA (Single‑Page Application),
+folosind <code>react-router-dom</code>. Practic, învăţăm să „mapăm” adrese URL la componente React şi să navigăm între ele
+fără reîncărcarea completă a paginii.
+</p>
+
+<div class="callout info">
+  <strong>În kit:</strong> acest pas corespunde proiectului <code>steps/step1_router</code> (în dashboard îl lansaţi pe <code>http://localhost:3001</code>).
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <h3>Ce facem</h3>
+    <ul>
+      <li>Instalăm/folosim <code>react-router-dom</code> şi definim rute cu <code>&lt;Routes&gt;</code> / <code>&lt;Route&gt;</code>.</li>
+      <li>Construim pagini minimale: <em>Home</em>, <em>Tasks</em>, <em>About</em>, <em>NotFound</em>.</li>
+      <li>Exersăm trei stiluri de navigare: declarativă (<code>&lt;Link&gt;</code>), programatică (<code>useNavigate</code>), parametrizată (<code>useParams</code>).</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Ce observăm în browser</h3>
+    <ul>
+      <li>Schimbarea URL‑ului schimbă componenta randată, fără refresh complet.</li>
+      <li>Ruta wildcard (<code>*</code>) gestionează elegant 404‑ul.</li>
+      <li>Parametrii de rută (<code>:id</code>) devin date disponibile în componentă.</li>
+    </ul>
+  </div>
+</div>
+
+    </section>
+    
+    
+    <section id="concepts" class="section">
+      <h2>Model conceptual: ce înseamnă rutarea într-un SPA</h2>
+      
+<p>
+Pentru a nu rămâne la „reţete”, să stabilim un model mental robust. O aplicaţie SPA nu are (de obicei) pagini HTML separate
+pe disc; are un singur document (<code>index.html</code>) şi un <em>runtime</em> JavaScript care decide ce componentă să afişeze.
+Rutarea, în acest context, este o convenţie: interpretăm <em>pathname</em> din URL şi randăm o componentă corespunzătoare.
+</p>
+
+<div class="grid2">
+  <div class="card">
+    <h3>Roluri cheie</h3>
+    <dl>
+      <dt><code>&lt;BrowserRouter&gt;</code></dt>
+      <dd>„Înfăşoară” aplicaţia şi conectează istoricul browserului (History API) la React Router.</dd>
+
+      <dt><code>&lt;Routes&gt;</code></dt>
+      <dd>Containerul care decide ce rută se potriveşte cel mai bine pentru URL‑ul curent.</dd>
+
+      <dt><code>&lt;Route path="..." element={...} /&gt;</code></dt>
+      <dd>Regula de mapare: <em>path</em> → <em>element</em> (componentă).</dd>
+    </dl>
+  </div>
+  <div class="card">
+    <h3>De ce contează în proiecte reale</h3>
+    <ul>
+      <li>Rutarea este scheletul navigaţiei: fără ea, aplicaţia devine un singur ecran imens şi greu de întreţinut.</li>
+      <li>Permite deep‑linking: colegul vă poate trimite un URL care deschide direct o stare relevantă.</li>
+      <li>Face posibilă separarea pe „zone” (ex.: /admin, /reports), cu autorizare şi lazy loading ulterior.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout warning">
+  <strong>Atenţie didactică:</strong> în etapa de bază nu discutăm încă despre rutare „server‑side” sau „SSR”.
+  Într-un deployment enterprise trebuie configurat serverul să servească <code>index.html</code> pentru rute necunoscute,
+  altfel refresh-ul pe <code>/tasks</code> poate da 404 la nivel de server.
+</div>
+
+    </section>
+    
+    
+    <section id="setup" class="section">
+      <h2>Setup, dependenţe şi rulare (Windows 11 + VSC)</h2>
+      
+<h3>Dependenţe şi pornire</h3>
+<ul>
+  <li>Asiguraţi-vă că Node.js + npm sunt instalate şi vizibile în PATH.</li>
+  <li>Din dashboard puteţi porni automat pasul 1, dar este util să ştiţi şi varianta „manuală”.</li>
+</ul>
+
+<div class="code-block">
+  <div class="code-header">
+    <div class="code-title">Rulare manuală (Windows PowerShell)</div>
+    <button class="copy-btn" data-target="cmd-run" title="Copy to clipboard">Copy</button>
+  </div>
+  <pre id="cmd-run"><code class="lang-bash">cd steps\step1_router
+npm install
+npm run dev
+# deschideţi: http://localhost:3001</code></pre>
+</div>
+
+<div class="callout info">
+  În materialele video originale se porneşte uneori de la <code>create-react-app</code>. În kit-ul modern, bazat pe Vite,
+  conceptele de rutare rămân identice; diferă doar tooling-ul (vite dev server vs CRA scripts).
+</div>
+
+    </section>
+    
+    
+    <section id="build" class="section">
+      <h2>Piese de bază: bootstrap-ul aplicaţiei</h2>
+      
+<h3>Structura minimală a aplicaţiei</h3>
+<p>
+Într-o aplicaţie React, există un punct de intrare care „montează” componenta <code>&lt;App /&gt;</code> în DOM. Apoi,
+<code>&lt;App /&gt;</code> devine spaţiul în care configurăm rutarea.
+</p>
+
+
+    <div class="code-block">
+      
+    <div class="code-header">
+      <div class="code-title">src/index.jsx · punctul de intrare</div>
+      <button class="copy-btn" data-target="src-index-jsx-punctul-de-intrare-17531294" title="Copy to clipboard">Copy</button>
+    </div>
+    
+      <pre id="src-index-jsx-punctul-de-intrare-17531294"><code class="lang-jsx">import React from &#x27;react&#x27;
+import ReactDOM from &#x27;react-dom/client&#x27;
+import App from &#x27;./App.jsx&#x27;
+import &#x27;./index.css&#x27;
+
+ReactDOM.createRoot(document.getElementById(&#x27;root&#x27;)).render(
+  &lt;React.StrictMode&gt;
+    &lt;App /&gt;
+  &lt;/React.StrictMode&gt;
+)</code></pre>
+    </div>
+    
+
+<p>
+Acum vedem că <code>&lt;App /&gt;</code> este randată în interiorul <code>&lt;React.StrictMode&gt;</code>.
+În mod deliberate, Strict Mode poate evidenţia efecte cu probleme în dezvoltare (de exemplu, efecte care nu sunt idempotente).
+</p>
+
+<div class="callout tip">
+  <strong>Best practice:</strong> păstraţi bootstrap‑ul (index/main) cât mai „curat”. Rutarea, state management-ul,
+  şi logica de domeniu se discută mai natural în <code>App</code> şi în componentele din <code>src/components</code>.
+</div>
+
+    </section>
+    
+    
+    <section id="routes" class="section">
+      <h2>Declararea rutelor: BrowserRouter · Routes · Route</h2>
+      
+<p>
+Configurarea rutei se face declarativ, într-o formă uşor de citit. Ideea centrală: definim o colecţie de reguli, apoi Routerul
+alege regula potrivită pentru URL.
+</p>
+
+
+    <div class="code-block">
+      
+    <div class="code-header">
+      <div class="code-title">src/App.jsx · declararea rutelor</div>
+      <button class="copy-btn" data-target="src-app-jsx-declararea-rutelor-25063086" title="Copy to clipboard">Copy</button>
+    </div>
+    
+      <pre id="src-app-jsx-declararea-rutelor-25063086"><code class="lang-jsx">import { BrowserRouter, Routes, Route } from &#x27;react-router-dom&#x27;
+import Home from &#x27;./components/Home.jsx&#x27;
+import Tasks from &#x27;./components/Tasks.jsx&#x27;
+import About from &#x27;./components/About.jsx&#x27;
+import NotFound from &#x27;./components/NotFound.jsx&#x27;
+
+export default function App () {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;Routes&gt;
+        &lt;Route path=&quot;/&quot; element={&lt;Home /&gt;} /&gt;
+
+        {/* aceeaşi componentă poate fi randată pentru două rute diferite */}
+        &lt;Route path=&quot;/tasks&quot; element={&lt;Tasks /&gt;} /&gt;
+        &lt;Route path=&quot;/tasks/:id&quot; element={&lt;Tasks /&gt;} /&gt;
+
+        {/* exemplu didactic: pagină separată */}
+        &lt;Route path=&quot;/about&quot; element={&lt;About /&gt;} /&gt;
+
+        {/* fallback: orice altă rută */}
+        &lt;Route path=&quot;*&quot; element={&lt;NotFound /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  )
+}</code></pre>
+    </div>
+    
+
+<div class="grid2">
+  <div class="card">
+    <h3>Ce învăţăm aici</h3>
+    <ul>
+      <li><code>path="/"</code> este rădăcina aplicaţiei (Home).</li>
+      <li><code>path="*"</code> funcţionează ca „plasă de siguranţă” (NotFound).</li>
+      <li><code>path="/tasks/:id"</code> introduce parametri de rută (ex.: <code>/tasks/42</code>).</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Întrebări de verificare</h3>
+    <details>
+      <summary>De ce avem două rute către <code>Tasks</code>?</summary>
+      <p>
+      Pentru a ilustra că aceeaşi componentă poate servi mai multe URL-uri.
+      Un caz realist: <code>/tasks</code> arată o listă, iar <code>/tasks/:id</code> arată detalii pentru un item selectat.
+      Într-o versiune enterprise, aţi putea separa în două componente (<em>TasksList</em> şi <em>TaskDetails</em>),
+      dar didactic e util să vedeţi cum <code>useParams</code> diferenţiază cele două situaţii.
+      </p>
+    </details>
+    <details>
+      <summary>Ce câştigăm cu ruta <code>/about</code>?</summary>
+      <p>
+      Un spaţiu controlat pentru a discuta conceptul de „pagini” în SPA, fără a complica fluxul principal. În proiecte reale,
+      astfel de rute găzduiesc documentaţie internă, pagini de suport, sau secţiuni publice.
+      </p>
+    </details>
+  </div>
+</div>
+
+    </section>
+    
+    
+    <section id="nav" class="section">
+      <h2>Navigare: declarativă şi programatică</h2>
+      
+<h3>Navigare programatică: <code>useNavigate</code></h3>
+<p>
+Acum vedem că uneori navigarea nu porneşte dintr-un link, ci dintr-un eveniment:
+după autentificare reuşită, după un submit valid, după o confirmare etc.
+În aceste situaţii, <code>useNavigate</code> oferă un <em>API</em> de navigare explicită.
+</p>
+
+
+    <div class="code-block">
+      
+    <div class="code-header">
+      <div class="code-title">src/components/Home.jsx · useNavigate + Link</div>
+      <button class="copy-btn" data-target="src-components-home-jsx-usenavigate-link-96799545" title="Copy to clipboard">Copy</button>
+    </div>
+    
+      <pre id="src-components-home-jsx-usenavigate-link-96799545"><code class="lang-jsx">import { useNavigate, Link } from &#x27;react-router-dom&#x27;
+
+export default function Home () {
+  const navigate = useNavigate()
+
+  return (
+    &lt;&gt;
+      &lt;h2&gt;Home&lt;/h2&gt;
+
+      {/* navigare programatică (ex.: după un login, după un submit valid etc.) */}
+      &lt;button onClick={() =&gt; navigate(&#x27;/tasks&#x27;)}&gt;
+        Go to tasks
+      &lt;/button&gt;
+
+      {/* navigare declarativă: linkuri clasice */}
+      &lt;p&gt;
+        &lt;Link to=&quot;/about&quot;&gt;About&lt;/Link&gt;
+      &lt;/p&gt;
+    &lt;/&gt;
+  )
+}</code></pre>
+    </div>
+    
+
+<div class="callout warning">
+  <strong>Atenţie:</strong> diferenţiaţi între navigare relativă şi absolută.
+  <ul>
+    <li><code>navigate('/tasks')</code> este absolută şi, pentru predare, este adesea mai clară.</li>
+    <li><code>navigate('tasks')</code> este relativă la ruta curentă; este utilă în rute imbricate (nested routes).</li>
+  </ul>
+</div>
+
+<h3>Navigare declarativă: <code>&lt;Link&gt;</code></h3>
+<p>
+Linkurile sunt mai uşor de urmărit în cod şi sunt preferate pentru navigarea „obişnuită” din UI.
+În plus, ele pot integra automat comportamente precum prefetching sau styling activ (în combinaţie cu <code>NavLink</code>).
+</p>
+
+    </section>
+    
+    
+    <section id="notfound" class="section">
+      <h2>Ruta wildcard şi pagina NotFound</h2>
+      
+<h3>Gestionarea rutelor inexistente (404)</h3>
+<p>
+Într-un proiect real, utilizatorii ajung inevitabil la URL-uri invalide: bookmark-uri vechi, linkuri greşite, rute eliminate.
+O pagină 404 bine proiectată reduce frustrarea şi poate ghida utilizatorul spre o zonă validă.
+</p>
+
+
+    <div class="code-block">
+      
+    <div class="code-header">
+      <div class="code-title">src/components/NotFound.jsx · fallback cu Link</div>
+      <button class="copy-btn" data-target="src-components-notfound-jsx-fallback-cu-link-26462953" title="Copy to clipboard">Copy</button>
+    </div>
+    
+      <pre id="src-components-notfound-jsx-fallback-cu-link-26462953"><code class="lang-jsx">import { Link } from &#x27;react-router-dom&#x27;
+
+export default function NotFound () {
+  return (
+    &lt;&gt;
+      &lt;h2&gt;404&lt;/h2&gt;
+      &lt;p&gt;Page not found.&lt;/p&gt;
+
+      &lt;Link to=&quot;/&quot;&gt;Go to homepage&lt;/Link&gt;
+    &lt;/&gt;
+  )
+}</code></pre>
+    </div>
+    
+
+<div class="callout tip">
+  <strong>Variantă realistă:</strong> într-o aplicaţie enterprise, pagina 404 poate include:
+  <ul>
+    <li>un buton „Back”,</li>
+    <li>un search intern,</li>
+    <li>un link către suport,</li>
+    <li>şi logare (telemetrie) pentru a identifica rute accesate frecvent dar inexistente.</li>
+  </ul>
+</div>
+
+    </section>
+    
+    
+    <section id="params" class="section">
+      <h2>Rute parametrizate: useParams</h2>
+      
+<h3>Parametri în rute: <code>useParams</code></h3>
+<p>
+Rutele parametrizate introduc o punte între URL şi date. URL-ul devine un <em>input</em> care selectează ce afişăm.
+Din punct de vedere didactic, este o modalitate excelentă de a discuta despre:
+<strong>state derivat</strong> (din URL), <strong>deep‑linking</strong> şi <strong>identificatori stabili</strong>.
+</p>
+
+
+    <div class="code-block">
+      
+    <div class="code-header">
+      <div class="code-title">src/components/Tasks.jsx · useParams (id)</div>
+      <button class="copy-btn" data-target="src-components-tasks-jsx-useparams-id-98339964" title="Copy to clipboard">Copy</button>
+    </div>
+    
+      <pre id="src-components-tasks-jsx-useparams-id-98339964"><code class="lang-jsx">import { useParams, Link } from &#x27;react-router-dom&#x27;
+
+export default function Tasks () {
+  const { id } = useParams()
+
+  return (
+    &lt;&gt;
+      &lt;h2&gt;Tasks&lt;/h2&gt;
+
+      {/* când ruta este /tasks, id este undefined; când este /tasks/:id, id are valoare */}
+      &lt;p&gt;&lt;strong&gt;id param:&lt;/strong&gt; {id ?? &#x27;(none)&#x27;}&lt;/p&gt;
+
+      &lt;p&gt;
+        &lt;Link to=&quot;/tasks/42&quot;&gt;Open /tasks/42&lt;/Link&gt;
+      &lt;/p&gt;
+
+      &lt;p&gt;
+        &lt;Link to=&quot;/&quot;&gt;Back home&lt;/Link&gt;
+      &lt;/p&gt;
+    &lt;/&gt;
+  )
+}</code></pre>
+    </div>
+    
+
+<details>
+  <summary>Sa încercăm să… testăm comportamentul în browser</summary>
+  <ol>
+    <li>Deschideţi <code>/tasks</code> şi observaţi că <code>id</code> este „none”.</li>
+    <li>Accesaţi <code>/tasks/42</code> (din linkul din pagină) şi observaţi că <code>id</code> devine <code>42</code>.</li>
+    <li>Modificaţi manual URL-ul în <code>/tasks/abc</code> şi discutaţi: ar trebui să acceptăm orice string ca id?</li>
+  </ol>
+</details>
+
+<div class="callout warning">
+  <strong>Best practice:</strong> validaţi parametrii de rută înainte de a-i folosi în request-uri către server.
+  Într-o aplicaţie reală, <code>id</code> poate fi numeric sau UUID; trataţi erorile explicit (ex.: afişaţi „Not found” dacă
+  resursa nu există).
+</div>
+
+    </section>
+    
+    
+    <section id="mapping" class="section">
+      <h2>Unde găsiţi lucrurile în kit</h2>
+      
+<h3>Mapare către kit</h3>
+<p>
+În kit găsiţi, pentru pasul 1, o structură tipică pentru o aplicaţie mică. Recomandarea este să parcurgeţi fişierele în ordinea
+de mai jos şi să urmăriţi „firul narativ”:
+</p>
+
+<ul class="file-list">
+  <li><code>steps/step1_router/src/index.jsx</code> — bootstrap (montarea aplicaţiei)</li>
+  <li><code>steps/step1_router/src/App.jsx</code> — router configuration (rute)</li>
+  <li><code>steps/step1_router/src/components/Home.jsx</code> — navigare (useNavigate, Link)</li>
+  <li><code>steps/step1_router/src/components/Tasks.jsx</code> — parametri de rută (useParams)</li>
+  <li><code>steps/step1_router/src/components/NotFound.jsx</code> — fallback pentru rute inexistente</li>
+  <li><code>steps/step1_router/src/components/About.jsx</code> — pagină didactică separată</li>
+</ul>
+
+<div class="callout info">
+  <strong>În dashboard:</strong> când apăsaţi „Start Step 1”, aplicaţia porneşte pe <code>http://localhost:3001</code>.
+  Dacă doriţi să rulaţi independent, folosiţi comenzile din secţiunea „Dependenţe şi pornire”.
+</div>
+
+    </section>
+    
+    
+    <section id="exercises" class="section">
+      <h2>Exerciţii şi extinderi ghidate</h2>
+      
+<h3>Exerciţii ghidate</h3>
+
+<details>
+  <summary>Exerciţiul A · Adăugaţi o rută nouă: <code>/profile</code></summary>
+  <ol>
+    <li>Creaţi <code>src/components/Profile.jsx</code> cu un text simplu.</li>
+    <li>În <code>App.jsx</code>, adăugaţi <code>&lt;Route path="/profile" ... /&gt;</code>.</li>
+    <li>În <code>Home.jsx</code>, adăugaţi un <code>&lt;Link&gt;</code> către <code>/profile</code>.</li>
+  </ol>
+  <p><strong>Discuţie:</strong> ce se întâmplă dacă omiteţi importul componentei sau greşiţi path-ul?</p>
+</details>
+
+<details>
+  <summary>Exerciţiul B · Parametri multipli: <code>/tasks/:id/comments/:commentId</code></summary>
+  <p>
+  Extindeţi ruta şi observaţi ce returnează <code>useParams()</code>. Într-o aplicaţie enterprise, astfel de rute apar
+  în navigare ierarhică (resurse şi sub-resurse).
+  </p>
+</details>
+
+<details>
+  <summary>Exerciţiul C · 404 util: propuneţi o pagină NotFound „orientată spre utilizator”</summary>
+  <p>
+  Îmbunătăţiţi pagina 404 cu un set de linkuri către zone „populare” ale aplicaţiei, şi un mic mesaj contextual.
+  Argumentaţi alegerile: de ce acele linkuri, de ce acel mesaj?
+  </p>
+</details>
+
+    </section>
+    
+    
+    <section id="enterprise" class="section">
+      <h2>Cum ar arăta într-un proiect enterprise</h2>
+      
+<h3>Perspective enterprise: ce urmează logic după acest pas</h3>
+
+<div class="grid2">
+  <div class="card">
+    <h4>Imbricare (nested routes) & layout-uri</h4>
+    <p>
+    În proiecte mari, rutele sunt adesea ierarhice: un layout comun (meniu, header, breadcrumbs) randează <code>&lt;Outlet /&gt;</code>,
+    iar sub‑rutele schimbă doar „zona de conţinut”.
+    </p>
+  </div>
+  <div class="card">
+    <h4>Protecţia rutelor (auth/roles)</h4>
+    <p>
+    În mod tipic, accesul la rute se controlează printr-un wrapper (<em>RequireAuth</em>) care verifică un token şi eventual roluri.
+    NotFound-ul şi redirect-ul devin parte din designul securităţii UX.
+    </p>
+  </div>
+  <div class="card">
+    <h4>Code splitting</h4>
+    <p>
+    Pentru performanţă, componentele de rută pot fi încărcate lazy (dynamic import), astfel încât utilizatorul să nu descarce
+    imediat tot proiectul.
+    </p>
+  </div>
+  <div class="card">
+    <h4>Observabilitate</h4>
+    <p>
+    În enterprise se loghează navigaţia (analytics, monitoring), cu respectarea confidenţialităţii. Un model clar de rute
+    ajută la interpretarea comportamentului utilizatorilor.
+    </p>
+  </div>
+</div>
+
+    </section>
+    
+    
+    <section id="faq" class="section">
+      <h2>Probleme frecvente</h2>
+      
+<h3>Probleme frecvente şi diagnostic</h3>
+
+<details>
+  <summary>„Refresh pe /tasks îmi dă 404”</summary>
+  <p>
+  În dezvoltare, dev server-ul ştie de obicei să returneze <code>index.html</code> pentru rute necunoscute.
+  În producţie, serverul (Nginx/Apache/Express) trebuie configurat explicit (fallback).
+  </p>
+</details>
+
+<details>
+  <summary>„Link-ul merge, dar navigate(...) nu”</summary>
+  <p>
+  Verificaţi dacă <code>useNavigate</code> este apelat în interiorul unui component aflat sub <code>&lt;BrowserRouter&gt;</code>.
+  Dacă scoateţi Routerul din <code>App</code>, hook-ul nu va avea context.
+  </p>
+</details>
+
+<details>
+  <summary>„useParams() îmi întoarce undefined”</summary>
+  <p>
+  Este normal dacă sunteţi pe ruta fără parametru (ex.: <code>/tasks</code>). Verificaţi şi declaraţia rutei:
+  trebuie să existe <code>:id</code> în path, iar URL-ul să conţină o valoare.
+  </p>
+</details>
+
+    </section>
+    
+  </main>
+</div>
+
+<script>
+  // copy-to-clipboard for code blocks
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.copy-btn');
+    if (!btn) return;
+    const id = btn.getAttribute('data-target');
+    const el = document.getElementById(id);
+    if (!el) return;
+    const text = el.innerText;
+    try {
+      await navigator.clipboard.writeText(text);
+      const old = btn.innerText;
+      btn.innerText = 'Copied ✓';
+      setTimeout(() => btn.innerText = old, 1200);
+    } catch (err) {
+      alert('Clipboard not available. Select the code and copy manually.');
+    }
+  });
+
+  // simple nav search: filters anchor list by text
+  const search = document.getElementById('navSearch');
+  const list = document.getElementById('navList');
+  const items = Array.from(list.querySelectorAll('li'));
+  search.addEventListener('input', () => {
+    const q = search.value.trim().toLowerCase();
+    items.forEach(li => {
+      const a = li.querySelector('a');
+      const t = (a?.innerText || '').toLowerCase();
+      li.style.display = (!q || t.includes(q)) ? '' : 'none';
+    });
+  });
+</script>
+</body>
+</html>

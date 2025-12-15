@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ghid Postman – Notes API (S12)</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <a class="back" href="/">← Înapoi la Dashboard</a>
+
+      <h1>Postman: testare &amp; demonstraţie pentru <span class="muted">[s12-notes-api]</span></h1>
+      <p class="muted">
+        În Step 4 trecem de la un flux <em>sincron</em> (acţiuni locale) la un flux <em>asincron</em> (request-uri către server).
+        Ca să înţelegem clar „cine vorbeşte cu cine”, folosim Postman ca instrument de laborator: izolăm API-ul, îl stimulăm controlat,
+        observăm răspunsurile şi apoi revenim în UI ca să vedem acelaşi fenomen reflectat în Redux.
+      </p>
+
+      <div class="callout warn" style="margin-top:12px;">
+        <strong>Precondiţie (foarte important):</strong> porniţi întâi <strong>Notes API (port 8080)</strong> din Dashboard.
+        Dacă API-ul nu rulează, veţi vedea erori de tip <em>Unable to connect</em> (în browser) sau <em>ECONNREFUSED</em> (în Postman).
+      </div>
+
+      <h2>1) Pornire rapidă: ce facem şi de ce</h2>
+      <ul>
+        <li><strong>Acum vedem că</strong> UI-ul din Step 4 se bazează pe endpoint-urile: <code>GET /health</code>, <code>GET /notes</code>, <code>POST /notes</code>, <code>DELETE /notes/:id</code>.</li>
+        <li><strong>Sa încercăm să</strong> confirmăm că serverul există şi răspunde (<code>/health</code>), apoi să inspectăm datele (<code>/notes</code>).</li>
+        <li><strong>Aţi putea extinde</strong> acest setup cu autentificare, rate limiting, validări stricte, paginare etc.; noi păstrăm intenţionat un API minimalist,
+          astfel încât să se vadă limpede rolul middleware-ului asincron în Redux.</li>
+      </ul>
+
+      <h2>2) Setup Postman (Windows 11) – Workspace, Collection, Environment</h2>
+      <div class="grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="card">
+          <h3>2.1 Workspace + Collection</h3>
+          <ol>
+            <li>Deschideţi Postman.</li>
+            <li><strong>Workspace</strong> → <em>New</em> → <em>Workspace</em> → nume: <code>S12 – Redux – Notes API</code>.</li>
+            <li><strong>Collections</strong> → <em>New Collection</em> → nume: <code>S12 Notes API</code>.</li>
+            <li>În colecţie creaţi două <strong>foldere</strong> (opţional, dar didactic util): <code>Health</code> şi <code>Notes</code>.</li>
+          </ol>
+          <p class="muted">Ordinea şi denumirile nu sunt obligatorii; ideea este să aveţi o structură repetabilă, uşor de navigat în timpul predării.</p>
+        </div>
+        <div class="card">
+          <h3>2.2 Environment: <code>baseUrl</code></h3>
+          <ol>
+            <li><strong>Environments</strong> → <em>New</em> → nume: <code>S12 Local</code>.</li>
+            <li>Adăugaţi o variabilă: <code>baseUrl</code> = <code>http://127.0.0.1:8080</code></li>
+            <li>Salvaţi şi <strong>selectaţi</strong> environment-ul (dreapta sus, drop-down).</li>
+          </ol>
+          <div class="callout ok" style="margin-top:10px;">
+            Recomandarea <code>127.0.0.1</code> (în loc de <code>localhost</code>) reduce confuzii legate de IPv6/IPv4 pe unele configuraţii.
+          </div>
+        </div>
+      </div>
+
+      <h2>3) Endpoint-uri – cereri Postman (pas cu pas)</h2>
+
+      <h3>3.1 <code>GET {{baseUrl}}/health</code> (sanity check)</h3>
+      <div class="card">
+        <ol>
+          <li>În folderul <code>Health</code>: <em>Add request</em> → nume: <code>GET /health</code>.</li>
+          <li>Method: <strong>GET</strong></li>
+          <li>URL: <code>{{baseUrl}}/health</code></li>
+          <li><strong>Send</strong></li>
+        </ol>
+        <p><strong>Ce ar trebui să vedem:</strong> un JSON simplu cu <code>ok: true</code> şi câteva metadate (port, service, count).</p>
+        <pre><code>{
+  "ok": true,
+  "service": "s12-notes-api",
+  "port": 8080,
+  "count": 3
+}</code></pre>
+        <p class="muted">Dacă aici nu aveţi răspuns, nu are sens să mergeţi mai departe: porniţi API-ul (Dashboard → Notes API → Start).</p>
+      </div>
+
+      <h3>3.2 <code>GET {{baseUrl}}/notes</code> (citire listă)</h3>
+      <div class="card">
+        <ol>
+          <li>În folderul <code>Notes</code>: <em>Add request</em> → nume: <code>GET /notes</code>.</li>
+          <li>Method: <strong>GET</strong></li>
+          <li>URL: <code>{{baseUrl}}/notes</code></li>
+          <li><strong>Send</strong></li>
+        </ol>
+        <p><strong>Ce vedem:</strong> un array de note. Fiecare element are <code>id</code> şi <code>content</code>.</p>
+        <pre><code>[
+  { "id": "n1", "content": "First note (server)" },
+  { "id": "n2", "content": "Second note (server)" }
+]</code></pre>
+
+        <div class="callout" style="margin-top:10px;">
+          <strong>Observaţie didactică:</strong> în Step 4, exact această listă este încărcată în Redux printr-o acţiune asincronă.
+          În UI, „Reload” ar trebui să reproducă semantic acest <code>GET /notes</code>.
+        </div>
+      </div>
+
+      <h3>3.3 <code>POST {{baseUrl}}/notes</code> (adăugare)</h3>
+      <div class="card">
+        <ol>
+          <li>În folderul <code>Notes</code>: <em>Add request</em> → nume: <code>POST /notes</code>.</li>
+          <li>Method: <strong>POST</strong></li>
+          <li>URL: <code>{{baseUrl}}/notes</code></li>
+          <li>Tab <strong>Body</strong> → <strong>raw</strong> → <strong>JSON</strong>.</li>
+          <li>Introduceţi un payload minimal (observaţi câmpul <code>content</code>):</li>
+        </ol>
+        <pre><code>{
+  "content": "Notiţă creată din Postman (pentru Step 4)"
+}</code></pre>
+        <p><strong>Send</strong> → răspunsul serverului este (în acest kit) <em>lista completă</em> de note actualizată.</p>
+
+        <h4 style="margin-top:12px;">(Opţional) Test automat: memorăm ultimul <code>id</code></h4>
+        <p class="muted">Acum vedem că avem nevoie de un <code>id</code> când ştergem. Putem salva automat ultimul <code>id</code> într-o variabilă de environment.</p>
+        <ol>
+          <li>Tab <strong>Tests</strong> → lipiţi scriptul:</li>
+        </ol>
+        <pre><code>const notes = pm.response.json();
+if (Array.isArray(notes) &amp;&amp; notes.length &gt; 0) {
+  const last = notes[notes.length - 1];
+  pm.environment.set("noteId", last.id);
+}
+
+pm.test("POST /notes returns an array", () =&gt; {
+  pm.expect(Array.isArray(notes)).to.be.true;
+});</code></pre>
+        <p class="muted">După <em>Send</em>, veţi avea o variabilă <code>{{noteId}}</code> pregătită pentru DELETE.</p>
+      </div>
+
+      <h3>3.4 <code>DELETE {{baseUrl}}/notes/:id</code> (ştergere)</h3>
+      <div class="card">
+        <ol>
+          <li>În folderul <code>Notes</code>: <em>Add request</em> → nume: <code>DELETE /notes/:id</code>.</li>
+          <li>Method: <strong>DELETE</strong></li>
+          <li>URL: <code>{{baseUrl}}/notes/{{noteId}}</code></li>
+          <li><strong>Send</strong></li>
+        </ol>
+        <p><strong>Ce ar trebui să vedem:</strong> lista actualizată (notele rămase) – exact ca după un delete reuşit în UI.</p>
+        <div class="callout warn" style="margin-top:10px;">
+          Dacă nu aţi setat <code>{{noteId}}</code>, faceţi întâi un <code>GET /notes</code> şi copiaţi manual un <code>id</code>.
+          Alternativ, folosiţi scriptul de la POST (care setează automat ultimul <code>id</code>).
+        </div>
+      </div>
+
+      <h2>4) Legătura cu Step 4: ce observăm în UI după Postman</h2>
+      <div class="card">
+        <ol>
+          <li><strong>Sa încercăm să</strong> pornim API-ul (Dashboard → Notes API → Start) şi să verificăm în Postman <code>GET /health</code>.</li>
+          <li>În Postman: <code>POST /notes</code> (creăm o notiţă).</li>
+          <li>În Step 4 (UI, port 3004): apăsaţi <strong>Reload</strong> – ar trebui să vedeţi notiţa nouă.</li>
+          <li>Ştergeţi nota fie din UI (buton Delete), fie din Postman (DELETE). Reîncărcaţi şi observaţi convergenţa.</li>
+        </ol>
+        <p class="muted">
+          Acum vedem clar separarea responsabilităţilor: Postman testează contractul HTTP; UI-ul şi Redux doar consumă contractul.
+          În proiecte reale, această separare vă permite să debugaţi rapid: dacă API-ul răspunde corect în Postman, iar UI-ul nu, problema este în client.
+        </p>
+      </div>
+
+      <h2>5) Note de bună practică &amp; variaţiuni realiste</h2>
+      <div class="grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="card">
+          <h3>Best practices (Postman)</h3>
+          <ul>
+            <li><strong>Environment variables</strong> pentru URL-uri, token-uri, id-uri temporare (evitaţi hardcoding).</li>
+            <li><strong>Tests</strong> pentru aserţiuni minime: status code, structură JSON, câmpuri obligatorii.</li>
+            <li><strong>Collection</strong> exportabilă (JSON) – utilă pentru laborator/evaluare.</li>
+            <li>Folosiţi <strong>Postman Console</strong> când aveţi request-uri care „par” trimise, dar nu ajung (proxy/firewall).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Variaţiuni (proiect real)</h3>
+          <ul>
+            <li><strong>Autentificare</strong>: header <code>Authorization: Bearer ...</code> şi refresh token (în environment).</li>
+            <li><strong>Paginare</strong>: <code>GET /notes?page=1&amp;pageSize=20</code> + total count.</li>
+            <li><strong>Validare</strong>: serverul poate respinge payload-uri (400) → Redux trebuie să trateze <code>..._REJECTED</code>.</li>
+            <li><strong>Rate limiting</strong>: răspuns 429 → în UI: backoff / mesaj clar.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2>6) Troubleshooting (cele mai frecvente cauze)</h2>
+      <div class="card">
+        <ul>
+          <li><strong>Unable to connect</strong> (browser/Postman): API nu rulează sau portul 8080 e ocupat. Porniţi din Dashboard şi verificaţi consola API.</li>
+          <li><strong>CORS</strong>: browser-ul aplică politici CORS; Postman nu. Dacă Postman merge dar browser-ul nu, cauza e adesea CORS/headers.</li>
+          <li><strong>URL greşit</strong>: folosiţi <code>{{baseUrl}}</code>. Dacă schimbaţi portul, schimbaţi o singură variabilă, nu 10 request-uri.</li>
+        </ul>
+      </div>
+
+      <hr class="sep" />
+      <p class="muted">Sugestie de predare: păstraţi Postman deschis lângă UI (split screen) şi alternaţi „cerere brută” ↔ „efect în Redux”.</p>
+    </div>
+  </body>
+</html>

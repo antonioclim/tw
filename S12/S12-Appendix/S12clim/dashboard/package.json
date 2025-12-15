@@ -1,0 +1,14 @@
+{
+  "name": "s12-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dashboard for Seminar 12 (Redux) \u2013 starts and links to step-by-step React projects.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "tree-kill": "^1.2.2"
+  }
+}

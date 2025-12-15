@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Seminar 12 – Step 2: useReducer</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="container prose">
+      <div class="header">
+        <h1>Step 2 – useReducer</h1>
+        <p class="muted">
+          În acest pas păstrăm routing-ul (din Step 1), dar schimbăm „centrul de greutate” către
+          <b>modelarea tranziţiilor de stare</b>: în loc de <code>useState</code> pentru multe bucăţi mici,
+          folosim <code>useReducer</code> pentru o stare compusă + reguli explicite de actualizare.
+        </p>
+        <div class="actions">
+          <a class="btn" href="/">← Înapoi la Dashboard</a>
+          <a class="btn" href="http://localhost:3002" target="_blank" rel="noreferrer">Deschide aplicaţia (port 3002)</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="grid2">
+          <div class="callout tip">
+            <h3>Ce urmărim (rezultate observabile)</h3>
+            <ul>
+              <li>O stare „mai grea” (counter + istoric) administrată unitar.</li>
+              <li>Acţiuni explicite: <code>INCREMENT</code>, <code>DECREMENT</code>, <code>RESET</code>.</li>
+              <li>Un reducer pur: <code>(state, action) → newState</code> (fără efecte secundare).</li>
+            </ul>
+          </div>
+          <div class="callout warn">
+            <h3>Observaţie didactică</h3>
+            <p>
+              În proiecte reale, <code>useReducer</code> este o alternativă solidă la Redux pentru
+              <i>stare locală</i> (într-un subarbore). Totuşi, dacă multe componente neînrudite au nevoie de aceeaşi stare,
+              apar rapid motivele pentru un <i>store global</i> (Step 3).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card toc">
+        <h3>Cuprins</h3>
+        <ul>
+          <li><a href="#concepte">Concepte cheie</a></li>
+          <li><a href="#cum-functioneaza">Cum funcţionează <code>useReducer</code></a></li>
+          <li><a href="#cod">Ce scriem (şi de ce)</a></li>
+          <li><a href="#incercam">Să încercăm</a></li>
+          <li><a href="#capcane">Capcane frecvente</a></li>
+          <li><a href="#variatii">Variaţii realiste + bune practici</a></li>
+        </ul>
+      </div>
+
+      <div class="card" id="concepte">
+        <h2>Concepte cheie</h2>
+        <ul>
+          <li>
+            <b>Reducer</b>: funcţie pură care descrie cum se transformă starea în urma unei acţiuni.
+            Ideal, este deterministă: aceeaşi intrare → aceeaşi ieşire.
+          </li>
+          <li>
+            <b>Action</b>: un obiect care descrie <i>intenţia</i> (nu implementarea). În practică, are un
+            <code>type</code> şi, uneori, un <code>payload</code>.
+          </li>
+          <li>
+            <b>Dispatch</b>: „declanşatorul” tranziţiei. În acest pas, este un <code>dispatch</code> local
+            (doar în componenta curentă), nu cel global din Redux.
+          </li>
+          <li>
+            <b>Imutabilitate</b>: nu „modificăm” starea, ci construim una nouă (cu referinţe noi), astfel încât React să poată
+            detecta actualizarea şi să re-randeze corect.
+          </li>
+        </ul>
+      </div>
+
+      <div class="card" id="cum-functioneaza">
+        <h2>Cum funcţionează <code>useReducer</code></h2>
+        <p>
+          Este util să privim această piesă ca pe o <b>maşină de stări</b>: avem o stare curentă,
+          iar utilizatorul (sau alte evenimente) emit acţiuni. Reducerul este „tabelul de tranziţii”.
+        </p>
+        <ol>
+          <li><code>const [state, dispatch] = useReducer(reducer, initState)</code></li>
+          <li>UI-ul citeşte <code>state</code> şi randează.</li>
+          <li>La un click, apelăm <code>dispatch({ type: 'INCREMENT' })</code>.</li>
+          <li>React cheamă <code>reducer(state, action)</code> şi obţine <code>newState</code>.</li>
+          <li>UI-ul se re-randează cu noua stare.</li>
+        </ol>
+        <div class="callout best">
+          <h3>De ce este aceasta o idee „bună”?</h3>
+          <ul>
+            <li>Centralizează logica de actualizare (nu o împrăştie în 5 <code>setState</code>-uri).</li>
+            <li>Face intenţiile vizibile: acţiunile sunt o listă finită şi controlabilă.</li>
+            <li>Ajută la testare: reducerul poate fi testat ca funcţie pură (fără DOM).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="cod">
+        <h2>Ce scriem (şi de ce)</h2>
+        <p>
+          Punctul esenţial este componenta <code>Tasks</code>, unde definim o stare compusă şi un reducer.
+          Observaţi cum „istoricul” nu este „magie”, ci doar o proprietate în stare.
+        </p>
+
+        <h3>Snippet (din <code>steps/step2_useReducer/src/components/Tasks.jsx</code>)</h3>
+        <pre><code>import { useMemo, useReducer, useState } from 'react'
+
+const initState = {
+  counter: 0,
+  history: []
+}
+
+const reducer = (state, action) =&gt; {
+  switch(action.type){
+    case 'INCREMENT':
+      return {
+        ...state,
+        counter: state.counter + action.payload,
+        history: [...state.history, { type: 'INCREMENT', payload: action.payload }]
+      }
+    case 'DECREMENT':
+      return {
+        ...state,
+        counter: state.counter - action.payload,
+        history: [...state.history, { type: 'DECREMENT', payload: action.payload }]
+      }
+    case 'RESET':
+      return initState
+    default:
+      return state
+  }
+}
+
+function Tasks(){
+  const [state, dispatch] = useReducer(reducer, initState)
+  const [value, setValue] = useState(1)
+
+  const pretty = useMemo(() =&gt; JSON.stringify(state, null, 2), [state])
+
+  return (
+    &lt;div className="wrap"&gt;
+      &lt;h2&gt;Tasks – useReducer demo&lt;/h2&gt;
+
+      &lt;div className="row"&gt;
+        &lt;label&gt;Value:&lt;/label&gt;
+        &lt;input type="number" value={value} onChange={(e) =&gt; setValue(parseInt(e.target.value || '0', 10))} /&gt;
+      &lt;/div&gt;
+
+      &lt;div className="row"&gt;
+        &lt;button onClick={() =&gt; dispatch({ type: 'INCREMENT', payload: value })}&gt;+&lt;/button&gt;
+        &lt;button onClick={() =&gt; dispatch({ type: 'DECREMENT', payload: value })}&gt;-&lt;/button&gt;
+        &lt;button onClick={() =&gt; dispatch({ type: 'RESET' })}&gt;Reset&lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;p&gt;&lt;b&gt;Counter:&lt;/b&gt; {state.counter}&lt;/p&gt;
+      &lt;pre&gt;{pretty}&lt;/pre&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default Tasks</code></pre>
+
+        <details>
+          <summary>Comentariu ghidat (de urmărit la tablă)</summary>
+          <ul>
+            <li>
+              <b>Init state</b> descrie forma stării. Într-un proiect real, îl ţinem într-un fişier separat,
+              împreună cu acţiunile permise (mai ales dacă avem TypeScript).
+            </li>
+            <li>
+              Reducerul este <b>pur</b>: nu apelează API, nu scrie în <code>localStorage</code>, nu generează ID-uri
+              aleator (acestea sunt efecte secundare). El doar calculează o structură nouă.
+            </li>
+            <li>
+              Pentru istoric folosim <code>history: [...state.history, ...]</code> — o formă tipică de actualizare imutabilă
+              pentru array-uri.
+            </li>
+            <li>
+              <code>useMemo</code> este folosit aici strict „vizual”: să nu recomputăm string-ul formatat la fiecare render
+              dacă starea nu s-a schimbat. În mod normal, nu este obligatoriu.
+            </li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>O variaţie realistă: evitarea „aliasării” la RESET</summary>
+          <p>
+            Observaţi că <code>return initState</code> întoarce exact aceeaşi referinţă obiect. De cele mai multe ori
+            este suficient, dar dacă aţi extinde reducerul cu obiecte imbricate (şi aţi muta <code>initState</code>
+            într-un fişier partajat), e mai robust să întoarceţi o clonă:
+          </p>
+          <pre><code>case 'RESET':
+  return { ...initState, history: [] } // sau o funcţie createInitialState()</code></pre>
+        </details>
+      </div>
+
+      <div class="card" id="incercam">
+        <h2>Să încercăm</h2>
+        <ol>
+          <li>Porniţi Step 2 şi deschideţi aplicaţia pe <code>http://localhost:3002</code>.</li>
+          <li>Introduceţi <code>value = 3</code> şi apăsaţi <b>+</b> de două ori. Observaţi: counter şi istoricul acţiunilor.</li>
+          <li>Apăsaţi <b>Reset</b>. Observaţi cum revine starea la forma iniţială.</li>
+          <li>
+            Încercaţi un input invalid (goliţi câmpul). Observaţi cum parsarea simplă
+            <code>parseInt(e.target.value || '0')</code> previne <code>NaN</code>.
+          </li>
+        </ol>
+        <div class="callout exercise">
+          <h3>Mini-exerciţiu (5–7 minute)</h3>
+          <p>
+            Adăugaţi o acţiune <code>UNDO</code> care elimină ultima intrare din <code>history</code> şi reface counter-ul.
+            Veţi observa rapid că începe să arate ca o problemă „de produs”, nu doar de UI: cum definiţi regulile de undo?
+          </p>
+        </div>
+      </div>
+
+      <div class="card" id="capcane">
+        <h2>Capcane frecvente</h2>
+        <ul>
+          <li><b>Mutarea stării</b>: <code>state.counter++</code> în reducer. Nu: trebuie să construim un obiect nou.</li>
+          <li>
+            <b>Reducer „impur”</b>: fetch în reducer, acces la <code>Date.now()</code>, scrieri în storage. Acestea se tratează în afara reducerului.
+          </li>
+          <li>
+            <b>State prea mare într-un singur reducer</b>: dacă începe să devină greu de citit, împărţiţi în reduceri mai mici
+            (sau treceţi la o arhitectură de tip store/slices – Step 3).
+          </li>
+        </ul>
+      </div>
+
+      <div class="card" id="variatii">
+        <h2>Variaţii realiste + bune practici</h2>
+        <div class="grid2">
+          <div class="callout best">
+            <h3>useReducer + Context</h3>
+            <p>
+              Când mai multe componente dintr-un subarbore au nevoie de aceeaşi stare, un pas intermediar natural este
+              <b>Context + useReducer</b>. E util când „domeniul” stării este local (de ex. un wizard, un editor, un modul).
+            </p>
+          </div>
+          <div class="callout best">
+            <h3>Acţiuni tipizate (mai ales în TypeScript)</h3>
+            <p>
+              În proiecte reale, tipizarea acţiunilor vă protejează de greşeli subtile (type greşit, payload lipsă).
+              În JS pur, cel puţin definiţi string-urile ca constante.
+            </p>
+          </div>
+        </div>
+        <details>
+          <summary>Întrebare de reflecţie: când nu ai vrea useReducer?</summary>
+          <ul>
+            <li>Când starea este simplă (1–2 valori), <code>useState</code> e mai direct.</li>
+            <li>Când starea trebuie partajată global şi sincronizată cu serverul, un store dedicat poate fi mai potrivit.</li>
+            <li>Când aveţi nevoie de caching, invalidare, deduplicare request-uri – intrăm în zona RTK Query / TanStack Query.</li>
+          </ul>
+        </details>
+      </div>
+
+      <div class="footer">Seminar 12 – Redux · Step 2 (useReducer)</div>
+    </div>
+  </body>
+</html>

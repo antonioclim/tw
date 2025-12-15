@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Seminar 12 – Step 4: Redux (async) + API</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="container prose">
+      <div class="header">
+        <h1>Step 4 – Redux (async) + Notes API</h1>
+        <p>
+          În acest pas, păstrăm <strong>structura clasică Redux</strong>, dar mutăm operaţii precum
+          <strong>încărcarea listei</strong> şi <strong>ştergerea</strong> pe un traseu asincron.
+          Practic, începem să vedem (în mod controlat) ce înseamnă o aplicaţie cu <em>UI</em> + <em>store</em> + <em>server</em>.
+        </p>
+        <div class="row">
+          <a class="btn" href="/">← Dashboard</a>
+          <a class="btn" href="http://localhost:3004" target="_blank" rel="noreferrer">Open Step 4 (port 3004)</a>
+        </div>
+      </div>
+
+      <div class="card toc">
+        <h3>Cuprins</h3>
+        <ul>
+          <li><a href="#rezultat">Rezultatul observabil</a></li>
+          <li><a href="#concept">Concepte cheie</a></li>
+          <li><a href="#lan">Lanţul asincron (de la click la UI)</a></li>
+          <li><a href="#api">Notes API: ce este, de ce există, cum îl verificăm</a></li>
+          <li><a href="#cod">Ce scriem (şi cum citim codul)</a></li>
+          <li><a href="#teste">Să încercăm (scenarii de test)</a></li>
+          <li><a href="#pitfalls">Atenţionări şi „capcane”</a></li>
+          <li><a href="#real">Cum ar arăta într-un proiect real (variaţii)</a></li>
+        </ul>
+      </div>
+
+      <div class="card" id="rezultat">
+        <h2>Rezultatul observabil</h2>
+        <p>
+          Când Step 4 rulează corect, <strong>UI-ul afişează</strong>:
+        </p>
+        <ul>
+          <li>o listă de note încărcate din API (<code>GET /notes</code>),</li>
+          <li>un indicator de <em>loading</em> în timpul cererilor (stări <code>..._PENDING</code>),</li>
+          <li>mesaje de eroare în caz de reţea / server (<code>..._REJECTED</code>),</li>
+          <li>ştergerea unei note prin request (<code>DELETE /notes/:id</code>) şi reîncărcarea listei.</li>
+        </ul>
+
+        <div class="grid2">
+          <div class="callout tip">
+            <strong>Observaţie didactică:</strong> e intenţionat ca Step 4 să „cadă” frumos atunci când API-ul nu e pornit.
+            Vrem să vedeţi foarte clar diferenţa dintre <em>probleme de UI</em> şi <em>probleme de infrastructură</em>.
+          </div>
+          <div class="callout warn">
+            Dacă butoanele <code>API /health</code> şi <code>API /notes</code> nu răspund, primul lucru pe care îl verificăm este
+            dacă <strong>Notes API</strong> rulează pe portul <strong>8080</strong> (din Dashboard: „Notes API (for Step 4)”).
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="concept">
+        <h2>Concepte cheie (de fixat mental)</h2>
+        <ul>
+          <li><strong>Reducerul rămâne pur</strong>: nu face <code>fetch</code>, nu „aşteaptă” promisiuni, nu are efecte secundare.</li>
+          <li><strong>Acţiunea asincronă</strong> este un „mesager”: întoarce o <code>Promise</code> (sau declanşează una) şi lasă middleware-ul să orchestreze.</li>
+          <li><strong>Middleware</strong> = strat intermediar care „interceptează” acţiuni şi poate emite acţiuni suplimentare.</li>
+          <li><strong>Stări standardizate</strong> pentru asincron: <code>PENDING</code> (în lucru), <code>FULFILLED</code> (succes), <code>REJECTED</code> (eşec).</li>
+          <li><strong>Contract API</strong>: o convenţie stabilă a endpoint-urilor şi a formatelor JSON (altfel UI-ul nu ştie ce să facă).</li>
+        </ul>
+      </div>
+
+      <div class="card" id="lan">
+        <h2>Lanţul asincron: de la click la UI</h2>
+        <p>
+          Să urmărim un scenariu tipic: apăsăm <kbd>Delete</kbd> pe o notă.
+        </p>
+        <ol>
+          <li>UI face <code>dispatch(deleteNote(id))</code>.</li>
+          <li><code>deleteNote</code> întoarce o <strong>promisiune</strong> (rezultatul unui <code>fetch</code>).</li>
+          <li>Middleware-ul <code>redux-promise-middleware</code> vede promisiunea şi emite automat: <code>DELETE_NOTE_PENDING</code>.</li>
+          <li>Reducerul trece în <em>fetching=true</em>. UI afişează „loading…”.</li>
+          <li>Dacă requestul reuşeşte, middleware emite <code>DELETE_NOTE_FULFILLED</code> (payload = răspuns). Dacă eşuează, emite <code>DELETE_NOTE_REJECTED</code> (payload = eroare).</li>
+          <li>Reducerul actualizează starea: listă nouă / eroare. UI se rerandează.</li>
+        </ol>
+
+        <div class="callout best">
+          <strong>De reţinut:</strong> UI nu „aşteaptă” promisiunea. UI doar descrie <em>intenţia</em> (action), iar store-ul descrie <em>starea curentă</em>.
+          Această separare vă ajută enorm când apar erori, latenţe şi concurenţă.
+        </div>
+      </div>
+
+      <div class="card" id="api">
+        <h2>Notes API: ce este, de ce există, cum îl verificăm</h2>
+        <p>
+          Notes API este un server minimal (Express) pornit separat, special pentru seminar.
+          Rolul lui este să vă ofere <strong>un backend controlat</strong> pe care să-l puteţi porni/opri din Dashboard.
+        </p>
+
+        <div class="grid2">
+          <div>
+            <h3>Endpoint-uri</h3>
+            <ul>
+              <li><code>GET /health</code> – verificare rapidă: „serverul e sus?”</li>
+              <li><code>GET /notes</code> – lista curentă de note</li>
+              <li><code>POST /notes</code> – adaugă o notă</li>
+              <li><code>DELETE /notes/:id</code> – şterge o notă</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Cum verificăm (în practică)</h3>
+            <ol>
+              <li>Din Dashboard porniţi „Notes API (for Step 4)” (port 8080).</li>
+              <li>Deschideţi <code>http://localhost:8080/health</code> într-un tab şi observaţi JSON-ul.</li>
+              <li>Deschideţi <code>http://localhost:8080/notes</code> şi observaţi lista (JSON).</li>
+	              <li>
+	                Pentru o demonstraţie mai „aplicată” (cu request-uri salvate, variabile, teste automate şi scenarii),
+	                folosiţi <a href="/postman.html" target="_blank">Ghidul Postman</a>.
+	              </li>
+            </ol>
+          </div>
+        </div>
+
+        <details>
+          <summary><strong>De ce UI foloseşte uneori 127.0.0.1 în loc de localhost?</strong></summary>
+          <p>
+            În unele configuraţii de Windows / browser, <code>localhost</code> poate rezolva IPv6 (<code>::1</code>), iar serverul ascultă doar pe IPv4.
+            Pentru a evita discuţii sterile în seminar, folosim explicit <code>http://127.0.0.1:8080</code> în codul de UI.
+            Într-un proiect real, veţi controla asta prin configurări consistente (şi eventual prin variabile de mediu).
+          </p>
+        </details>
+      </div>
+
+      <div class="card" id="cod">
+        <h2>Ce scriem (şi cum citim codul)</h2>
+        <p>
+          Următoarele fragmente sunt suficient de reprezentative ca să „vedeţi” arhitectura.
+          Sfat: nu le citiţi ca text, ci ca <strong>grafic de dependenţe</strong>: UI → Actions → Middleware → Reducer → Store → UI.
+        </p>
+
+        <h3>1) Actions: promisiuni pe bază de fetch</h3>
+        <div class="code-title">steps/step4_redux_async/src/actions/actions.js</div>
+        <pre><code>import {
+  GET_NOTES,
+  ADD_NOTE,
+  DELETE_NOTE
+} from '../constants/constants'
+
+const API = 'http://127.0.0.1:8080'
+
+// Promisiunea este payload-ul: middleware-ul va emite automat *_PENDING / *_FULFILLED / *_REJECTED
+export function getNotes() {
+  return {
+    type: GET_NOTES,
+    payload: fetch(`${API}/notes`).then(r =&gt; r.json())
+  }
+}
+
+export function addNote(note) {
+  return {
+    type: ADD_NOTE,
+    payload: fetch(`${API}/notes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ note })
+    }).then(r =&gt; r.json())
+  }
+}
+
+export function deleteNote(id) {
+  return {
+    type: DELETE_NOTE,
+    payload: fetch(`${API}/notes/${id}`, { method: 'DELETE' }).then(r =&gt; r.json())
+  }
+}
+</code></pre>
+
+        <div class="callout tip">
+          <strong>Acum vedem că…</strong> fiecare acţiune întoarce <em>acelaşi tipar</em>: <code>{ type, payload: Promise }</code>.
+          Tocmai această regularitate face ca reducerul să fie simplu, iar UI-ul să afişeze coerent stări de încărcare şi erori.
+        </div>
+
+        <details>
+          <summary><strong>Variaţie realistă: separarea stratului de „API client”</strong></summary>
+          <p>
+            Într-un proiect real, de multe ori nu vrem ca <code>fetch</code> să fie împrăştiat în actions.
+            Aţi putea avea un modul <code>api/notesClient.js</code> (cu funcţii <code>getNotes</code>, <code>addNote</code>, <code>deleteNote</code>)
+            şi actions să folosească acel client.
+            Câştigul: testare mai uşoară, retry/caching centralizat, şi o cale naturală spre <em>mocking</em>.
+          </p>
+        </details>
+
+        <h3>2) Store: middleware pentru promisiuni</h3>
+        <div class="code-title">steps/step4_redux_async/src/stores/store.js</div>
+        <pre><code>import { createStore, applyMiddleware } from 'redux'
+import reducer from '../reducers'
+import promise from 'redux-promise-middleware'
+
+export default createStore(reducer, applyMiddleware(promise))
+</code></pre>
+
+        <div class="callout warn">
+          <strong>Atenţie:</strong> middleware-ul este „un contract”. Dacă payload-ul nu e promisiune (sau nu e configurat corect),
+          nu mai primiţi automat sufixele <code>_PENDING/_FULFILLED/_REJECTED</code>.
+        </div>
+
+        <h3>3) Reducer: stări asincrone standardizate</h3>
+        <div class="code-title">steps/step4_redux_async/src/reducers/list-reducer.js</div>
+        <pre><code>const INITIAL_STATE = {
+  notes: [],
+  error: {},
+  fetching: false,
+  fetched: false
+}
+
+export default function reducer(state = INITIAL_STATE, action) {
+  switch (action.type) {
+    case 'GET_NOTES_PENDING':
+    case 'ADD_NOTE_PENDING':
+    case 'DELETE_NOTE_PENDING':
+      return { ...state, fetching: true, fetched: false, error: {} }
+
+    case 'GET_NOTES_FULFILLED':
+    case 'ADD_NOTE_FULFILLED':
+    case 'DELETE_NOTE_FULFILLED':
+      return { ...state, notes: action.payload, fetching: false, fetched: true, error: {} }
+
+    case 'GET_NOTES_REJECTED':
+    case 'ADD_NOTE_REJECTED':
+    case 'DELETE_NOTE_REJECTED':
+      return { ...state, fetching: false, fetched: true, error: action.payload }
+
+    default:
+      return state
+  }
+}
+</code></pre>
+
+        <details>
+          <summary><strong>Ce am câştiga dacă am separa „fetched” de „error” mai riguros?</strong></summary>
+          <p>
+            În aplicaţii reale, adesea distingem între:
+            (a) <em>load iniţial</em>, (b) <em>refresh</em>, (c) <em>operaţii mutate (delete/update)</em>, (d) <em>erori recuperabile</em>.
+            Un singur boolean <code>fetching</code> e suficient pentru seminar, dar în practică veţi vedea stări mai nuanţate.
+          </p>
+        </details>
+      </div>
+
+      <div class="card" id="teste">
+        <h2>Să încercăm (scenarii de test)</h2>
+        <ol>
+          <li>
+            <strong>Scenariul A (succes complet):</strong>
+            porniţi Notes API din Dashboard → deschideţi Step 4 → apăsaţi <kbd>Reload</kbd> → adăugaţi o notă → ştergeţi o notă.
+          </li>
+          <li>
+            <strong>Scenariul B (cădere controlată):</strong>
+            opriţi Notes API → în Step 4 apăsaţi <kbd>Reload</kbd>.
+            Acum vedem mesajul de eroare şi (în Redux slice) o stare <code>..._REJECTED</code>.
+          </li>
+          <li>
+            <strong>Scenariul C (observăm reducerul):</strong>
+            în Step 4 urmăriţi panoul „Redux slice” şi identificaţi momentul în care <code>fetching</code> devine <code>true</code> şi apoi revine.
+          </li>
+        </ol>
+
+        <div class="callout exercise">
+          <strong>Exerciţiu scurt:</strong> modificaţi UI-ul astfel încât butonul „Reload” să fie dezactivat în timpul <code>fetching=true</code>.
+          Într-un proiect real, astfel de mici detalii sunt esenţiale pentru a evita „dublu click” şi request-uri concurente.
+        </div>
+      </div>
+
+      <div class="card" id="pitfalls">
+        <h2>Atenţionări şi „capcane”</h2>
+        <ul>
+          <li>
+            <strong>CORS:</strong> dacă rulaţi UI pe 3004 şi API pe 8080, browserul tratează asta ca origini diferite.
+            În kit, API permite CORS pentru simplitate.
+          </li>
+          <li>
+            <strong>Resurse inaccesibile:</strong> „Unable to connect” înseamnă, de regulă, API neporniţ.
+            Nu este o „eroare React”; este un fapt de infrastructură.
+          </li>
+          <li>
+            <strong>Erori silenţioase:</strong> dacă uitaţi <code>.then(r =&gt; r.json())</code>, payload-ul devine un <code>Response</code> şi reducerul nu mai primeşte datele aşteptate.
+          </li>
+          <li>
+            <strong>Reîncărcare listă după delete:</strong> în kit, API întoarce lista după operaţii. În practică puteţi face şi <em>optimistic update</em> (şi rollback la eşec).</li>
+        </ul>
+      </div>
+
+      <div class="card" id="real">
+        <h2>Cum ar arăta într-un proiect real (variaţii)</h2>
+        <p>
+          Dacă păstraţi principiile, tehnica exactă poate varia.
+          În practică, veţi întâlni frecvent următoarele direcţii:
+        </p>
+
+        <ul>
+          <li>
+            <strong>Redux Toolkit + createAsyncThunk:</strong> reduce masiv boilerplate-ul şi standardizează acţiunile async.
+            (În seminar, păstrăm abordarea clasică pentru a face vizibile mecanismele.)
+          </li>
+          <li>
+            <strong>RTK Query / react-query:</strong> pentru „data fetching”, caching, invalidări, refetch, retry.
+            Dacă aplicaţia voastră este dominată de request-uri, aceste unelte sunt de obicei mai potrivite decât scrierea manuală a middleware-ului.
+          </li>
+          <li>
+            <strong>Observabilitate:</strong> logging structurat (request-id), măsurarea latenţelor, şi tratarea erorilor într-un mod „user-friendly”.
+          </li>
+          <li>
+            <strong>Concurenţă şi anulare:</strong> dacă utilizatorul schimbă pagina rapid, request-urile vechi pot ajunge după cele noi.
+            Într-un proiect real, introduceţi <code>AbortController</code> şi comparaţi un <em>token</em> de request ca să nu afişaţi date stale.
+          </li>
+        </ul>
+
+        <div class="callout best">
+          <strong>Idee de temă (realistă):</strong> adăugaţi un câmp „tag” la notiţe şi implementaţi filtrare pe server.
+          Observaţi cum se schimbă contractul API, reducerul şi UI-ul.
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>
+          Tip didactic: dacă doriţi să demonstraţi clar <em>pending/fulfilled/rejected</em>, porniţi Step 4, apoi porniţi/opriţi Notes API din Dashboard
+          şi urmăriţi schimbările în „Redux slice”.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

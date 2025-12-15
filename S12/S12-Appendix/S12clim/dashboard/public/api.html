@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Notes API – server local (Express) pentru Step 4</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html">← Înapoi la dashboard</a>
+      <h1 style="margin-top:10px;">Notes API – server local (Express) pentru Step 4</h1>
+      <p>Un server minimal, local, pentru demonstrarea request-urilor (GET/POST/PUT/DELETE) şi a fluxului Redux async.</p>
+      
+        <div class="row" style="margin: 14px 0 6px;">
+          <button class="primary" onclick="fetch('/api/start/api', {method:'POST'}).then(()=>location.reload())">Start</button>
+          <button class="danger" onclick="fetch('/api/stop/api', {method:'POST'}).then(()=>location.reload())">Stop</button>
+          <button onclick="window.open('http://127.0.0.1:8080', '_blank')">Open</button>
+        </div>
+        
+      
+    </header>
+
+    <div class='notice'><b>Teste rapide:</b> 
+    <ul>
+      <li><code>GET http://127.0.0.1:8080/notes</code></li>
+      <li><code>GET http://127.0.0.1:8080/health</code></li>
+      <li><code>DELETE http://127.0.0.1:8080/notes/1</code></li>
+    </ul></div>
+
+	<div class='notice'>
+	  <b>Ghid Postman (recomandat pentru predare):</b>
+	  <div style="margin-top:6px;">
+	    Pentru o demonstraţie „ca în practică”, construim o colecţie Postman, un environment cu <code>{{baseUrl}}</code>,
+	    apoi testăm sistematic endpoint-urile (<code>GET /health</code>, <code>GET /notes</code>, <code>POST /notes</code>, <code>DELETE /notes/:id</code>)
+	    şi corelăm rezultatele cu Step 4 (UI + Redux async).
+	  </div>
+	  <div style="margin-top:8px;">
+	    <a href="/postman.html" target="_blank">Deschide ghidul Postman</a>
+	  </div>
+	</div>
+
+    <div class="card">
+      <h2>Obiective didactice</h2>
+      <ul><li>Să avem un backend minimal, controlat, uşor de înţeles (fără bază de date).</li><li>Să oferim endpoint-uri REST pentru note: <code>GET /notes</code>, <code>DELETE /notes/:id</code> (şi opţional POST/PUT).</li><li>Să putem demonstra efectele în UI (Step 4) atunci când datele se schimbă pe server.</li></ul>
+
+      <h2>Ce scriem / ce modificăm</h2>
+      <ol><li>Instalăm dependenţe: <code>express</code> şi <code>cors</code>.</li><li>Definim un array in-memory de note, cu un <code>id</code> numeric stabil.</li><li>Implementăm endpoint-urile şi întoarcem mereu lista completă pentru simplitate didactică.</li><li>Pornim server-ul pe portul <code>8080</code> (configurabil prin <code>PORT</code>).</li></ol>
+
+      <h2>Ce exemplificăm şi de ce</h2>
+      <ul><li>Eliminăm variabilele „externe” (bază de date, autentificare), pentru a focusa pe async în Redux.</li><li>CORS este necesar pentru a permite request-uri din aplicaţia React (alt port).</li><li>Întoarcerea listei complete după delete simplifică reducer-ul (înlocuim tot <code>notes</code>).</li></ul>
+
+      <h2>Fişiere cheie</h2>
+      <ul><li><code>servers/notes-api/index.js</code></li><li><code>servers/notes-api/package.json</code></li></ul>
+    </div>
+
+    <h2 style="margin-top:18px;">Codul final (pentru pas)</h2>
+    
+    <h3>Notes API server (<code>/mnt/data/S12Redux_Dashboard_StarterKit/servers/notes-api/index.js</code>)</h3>
+    <div class="code"><pre><code>const express = require('express');
+const cors = require('cors');
+
+const PORT = process.env.PORT ? Number(process.env.PORT) : 8080;
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+/**
+ * In-memory dataset (for teaching/demo purposes).
+ * A "note" has: { id: number, content: string }
+ */
+let nextId = 1;
+let notes = [
+  { id: nextId++, content: 'Redux: store, actions, reducers' },
+  { id: nextId++, content: 'Async actions: middleware, pending/fulfilled/rejected' },
+  { id: nextId++, content: 'Immutability: never mutate state directly' }
+];
+
+app.get('/health', (req, res) =&gt; {
+  res.json({ ok: true, service: 's12-notes-api', port: PORT, count: notes.length });
+});
+
+app.get('/notes', (req, res) =&gt; {
+  res.json(notes);
+});
+
+app.post('/notes', (req, res) =&gt; {
+  const { content } = req.body || {};
+  if (typeof content !== 'string' || !content.trim()) {
+    return res.status(400).json({ error: 'content must be a non-empty string' });
+  }
+  notes = [...notes, { id: nextId++, content: content.trim() }];
+  res.json(notes);
+});
+
+app.put('/notes/:id', (req, res) =&gt; {
+  const id = Number(req.params.id);
+  const { content } = req.body || {};
+  if (!Number.isFinite(id)) {
+    return res.status(400).json({ error: 'id must be a number' });
+  }
+  if (typeof content !== 'string' || !content.trim()) {
+    return res.status(400).json({ error: 'content must be a non-empty string' });
+  }
+  const idx = notes.findIndex(n =&gt; n.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'note not found' });
+
+  notes = notes.map(n =&gt; n.id === id ? { ...n, content: content.trim() } : n);
+  res.json(notes);
+});
+
+app.delete('/notes/:id', (req, res) =&gt; {
+  const id = Number(req.params.id);
+  if (!Number.isFinite(id)) {
+    return res.status(400).json({ error: 'id must be a number' });
+  }
+  notes = notes.filter(n =&gt; n.id !== id);
+  res.json(notes);
+});
+
+app.listen(PORT, () =&gt; {
+  console.log(`[s12-notes-api] listening on http://localhost:${PORT}`);
+});
+</code></pre></div>
+    
+    <h3>package.json (<code>/mnt/data/S12Redux_Dashboard_StarterKit/servers/notes-api/package.json</code>)</h3>
+    <div class="code"><pre><code>{
+  "name": "s12-notes-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Simple Notes API server for Seminar 12 Step 4 (Redux async actions).",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}</code></pre></div>
+    
+
+    <footer style="margin-top:22px;">
+      <p><a href="index.html">← Înapoi la dashboard</a></p>
+    </footer>
+  </div>
+
+  <script>
+    const TARGETS_PORTS = {};
+    TARGETS_PORTS['step1'] = 3001;
+    TARGETS_PORTS['step2'] = 3002;
+    TARGETS_PORTS['step3'] = 3003;
+    TARGETS_PORTS['step4'] = 3004;
+    TARGETS_PORTS['api'] = 8080;
+  </script>
+</body>
+</html>

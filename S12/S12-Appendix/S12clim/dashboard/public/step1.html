@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Seminar 12 – Step 1: React Router</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="container prose">
+      <div class="header">
+        <h1>Step 1 – React Router</h1>
+        <div class="sub">Rutare în aplicaţii SPA: navigare, 404, parametri, pagină <code>/about</code>.</div>
+        <a class="back" href="/">← Dashboard</a>
+      </div>
+
+      <div class="card">
+        <h2 id="rezultat">Rezultatul observabil</h2>
+        <p>
+          Acum vedem că o singură aplicaţie React poate prezenta <em>mai multe pagini</em> fără refresh complet, iar URL‑ul devine un
+          <strong>contract</strong> între utilizator şi UI: <code>/</code>, <code>/about</code>, <code>/tasks</code>, <code>/tasks/:id</code>, respectiv o pagină de
+          tip <em>Not Found</em> pentru rute inexistente.
+        </p>
+        <div class="grid2">
+          <div class="callout tip">
+            <div class="title">Indicator de reuşită</div>
+            <ul>
+              <li>scrii manual <code>/about</code> în bară şi primeşti componenta corectă;</li>
+              <li>navigarea se face prin <code>&lt;Link&gt;</code> (fără reload);</li>
+              <li>rutele necunoscute cad în <code>&lt;NotFound /&gt;</code>.</li>
+            </ul>
+          </div>
+          <div class="callout warn">
+            <div class="title">Atenţie (producţie)</div>
+            <p>
+              În producţie, <em>refresh</em> pe <code>/about</code> poate da 404 dacă serverul nu este configurat să trimită mereu
+              <code>index.html</code> (fallback) pentru rute necunoscute. În dezvoltare Vite maschează adesea problema.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card toc">
+        <h2>Hartă rapidă</h2>
+        <ul>
+          <li><a href="#concepte">Concepte cheie şi vocabular minim</a></li>
+          <li><a href="#mecanism">Cum funcţionează rutarea în React Router (v6)</a></li>
+          <li><a href="#cod">Ce scriem – fragmente de cod comentate</a></li>
+          <li><a href="#incercam">Să încercăm: scenarii de test</a></li>
+          <li><a href="#capcane">Capcane frecvente şi bune practici</a></li>
+          <li><a href="#extinderi">Extinderi realiste (cum ar arăta într‑un proiect real)</a></li>
+        </ul>
+      </div>
+
+      <div class="card" id="concepte">
+        <h2>Concepte cheie</h2>
+        <ul>
+          <li><strong>SPA</strong>: aplicaţia încarcă o singură dată un <code>index.html</code>; „pagini” ≈ stări ale UI‑ului.</li>
+          <li><strong>Client‑side routing</strong>: schimbăm URL‑ul (History API) şi React decide ce componentă se randă.</li>
+          <li><strong>Route</strong>: regulă de mapare <code>path → element</code> (componentă).</li>
+          <li><strong>Link / NavLink</strong>: navigare fără refresh (nu folosiţi <code>&lt;a href&gt;</code> pentru rute interne).</li>
+          <li><strong>Parametri</strong>: segmente dinamice (<code>/tasks/:id</code>) accesate cu <code>useParams()</code>.</li>
+          <li><strong>404</strong>: o rută‑„plasă de siguranţă”, de obicei <code>path="*"</code>.</li>
+        </ul>
+        <div class="callout best">
+          <div class="title">Idee didactică</div>
+          <p>
+            Trataţi URL‑ul ca pe o „interfaţă publică”. Dacă un coleg vede un link <code>/tasks/42</code>, ar trebui să poată deduce
+            (aproximativ) <em>ce va vedea</em> acolo şi ce date sunt necesare.
+          </p>
+        </div>
+      </div>
+
+      <div class="card" id="mecanism">
+        <h2>Cum funcţionează</h2>
+        <p>
+          În React Router v6, <code>&lt;BrowserRouter&gt;</code> furnizează contextul de navigare (History API). <code>&lt;Routes&gt;</code>
+          alege ruta „cea mai specifică” (algoritm de <em>ranking</em>), iar <code>&lt;Route&gt;</code> ataşează componenta pentru un <code>path</code>.
+        </p>
+        <p>
+          Acum vedem de ce ordinea rutelor contează mai puţin decât în v5: un <code>path="*"</code> nu „fură” rutele specifice, fiind
+          evaluat după regulile de ranking.
+        </p>
+        <details>
+          <summary>De ce evităm <code>&lt;a href&gt;</code> pentru rute interne?</summary>
+          <div class="callout">
+            <p>
+              Un <code>&lt;a href="/about"&gt;</code> declanşează o cerere HTTP şi un reload complet. În schimb, <code>&lt;Link to="/about"&gt;</code>
+              foloseşte History API, păstrează starea în memorie şi oferă o experienţă fluidă.
+            </p>
+          </div>
+        </details>
+      </div>
+
+      <div class="card" id="cod">
+        <h2>Ce scriem – fragmente de cod comentate</h2>
+        <p class="muted">Fişiere relevante: <code>steps/step1_router/src/App.jsx</code>, <code>src/components/*</code>.</p>
+
+        <h3>1) Configurarea rutelor</h3>
+        <pre><code class="language-jsx">// src/App.jsx
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+import Home from './components/Home'
+import About from './components/About'
+import Tasks from './components/Tasks'
+import NotFound from './components/NotFound'
+
+export default function App() {
+  return (
+    &lt;BrowserRouter&gt;
+      {/* Routes decide ce &lt;Route&gt; se potriveşte cu URL-ul curent */}
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+        &lt;Route path="/about" element={&lt;About /&gt;} /&gt;
+        &lt;Route path="/tasks" element={&lt;Tasks /&gt;} /&gt;
+        &lt;Route path="/tasks/:id" element={&lt;Tasks /&gt;} /&gt;
+        {/* „Plasă de siguranţă” pentru orice rută necunoscută */}
+        &lt;Route path="*" element={&lt;NotFound /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  )
+}
+</code></pre>
+
+        <div class="callout">
+          <div class="title">Ce observăm aici</div>
+          <ul>
+            <li>Acum vedem că <code>Tasks</code> e reutilizat atât pentru listă (<code>/tasks</code>) cât şi pentru detaliu (<code>/tasks/:id</code>).</li>
+            <li>Ruta „wildcard” <code>*</code> este un mecanism controlat, nu un „hack”. Îl folosim explicit pentru 404.</li>
+            <li>În proiecte reale, ruta poate fi mapată spre „layout-uri” şi rute imbricate (nested routes).</li>
+          </ul>
+        </div>
+
+        <h3>2) Parametri de rută (exemplu simplu)</h3>
+        <pre><code class="language-jsx">// src/components/Tasks.jsx
+import { useParams, Link } from 'react-router-dom'
+
+export default function Tasks() {
+  const { id } = useParams() // id este string; în proiecte reale validăm
+
+  return (
+    &lt;&gt;
+      &lt;h2&gt;Tasks&lt;/h2&gt;
+      {id ? (
+        &lt;p&gt;Acum vedem task-ul cu id: &lt;strong&gt;{id}&lt;/strong&gt;&lt;/p&gt;
+      ) : (
+        &lt;ul&gt;
+          &lt;li&gt;&lt;Link to="/tasks/1"&gt;Task 1&lt;/Link&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;Link to="/tasks/2"&gt;Task 2&lt;/Link&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      )}
+    &lt;/&gt;
+  )
+}
+</code></pre>
+
+        <details>
+          <summary>Variaţie realistă: validarea parametrilor</summary>
+          <div class="callout best">
+            <p>
+              În proiecte reale, <code>id</code> poate fi invalid (ex. <code>/tasks/abc</code>). O abordare robustă:
+              <strong>validaţi</strong> şi <strong>modelaţi</strong> starea de eroare (ex. „task inexistent”) fără a prăbuşi aplicaţia.
+            </p>
+          </div>
+        </details>
+      </div>
+
+      <div class="card" id="incercam">
+        <h2>Să încercăm</h2>
+        <ol>
+          <li>Deschideţi <code>http://localhost:3001/</code> şi observaţi pagina <em>Home</em>.</li>
+          <li>Daţi click pe <em>About</em> (sau introduceţi manual <code>/about</code>).</li>
+          <li>Mergeţi la <code>/tasks</code> şi apoi apăsaţi pe un task (ex. <code>/tasks/2</code>).</li>
+          <li>Introduceţi o rută inexistentă (ex. <code>/foo/bar</code>) şi verificaţi <em>NotFound</em>.</li>
+        </ol>
+        <div class="callout exercise">
+          <div class="title">Exerciţiu scurt (5–10 minute)</div>
+          <p>
+            Adăugaţi o rută <code>/tasks/:id/edit</code>. În UI afişaţi un mesaj „Editing task {id}”. Întrebare:
+            <em>cum aţi împiedica accesul la editare dacă utilizatorul nu este autentificat?</em>
+          </p>
+        </div>
+      </div>
+
+      <div class="card" id="capcane">
+        <h2>Capcane frecvente şi bune practici</h2>
+        <ul>
+          <li><strong>Reload pe rute interne</strong>: evitaţi <code>&lt;a href&gt;</code>; folosiţi <code>&lt;Link&gt;</code> / <code>useNavigate()</code>.</li>
+          <li>
+            <strong>404 la refresh în producţie</strong>: serverul trebuie să facă fallback la <code>index.html</code> pentru rute necunoscute.
+          </li>
+          <li>
+            <strong>Parametri ca string</strong>: <code>useParams()</code> returnează string; convertiţi şi validaţi înainte de a cere date.
+          </li>
+          <li>
+            <strong>Separarea „layout-urilor”</strong>: în aplicaţii mari, rutele se structurează pe layout-uri (meniuri/sidebars) şi
+            rute nested.
+          </li>
+        </ul>
+        <div class="callout best">
+          <div class="title">Practici utile în echipe</div>
+          <ul>
+            <li>centralizaţi rutele în constante (ex. <code>ROUTES.ABOUT</code>), pentru a evita stringuri răspândite;</li>
+            <li>folosiţi <code>NavLink</code> pentru stilizarea stării „active” (meniuri);</li>
+            <li>gândiţi rutele ca API public: versionare, redirect-uri, compatibilitate în timp.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" id="extinderi">
+        <h2>Extinderi realiste</h2>
+        <ul>
+          <li><strong>Rute nested</strong>: <code>/tasks</code> ca pagină‑părinte şi sub‑rute pentru detaliu/editare.</li>
+          <li><strong>Lazy loading</strong>: încărcaţi pagini rar folosite prin <code>React.lazy</code> + <code>Suspense</code>.</li>
+          <li><strong>Route guards</strong>: condiţionaţi accesul (ex. autentificare) prin componente‑gardian.</li>
+          <li><strong>Data fetching</strong>: într‑o arhitectură mai matură, URL‑ul declanşează încărcarea datelor (şi gestionează cache).</li>
+        </ul>
+        <div class="callout">
+          <div class="title">De ce acest pas e „baza” pentru Redux?</div>
+          <p>
+            În paşii următori, vom introduce gestionarea stării. Routerul şi starea se întâlnesc în practică: rutele descriu
+            <em>contextul</em> (ce ecran e activ), iar store-ul descrie <em>datele</em> (ce afişăm). În proiecte mari, o decizie crucială este:
+            <strong>ce ţinem în URL</strong> (shareable) versus <strong>ce ţinem în state</strong> (intern aplicaţiei).
+          </p>
+        </div>
+
+      <div class="card nav">
+        <a class="btn" href="/step2.html">Continuă la Step 2 →</a>
+      </div>
+    </div>
+  </body>
+</html>

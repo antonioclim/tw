@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seminar 12 – Redux Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Seminar 12 – Redux Dashboard</h1>
+      <p>Un „meta-starterkit” pentru predare: 4 paşi + API, cu pornire/oprire din interfaţă şi explicaţii detaliate.</p>
+    </header>
+
+    <div class="notice">
+      <b>Setup (Windows 11):</b>
+      <ol>
+        <li>Dezarhivaţi proiectul în <kbd>Z:\tw\SxTEST\FAZA12\nextlab</kbd> (sau alt director).</li>
+        <li>Rulaţi <kbd>install_all.bat</kbd> (instalează dependenţele pentru dashboard, paşi şi API).</li>
+        <li>Rulaţi <kbd>run_dashboard.bat</kbd> şi deschideţi <kbd>http://localhost:3000</kbd>.</li>
+      </ol>
+	  <div style="margin-top:8px;">
+	        Resurse:
+	        <a href="/step1.html" target="_blank">Ghid Step 1 (HTML)</a> ·
+	        <a href="/step2.html" target="_blank">Ghid Step 2 (HTML)</a> ·
+	        <a href="/step3.html" target="_blank">Ghid Step 3 (HTML)</a> ·
+	        <a href="/step4.html" target="_blank">Ghid Step 4 (HTML)</a> ·
+		        <a href="/resources/slides/A%20(S12-teorie)%20React%20Router,%20useReducer%20%C8%99i%20Redux%20Toolkit.docx" target="_blank">S12-teorie (RO, DOCX)</a> ·
+		        <a href="/postman.html" target="_blank">Ghid Postman (Notes API)</a>
+	      </div>
+    </div>
+
+    <h2 style="margin: 0 0 10px;">Control panel</h2>
+    <div id="grid" class="grid"></div>
+
+    <hr class="sep" />
+
+    <h2 style="margin: 0 0 10px;">Ghid rapid de predare</h2>
+    <div class="card">
+      <p style="margin-bottom:12px;">
+        Recomandare de parcurs (şi pentru a evita „salturi” conceptuale):
+        <b>Step 1</b> (routing) → <b>Step 2</b> (useReducer) → <b>Step 3</b> (Redux sync + delete local) → <b>Step 4</b> (Redux async + delete via server).
+      </p>
+      <p style="margin-bottom:8px;">
+        În VS Code, deschideţi folderul rădăcină. Pentru fiecare pas, explicaţi:
+        <i>ce fişiere atingem</i>, <i>de ce</i>, <i>ce efect are în UI</i> şi <i>care este „pattern-ul” general</i>.
+      </p>
+      <p style="margin:0;">
+        Notă: acest kit foloseşte proiecte <b>Vite + React</b> (pornire rapidă, fără warnings de dependenţe vechi),
+        iar pentru async foloseşte <i>redux-promise-middleware</i> (conform materialelor video). În prezentare (DOCX) este discutat şi <i>Redux Toolkit + createAsyncThunk</i> ca abordare modernă.
+      </p>
+    </div>
+
+    <footer>
+      <p>Dashboard-ul porneşte/omoară procesele <kbd>npm start</kbd> pentru fiecare pas şi pentru API. Dacă un pas nu porneşte, verificaţi că dependenţele sunt instalate şi că porturile sunt libere.</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

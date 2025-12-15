@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Seminar 12 – Tool: API Playground (Postman Lite)</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="container prose">
+      <div class="header">
+        <h1>Tool – API Playground (Postman Lite)</h1>
+        <p>
+          Acest „pas” suplimentar este o interfaţă minimală (dar intenţionat didactică) care se comportă ca un
+          <em>Postman simplificat</em> pentru <strong>Notes API</strong>.
+          Scopul nu este să înlocuim Postman, ci să avem un instrument „în aceeaşi fereastră” cu aplicaţiile din Seminarul 12,
+          pentru a testa rapid endpoint‑urile şi pentru a lega explicit <strong>cererile HTTP</strong> de <strong>stările Redux</strong>.
+        </p>
+
+        <div class="row">
+          <a class="btn" href="/">← Dashboard</a>
+          <a class="btn" href="http://localhost:3005" target="_blank" rel="noreferrer">Open Tool (port 3005)</a>
+          <a class="btn" href="/postman.html">Ghid Postman (complet)</a>
+        </div>
+      </div>
+
+      <div class="card toc">
+        <h3>Cuprins</h3>
+        <ul>
+          <li><a href="#cui">Ce endpoint‑uri testăm</a></li>
+          <li><a href="#setup">Set‑up rapid (în ordinea corectă)</a></li>
+          <li><a href="#workflow">Să încercăm: un workflow didactic</a></li>
+          <li><a href="#legatura">Legătura cu Step 4 (Redux async)</a></li>
+          <li><a href="#pitfalls">Atenţionări şi capcane frecvente</a></li>
+          <li><a href="#variatii">Variaţii realiste într‑un proiect real</a></li>
+        </ul>
+      </div>
+
+      <div class="card" id="cui">
+        <h2>Ce endpoint‑uri testăm</h2>
+        <p>
+          Tool‑ul expune explicit aceleaşi operaţii pe care le folosim în Step 4:
+        </p>
+        <ul>
+          <li><code>GET /health</code> — verificare rapidă: „serverul e pornit?”</li>
+          <li><code>GET /notes</code> — listarea notelor (starea „adevărului” din server)</li>
+          <li><code>POST /notes</code> — crearea unei note (payload JSON cu <code>content</code>)</li>
+          <li><code>DELETE /notes/:id</code> — ştergerea unei note după id</li>
+        </ul>
+
+        <div class="callout tip">
+          <strong>Observaţie:</strong> Notes API mai are şi <code>PUT /notes/:id</code>, însă în seminar ne concentrăm pe traseul minim
+          (create/list/delete) pentru a menţine atenţia pe fluxul Redux.
+        </div>
+      </div>
+
+      <div class="card" id="setup">
+        <h2>Set‑up rapid (în ordinea corectă)</h2>
+        <ol>
+          <li>
+            Din Dashboard, porniţi <strong>Notes API (port 8080)</strong>.
+            Dacă vreţi, verificaţi în browser: <code>http://127.0.0.1:8080/health</code>.
+          </li>
+          <li>
+            Din Dashboard, porniţi <strong>Tool – API Playground (port 3005)</strong> şi apăsaţi <strong>GET /health</strong>.
+          </li>
+          <li>
+            Apăsaţi <strong>GET /notes</strong> pentru a vedea lista curentă.
+            Apoi creaţi o notă cu <strong>POST /notes</strong> şi observaţi cum apare în listă.
+          </li>
+        </ol>
+
+        <div class="callout warn">
+          Dacă primiţi <em>NetworkError</em> / <em>Failed to fetch</em>, în 99% din cazuri serverul API nu rulează, sau portul 8080 este ocupat.
+          În acest kit, folosim implicit <code>http://127.0.0.1:8080</code> tocmai ca să evităm ambiguităţi IPv4/IPv6.
+        </div>
+      </div>
+
+      <div class="card" id="workflow">
+        <h2>Să încercăm: un workflow didactic</h2>
+        <p>
+          Următorul micro‑scenariu are rolul să vă facă să „simţiţi” direct relaţia dintre request‑uri şi date:
+        </p>
+        <ol>
+          <li>
+            În Tool, apăsaţi <strong>GET /health</strong>. Vrem să vedem o confirmare explicită că serverul răspunde.
+          </li>
+          <li>
+            Apăsaţi <strong>GET /notes</strong>. Observaţi structura răspunsului (un array de obiecte cu <code>id</code> şi <code>content</code>).
+          </li>
+          <li>
+            Scrieţi un text şi apăsaţi <strong>POST /notes</strong>. Imediat după, apăsaţi din nou <strong>GET /notes</strong>.
+          </li>
+          <li>
+            Copiaţi un <code>id</code> din listă şi executaţi <strong>DELETE /notes/:id</strong>. Observaţi cum scade lista.
+          </li>
+        </ol>
+
+        <div class="callout tip">
+          În colţul din dreapta al Tool‑ului, veţi vedea şi echivalentul <strong>cURL</strong> pentru request.
+          E util când vreţi să explicaţi „ce se întâmplă sub capotă” fără să depindeţi de o unealtă anume.
+        </div>
+      </div>
+
+      <div class="card" id="legatura">
+        <h2>Legătura cu Step 4 (Redux async)</h2>
+        <p>
+          Acum, un experiment extrem de relevant didactic:
+        </p>
+        <ul>
+          <li>porniţi Step 4 (port 3004),</li>
+          <li>lăsaţi Tool‑ul deschis în paralel,</li>
+          <li>creaţi o notă în Tool (POST), apoi apăsaţi „Reload” în Step 4 şi observaţi cum se sincronizează lista.</li>
+        </ul>
+
+        <p>
+          În Step 4, aceeaşi operaţie este „împachetată” într‑un flux Redux:
+          <em>UI → dispatch(action) → middleware → request → reducer → UI</em>.
+          Tool‑ul vă permite să separaţi mental <strong>API‑ul</strong> (sursele de date) de <strong>Redux</strong> (orchestrarea stării în client).
+        </p>
+
+        <div class="row">
+          <a class="btn" href="http://localhost:3004" target="_blank" rel="noreferrer">Open Step 4 (port 3004)</a>
+          <a class="btn" href="step4.html">Detalii Step 4</a>
+        </div>
+      </div>
+
+      <div class="card" id="pitfalls">
+        <h2>Atenţionări şi capcane frecvente</h2>
+        <ul>
+          <li>
+            <strong>„Merge în Postman, nu merge în browser”</strong>: de obicei e o problemă de CORS sau de URL.
+            În acest kit, serverul are CORS activ; dacă modificaţi serverul, re‑verificaţi.
+          </li>
+          <li>
+            <strong>Payload invalid</strong>: pentru <code>POST /notes</code> trimitem JSON cu <code>content</code>.
+            Într‑un API real, validarea este strictă şi veţi primi <code>400</code> cu un mesaj clar.
+          </li>
+          <li>
+            <strong>Id‑uri instabile</strong>: în demo sunt generate simplu; într‑un proiect real, id‑ul e generat de DB.
+          </li>
+        </ul>
+      </div>
+
+      <div class="card" id="variatii">
+        <h2>Variaţii realiste într‑un proiect real</h2>
+        <p>
+          În practică, un „Notes API” ar avea adesea:
+        </p>
+        <ul>
+          <li>autentificare (token) şi politici de acces,</li>
+          <li>paginare şi filtrare (<code>?page=…&limit=…</code>),</li>
+          <li>validare şi erori standardizate (<code>problem+json</code>),</li>
+          <li>logare şi trasabilitate (request id),</li>
+          <li>convenţii de naming şi versiuni (<code>/v1/notes</code>).</li>
+        </ul>
+        <p>
+          Ca exerciţiu, aţi putea extinde tool‑ul cu:
+        </p>
+        <ul>
+          <li>un header editor (ex. <code>Authorization: Bearer ...</code>),</li>
+          <li>o secţiune pentru răspunsuri non‑JSON,</li>
+          <li>un history de request‑uri (ca în Postman),</li>
+          <li>un „environment switch” (dev/staging) prin variabile de mediu.</li>
+        </ul>
+      </div>
+
+      <div class="footer">
+        <p>
+          Înapoi la <a href="/">Dashboard</a>.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seminarul 12 · Pasul 2 — useReducer: stare locală complexă şi reduceri pure</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a33;
+      --panel2: #0f1730;
+      --text: #e7ecff;
+      --muted: #b8c0e6;
+      --accent: #7aa2ff;
+      --accent2: #8bd5ca;
+      --warn: #f5a97f;
+      --danger: #ed8796;
+      --border: rgba(255,255,255,.12);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --line: 1.55;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 700px at 30% 10%, rgba(122,162,255,.18), transparent 55%),
+                  radial-gradient(900px 500px at 80% 20%, rgba(139,213,202,.14), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: var(--line);
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header {
+      padding: 26px 22px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(18,26,51,.86), rgba(18,26,51,.45));
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+    }
+    header h1 {
+      font-size: 20px;
+      margin: 0 0 6px 0;
+      letter-spacing: .2px;
+    }
+    header .meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 310px 1fr;
+      gap: 18px;
+      padding: 18px;
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+    nav {
+      background: rgba(18,26,51,.68);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      position: sticky;
+      top: 92px;
+      height: calc(100vh - 110px);
+      overflow: auto;
+    }
+    nav .nav-title {
+      font-weight: 700;
+      margin: 4px 0 10px;
+      color: var(--text);
+    }
+    nav input {
+      width: 100%;
+      padding: 10px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(15,23,48,.8);
+      color: var(--text);
+      outline: none;
+      margin-bottom: 10px;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    nav li {
+      margin: 0;
+      padding: 0;
+    }
+    nav a {
+      display: block;
+      padding: 10px 10px;
+      border-radius: 10px;
+      color: var(--muted);
+      border: 1px solid transparent;
+    }
+    nav a:hover {
+      background: rgba(122,162,255,.12);
+      color: var(--text);
+      border-color: rgba(122,162,255,.25);
+      text-decoration: none;
+    }
+
+    main {
+      min-width: 0;
+    }
+    .section {
+      background: rgba(18,26,51,.62);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 18px;
+      margin-bottom: 14px;
+    }
+    .section h2 {
+      margin-top: 0;
+      font-size: 18px;
+      letter-spacing: .2px;
+    }
+    .section h3 {
+      margin-bottom: 8px;
+      margin-top: 18px;
+      font-size: 15px;
+      color: var(--text);
+    }
+    .lead {
+      font-size: 15px;
+      color: var(--text);
+    }
+    code {
+      font-family: var(--mono);
+      font-size: 0.95em;
+      background: rgba(15,23,48,.75);
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    pre {
+      margin: 0;
+      padding: 12px 12px;
+      overflow: auto;
+      border-radius: 12px;
+      background: rgba(10,16,32,.9);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      font-size: 12.8px;
+      color: #e7ecff;
+    }
+    .code-block {
+      margin: 12px 0 14px;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 0 0 8px 0;
+    }
+    .code-title {
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .copy-btn {
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(122,162,255,.16);
+      color: var(--text);
+      cursor: pointer;
+    }
+    .copy-btn:hover {
+      background: rgba(122,162,255,.26);
+    }
+    .callout {
+      border-radius: 14px;
+      padding: 12px 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(15,23,48,.72);
+      margin: 12px 0;
+    }
+    .callout.info {
+      border-color: rgba(122,162,255,.30);
+      background: rgba(122,162,255,.10);
+    }
+    .callout.warning {
+      border-color: rgba(245,169,127,.35);
+      background: rgba(245,169,127,.10);
+    }
+    .callout.tip {
+      border-color: rgba(139,213,202,.35);
+      background: rgba(139,213,202,.10);
+    }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .card {
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(15,23,48,.55);
+      border-radius: 14px;
+      padding: 12px 12px;
+    }
+    .card h3, .card h4 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      color: var(--text);
+    }
+    details {
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(10,16,32,.55);
+      border-radius: 14px;
+      padding: 10px 10px;
+      margin: 10px 0;
+    }
+    details summary {
+      cursor: pointer;
+      color: var(--text);
+      font-weight: 700;
+    }
+    details p {
+      color: var(--muted);
+    }
+    .file-list {
+      padding-left: 18px;
+    }
+    .file-list li {
+      margin: 6px 0;
+    }
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      nav {
+        position: relative;
+        top: 0;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="badge">S12 · Redux</div>
+      <div>
+        <h1>Seminarul 12 · Pasul 2 — useReducer: stare locală complexă şi reduceri pure</h1>
+        <p class="subtitle">Ghid interactiv (fără transcript), corelat cu kit-ul S12clim · step2_useReducer</p>
+      </div>
+    </div>
+    <div class="meta">
+      <div><strong>Port aşteptat:</strong> 3002</div>
+      <div><strong>Director:</strong> <code>Z:\tw\SxTEST\FAZA12\nextlab</code></div>
+      <div><strong>Ultima actualizare:</strong> 2025-12-15</div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <div class="panel">
+        <h2>Cuprins</h2>
+        <nav class="toc">
+          <a href="#orientare">Orientare şi obiective de învăţare</a>
+<a href="#context">De ce useReducer aici şi cum se leagă de Redux</a>
+<a href="#setup">Pregătire şi rulare (Windows 11 · VSC · Vite)</a>
+<a href="#model">Modelul de stare: numărător + istoric</a>
+<a href="#reducer">Reducer-ul: funcţie pură, acţiuni, imutabilitate</a>
+<a href="#dispatch">Dispatch: cum declanşăm tranziţii de stare</a>
+<a href="#randare">Randare şi observabilitate: cum „vedem” starea</a>
+<a href="#erori">Greşeli frecvente şi avertismente</a>
+<a href="#extensii">Extensii realiste: reset, payload, undo, testare</a>
+<a href="#pod">Puntea către Redux: ce se schimbă în pasul 3</a>
+<a href="#mini-lab">Mini-lab: exerciţii ghidate şi întrebări de reflecţie</a>
+        </nav>
+      </div>
+
+      <div class="panel">
+        <h2>„Unde umblăm” în kit</h2>
+        <ul class="compact">
+          <li><strong>Router + pagini:</strong> <code>steps/step2_useReducer/src/App.jsx</code>, <code>steps/step2_useReducer/src/components/Home.jsx</code></li>
+          <li><strong>useReducer (miezul pasului):</strong> <code>steps/step2_useReducer/src/components/Tasks.jsx</code></li>
+          <li><strong>Store Redux:</strong> — (în acest pas nu există store global; acesta apare în pasul 3)</li>
+        </ul>
+      </div>
+
+      <div class="panel callout">
+        <h2>Regula de aur</h2>
+        <p>
+          În acest pas exersăm „gândirea în reducer”: <em>starea nu se mută</em> (nu o „ciopârţim”),
+          ci o <em>înlocuim</em> cu o versiune nouă, calculată determinist din (state, action).
+          Exact această disciplină va fi reutilizată în pasul 3 (Redux).
+        </p>
+      </div>
+    </aside>
+
+    <article class="content">
+
+      <section id="orientare">
+        <h2>Orientare şi obiective de învăţare</h2>
+        <p>
+          În pasul 2 ne propunem să luăm o stare de componentă care nu mai este „o singură variabilă”
+          şi să o gestionăm ca pe un <em>sistem coerent</em> de tranziţii. Concret, plecăm de la un contor
+          şi introducem un istoric al modificărilor, astfel încât să putem discuta explicit despre:
+        </p>
+        <ul>
+          <li><strong>modelarea stării</strong> (ce date păstrăm şi de ce);</li>
+          <li><strong>reducer</strong> ca funcţie pură (switch pe tipul acţiunii);</li>
+          <li><strong>dispatch</strong> ca mecanism de declanşare a tranziţiilor;</li>
+          <li><strong>observabilitate</strong> (cum inspectăm şi validăm starea în timp real).</li>
+        </ul>
+
+        <div class="callout info">
+          <p>
+            Dacă pasul 1 v-a învăţat „cum ajungem în pagină”, pasul 2 vă învaţă „cum se comportă pagina”
+            atunci când starea ei devine suficient de complexă încât <code>useState</code> să înceapă să pară fragmentat.
+          </p>
+        </div>
+      </section>
+
+      <section id="context">
+        <h2>De ce useReducer aici şi cum se leagă de Redux</h2>
+        <p>
+          Observaţi că <code>useReducer</code> nu este „Redux în miniatură”, dar este o <em>introducere controlată</em>
+          la acelaşi tip de disciplină: acţiuni, reduceri, stare nouă, imutabilitate. Diferenţa esenţială este
+          <strong>scara</strong>:
+        </p>
+        <ul>
+          <li><strong>useReducer</strong> → stare locală (în interiorul unei componente sau a unui sub-arbore);</li>
+          <li><strong>Redux</strong> → stare globală (partajată între părţi îndepărtate ale aplicaţiei), cu tooling, middleware şi convenţii.</li>
+        </ul>
+
+        <details class="details">
+          <summary>De ce nu rămânem doar cu useState?</summary>
+          <div class="details-body">
+            <p>
+              Pentru două variabile <code>useState</code> este perfect acceptabil. Problema apare când:
+              (i) tranziţiile dintre ele trebuie sincronizate; (ii) avem reguli de business („dacă A creşte,
+              atunci B se recalculă”); (iii) vrem audit/istoric; (iv) logica începe să migreze în <em>handler-e</em>
+              disparate. Reducer-ul reuneşte tranziţiile într-un singur loc, făcând comportamentul mai uşor de înţeles,
+              testat şi extins.
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <section id="setup">
+        <h2>Pregătire şi rulare (Windows 11 · VSC · Vite)</h2>
+        <p>
+          În mod recomandat porniţi întreg seminarul din dashboard. Totuşi, pentru diagnosticare rapidă,
+          este util să ştiţi şi varianta „pasul izolat”.
+        </p>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Rulare din dashboard</h3>
+            <ol>
+              <li>În directorul rădăcină al kit-ului, rulaţi <code>install_all.bat</code> (o singură dată).</li>
+              <li>Porniţi <code>run_dashboard.bat</code>.</li>
+              <li>Din dashboard, deschideţi <strong>Step 2</strong> (de regulă pe <code>http://localhost:3002</code>).</li>
+            </ol>
+            <p class="muted">
+              Observaţie: dacă portul 3002 este ocupat, Vite poate alege un alt port şi îl va afişa în consolă.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>Rulare directă (pasul 2)</h3>
+            <ol>
+              <li>Deschideţi terminalul în <code>steps\step2_useReducer</code>.</li>
+              <li>Rulaţi <code>npm install</code> (dacă nu a fost rulat deja din script).</li>
+              <li>Porniţi cu <code>npm start</code>.</li>
+            </ol>
+            <p class="muted">
+              În VSC: <em>File → Open Folder</em> pe rădăcina kit-ului, apoi navigaţi în fişierele menţionate în bara laterală.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="model">
+        <h2>Modelul de stare: numărător + istoric</h2>
+        <p>
+          Acum vedem o întrebare de proiectare aparent simplă: „ce înseamnă <em>istoric</em>?”
+          Putem stoca:
+        </p>
+        <ul>
+          <li><strong>valorile contorului</strong> (0, 1, 2, 1, 0 …) — util pentru „time travel” conceptual;</li>
+          <li><strong>acţiunile</strong> („increment”, „decrement”, „reset”) — util pentru a vedea <em>intenţia</em> utilizatorului.</li>
+        </ul>
+        <p>
+          În kit, istoricul este folosit ca instrument didactic pentru intenţie: păstrăm etichete de acţiune.
+          Aceasta este o alegere explicită pentru a discuta <em>evenimente</em> versus <em>stări</em>.
+          În proiecte reale, alegerea depinde de ce doriţi să investigaţi şi ce costuri de memorie acceptaţi.
+        </p>
+
+        <details class="details">
+          <summary>Ce înseamnă „stare compusă” şi de ce ne interesează?</summary>
+          <div class="details-body">
+            <p>
+              Starea compusă este un obiect cu mai multe proprietăţi care trebuie să rămână coerente. De pildă,
+              <code>count</code> şi <code>history</code> nu sunt independente: orice schimbare în <code>count</code> ar trebui să lase o urmă în <code>history</code>.
+              Reducer-ul devine locul în care definim această coerenţă ca regulă, nu ca efect colateral al UI-ului.
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <section id="reducer">
+        <h2>Reducer-ul: funcţie pură, acţiuni, imutabilitate</h2>
+        <p>
+          Să ne uităm la miez: constantă de stare iniţială + funcţie reducer. Observaţi disciplina:
+          reducer-ul primeşte (state, action) şi returnează <em>un nou state</em>. Nu mutăm obiecte în loc,
+          nu facem <em>fetch</em>, nu scriem în <em>localStorage</em> — acelea sunt efecte secundare şi se discută separat.
+        </p>
+
+        
+    <div class="code-block">
+      <div class="code-head">
+        <div>
+          <div class="code-title">Reducer + stare iniţială (excerpt)</div>
+          <div class="code-sub">steps/step2_useReducer/src/components/Tasks.jsx</div>
+        </div>
+        <button class="copy-btn" data-copy-target="code-reducer" title="Copiază în clipboard">Copy</button>
+      </div>
+      <pre id="code-reducer"><code class="language-jsx">import { useMemo, useReducer } from &#x27;react&#x27;;
+import { Link } from &#x27;react-router-dom&#x27;;
+
+const INITIAL_STATE = {
+  count: 0,
+  history: []
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case &#x27;increment&#x27;:
+      return {
+        ...state,
+        count: state.count + 1,
+        history: [...state.history, &#x27;increment&#x27;]
+      };
+    case &#x27;decrement&#x27;:
+      return {
+        ...state,
+        count: state.count - 1,
+        history: [...state.history, &#x27;decrement&#x27;]
+      };
+    case &#x27;reset&#x27;:
+      return { ...INITIAL_STATE, history: [...state.history, &#x27;reset&#x27;] };
+    default:
+      return state;
+  }
+}
+
+export default function Tasks() {
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+  const stateAsJson = useMemo(() =&gt; JSON.stringify(state, null, 2), [state]);</code></pre>
+    </div>
+    
+
+        <div class="callout warning">
+          <p>
+            În reducer, copiaţi explicit structura de stare (ex. <code>{ ...state }</code>).
+            Dacă modificaţi direct <code>state</code> (mutare), React poate să nu detecteze schimbarea, iar UI-ul devine „inconsistent”.
+          </p>
+        </div>
+
+        <details class="details">
+          <summary>De ce aruncăm eroare pe acţiuni necunoscute?</summary>
+          <div class="details-body">
+            <p>
+              Într-un context didactic, <code>default: throw new Error(...)</code> este o alegere utilă: vă avertizează imediat
+              când aţi greşit un <code>type</code> sau aţi trimis o acţiune fără suport. În proiecte enterprise, veţi vedea adesea
+              fie un <em>no-op</em> (returnează starea curentă), fie un mecanism de logging centralizat. Dar învăţarea e mai eficientă
+              când greşelile devin vizibile imediat.
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <section id="dispatch">
+        <h2>Dispatch: cum declanşăm tranziţii de stare</h2>
+        <p>
+          Odată ce reducer-ul este definit, componenta se conectează la el prin <code>useReducer</code>.
+          Din acest moment, UI-ul nu mai „setează stări” direct, ci cere reducer-ului să aplice o acţiune:
+          <code>dispatch({ type: 'increment' })</code>.
+        </p>
+
+        <details class="details" open>
+          <summary>Ce câştigăm când UI-ul „spune ce vrea”, nu „cum se face”?</summary>
+          <div class="details-body">
+            <p>
+              Handler-ele devin declarative: „increment”, „decrement”, „reset”. Reducer-ul decide cum se schimbă starea.
+              Aceasta este exact logica pe care o veţi întâlni în Redux: acţiunile descriu <em>intenţia</em>, reducer-ul implementează <em>transformarea</em>.
+            </p>
+          </div>
+        </details>
+
+        <div class="card">
+          <h3>Exerciţiu de înţelegere</h3>
+          <ol>
+            <li>Apăsaţi de câteva ori <em>Increment</em> şi <em>Decrement</em>.</li>
+            <li>Observaţi cum <code>count</code> se schimbă numeric, iar <code>history</code> reţine secvenţa de acţiuni.</li>
+            <li>Apăsaţi <em>Reset</em> şi urmăriţi revenirea la starea iniţială.</li>
+          </ol>
+          <p class="muted">
+            Întrebare: ce aţi prefera să păstraţi în istoric dacă aţi implementa „Undo”: acţiuni sau stări?
+          </p>
+        </div>
+      </section>
+
+      <section id="randare">
+        <h2>Randare şi observabilitate: cum „vedem” starea</h2>
+        <p>
+          În acest pas vrem să facem starea <em>vizibilă</em>. În kit, UI-ul afişează direct valorile şi oferă o zonă explicativă,
+          astfel încât să putem corela evenimentul (click) cu tranziţia (reducer) şi efectul vizual (UI).
+        </p>
+
+        <details class="details">
+          <summary>Cod complet (Tasks.jsx)</summary>
+          <div class="details-body">
+            
+    <div class="code-block">
+      <div class="code-head">
+        <div>
+          <div class="code-title">Componenta Tasks (complet)</div>
+          <div class="code-sub">steps/step2_useReducer/src/components/Tasks.jsx</div>
+        </div>
+        <button class="copy-btn" data-copy-target="code-tasks-full" title="Copiază în clipboard">Copy</button>
+      </div>
+      <pre id="code-tasks-full"><code class="language-jsx">import { useMemo, useReducer } from &#x27;react&#x27;;
+import { Link } from &#x27;react-router-dom&#x27;;
+
+const INITIAL_STATE = {
+  count: 0,
+  history: []
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case &#x27;increment&#x27;:
+      return {
+        ...state,
+        count: state.count + 1,
+        history: [...state.history, &#x27;increment&#x27;]
+      };
+    case &#x27;decrement&#x27;:
+      return {
+        ...state,
+        count: state.count - 1,
+        history: [...state.history, &#x27;decrement&#x27;]
+      };
+    case &#x27;reset&#x27;:
+      return { ...INITIAL_STATE, history: [...state.history, &#x27;reset&#x27;] };
+    default:
+      return state;
+  }
+}
+
+export default function Tasks() {
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+  const stateAsJson = useMemo(() =&gt; JSON.stringify(state, null, 2), [state]);
+
+  return (
+    &lt;div className=&quot;container&quot;&gt;
+      &lt;header className=&quot;header&quot;&gt;
+        &lt;div&gt;
+          &lt;h2 style={{ margin: 0 }}&gt;Step 2 – useReducer&lt;/h2&gt;
+          &lt;p className=&quot;muted&quot; style={{ marginTop: 6 }}&gt;
+            Demonstrăm un &lt;em&gt;reducer&lt;/em&gt; pur (fără side-effects), acţiuni explicite şi o stare mai complexă (count + history).
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;nav className=&quot;nav&quot;&gt;
+          &lt;Link to=&quot;/&quot;&gt;Home&lt;/Link&gt;
+          &lt;span className=&quot;sep&quot;&gt;•&lt;/span&gt;
+          &lt;Link to=&quot;/about&quot;&gt;About&lt;/Link&gt;
+        &lt;/nav&gt;
+      &lt;/header&gt;
+
+      &lt;div className=&quot;grid&quot;&gt;
+        &lt;section className=&quot;card&quot;&gt;
+          &lt;h3 style={{ marginTop: 0 }}&gt;UI (ce testăm la seminar)&lt;/h3&gt;
+
+          &lt;div style={{ display: &#x27;flex&#x27;, alignItems: &#x27;baseline&#x27;, gap: 12, marginBottom: 10 }}&gt;
+            &lt;div className=&quot;pill&quot;&gt;Count&lt;/div&gt;
+            &lt;div style={{ fontSize: 32, fontWeight: 800 }}&gt;{state.count}&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div className=&quot;actions&quot;&gt;
+            &lt;button onClick={() =&gt; dispatch({ type: &#x27;increment&#x27; })}&gt;Increment (+1)&lt;/button&gt;
+            &lt;button onClick={() =&gt; dispatch({ type: &#x27;decrement&#x27; })}&gt;Decrement (-1)&lt;/button&gt;
+            &lt;button className=&quot;danger&quot; onClick={() =&gt; dispatch({ type: &#x27;reset&#x27; })}&gt;Reset&lt;/button&gt;
+          &lt;/div&gt;
+
+          &lt;h4 style={{ marginBottom: 8 }}&gt;History (urmărim acţiunile)&lt;/h4&gt;
+          {state.history.length === 0 ? (
+            &lt;p className=&quot;muted&quot;&gt;Nu există acţiuni încă. Apăsaţi unul dintre butoane.&lt;/p&gt;
+          ) : (
+            &lt;ol className=&quot;history&quot;&gt;
+              {state.history.map((h, idx) =&gt; (
+                &lt;li key={idx}&gt;{h}&lt;/li&gt;
+              ))}
+            &lt;/ol&gt;
+          )}
+        &lt;/section&gt;
+
+        &lt;section className=&quot;card&quot;&gt;
+          &lt;h3 style={{ marginTop: 0 }}&gt;Starea curentă (debug vizual)&lt;/h3&gt;
+          &lt;pre className=&quot;code&quot;&gt;{stateAsJson}&lt;/pre&gt;
+
+          &lt;div className=&quot;callout&quot;&gt;
+            &lt;strong&gt;De reţinut:&lt;/strong&gt;
+            &lt;ul style={{ marginTop: 8 }}&gt;
+              &lt;li&gt;Reducerul primeşte (state, action) şi returnează o stare nouă.&lt;/li&gt;
+              &lt;li&gt;Nu modificăm direct state; folosim obiecte/array-uri noi (immutability).&lt;/li&gt;
+              &lt;li&gt;Resetul revine la INITIAL_STATE (pattern util în formulare/wizards).&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+    </div>
+    
+          </div>
+        </details>
+
+        <div class="callout info">
+          <p>
+            În dezvoltare, combinaţi trei instrumente: (1) UI-ul (ce vede utilizatorul), (2) consola (log-uri), (3) React DevTools.
+            Împreună, ele vă permit să urmăriţi starea ca pe un <em>proces</em>, nu ca pe o fotografie statică.
+          </p>
+        </div>
+      </section>
+
+      <section id="erori">
+        <h2>Greşeli frecvente şi avertismente</h2>
+        <ul>
+          <li><strong>Mutarea stării</strong> (ex. <code>state.count++</code>) — produce bug-uri subtile şi UI inconsecvent.</li>
+          <li><strong>Reducer impure</strong> (fetch, random, date/time, scrieri) — îngreunează testarea şi reproduce dificil comportamentele.</li>
+          <li><strong>Acţiuni slab definite</strong> (stringuri arbitrare) — în proiecte mari, convenţiile de naming devin esenţiale.</li>
+          <li><strong>Istoric nelimitat</strong> — pentru interacţiuni multe, poate consuma memorie; în practică, aplicaţi cap (ex. ultimele N evenimente).</li>
+        </ul>
+
+        <details class="details">
+          <summary>„De ce nu se re-randează?” — o diagnoză rapidă</summary>
+          <div class="details-body">
+            <p>
+              Dacă UI-ul nu se actualizează, verificaţi:
+              (i) reducer-ul returnează un <em>nou</em> obiect (nu acelaşi referinţial),
+              (ii) nu aţi modificat accidental starea în loc,
+              (iii) nu aţi introdus o ramură care returnează <code>undefined</code>.
+              În React, re-render-ul este legat de schimbarea referinţei de stare.
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <section id="extensii">
+        <h2>Extensii realiste: reset, payload, undo, testare</h2>
+        <p>
+          Acum, să încercăm să gândim ca într-un proiect real: reducer-ul este un bun candidat pentru evoluţii incrementale.
+          Mai jos sunt câteva variaţiuni realiste şi de ce le-aţi întâlni:
+        </p>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>1) Payload şi „step size”</h3>
+            <p>
+              În loc de increment cu +1, aţi putea permite <code>dispatch({ type:'increment', payload: 5 })</code>.
+              Veţi întâlni asta când UI-ul are slider / input numeric.
+            </p>
+            <pre><code>// idee: în reducer
+case 'increment':
+  return {
+    ...state,
+    count: state.count + (action.payload ?? 1),
+    history: [...state.history, `increment({action.payload ?? 1})`]
+  };</code></pre>
+          </div>
+
+          <div class="card">
+            <h3>2) Undo / redo (schematic)</h3>
+            <p>
+              O formă robustă stochează <em>stări</em> (nu doar acţiuni) sau foloseşte o structură de tip „past/present/future”.
+              Este relevant când utilizatorul cere „revino la pasul anterior”.
+            </p>
+            <pre><code>// idee: state = { past: [], present: INITIAL, future: [] }
+// undo: mută present în future, scoate ultimul din past</code></pre>
+          </div>
+
+          <div class="card">
+            <h3>3) Reducer testabil</h3>
+            <p>
+              În enterprise, reducer-ele se testează uşor: fiind funcţii pure, un test este „input → output”.
+              Chiar şi un set mic de teste poate preveni regresii când adăugaţi acţiuni noi.
+            </p>
+            <pre><code>// pseudo-test
+expect(reducer(INITIAL, {type:'increment'}).count).toBe(1);</code></pre>
+          </div>
+
+          <div class="card">
+            <h3>4) Politici pentru erori</h3>
+            <p>
+              În loc de <code>throw</code>, uneori se preferă log + no-op.
+              Alegerea ţine de criticitatea fluxului şi de cât de „tolerant” trebuie să fie UI-ul.
+            </p>
+            <pre><code>default:
+  console.warn('Unknown action', action);
+  return state;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="pod">
+        <h2>Puntea către Redux: ce se schimbă în pasul 3</h2>
+        <p>
+          Dacă aţi înţeles bine pasul 2, pasul 3 va părea natural: păstrăm aceeaşi idee (acţiuni + reducer),
+          dar mutăm starea din componentă într-un <em>store global</em>. În consecinţă:
+        </p>
+        <ul>
+          <li><strong>dispatch</strong> nu mai vine din <code>useReducer</code>, ci din <code>useDispatch</code> (react-redux);</li>
+          <li><strong>state</strong> nu mai este local, ci se obţine cu <code>useSelector</code>;</li>
+          <li>structura codului se separă (actions, reducers, store), iar componenta devine mai „subţire”.</li>
+        </ul>
+
+        <div class="callout info">
+          <p>
+            Observaţi continuitatea conceptuală: în ambele cazuri, UI-ul emite acţiuni, reducer-ul produce stări.
+            Diferenţa este „unde trăieşte” acea stare şi cine mai are dreptul să o modifice.
+          </p>
+        </div>
+      </section>
+
+      <section id="mini-lab">
+        <h2>Mini-lab: exerciţii ghidate şi întrebări de reflecţie</h2>
+
+        <div class="card">
+          <h3>Exerciţii (10–20 min)</h3>
+          <ol>
+            <li><strong>Adăugaţi o acţiune</strong> <code>set</code> care setează contorul la o valoare introdusă într-un input.</li>
+            <li><strong>Limitaţi istoricul</strong> la ultimele 10 evenimente (tăiaţi începutul listei când depăşeşte 10).</li>
+            <li><strong>Adăugaţi un „badge”</strong> care spune dacă ultima acţiune a fost increment sau decrement.</li>
+          </ol>
+        </div>
+
+        <details class="details">
+          <summary>Întrebări de reflecţie (pentru discuţie la seminar)</summary>
+          <div class="details-body">
+            <ul>
+              <li>Când aţi considera că reducer-ul este prea mare şi trebuie „spart” în sub-reduceri?</li>
+              <li>Ce fel de date are sens să rămână locale (useReducer) chiar şi într-o aplicaţie cu Redux?</li>
+              <li>Cum aţi documenta convenţiile de <code>action.type</code> într-o echipă?</li>
+            </ul>
+          </div>
+        </details>
+
+        <p class="muted">
+          Dacă lucraţi din dashboard, reveniţi în el şi comparaţi experienţa cu pasul 3: veţi simţi foarte clar diferenţa dintre „stare locală” şi „stare globală”.
+        </p>
+      </section>
+
+      <footer class="footer">
+        <p>
+          Document generat pentru <strong>Seminarul 12</strong> — Pasul 2 (<code>useReducer</code>).
+          Poate fi distribuit studenţilor ca fişier HTML standalone.
+        </p>
+      </footer>
+    </article>
+  </main>
+
+  <script>
+  // copy-to-clipboard for code blocks
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.copy-btn');
+    if (!btn) return;
+    const id = btn.getAttribute('data-target');
+    const el = document.getElementById(id);
+    if (!el) return;
+    const text = el.innerText;
+    try {
+      await navigator.clipboard.writeText(text);
+      const old = btn.innerText;
+      btn.innerText = 'Copied ✓';
+      setTimeout(() => btn.innerText = old, 1200);
+    } catch (err) {
+      alert('Clipboard not available. Select the code and copy manually.');
+    }
+  });
+
+  // simple nav search: filters anchor list by text
+  const search = document.getElementById('navSearch');
+  const list = document.getElementById('navList');
+  const items = Array.from(list.querySelectorAll('li'));
+  search.addEventListener('input', () => {
+    const q = search.value.trim().toLowerCase();
+    items.forEach(li => {
+      const a = li.querySelector('a');
+      const t = (a?.innerText || '').toLowerCase();
+      li.style.display = (!q || t.includes(q)) ? '' : 'none';
+    });
+  });
+</script>
+</body>
+</html>
