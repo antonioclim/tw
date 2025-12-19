@@ -1,0 +1,28 @@
+{
+  "name": "s13v1-primereact-redux-books",
+  "version": "0.3.0",
+  "private": true,
+  "dependencies": {
+    "primereact": "^10.9.0",
+    "primeicons": "^7.0.0",
+    "primeflex": "^3.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.1.3",
+    "react-transition-group": "^4.4.5",
+    "redux": "^4.2.1",
+    "redux-thunk": "^2.4.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "vite": "^5.0.0"
+  },
+  "scripts": {
+    "start": "vite --port 3001 --strictPort",
+    "dev": "vite --port 3001 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --port 3001 --strictPort",
+    "start:server": "npm --prefix server start",
+    "setup": "npm install && npm --prefix server install"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "s13-nextlab-suite",
+  "version": "2.0.0",
+  "private": true,
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "scripts": {
+    "setup": "npm install",
+    "start": "npm --prefix apps/dashboard start",
+    "start:dashboard": "npm --prefix apps/dashboard start",
+    "start:pas1": "concurrently -k -n DASH,API1,APP1 -c auto \"npm --prefix apps/dashboard start\" \"npm --prefix apps/step1/server start\" \"npm --prefix apps/step1 start\"",
+    "start:pas2": "concurrently -k -n DASH,API2,APP2 -c auto \"npm --prefix apps/dashboard start\" \"npm --prefix apps/step2/server start\" \"npm --prefix apps/step2 start\"",
+    "start:pas3": "concurrently -k -n DASH,API3,APP3 -c auto \"npm --prefix apps/dashboard start\" \"npm --prefix apps/step3/server start\" \"npm --prefix apps/step3 start\"",
+    "start:pas4": "concurrently -k -n DASH,API4,APP4 -c auto \"npm --prefix apps/dashboard start\" \"npm --prefix apps/step4/server start\" \"npm --prefix apps/step4 start\"",
+    "start:all": "concurrently -k -n DASH,API1,APP1,API2,APP2,API3,APP3,API4,APP4 -c auto \"npm --prefix apps/dashboard start\" \"npm --prefix apps/step1/server start\" \"npm --prefix apps/step1 start\" \"npm --prefix apps/step2/server start\" \"npm --prefix apps/step2 start\" \"npm --prefix apps/step3/server start\" \"npm --prefix apps/step3 start\" \"npm --prefix apps/step4/server start\" \"npm --prefix apps/step4 start\"",
+    "setup:apps": "npm --prefix apps/dashboard install && npm --prefix apps/step1 run setup && npm --prefix apps/step2 run setup && npm --prefix apps/step3 run setup && npm --prefix apps/step4 run setup",
+    "postinstall": "npm run setup:apps"
+  }
+}

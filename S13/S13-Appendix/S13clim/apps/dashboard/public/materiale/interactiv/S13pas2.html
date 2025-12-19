@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminar React - Pasul 2: Paginare și Filtrare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .code-block { background-color: #1e293b; color: #e2e8f0; font-family: 'Courier New', monospace; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
+        .keyword { color: #c678dd; }
+        .prop { color: #d19a66; }
+        .string { color: #98c379; }
+        .component { color: #e06c75; }
+        .comment { color: #7f848e; font-style: italic; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        .slide-section {
+            scroll-margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+        .slide-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+    <!-- Chosen Palette: Slate & Indigo - Professional, Academic, Clean -->
+    <!-- Application Structure Plan: 
+         1. Header: Context (ASE/CSIE/Web Tech).
+         2. Recap Module: Summary of Step 1 + Pro/Con Grid.
+         3. Concept Visualization: Interactive "Fake" DataGrid to demonstrate logic vs. props.
+         4. Implementation Guide: Specific code instructions for the Kit.
+         5. Analysis: Chart comparing complexity.
+         6. Footer: Next steps.
+         Rationale: Logic flow from "What we know" -> "How it works conceptually" -> "How to code it".
+    -->
+    <!-- Visualization & Content Choices:
+         - Concept Visualization: Interactive HTML Table + JS Logic. Goal: Show students what logic the library handles for them.
+         - Complexity Chart: Bar Chart. Goal: Visually demonstrate the "Why" of using libraries (Efficiency).
+         - Code Snippets: Pre-formatted text blocks. Goal: Direct application to the student's lab kit.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="text-slate-800">
+
+    <!-- Navigation / Progress -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm border-b border-slate-200">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="bg-indigo-600 text-white font-bold px-2 py-1 rounded text-xs">TW</span>
+                <span class="font-semibold text-slate-700">Seminar 13: Componente Externe</span>
+            </div>
+            <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-500">
+                <a href="#recap" class="hover:text-indigo-600 transition">Recapitulare Pas 1</a>
+                <a href="#concept" class="hover:text-indigo-600 transition">Concept: Paginare & Filtrare</a>
+                <a href="#implementation" class="hover:text-indigo-600 transition">Implementare (Cod)</a>
+                <a href="#analysis" class="hover:text-indigo-600 transition">Analiză</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-white border-b border-slate-200 py-12">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <p class="text-indigo-600 font-bold uppercase tracking-wide text-xs mb-2">ASE București • Facultatea CSIE • Tehnologii Web</p>
+            <h1 class="text-3xl md:text-5xl font-bold text-slate-900 mb-4">Pasul 2: Funcționalități Standard</h1>
+            <p class="text-xl text-slate-600 mb-8">Paginare Declarativă și Filtrare pe Coloană cu MUI DataGrid</p>
+            <div class="inline-flex items-center bg-slate-100 rounded-full px-4 py-2 text-sm text-slate-700 border border-slate-200">
+                <span class="mr-2">🎯 Obiectiv:</span> Transformarea tabelelor statice în instrumente interactive de analiză
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-10 space-y-16">
+
+        <!-- SECTION 1: RECAP -->
+        <section id="recap" class="slide-section bg-white rounded-xl p-8 border border-slate-200 shadow-sm">
+            <div class="mb-6 border-l-4 border-indigo-500 pl-4">
+                <h2 class="text-2xl font-bold text-slate-800">1. Recapitulare Pasul 1</h2>
+                <p class="text-slate-500 mt-1">Integrare Componente Externe & Căutare Globală</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-6">
+                <div>
+                    <p class="mb-4 leading-relaxed">
+                        În prima parte a seminarului, am învățat cum să instalăm și să instanțiem o componentă complexă (DataGrid) în ecosistemul React. Am implementat o filtrare <strong>manuală</strong> (imperativă) la nivel de sursă de date.
+                    </p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Instalare pachet `npm install @mui/x-data-grid`</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Definirea coloanelor (`columns`) și a rândurilor (`rows`)</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Renderizarea componentei `<DataGrid />`</li>
+                    </ul>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <h3 class="font-bold text-slate-700 mb-3 text-sm uppercase">Analiză Critică: Componente Externe</h3>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <span class="text-green-600 font-bold block mb-1">PRO</span>
+                            <ul class="list-disc list-inside text-slate-600 space-y-1">
+                                <li>Viteză de dezvoltare</li>
+                                <li>Design consistent (Material Design)</li>
+                                <li>Funcționalități complexe "out of the box"</li>
+                                <li>Accesibilitate inclusă</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <span class="text-red-500 font-bold block mb-1">CONTRA</span>
+                            <ul class="list-disc list-inside text-slate-600 space-y-1">
+                                <li>Dimensiunea pachetului (Bundle size)</li>
+                                <li>Dificultate la customizare extremă</li>
+                                <li>Dependență de un ecosistem extern</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: CONCEPTUAL INTERACTIVE DEMO -->
+        <section id="concept" class="slide-section bg-white rounded-xl p-8 border border-slate-200 shadow-sm">
+            <div class="mb-6 border-l-4 border-blue-500 pl-4">
+                <h2 class="text-2xl font-bold text-slate-800">2. Concept: Paginare & Filtrare</h2>
+                <p class="text-slate-500 mt-1">Cum funcționează "sub capotă" vs. Abordarea Declarativă</p>
+            </div>
+
+            <p class="mb-6 text-slate-600">
+                Înainte de a scrie codul în React, să înțelegem ce face componenta DataGrid pentru noi automat. 
+                Mai jos este o simulare interactivă. Încercați să schimbați pagina și să filtrați.
+            </p>
+
+            <!-- Simulation Controller -->
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-6 mb-6">
+                <div class="grid md:grid-cols-3 gap-6 mb-4">
+                    <!-- Pagination Control -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Paginare (Page Size)</label>
+                        <select id="pageSizeSim" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                            <option value="3">3 rânduri / pagină</option>
+                            <option value="5" selected>5 rânduri / pagină</option>
+                            <option value="10">10 rânduri / pagină</option>
+                        </select>
+                    </div>
+                    <!-- Filter Control -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Filtrare Coloană (Nume)</label>
+                        <input type="text" id="filterSim" placeholder="Conține..." class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <!-- Pagination Logic Indicator -->
+                    <div class="bg-white p-3 rounded border border-slate-200 flex flex-col justify-center">
+                        <div class="text-xs text-slate-400">Total Înregistrări: <span id="totalCount" class="text-slate-800 font-bold">0</span></div>
+                        <div class="text-xs text-slate-400">Pagini Totale: <span id="totalPages" class="text-slate-800 font-bold">0</span></div>
+                    </div>
+                </div>
+
+                <!-- Simulated Table -->
+                <div class="overflow-x-auto rounded border border-slate-200 bg-white">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-slate-100 text-slate-600 uppercase font-bold border-b border-slate-200">
+                            <tr>
+                                <th class="px-4 py-3">ID</th>
+                                <th class="px-4 py-3">Student (Nume)</th>
+                                <th class="px-4 py-3">Grupa</th>
+                                <th class="px-4 py-3">Notă</th>
+                            </tr>
+                        </thead>
+                        <tbody id="simTableBody" class="divide-y divide-slate-100">
+                            <!-- JS Generated Rows -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination Buttons -->
+                <div class="flex justify-between items-center mt-4">
+                    <button id="prevBtn" class="px-3 py-1 bg-white border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 text-sm">Anterior</button>
+                    <span id="pageIndicator" class="text-sm font-medium text-slate-600">Pagina 1</span>
+                    <button id="nextBtn" class="px-3 py-1 bg-white border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 text-sm">Următor</button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 text-sm">
+                <div class="bg-blue-50 p-4 rounded text-blue-800">
+                    <h4 class="font-bold mb-2">Abordarea Imperativă (Manuală)</h4>
+                    <p>Dacă nu am folosi DataGrid, ar trebui să scriem manual logica JavaScript pentru:</p>
+                    <code class="block mt-2 bg-blue-100 p-2 rounded text-xs">
+                        filtered = data.filter(...)<br>
+                        sliced = filtered.slice(start, end)<br>
+                        totalPages = Math.ceil(...)
+                    </code>
+                </div>
+                <div class="bg-green-50 p-4 rounded text-green-800">
+                    <h4 class="font-bold mb-2">Abordarea Declarativă (React + DataGrid)</h4>
+                    <p>Cu DataGrid, doar <strong>declarăm</strong> intenția. Componenta calculează automat tot ce vedeți în simularea de mai sus.</p>
+                    <code class="block mt-2 bg-green-100 p-2 rounded text-xs">
+                        &lt;DataGrid pageSizeOptions={[5, 10]} /&gt;
+                    </code>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: IMPLEMENTATION (THE LAB KIT) -->
+        <section id="implementation" class="slide-section bg-white rounded-xl p-8 border border-slate-200 shadow-sm border-t-4 border-t-indigo-600">
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">3. Implementare în Kit (S13nextlab)</h2>
+            <p class="text-slate-600 mb-6">Urmăriți acești pași pentru a modifica fișierul principal din proiectul React (probabil <code>App.js</code> sau componenta care randează tabelul).</p>
+
+            <!-- Step A: Pagination -->
+            <div class="mb-10">
+                <h3 class="flex items-center text-lg font-bold text-slate-700 mb-4">
+                    <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">A</span>
+                    Configurarea Paginării
+                </h3>
+                <p class="mb-4 text-slate-600 text-sm">
+                    În loc să gestionăm noi starea paginii, transmitem prop-ul <code>pageSizeOptions</code> și un <code>initialState</code>.
+                </p>
+                
+                <div class="code-block text-sm">
+<span class="component">&lt;DataGrid</span>
+  <span class="prop">rows</span>={studentRows}
+  <span class="prop">columns</span>={studentColumns}
+  
+  <span class="comment">// 1. Activare opțiuni paginare (Dropdown-ul din footer)</span>
+  <span class="prop">pageSizeOptions</span>={[<span class="string">5</span>, <span class="string">10</span>, <span class="string">25</span>]}
+  
+  <span class="comment">// 2. Setare stare inițială (Pagina 0, 5 rânduri per pagină)</span>
+  <span class="prop">initialState</span>={{
+    pagination: { 
+      paginationModel: { <span class="prop">pageSize</span>: <span class="string">5</span> } 
+    },
+  }}
+  
+  <span class="comment">// Opțional: dezactivare selecție rânduri dacă nu e necesară</span>
+  <span class="prop">disableRowSelectionOnClick</span>
+<span class="component">/&gt;</span>
+                </div>
+            </div>
+
+            <!-- Step B: Filtering -->
+            <div>
+                <h3 class="flex items-center text-lg font-bold text-slate-700 mb-4">
+                    <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">B</span>
+                    Filtrarea Avansată (Nativă)
+                </h3>
+                <p class="mb-4 text-slate-600 text-sm">
+                    Spre deosebire de câmpul de căutare din Pasul 1 (care filtra toată lista), filtrele native DataGrid se activează automat pe fiecare coloană (cele trei puncte verticale din header-ul coloanei).
+                </p>
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                    <p class="text-sm text-yellow-800">
+                        <strong>Notă importantă:</strong> Nu trebuie să scrieți cod suplimentar pentru funcționalitatea de bază! Prin simpla utilizare a componentei <code>DataGrid</code>, primiți acces la filtre de tip "Contains", "Equals", "Starts with" specifice pentru tipul de date definit în <code>columns</code> (string, number, date).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: ANALYSIS -->
+        <section id="analysis" class="slide-section bg-white rounded-xl p-8 border border-slate-200 shadow-sm">
+            <div class="mb-6 border-l-4 border-purple-500 pl-4">
+                <h2 class="text-2xl font-bold text-slate-800">4. Analiză: De ce folosim acest pattern?</h2>
+                <p class="text-slate-500 mt-1">Eficiența dezvoltării vs. Complexitate</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="chart-container">
+                    <canvas id="complexityChart"></canvas>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-slate-700 mb-3">Concluzii Seminar</h3>
+                    <ul class="space-y-4 text-slate-600">
+                        <li class="flex items-start">
+                            <span class="text-purple-600 font-bold mr-2">1.</span>
+                            <span><strong>Modularitate:</strong> DataGrid acționează ca o unitate autonomă. Nu poluează componenta părinte (App.js) cu logică de sortare/paginare.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-purple-600 font-bold mr-2">2.</span>
+                            <span><strong>User Experience (UX):</strong> Utilizatorii primesc unelte puternice (filtre complexe) fără efort suplimentar din partea programatorului.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-purple-600 font-bold mr-2">3.</span>
+                            <span><strong>Mentenanță:</strong> Codul este mai curat și mai ușor de întreținut ("Declarative" vs "Imperative").</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-400 py-8 mt-12">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <p class="mb-2">Tehnologii Web • Seminar 13</p>
+            <p class="text-sm">Pentru Pasul 3, vom discuta despre stilizare și exportul datelor.</p>
+            <div class="mt-4 text-xs text-slate-500">
+                Generat pentru suport didactic @ ASE CSIE
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- 1. DATA SIMULATION ---
+        const studentsData = [
+            { id: 1, name: "Popescu Andrei", group: "1045", grade: 9.50 },
+            { id: 2, name: "Ionescu Maria", group: "1045", grade: 10.00 },
+            { id: 3, name: "Georgescu Vlad", group: "1046", grade: 8.25 },
+            { id: 4, name: "Dumitrescu Elena", group: "1046", grade: 9.75 },
+            { id: 5, name: "Stan Mihai", group: "1047", grade: 7.50 },
+            { id: 6, name: "Radu Ana", group: "1047", grade: 10.00 },
+            { id: 7, name: "Toma Alexandru", group: "1045", grade: 6.80 },
+            { id: 8, name: "Nistor Ioana", group: "1048", grade: 9.20 },
+            { id: 9, name: "Diaconu George", group: "1048", grade: 8.50 },
+            { id: 10, name: "Florea Cristiana", group: "1046", grade: 9.00 },
+            { id: 11, name: "Marin Ionuț", group: "1047", grade: 5.50 },
+            { id: 12, name: "Voinea Laura", group: "1045", grade: 9.80 },
+        ];
+
+        let state = {
+            currentPage: 1,
+            pageSize: 5,
+            filterText: ""
+        };
+
+        // --- 2. DOM ELEMENTS ---
+        const tableBody = document.getElementById('simTableBody');
+        const pageSizeSelect = document.getElementById('pageSizeSim');
+        const filterInput = document.getElementById('filterSim');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageIndicator = document.getElementById('pageIndicator');
+        const totalCountEl = document.getElementById('totalCount');
+        const totalPagesEl = document.getElementById('totalPages');
+
+        // --- 3. RENDER FUNCTION ---
+        function renderTable() {
+            // Filter logic
+            const filteredData = studentsData.filter(student => 
+                student.name.toLowerCase().includes(state.filterText.toLowerCase())
+            );
+
+            // Pagination Logic
+            const totalItems = filteredData.length;
+            const totalPages = Math.ceil(totalItems / state.pageSize);
+            
+            // Adjust current page if out of bounds after filtering
+            if (state.currentPage > totalPages && totalPages > 0) {
+                state.currentPage = totalPages;
+            }
+            if (state.currentPage < 1) state.currentPage = 1;
+
+            const startIndex = (state.currentPage - 1) * state.pageSize;
+            const endIndex = startIndex + state.pageSize;
+            const pageData = filteredData.slice(startIndex, endIndex);
+
+            // DOM Update
+            tableBody.innerHTML = '';
+            
+            if(pageData.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="4" class="px-4 py-3 text-center text-slate-400">Niciun rezultat găsit.</td></tr>`;
+            } else {
+                pageData.forEach(student => {
+                    const row = document.createElement('tr');
+                    row.className = "hover:bg-slate-50 transition";
+                    row.innerHTML = `
+                        <td class="px-4 py-3 font-mono text-xs text-slate-500">${student.id}</td>
+                        <td class="px-4 py-3 font-medium text-slate-700">${student.name}</td>
+                        <td class="px-4 py-3 text-slate-600">${student.group}</td>
+                        <td class="px-4 py-3 font-bold ${student.grade >= 9 ? 'text-green-600' : 'text-slate-600'}">${student.grade.toFixed(2)}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+
+            // Update Controls
+            totalCountEl.textContent = totalItems;
+            totalPagesEl.textContent = totalPages;
+            pageIndicator.textContent = totalPages > 0 ? `Pagina ${state.currentPage} din ${totalPages}` : "Pagina 0";
+            
+            prevBtn.disabled = state.currentPage <= 1;
+            nextBtn.disabled = state.currentPage >= totalPages || totalPages === 0;
+        }
+
+        // --- 4. EVENT LISTENERS ---
+        pageSizeSelect.addEventListener('change', (e) => {
+            state.pageSize = parseInt(e.target.value);
+            state.currentPage = 1; // Reset to first page on size change
+            renderTable();
+        });
+
+        filterInput.addEventListener('input', (e) => {
+            state.filterText = e.target.value;
+            state.currentPage = 1; // Reset to first page on filter
+            renderTable();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (state.currentPage > 1) {
+                state.currentPage--;
+                renderTable();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            const filteredLen = studentsData.filter(s => s.name.toLowerCase().includes(state.filterText.toLowerCase())).length;
+            const maxPage = Math.ceil(filteredLen / state.pageSize);
+            if (state.currentPage < maxPage) {
+                state.currentPage++;
+                renderTable();
+            }
+        });
+
+        // Initial Render
+        renderTable();
+
+        // --- 5. CHART.JS INITIALIZATION ---
+        const ctx = document.getElementById('complexityChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Implementare Manuală', 'Cu DataGrid (Declarativ)'],
+                datasets: [{
+                    label: 'Linii de cod necesare (estimativ)',
+                    data: [85, 15], // Arbitrary but representative values
+                    backgroundColor: [
+                        'rgba(148, 163, 184, 0.7)', // Slate 400
+                        'rgba(79, 70, 229, 0.7)'  // Indigo 600
+                    ],
+                    borderColor: [
+                        'rgba(148, 163, 184, 1)',
+                        'rgba(79, 70, 229, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Comparativ: Volum de muncă pentru Paginare+Filtrare',
+                        font: { family: "'Inter', sans-serif", size: 14 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Linii de Cod' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

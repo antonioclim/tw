@@ -1,0 +1,424 @@
+<!-- Chosen Palette: Warm Neutrals (Background: #fdfbf7, Surface: #ffffff, Text: #2d3748, Accent: #d97706 (Amber/Gold for ASE vibe), Secondary: #64748b) -->
+<!-- Application Structure Plan: The app follows a linear educational flow ("Scrollytelling" style but contained). 
+     1. Context Header: Sets the academic scene.
+     2. "The Sorting Paradox" (Interactive Dashboard): Allows students to experience the error of string sorting on numbers immediately. This justifies the technical requirement.
+     3. "Implementation in Kit" (Code & Logic): Direct instruction on modifying the column definition.
+     4. "The Sorting Lifecycle" (Interactive State): Explains the user interaction flow (Asc->Desc->Reset).
+     5. "Recap & Synthesis" (Grid Layout): Structured summary of learnings (Pro/Con) as requested.
+     Why? This structure moves from "Problem" -> "Solution" -> "Deep Dive" -> "Summary", which is optimal for a lab seminar. -->
+<!-- Visualization & Content Choices: 
+     1. Chart.js Bar Chart: To visualize the dataset (Pages). Goal: Show the visual chaos of lexicographical sorting vs. the order of numerical sorting. Interaction: Toggle button.
+     2. CSS/HTML Flowchart: To show the Asc/Desc cycle. Goal: Inform about the 3-state logic. Interaction: Hover/Click to highlight states. NO SVG/Mermaid used.
+     3. Code Blocks: Styled with Tailwind to look like an IDE. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminar React: Componente Externe - Pasul 3</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts (Inter for UI, Fira Code for code) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfbf7; /* Warm neutral background */
+            color: #1f2937;
+        }
+        .font-code {
+            font-family: 'Fira Code', monospace;
+        }
+        .chart-container {
+            position: relative; 
+            width: 100%; 
+            max-width: 600px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 300px; 
+            max-height: 400px;
+        }
+        @media (min-width: 768px) { 
+            .chart-container { 
+                height: 350px; 
+            } 
+        }
+        /* Custom highlight classes for interaction */
+        .highlight-code {
+            background-color: #fef3c7; /* Amber 100 */
+            border-left: 4px solid #d97706;
+            transition: all 0.3s ease;
+        }
+        .step-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header / Academic Context -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex flex-col">
+                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">ASE București • CSIE • Tehnologii Web</span>
+                <h1 class="text-lg md:text-xl font-bold text-gray-800">Seminar: Componente Externe în React</h1>
+            </div>
+            <div class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-bold border border-amber-200">
+                Pasul 3: Sortarea
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+
+        <!-- Intro Section -->
+        <section class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Pasul 3: Asigurarea Integrității Datelor prin Sortare</h2>
+            <p class="text-gray-600 leading-relaxed mb-6">
+                În pașii anteriori, am reușit să afișăm datele într-un tabel (DataGrid). Totuși, un tabel devine un instrument analitic puternic doar atunci când utilizatorul poate organiza informația. 
+                În acest pas, ne concentrăm pe transformarea afișării statice într-una dinamică, rezolvând o problemă fundamentală a JavaScript: diferența dintre sortarea lexicografică (șiruri) și cea numerică.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div class="text-amber-600 font-bold mb-1">Obiectiv</div>
+                    <p class="text-sm text-gray-600">Implementarea sortării corecte pe coloane numerice.</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div class="text-amber-600 font-bold mb-1">Fișier Tinta</div>
+                    <p class="text-sm text-gray-600 font-code">UserList.js (sau echivalent)</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div class="text-amber-600 font-bold mb-1">Proprietate Cheie</div>
+                    <p class="text-sm text-gray-600 font-code">type: 'number'</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Concept: The Sorting Paradox -->
+        <section>
+            <div class="mb-6">
+                <h3 class="text-xl font-bold text-gray-800">3.1 & 3.2 Problema: Lexicografic vs. Numeric</h3>
+                <p class="text-gray-600 mt-2">
+                    În mod implicit, DataGrid tratează conținutul ca text. Analizați simularea de mai jos pentru a înțelege de ce acest lucru este critic pentru coloana "Pages" (Pagini).
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Visualizer -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <div class="flex justify-between items-center mb-6">
+                        <h4 class="font-bold text-gray-700">Simulare Sortare</h4>
+                        <div class="flex space-x-2 bg-gray-100 p-1 rounded-lg">
+                            <button onclick="updateChart('string')" id="btnString" class="px-4 py-1.5 text-sm font-medium rounded-md bg-white text-gray-800 shadow-sm transition-all">Sortare String (Implicit)</button>
+                            <button onclick="updateChart('number')" id="btnNumber" class="px-4 py-1.5 text-sm font-medium rounded-md text-gray-500 hover:text-gray-800 transition-all">Sortare Numerică</button>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="sortingChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center text-xs text-gray-400">
+                        Datele reprezintă numărul de pagini ale cărților.
+                    </div>
+                </div>
+
+                <!-- Contextual Analysis -->
+                <div class="flex flex-col justify-center space-y-6">
+                    <div id="explanation-string" class="bg-red-50 p-5 rounded-lg border-l-4 border-red-500 transition-opacity duration-500">
+                        <h5 class="font-bold text-red-800 flex items-center mb-2">
+                            <span class="text-xl mr-2">⚠️</span> Sortarea Lexicografică (Default)
+                        </h5>
+                        <p class="text-sm text-red-800 mb-3">
+                            Calculatorul compară caracter cu caracter, de la stânga la dreapta.
+                        </p>
+                        <div class="font-code text-sm bg-white p-3 rounded border border-red-100 text-gray-700">
+                            "100" vine înainte de "20"<br>
+                            De ce? '1' < '2'
+                        </div>
+                        <p class="text-xs text-red-600 mt-3 italic">Aceasta este comportarea implicită a DataGrid dacă nu specificăm tipul.</p>
+                    </div>
+
+                    <div id="explanation-number" class="hidden bg-green-50 p-5 rounded-lg border-l-4 border-green-500 transition-opacity duration-500">
+                        <h5 class="font-bold text-green-800 flex items-center mb-2">
+                            <span class="text-xl mr-2">✅</span> Sortarea Numerică (Semantică)
+                        </h5>
+                        <p class="text-sm text-green-800 mb-3">
+                            Calculatorul compară valoarea numerică a întregului conținut.
+                        </p>
+                        <div class="font-code text-sm bg-white p-3 rounded border border-green-100 text-gray-700">
+                            20 vine înainte de 100<br>
+                            De ce? 20 < 100 (matematic)
+                        </div>
+                        <p class="text-xs text-green-600 mt-3 italic">Aceasta necesită intervenția noastră în cod.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementation Guide -->
+        <section class="bg-slate-900 rounded-xl overflow-hidden shadow-lg text-white">
+            <div class="bg-slate-800 px-6 py-4 border-b border-slate-700 flex justify-between items-center">
+                <h3 class="font-bold text-lg">Implementare în Laborator</h3>
+                <span class="text-xs text-slate-400 font-code">fișier: src/components/UserList.js</span>
+            </div>
+            <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-amber-400 font-bold mb-3 uppercase text-xs tracking-wider">Instrucțiuni</h4>
+                    <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                        Pentru a activa algoritmul de comparație numerică, trebuie să adăugăm proprietatea <code class="bg-slate-700 px-1 rounded text-amber-300">type: 'number'</code> în definiția coloanei care conține date numerice (ex: numărul de pagini, ID, preț).
+                    </p>
+                    <ul class="space-y-3 text-sm text-slate-300">
+                        <li class="flex items-start">
+                            <span class="text-amber-500 mr-2">1.</span>
+                            Identificați vectorul <span class="font-code text-slate-100 mx-1">columns</span>.
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-amber-500 mr-2">2.</span>
+                            Găsiți obiectul corespunzător câmpului <span class="font-code text-slate-100 mx-1">'pages'</span>.
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-amber-500 mr-2">3.</span>
+                            Introduceți proprietatea de tip.
+                        </li>
+                    </ul>
+                </div>
+                <div class="relative group">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-amber-500 to-amber-300 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                    <div class="relative bg-slate-950 p-4 rounded-lg font-code text-sm overflow-x-auto">
+<pre><code class="language-javascript">const columns = [
+  { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'author', headerName: 'Autor', width: 130 },
+  { 
+    field: 'pages', 
+    headerName: 'Pagini', 
+    width: 100,
+    // ADĂUGAȚI LINIA DE MAI JOS
+    <span class="text-amber-400 font-bold">type: 'number',</span> 
+  },
+  // ... alte coloane
+];</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sorting Cycle Logic -->
+        <section>
+            <div class="mb-6">
+                <h3 class="text-xl font-bold text-gray-800">3.3 Ciclul de Sortare</h3>
+                <p class="text-gray-600 mt-2">DataGrid gestionează starea sortării printr-un ciclu tri-stare. Faceți click pe carduri pentru a înțelege fluxul.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="step-card bg-white p-6 rounded-lg border-l-4 border-gray-300 shadow-sm cursor-pointer hover:bg-gray-50">
+                    <div class="text-3xl mb-2 text-gray-400">1. Unsorted</div>
+                    <div class="text-sm text-gray-500">Starea inițială. Datele sunt afișate în ordinea în care au venit de la server (API).</div>
+                    <div class="mt-3 text-xs font-code bg-gray-100 inline-block px-2 py-1 rounded">sortModel: []</div>
+                </div>
+
+                <div class="step-card bg-white p-6 rounded-lg border-l-4 border-amber-500 shadow-sm cursor-pointer hover:bg-amber-50">
+                    <div class="text-3xl mb-2 text-amber-500">2. Ascending</div>
+                    <div class="text-sm text-gray-600">Primul click pe antet. Săgeata indică în sus (↑). Cel mai mic element primul.</div>
+                    <div class="mt-3 text-xs font-code bg-amber-100 text-amber-800 inline-block px-2 py-1 rounded">sort: 'asc'</div>
+                </div>
+
+                <div class="step-card bg-white p-6 rounded-lg border-l-4 border-amber-600 shadow-sm cursor-pointer hover:bg-amber-50">
+                    <div class="text-3xl mb-2 text-amber-600">3. Descending</div>
+                    <div class="text-sm text-gray-600">Al doilea click. Săgeata indică în jos (↓). Cel mai mare element primul.</div>
+                    <div class="mt-3 text-xs font-code bg-amber-100 text-amber-800 inline-block px-2 py-1 rounded">sort: 'desc'</div>
+                </div>
+            </div>
+            <p class="mt-4 text-xs text-gray-400 text-center">Notă: Un al treilea click resetează de obicei la starea 'Unsorted', în funcție de configurația <span class="font-code">sortingOrder</span>.</p>
+        </section>
+
+        <!-- Recap & Analysis Dashboard -->
+        <section class="border-t border-gray-200 pt-10">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Recapitulare și Analiză</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- What we learned -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h4 class="font-bold text-gray-800 mb-4 border-b pb-2">Ce am învățat în Pasul 3?</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 h-5 w-5 text-green-500 mr-2">✓</span>
+                            <span class="text-sm text-gray-600"><strong>Out-of-the-box:</strong> DataGrid oferă funcționalitate de sortare nativă, fără cod complex de manipulare a vectorilor.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 h-5 w-5 text-green-500 mr-2">✓</span>
+                            <span class="text-sm text-gray-600"><strong>Tipizarea datelor:</strong> Definirea <code class="font-code text-xs bg-gray-100 px-1">type: 'number'</code> este critică pentru corectitudinea matematică.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 h-5 w-5 text-green-500 mr-2">✓</span>
+                            <span class="text-sm text-gray-600"><strong>UX Standard:</strong> Utilizatorii se așteaptă ca click-ul pe antet să sorteze; nerespectarea acestei convenții scade calitatea aplicației.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Pro vs Con Analysis -->
+                <div class="grid grid-rows-2 gap-4">
+                    <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                        <h5 class="font-bold text-green-800 text-sm mb-2">PRO (Recomandări)</h5>
+                        <p class="text-xs text-green-700 leading-relaxed">
+                            Utilizați întotdeauna tipizarea explicită a coloanelor. Permite DataGrid-ului să optimizeze randarea și să aplice filtre specifice (ex: filtre de tip "mai mare decât" pentru numere, care nu apar pentru text).
+                        </p>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-100">
+                        <h5 class="font-bold text-amber-800 text-sm mb-2">CONTRA (Atenționări)</h5>
+                        <p class="text-xs text-amber-700 leading-relaxed">
+                            Sortarea pe client (ceea ce facem noi acum) funcționează doar pentru datele încărcate. Dacă aveți paginare server-side, sortarea trebuie gestionată diferit (prin apel API cu parametri de sortare), altfel veți sorta doar pagina curentă!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-50 border-t border-gray-200 py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="text-sm text-gray-500">© 2025 ASE București • Facultatea de Cibernetică, Statistică și Informatică Economică</p>
+            <p class="text-xs text-gray-400 mt-2">Material suport pentru seminarul de Tehnologii Web.</p>
+        </div>
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        // Data Configuration
+        const rawData = [
+            { label: 'Cartea A', pages: 5 },
+            { label: 'Cartea B', pages: 100 },
+            { label: 'Cartea C', pages: 2 },
+            { label: 'Cartea D', pages: 25 },
+            { label: 'Cartea E', pages: 10 }
+        ];
+
+        let currentChart = null;
+
+        // Logic for Sorting
+        function getSortedData(type) {
+            // Clone array to avoid mutating original
+            const data = [...rawData];
+            
+            if (type === 'string') {
+                // Lexicographical Sort (The Problem)
+                // "10" comes before "2" because "1" < "2"
+                data.sort((a, b) => a.pages.toString().localeCompare(b.pages.toString()));
+            } else {
+                // Numerical Sort (The Solution)
+                data.sort((a, b) => a.pages - b.pages);
+            }
+            return data;
+        }
+
+        // Render Chart
+        function initChart() {
+            const ctx = document.getElementById('sortingChart').getContext('2d');
+            
+            // Initial State: String Sort (The problem state)
+            const initialData = getSortedData('string');
+
+            currentChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: initialData.map(d => d.label),
+                    datasets: [{
+                        label: 'Număr Pagini',
+                        data: initialData.map(d => d.pages),
+                        backgroundColor: initialData.map(d => d.pages > 50 ? 'rgba(217, 119, 6, 0.7)' : 'rgba(203, 213, 225, 0.7)'),
+                        borderColor: initialData.map(d => d.pages > 50 ? 'rgba(180, 83, 9, 1)' : 'rgba(148, 163, 184, 1)'),
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 800
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f3f4f6' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Pagini: ${context.raw} (Tip: ${typeof context.raw === 'number' ? 'Number' : 'String'})`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update Chart & UI
+        function updateChart(type) {
+            const sortedData = getSortedData(type);
+            
+            // Update Data
+            currentChart.data.labels = sortedData.map(d => d.label);
+            currentChart.data.datasets[0].data = sortedData.map(d => d.pages);
+            
+            // Visual feedback for "Wrong" sort order in String mode
+            // We highlight big numbers that end up early in the list
+            if (type === 'string') {
+                currentChart.data.datasets[0].backgroundColor = sortedData.map((d, i) => {
+                     // Highlighting the visual dissonance: Big number (100) appearing early (index 1)
+                    if (d.pages === 100) return 'rgba(239, 68, 68, 0.6)'; // Red for error/warning
+                    return 'rgba(203, 213, 225, 0.7)';
+                });
+            } else {
+                // Nice orderly gradient or uniform color for correct sort
+                currentChart.data.datasets[0].backgroundColor = 'rgba(34, 197, 94, 0.6)'; // Green for success
+            }
+
+            currentChart.update();
+
+            // Toggle Buttons UI
+            const btnString = document.getElementById('btnString');
+            const btnNumber = document.getElementById('btnNumber');
+            const explString = document.getElementById('explanation-string');
+            const explNumber = document.getElementById('explanation-number');
+
+            if (type === 'string') {
+                btnString.className = "px-4 py-1.5 text-sm font-medium rounded-md bg-white text-gray-800 shadow-sm transition-all border border-gray-200";
+                btnNumber.className = "px-4 py-1.5 text-sm font-medium rounded-md text-gray-500 hover:text-gray-800 transition-all";
+                
+                explString.classList.remove('hidden');
+                explNumber.classList.add('hidden');
+            } else {
+                btnNumber.className = "px-4 py-1.5 text-sm font-medium rounded-md bg-white text-green-700 shadow-sm transition-all border border-gray-200";
+                btnString.className = "px-4 py-1.5 text-sm font-medium rounded-md text-gray-500 hover:text-gray-800 transition-all";
+
+                explString.classList.add('hidden');
+                explNumber.classList.remove('hidden');
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initChart);
+
+    </script>
+</body>
+</html>

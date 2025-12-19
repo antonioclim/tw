@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminar 13: Componente Externe & Redux | ASE CSIE</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Custom Animations and Utilities */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc; /* Slate 50 */
+            color: #334155; /* Slate 700 */
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid #3b82f6; /* Blue 500 */
+        }
+
+        .highlight-box {
+            transition: all 0.5s ease;
+        }
+
+        .flow-active {
+            background-color: #dbeafe !important; /* Blue 100 */
+            border-color: #2563eb !important; /* Blue 600 */
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.5);
+        }
+
+        .chart-container {
+            position: relative; 
+            width: 100%; 
+            max-width: 800px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 400px; 
+            max-height: 400px;
+        }
+
+        /* Simulating arrows without SVG */
+        .arrow-right::after {
+            content: '➔';
+            font-size: 1.5rem;
+            color: #94a3b8;
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .arrow-right::after {
+                content: '⬇';
+                display: block;
+                text-align: center;
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+    
+    <!-- Chosen Palette: Academic Blue & Slate (Minimalist, Professional) -->
+    <!-- Application Structure Plan: 
+         1. Header: Contextualizes the seminar (ASE, CSIE, Tehnologii Web).
+         2. Strategic Context: Explains 'Why External Components?' (Efficiency vs. Custom).
+         3. Visualization Analysis: Interactive Chart.js comparing library choices (derived from S13pas0.docx).
+         4. Redux Architecture Simulator: A vanilla JS interactive flow diagram. Users click 'Dispatch' to see the path UI -> Action -> Store.
+         5. Concepts & Best Practices: Tabbed content for definitions (Reducer, Store, Immutability).
+         6. Bibliography: Recommended reading.
+         Rationale: This structure moves from the 'Why' (Business/Strategy) to the 'How' (Architecture/Code), aiding retention through active simulation.
+    -->
+    <!-- Visualization & Content Choices:
+         - Comparison Bar Chart: Visualizes the decision matrix between Chart.js and Recharts (Performance, Ease, React-Native feel). Goal: Compare.
+         - Flow Simulator: Uses CSS/JS class switching to light up DOM elements. Goal: Process Understanding.
+         - NO SVG/Mermaid: All icons are Unicode or CSS shapes.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-slate-50">
+
+    <!-- Navigation / Header -->
+    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight">Tehnologii Web</h1>
+                <p class="text-slate-400 text-sm">Academia de Studii Economice • Facultatea CSIE</p>
+            </div>
+            <div class="mt-4 md:mt-0 text-right">
+                <span class="bg-blue-600 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide">Seminar 13</span>
+                <p class="text-sm font-medium mt-1">Componente Externe & Introducere în Redux</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="container mx-auto px-4 py-8 max-w-5xl">
+
+        <!-- Intro Section -->
+        <section class="mb-12 text-center">
+            <h2 class="text-3xl font-bold text-slate-800 mb-4">Arhitectura Aplicațiilor Moderne</h2>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                Bine ați venit la Seminarul 13. Astăzi facem tranziția de la componente React izolate la un ecosistem integrat. 
+                Vom explora utilizarea bibliotecilor externe pentru eficiență (charts, grids) și vom introduce disciplina gestionării stării globale prin Redux.
+            </p>
+        </section>
+
+        <!-- MODULE 1: External Components Strategy -->
+        <section class="section-card">
+            <div class="flex items-center mb-4">
+                <span class="text-3xl mr-3">🧩</span>
+                <h3 class="text-2xl font-bold text-slate-800">1. Strategia Componentelor Externe</h3>
+            </div>
+            
+            <p class="mb-6 text-slate-600">
+                În dezvoltarea profesională, nu "reinventăm roata" pentru probleme standardizate. Alegerea bibliotecilor externe este o decizie strategică de eficiență. 
+                Analizați mai jos comparația dintre implementarea manuală și utilizarea unei biblioteci.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-slate-100 p-5 rounded-lg border border-slate-200">
+                    <h4 class="font-bold text-slate-700 mb-3 border-b pb-2">🛠️ Implementare Manuală (Custom)</h4>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li>• Control absolut asupra codului.</li>
+                        <li>• <strong>Cost ridicat de timp</strong> (dezvoltare + testare).</li>
+                        <li>• Mentenanță dificilă pe termen lung.</li>
+                        <li>• Recomandat doar pentru funcționalități unice, de nișă.</li>
+                    </ul>
+                </div>
+                <div class="bg-blue-50 p-5 rounded-lg border border-blue-100">
+                    <h4 class="font-bold text-blue-800 mb-3 border-b border-blue-200 pb-2">📦 Biblioteci Externe (Ex. MUI, Chart.js)</h4>
+                    <ul class="space-y-2 text-sm text-blue-700">
+                        <li>• Soluții standardizate, mature și testate.</li>
+                        <li>• <strong>Focus pe Business Logic</strong>, nu pe UI de bază.</li>
+                        <li>• Comunitate largă și documentație.</li>
+                        <li>• Exemplu seminar: Afișarea graficelor și tabelelor complexe.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 2: Visualization Choice (Chart.js vs Recharts) -->
+        <section class="section-card">
+            <div class="flex items-center mb-4">
+                <span class="text-3xl mr-3">📊</span>
+                <h3 class="text-2xl font-bold text-slate-800">2. Analiza Comparativă: Chart.js vs. Recharts</h3>
+            </div>
+            
+            <p class="mb-6 text-slate-600">
+                Pentru acest seminar, am selectat <strong>Chart.js</strong>. Mai jos este o reprezentare vizuală a criteriilor de selecție analizate în documentația seminarului. 
+                Graficul este interactiv: dați click pe legendă pentru a filtra datele.
+            </p>
+
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-inner">
+                <div class="chart-container">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="mt-6 text-sm text-slate-500 bg-slate-50 p-4 rounded border border-slate-200">
+                <strong>Nota Bene:</strong> Deși <em>Recharts</em> este mai "React-native" (declarativ, bazat pe SVG), <em>Chart.js</em> (imperativ, bazat pe Canvas) a fost ales pentru acest laborator datorită simplității configurației și performanței superioare la redarea seturilor mari de date.
+            </div>
+        </section>
+
+        <!-- MODULE 3: Redux Architecture Simulator -->
+        <section class="section-card bg-gradient-to-br from-white to-blue-50">
+            <div class="flex items-center mb-4">
+                <span class="text-3xl mr-3">🔄</span>
+                <h3 class="text-2xl font-bold text-slate-800">3. Fluxul Redux: Simulator Interactiv</h3>
+            </div>
+
+            <p class="mb-6 text-slate-600">
+                Redux este un container de stare predictibil. Principiul central este fluxul unidirecțional al datelor. 
+                Apăsați butonul <strong>"Declanșează Acțiune"</strong> pentru a vizualiza ciclu de viață al unei actualizări de stare.
+            </p>
+
+            <!-- Interactive Flow Diagram -->
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 py-8 px-4 relative">
+                
+                <!-- Step 1: UI -->
+                <div id="step-ui" class="highlight-box w-full md:w-1/5 bg-white border-2 border-slate-300 p-4 rounded-lg text-center z-10">
+                    <div class="text-2xl mb-2">💻</div>
+                    <h4 class="font-bold text-slate-700">View / UI</h4>
+                    <p class="text-xs text-slate-500 mt-1">Componenta React inițiază un eveniment.</p>
+                </div>
+
+                <div class="arrow-right hidden md:block"></div>
+
+                <!-- Step 2: Action -->
+                <div id="step-action" class="highlight-box w-full md:w-1/5 bg-white border-2 border-slate-300 p-4 rounded-lg text-center z-10">
+                    <div class="text-2xl mb-2">⚡</div>
+                    <h4 class="font-bold text-slate-700">Action</h4>
+                    <p class="text-xs text-slate-500 mt-1">Obiect simplu: <br><code>{ type: 'INCREMENT' }</code></p>
+                </div>
+
+                <div class="arrow-right hidden md:block"></div>
+
+                <!-- Step 3: Reducer -->
+                <div id="step-reducer" class="highlight-box w-full md:w-1/5 bg-white border-2 border-slate-300 p-4 rounded-lg text-center z-10">
+                    <div class="text-2xl mb-2">⚙️</div>
+                    <h4 class="font-bold text-slate-700">Reducer</h4>
+                    <p class="text-xs text-slate-500 mt-1">Funcție pură.<br>(State Vechi + Action) = State Nou</p>
+                </div>
+
+                <div class="arrow-right hidden md:block"></div>
+
+                <!-- Step 4: Store -->
+                <div id="step-store" class="highlight-box w-full md:w-1/5 bg-white border-2 border-slate-300 p-4 rounded-lg text-center z-10">
+                    <div class="text-2xl mb-2">💾</div>
+                    <h4 class="font-bold text-slate-700">Store</h4>
+                    <p class="text-xs text-slate-500 mt-1">Single Source of Truth.<br>Notifică UI-ul.</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <button id="dispatchBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:-translate-y-1 active:scale-95">
+                    ▶ Declanșează Acțiune (Dispatch)
+                </button>
+                <p id="simulationStatus" class="mt-3 text-sm text-blue-600 font-medium opacity-0 transition-opacity">Așteptare...</p>
+            </div>
+        </section>
+
+        <!-- MODULE 4: Key Concepts Accordion -->
+        <section class="section-card">
+            <div class="flex items-center mb-6">
+                <span class="text-3xl mr-3">📚</span>
+                <h3 class="text-2xl font-bold text-slate-800">4. Concepte Fundamentale & Utilizare Kit</h3>
+            </div>
+
+            <div class="space-y-4" id="conceptsContainer">
+                <!-- Concept 1 -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <button class="w-full text-left px-6 py-4 bg-slate-50 hover:bg-slate-100 flex justify-between items-center transition" onclick="toggleAccordion('c1')">
+                        <span class="font-bold text-slate-700">Ce este "Store"-ul?</span>
+                        <span class="text-slate-400">▼</span>
+                    </button>
+                    <div id="c1" class="hidden px-6 py-4 bg-white text-slate-600 border-t border-slate-200">
+                        <p>Store-ul este <strong>unica sursă de adevăr</strong> (Single Source of Truth) a aplicației. Este un obiect JavaScript care conține întreaga stare a aplicației. În kit-ul de seminar, veți vedea configurarea acestuia în fișierul <code>store.js</code>.</p>
+                    </div>
+                </div>
+
+                <!-- Concept 2 -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <button class="w-full text-left px-6 py-4 bg-slate-50 hover:bg-slate-100 flex justify-between items-center transition" onclick="toggleAccordion('c2')">
+                        <span class="font-bold text-slate-700">Funcția Pură "Reducer"</span>
+                        <span class="text-slate-400">▼</span>
+                    </button>
+                    <div id="c2" class="hidden px-6 py-4 bg-white text-slate-600 border-t border-slate-200">
+                        <p>Un reducer este o funcție care <strong>calculează</strong> noua stare. Este matematică pură: nu face request-uri API, nu modifică variabile externe. <br><br><code>(Stare Curentă, Acțiune) => Stare Nouă</code><br><br>În Redux, <strong>NU modificăm</strong> (mutate) starea, ci o înlocuim cu una nouă.</p>
+                    </div>
+                </div>
+
+                <!-- Concept 3 -->
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <button class="w-full text-left px-6 py-4 bg-slate-50 hover:bg-slate-100 flex justify-between items-center transition" onclick="toggleAccordion('c3')">
+                        <span class="font-bold text-slate-700">Structura Kit-ului de Laborator</span>
+                        <span class="text-slate-400">▼</span>
+                    </button>
+                    <div id="c3" class="hidden px-6 py-4 bg-white text-slate-600 border-t border-slate-200">
+                        <p>Arhiva <code>S13clim.zip</code> conține un schelet de proiect configurat pentru a exersa aceste concepte. Veți găsi foldere separate pentru <code>actions</code>, <code>reducers</code> și componente UI. Scopul seminarului este să conectați aceste piese folosind hook-urile <code>useDispatch</code> și <code>useSelector</code>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer / Bibliography -->
+        <footer class="mt-12 border-t border-slate-200 pt-8 pb-12">
+            <h4 class="text-lg font-bold text-slate-800 mb-4">Bibliografie și Resurse Recomandate</h4>
+            <div class="grid md:grid-cols-2 gap-8 text-sm text-slate-600">
+                <ul>
+                    <li class="mb-2"><strong>[1] Redux Documentation.</strong> "Fundamentals & Principles". Disponibil online.</li>
+                    <li class="mb-2"><strong>[2] Banks, A. & Porcello, E. (2020).</strong> <em>Learning React: Modern Patterns for Developing React Apps</em>. O'Reilly Media.</li>
+                </ul>
+                <ul>
+                    <li class="mb-2"><strong>[3] Chart.js Docs.</strong> "Canvas rendering context vs SVG".</li>
+                    <li class="mb-2"><strong>[4] Materiale Curs/Seminar.</strong> S13pas0.docx & S13pas0RECAP.docx (ASE CSIE).</li>
+                </ul>
+            </div>
+            <div class="mt-8 text-center text-slate-400 text-xs">
+                &copy; 2025 ASE CSIE. Generated by Antonio CLIM for Web Technologies Seminar.
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Chart.js Implementation ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            
+            // Data derived from S13pas0.docx analysis
+            const comparisonData = {
+                labels: ['Performanță (Seturi mari)', 'Simplitate Implementare', 'Integrare "React-Native" (JSX)', 'Flexibilitate Custom'],
+                datasets: [
+                    {
+                        label: 'Chart.js (Canvas)',
+                        data: [9, 9, 4, 6], // High perf, High simplicity, Low Native feel
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)', // Blue 500
+                        borderColor: 'rgb(59, 130, 246)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Recharts (SVG)',
+                        data: [6, 7, 10, 9], // Lower perf for massive data, High Native feel, High Flex
+                        backgroundColor: 'rgba(148, 163, 184, 0.7)', // Slate 400
+                        borderColor: 'rgb(148, 163, 184)',
+                        borderWidth: 1
+                    }
+                ]
+            };
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: comparisonData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // Critical for Tailwind container compliance
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + '/10';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            title: {
+                                display: true,
+                                text: 'Scor (Estimativ)'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        // --- 2. Redux Flow Simulation Logic ---
+        const steps = ['step-ui', 'step-action', 'step-reducer', 'step-store'];
+        const statusText = document.getElementById('simulationStatus');
+        const dispatchBtn = document.getElementById('dispatchBtn');
+        let isAnimating = false;
+
+        dispatchBtn.addEventListener('click', () => {
+            if (isAnimating) return;
+            isAnimating = true;
+            dispatchBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            statusText.style.opacity = '1';
+            
+            runAnimationStep(0);
+        });
+
+        function runAnimationStep(index) {
+            // Reset previous step if strictly sequential highlighting is desired, 
+            // but keeping a trail looks better. We will clear all at the end.
+            
+            if (index >= steps.length) {
+                // Loop back to UI update
+                statusText.innerText = "Stare actualizată! UI-ul primește noile date.";
+                statusText.classList.add('text-green-600');
+                
+                // Flash the UI box again to show update
+                document.getElementById('step-ui').classList.add('flow-active');
+                
+                setTimeout(() => {
+                    resetAnimation();
+                }, 2000);
+                return;
+            }
+
+            const stepId = steps[index];
+            const el = document.getElementById(stepId);
+            
+            // Highlight current step
+            el.classList.add('flow-active');
+            
+            // Update status text based on step
+            switch(index) {
+                case 0: statusText.innerText = "1. Utilizatorul interacționează cu UI-ul..."; break;
+                case 1: statusText.innerText = "2. Se creează și trimite (Dispatch) o Acțiune..."; break;
+                case 2: statusText.innerText = "3. Reducer-ul calculează starea nouă (fără side-effects)..."; break;
+                case 3: statusText.innerText = "4. Store-ul salvează starea și notifică abonații..."; break;
+            }
+
+            // Next step delay
+            setTimeout(() => {
+                // Optional: Remove highlight from previous to show moving packet
+                // el.classList.remove('flow-active'); 
+                runAnimationStep(index + 1);
+            }, 1200);
+        }
+
+        function resetAnimation() {
+            steps.forEach(id => document.getElementById(id).classList.remove('flow-active'));
+            statusText.style.opacity = '0';
+            statusText.classList.remove('text-green-600');
+            statusText.innerText = "Așteptare...";
+            dispatchBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            isAnimating = false;
+        }
+
+        // --- 3. Accordion Logic ---
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+            } else {
+                content.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

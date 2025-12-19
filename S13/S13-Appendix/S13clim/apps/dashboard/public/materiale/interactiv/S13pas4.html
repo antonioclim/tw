@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminar React: Pasul 4 - Vizualizare & Interacțiune</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .code-block {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-size: 0.875rem;
+            border-left: 4px solid #3b82f6;
+        }
+        .step-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .step-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        /* ASE Colors inspiration */
+        .ase-blue { color: #003366; }
+        .bg-ase-blue { background-color: #003366; }
+    </style>
+    <!-- Chosen Palette: Academic Professional (Navy Blue, Slate Gray, Clean White, Subtle Blue Accents) -->
+    <!-- Application Structure Plan:
+         1. Header: Academic Context (ASE/CSIE).
+         2. Intro Section: High-level overview of Step 4.
+         3. Architecture Flow: Visual HTML diagram showing Data Flow (Unidirectional).
+         4. Key Concepts: Split into Registration, Aggregation, and Rendering.
+         5. Interactive Simulation: A working demo of the "reduce" logic and Chart.js rendering to prove the concept.
+         6. Kit Instructions: Specific guidance for S13nextlab.zip.
+         7. Recap: Pros/Cons analysis.
+    -->
+    <!-- Visualization & Content Choices:
+         - Flow Diagrams: HTML/Flexbox construction to avoid SVG/Mermaid.
+         - Charts: Chart.js (Pie) for the simulation, mirroring the lab requirement.
+         - Code: Pre-formatted text blocks with highlighting logic.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="antialiased">
+
+    <!-- Navigation / Header -->
+    <header class="bg-ase-blue text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center flex-wrap">
+            <div>
+                <h1 class="text-xl font-bold tracking-tight">Tehnologii Web</h1>
+                <p class="text-sm opacity-80">ASE București | Facultatea CSIE</p>
+            </div>
+            <div class="text-right hidden md:block">
+                <span class="bg-blue-800 px-3 py-1 rounded text-xs font-semibold uppercase tracking-wider">Seminar 13</span>
+                <p class="font-semibold text-sm mt-1">Componente Externe în React</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- Intro Section -->
+        <section id="intro" class="bg-white rounded-xl shadow p-6 border-l-4 border-blue-600">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Pasul 4: Vizualizarea Datelor și Interacțiunea</h2>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                Acest pas reprezintă etapa de sinteză a seminarului. Obiectivul este integrarea completă a componentelor UI externe (DataGrid, Modal și Grafice) într-un flux de lucru coerent.
+                Ne concentrăm pe transformarea datelor brute în informații vizuale, utilizând un <strong>flux de date unidirecțional</strong>.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-blue-900 mb-2">📦 1. Integrare</h3>
+                    <p class="text-sm text-blue-800">Utilizarea bibliotecilor <code>react-chartjs-2</code> și Material UI <code>Dialog</code>.</p>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-blue-900 mb-2">🔄 2. Agregare</h3>
+                    <p class="text-sm text-blue-800">Calculul dinamic al statisticilor folosind metode funcționale (<code>reduce</code>).</p>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-blue-900 mb-2">🎨 3. Randare</h3>
+                    <p class="text-sm text-blue-800">Afișarea condițională a graficelor într-o fereastră modală.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conceptual Architecture (Interactive Diagram) -->
+        <section id="architecture">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Arhitectura Fluxului de Date</h2>
+                <p class="text-gray-600 mt-2">Diagrama de mai jos ilustrează fluxul logic implementat în acest pas. Observați cum datele circulă de la interacțiunea utilizatorului până la vizualizare.</p>
+            </div>
+            
+            <div class="bg-slate-100 p-8 rounded-xl overflow-x-auto">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 min-w-[600px]">
+                    
+                    <!-- Node 1 -->
+                    <div class="flex flex-col items-center w-48 group cursor-pointer" onclick="highlightStep('step1')">
+                        <div class="w-full bg-white border-2 border-gray-300 p-4 rounded-lg shadow-sm text-center group-hover:border-blue-500 transition-colors">
+                            <span class="text-2xl">🖱️</span>
+                            <div class="font-bold mt-2">User Event</div>
+                            <div class="text-xs text-gray-500">Click "Statistici"</div>
+                        </div>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="text-3xl text-gray-400">➜</div>
+
+                    <!-- Node 2 -->
+                    <div class="flex flex-col items-center w-48 group cursor-pointer" onclick="highlightStep('step2')">
+                        <div class="w-full bg-white border-2 border-gray-300 p-4 rounded-lg shadow-sm text-center group-hover:border-blue-500 transition-colors">
+                            <span class="text-2xl">⚙️</span>
+                            <div class="font-bold mt-2">Data Aggregation</div>
+                            <div class="text-xs text-gray-500">Array.reduce()</div>
+                        </div>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="text-3xl text-gray-400">➜</div>
+
+                    <!-- Node 3 -->
+                    <div class="flex flex-col items-center w-48 group cursor-pointer" onclick="highlightStep('step3')">
+                        <div class="w-full bg-white border-2 border-gray-300 p-4 rounded-lg shadow-sm text-center group-hover:border-blue-500 transition-colors">
+                            <span class="text-2xl">💾</span>
+                            <div class="font-bold mt-2">State Update</div>
+                            <div class="text-xs text-gray-500">setStatsData(...)<br>setIsDialogOpen(true)</div>
+                        </div>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="text-3xl text-gray-400">➜</div>
+
+                    <!-- Node 4 -->
+                    <div class="flex flex-col items-center w-48 group cursor-pointer" onclick="highlightStep('step4')">
+                        <div class="w-full bg-white border-2 border-blue-500 p-4 rounded-lg shadow-md text-center ring-2 ring-blue-100">
+                            <span class="text-2xl">📊</span>
+                            <div class="font-bold mt-2">Render Modal</div>
+                            <div class="text-xs text-gray-500">&lt;StatsDialog /&gt;<br>&lt;Pie /&gt;</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="diagram-explanation" class="mt-6 p-4 bg-white rounded border border-gray-200 text-sm text-gray-700">
+                    <span class="font-bold text-blue-600">Info:</span> Faceți click pe etapele de mai sus pentru detalii. Fluxul este strict unidirecțional: Componenta părinte gestionează logica, iar componenta Dialog doar afișează rezultatul.
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Deep Dive -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Left: Logic Explanation -->
+            <div class="space-y-6">
+                <h2 class="text-2xl font-bold text-gray-900">Detalii de Implementare</h2>
+                
+                <div class="step-card bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h3 class="font-bold text-lg mb-2 text-blue-800">1. Înregistrarea Chart.js</h3>
+                    <p class="text-sm text-gray-600 mb-3">
+                        În versiunile moderne (v3/v4), Chart.js este modular (tree-shakable). Trebuie să înregistrăm explicit componentele folosite pentru a reduce dimensiunea pachetului final.
+                    </p>
+                    <div class="code-block">
+                        ChartJS.register(<br>
+                        &nbsp;&nbsp;ArcElement,<br>
+                        &nbsp;&nbsp;Tooltip,<br>
+                        &nbsp;&nbsp;Legend<br>
+                        );
+                    </div>
+                </div>
+
+                <div class="step-card bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h3 class="font-bold text-lg mb-2 text-blue-800">2. Logica de Agregare (Reduce)</h3>
+                    <p class="text-sm text-gray-600 mb-3">
+                        Nu stocăm statistici redundante în baza de date. Le calculăm "on-the-fly" pe client folosind <code>Array.reduce</code>. Transformăm un array de obiecte într-un obiect de frecvență.
+                    </p>
+                    <div class="code-block">
+const stats = books.reduce((acc, book) => {<br>
+&nbsp;&nbsp;const key = book.category;<br>
+&nbsp;&nbsp;acc[key] = (acc[key] || 0) + 1;<br>
+&nbsp;&nbsp;return acc;<br>
+}, {});
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Interactive Simulation -->
+            <div class="bg-gray-900 text-white p-6 rounded-xl shadow-xl flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg">Simulare Live: Dashboard</h3>
+                    <span class="text-xs bg-green-600 px-2 py-1 rounded">Interactive Demo</span>
+                </div>
+                
+                <!-- Simulation Area -->
+                <div class="flex-grow bg-gray-800 rounded p-4 mb-4 overflow-hidden relative">
+                    
+                    <!-- Simulated Data Grid -->
+                    <div id="sim-grid" class="mb-4">
+                        <p class="text-xs text-gray-400 mb-2">Date Brute (DataGrid):</p>
+                        <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+                            <div class="bg-gray-700 p-1 rounded">Book A (IT)</div>
+                            <div class="bg-gray-700 p-1 rounded">Book B (Econ)</div>
+                            <div class="bg-gray-700 p-1 rounded">Book C (IT)</div>
+                            <div class="bg-gray-700 p-1 rounded">Book D (Math)</div>
+                            <div class="bg-gray-700 p-1 rounded">Book E (IT)</div>
+                            <div class="bg-gray-700 p-1 rounded">Book F (Econ)</div>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <button id="calc-btn" onclick="runSimulation()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded transition">
+                        Generează Statistici & Deschide Dialog
+                    </button>
+
+                    <!-- Simulated Modal -->
+                    <div id="sim-modal" class="hidden absolute inset-0 bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300">
+                        <div class="bg-white text-gray-900 rounded-lg p-4 w-full max-w-sm shadow-2xl">
+                            <div class="flex justify-between items-center mb-2 border-b pb-2">
+                                <h4 class="font-bold">Distribuție Categorii</h4>
+                                <button onclick="closeSimulation()" class="text-red-500 font-bold hover:text-red-700">✕</button>
+                            </div>
+                            <!-- Chart Container -->
+                            <div class="chart-container h-48">
+                                <canvas id="demoChart"></canvas>
+                            </div>
+                            <p class="text-xs text-center mt-2 text-gray-500">Componenta &lt;Pie /&gt; randată cu date agregate.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-xs text-gray-400 italic">
+                    Acesta este rezultatul vizual al codului din stânga.
+                </div>
+            </div>
+        </section>
+
+        <!-- Kit Instructions -->
+        <section class="bg-yellow-50 border border-yellow-200 rounded-xl p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">📖 Instrucțiuni pentru Laborator (S13nextlab)</h2>
+            <p class="mb-4 text-gray-700">
+                În arhiva kit-ului, implementarea acestui pas se realizează în următoarele fișiere. Urmăriți aceste puncte cheie:
+            </p>
+            
+            <div class="space-y-4">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 h-8 w-8 rounded-full bg-yellow-200 flex items-center justify-center font-bold text-yellow-800">1</div>
+                    <div class="ml-4">
+                        <h4 class="font-bold text-gray-900">Analizați `components/StatsDialog.js`</h4>
+                        <p class="text-sm text-gray-600">Aici veți găsi componenta care primește props-ul <code>chartData</code>. Observați cum <code>Pie</code> este importat din <code>react-chartjs-2</code>.</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 h-8 w-8 rounded-full bg-yellow-200 flex items-center justify-center font-bold text-yellow-800">2</div>
+                    <div class="ml-4">
+                        <h4 class="font-bold text-gray-900">Implementați logica în `Dashboard.js`</h4>
+                        <p class="text-sm text-gray-600">Identificați funcția <code>handleShowStats</code>. Aici trebuie să scrieți codul de agregare (reduce) peste array-ul de cărți.</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 h-8 w-8 rounded-full bg-yellow-200 flex items-center justify-center font-bold text-yellow-800">3</div>
+                    <div class="ml-4">
+                        <h4 class="font-bold text-gray-900">Gestionați Starea</h4>
+                        <p class="text-sm text-gray-600">Asigurați-vă că folosiți <code>useState</code> pentru vizibilitatea dialogului. Dialogul trebuie să se randeze doar când <code>isDialogOpen === true</code>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recap Section -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <div class="bg-white p-6 rounded-xl shadow border-t-4 border-green-500">
+                <h3 class="font-bold text-xl mb-3 text-gray-900">✅ Ce am învățat (Pro)</h3>
+                <ul class="space-y-2 text-sm text-gray-700">
+                    <li class="flex items-center"><span class="mr-2 text-green-500">✔</span> <strong>Eficiență:</strong> Calculele statistice se fac doar la cerere (click), nu la fiecare randare.</li>
+                    <li class="flex items-center"><span class="mr-2 text-green-500">✔</span> <strong>UX Modern:</strong> Utilizarea modalelor menține contextul utilizatorului (nu părăsește pagina).</li>
+                    <li class="flex items-center"><span class="mr-2 text-green-500">✔</span> <strong>Modularitate:</strong> Logica vizuală este separată în <code>StatsDialog</code>.</li>
+                </ul>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow border-t-4 border-red-400">
+                <h3 class="font-bold text-xl mb-3 text-gray-900">⚠️ Provocări (Contra)</h3>
+                <ul class="space-y-2 text-sm text-gray-700">
+                    <li class="flex items-center"><span class="mr-2 text-red-400">✖</span> <strong>Dependency Hell:</strong> Adăugarea bibliotecilor mari (Chart.js) crește dimensiunea bundle-ului.</li>
+                    <li class="flex items-center"><span class="mr-2 text-red-400">✖</span> <strong>Canvas Complexity:</strong> Graficele pe Canvas sunt mai greu de stilizat CSS decât SVG-urile.</li>
+                    <li class="flex items-center"><span class="mr-2 text-red-400">✖</span> <strong>State Management:</strong> Gestionarea stărilor multiple (modal open, data, loading) poate deveni complexă fără Redux/Context.</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-100 border-t border-gray-200 mt-12 py-8 text-center text-sm text-gray-500">
+        <p>&copy; 2025 ASE București - Facultatea de Cibernetică, Statistică și Informatică Economică</p>
+        <p class="mt-2">Suport curs: Tehnologii Web</p>
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        // --- Logic for Diagram Interactivity ---
+        function highlightStep(step) {
+            const explanation = document.getElementById('diagram-explanation');
+            const texts = {
+                'step1': "<strong>Pasul 1 - User Event:</strong> Utilizatorul declanșează acțiunea printr-un buton (ex: 'Arată Statistici'). În React, atașăm un <code>onClick</code> handler.",
+                'step2': "<strong>Pasul 2 - Agregare:</strong> Funcția handler preia datele brute (ex: lista de cărți) și le procesează. Aici folosim <code>Array.reduce()</code> pentru a număra aparițiile fiecărei categorii.",
+                'step3': "<strong>Pasul 3 - Update State:</strong> Rezultatul agregării este salvat în state-ul componentei (ex: <code>setChartData</code>), iar flag-ul de vizibilitate este activat (ex: <code>setOpen(true)</code>).",
+                'step4': "<strong>Pasul 4 - Randare:</strong> React detectează schimbarea de stare și randează componenta <code>Dialog</code>, care conține componenta <code>Pie</code>. Graficul citește datele din props."
+            };
+            explanation.innerHTML = texts[step] || "Selectați un pas din diagramă.";
+            explanation.className = "mt-6 p-4 bg-blue-50 border border-blue-200 rounded text-sm text-blue-900 transition-all";
+        }
+
+        // --- Logic for Interactive Simulation (Chart.js) ---
+        let demoChartInstance = null;
+
+        function runSimulation() {
+            // 1. Simulate Data
+            const rawData = [
+                { category: 'IT' }, { category: 'Economie' }, { category: 'IT' },
+                { category: 'Matematică' }, { category: 'IT' }, { category: 'Economie' }
+            ];
+
+            // 2. Logic: Aggregate Data (The "reduce" part students need to learn)
+            const aggregated = rawData.reduce((acc, curr) => {
+                acc[curr.category] = (acc[curr.category] || 0) + 1;
+                return acc;
+            }, {});
+
+            // Prepare format for Chart.js
+            const labels = Object.keys(aggregated);
+            const dataValues = Object.values(aggregated);
+
+            // 3. UI: Show Modal
+            const modal = document.getElementById('sim-modal');
+            modal.classList.remove('hidden');
+
+            // 4. Render Chart
+            const ctx = document.getElementById('demoChart').getContext('2d');
+            
+            // Destroy previous instance if exists to avoid "Canvas is already in use" error
+            if (demoChartInstance) {
+                demoChartInstance.destroy();
+            }
+
+            demoChartInstance = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Nr. Cărți',
+                        data: dataValues,
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.8)', // Blue (IT)
+                            'rgba(16, 185, 129, 0.8)', // Green (Econ)
+                            'rgba(245, 158, 11, 0.8)'  // Yellow (Math)
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right' }
+                    }
+                }
+            });
+        }
+
+        function closeSimulation() {
+            document.getElementById('sim-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

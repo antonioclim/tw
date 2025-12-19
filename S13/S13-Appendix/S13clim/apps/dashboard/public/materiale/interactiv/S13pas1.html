@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminar 13: Componente Externe React - Pasul 1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Custom Chart Container Styling as per requirements */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        
+        /* Utility for highlighting code parts */
+        .code-highlight {
+            transition: all 0.3s ease;
+            cursor: help;
+        }
+        .code-highlight:hover {
+            background-color: #fef3c7; /* amber-100 */
+            transform: scale(1.02);
+        }
+
+        /* Flow diagram connector lines using pure CSS borders */
+        .flow-arrow-down::after {
+            content: '↓';
+            display: block;
+            text-align: center;
+            font-size: 1.5rem;
+            color: #94a3b8;
+            margin: 0.5rem 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc; /* Slate-50 - Warm/Neutral Light */
+        }
+    </style>
+    <!-- Chosen Palette: Slate & Indigo (Academic, Professional, Clean) -->
+    <!-- Application Structure Plan:
+         1. Header: Context (ASE, CSIE, Materie).
+         2. Intro Section: Objectives of Step 1 based on the doc.
+         3. Interactive Setup: Dependency explanation using card metaphors.
+         4. The Core Logic (Search): A split view. Left side: Concept explanation. Right side: A live "Mini Simulator" showing how filter() works in real-time.
+         5. Data Structure: Explaining GridColDef.
+         6. Recap & Analysis: Chart.js bar chart comparing Custom vs. Library implementation to highlight Pros/Cons logic.
+         7. Footer: Next steps.
+    -->
+    <!-- Visualization & Content Choices:
+         - Intro: Text + Icon Grid to set academic tone.
+         - Search Logic: Interactive Input + List (HTML/JS) to demonstrate the 'onChange' -> 'filter' loop described in the doc.
+         - Recap: Bar Chart (Chart.js) to visually represent the "Trade-off" (Dev Time vs. Bundle Size) mentioned in the analysis.
+         - Logic Flow: CSS-styled blocks (No SVG) to show data flow between Parent and Child components.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="text-slate-800">
+
+    <!-- 1. HEADER & ACADEMIC CONTEXT -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex flex-col">
+                <span class="text-xs font-bold text-indigo-600 tracking-wider">ASE BUCUREȘTI • CSIE</span>
+                <h1 class="text-xl md:text-2xl font-bold text-slate-900">Tehnologii Web</h1>
+            </div>
+            <div class="text-right hidden md:block">
+                <div class="text-sm font-medium text-slate-600">Seminar 13: Componente Externe</div>
+                <div class="text-xs text-slate-400">Pasul 1: Configurare & Search</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 space-y-12 max-w-5xl">
+
+        <!-- 2. INTRODUCTION & OBJECTIVES -->
+        <section id="intro" class="bg-white rounded-xl shadow-sm p-6 md:p-8">
+            <div class="border-l-4 border-indigo-500 pl-4 mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">Pasul 1: Integrarea DataGrid & Logica de Căutare</h2>
+                <p class="text-slate-600 mt-2">
+                    În acest pas, transformăm o aplicație statică într-una interactivă folosind <strong>Material UI DataGrid</strong>. 
+                    Obiectivul este de a înțelege cum gestionăm datele complexe și cum implementăm un mecanism de filtrare reactiv.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <div class="bg-indigo-50 p-4 rounded-lg text-center hover:bg-indigo-100 transition">
+                    <div class="text-3xl mb-2">📦</div>
+                    <h3 class="font-bold text-indigo-900">1. Configurare Mediu</h3>
+                    <p class="text-sm text-indigo-700">Instalarea pachetelor <code>@mui/x-data-grid</code> și dependențelor.</p>
+                </div>
+                <div class="bg-indigo-50 p-4 rounded-lg text-center hover:bg-indigo-100 transition">
+                    <div class="text-3xl mb-2">📋</div>
+                    <h3 class="font-bold text-indigo-900">2. Structura Datelor</h3>
+                    <p class="text-sm text-indigo-700">Definirea coloanelor (<code>GridColDef</code>) și pregătirea rândurilor.</p>
+                </div>
+                <div class="bg-indigo-50 p-4 rounded-lg text-center hover:bg-indigo-100 transition">
+                    <div class="text-3xl mb-2">🔍</div>
+                    <h3 class="font-bold text-indigo-900">3. Logica de Căutare</h3>
+                    <p class="text-sm text-indigo-700">Implementarea fluxului <code>onChange</code> ➝ Filtrare ➝ Re-render.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. DEPENDENCIES & STRUCTURE -->
+        <section id="dependencies" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Left: Installation -->
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
+                    <span class="bg-slate-200 text-slate-600 rounded-full w-8 h-8 flex items-center justify-center mr-2 text-sm">1.1</span>
+                    Instalare Dependențe
+                </h3>
+                <p class="text-sm text-slate-600 mb-4">
+                    Componentele externe complexe nu fac parte din nucleul React. Trebuie instalate separat.
+                </p>
+                <div class="bg-slate-900 text-slate-300 p-4 rounded font-mono text-sm overflow-x-auto">
+                    <span class="text-green-400">npm</span> install @mui/material @emotion/react @emotion/styled @mui/x-data-grid
+                </div>
+                <div class="mt-4 text-xs text-slate-500 bg-slate-50 p-3 rounded border border-slate-200">
+                    <strong>De ce atâtea pachete?</strong> DataGrid depinde de componentele de bază MUI (`material`) și de motorul de styling (`emotion`).
+                </div>
+            </div>
+
+            <!-- Right: Column Definition Interactive -->
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
+                    <span class="bg-slate-200 text-slate-600 rounded-full w-8 h-8 flex items-center justify-center mr-2 text-sm">1.2</span>
+                    Anatomia unei Coloane (GridColDef)
+                </h3>
+                <p class="text-sm text-slate-600 mb-4">
+                    DataGrid este <em>declarativ</em>. Nu scriem HTML pentru fiecare celulă, ci definim <strong>metadate</strong>.
+                    <br><span class="text-xs italic text-indigo-600">Interacționează cu codul de mai jos:</span>
+                </p>
+
+                <div class="space-y-2 font-mono text-sm bg-slate-50 p-4 rounded border border-slate-200">
+                    <div class="text-slate-400">// Definiția unei coloane</div>
+                    <div class="pl-2">
+                        { 
+                        <span class="code-highlight bg-white border border-indigo-100 px-1 rounded text-indigo-700 font-bold" onclick="showTip('field')">field: 'title'</span>, 
+                        <span class="code-highlight bg-white border border-indigo-100 px-1 rounded text-indigo-700 font-bold" onclick="showTip('header')">headerName: 'Titlu Carte'</span>, 
+                        <span class="code-highlight bg-white border border-indigo-100 px-1 rounded text-indigo-700 font-bold" onclick="showTip('width')">width: 250</span> 
+                        }
+                    </div>
+                </div>
+                
+                <div id="col-tip" class="mt-4 p-3 bg-indigo-50 text-indigo-800 text-sm rounded hidden">
+                    <!-- Javascript will populate this -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. CORE LOGIC: THE SEARCH MECHANISM -->
+        <section id="logic-simulation" class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div class="bg-slate-800 p-6 text-white">
+                <h2 class="text-xl font-bold">1.3 Logica de Căutare Reactivă</h2>
+                <p class="text-slate-300 text-sm mt-1">Cum funcționează filtrarea în timp real (Callback prin props)</p>
+            </div>
+            
+            <div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Theory Column -->
+                <div>
+                    <h4 class="font-bold text-indigo-600 mb-4">Fluxul de Date (Teorie)</h4>
+                    <div class="space-y-2">
+                        <div class="p-3 bg-slate-50 border border-slate-200 rounded flex items-center flow-arrow-down-wrapper">
+                            <span class="text-2xl mr-3">⌨️</span>
+                            <div>
+                                <span class="font-bold text-sm">1. Event Trigger</span>
+                                <div class="text-xs text-slate-500">Utilizatorul scrie în <code>&lt;input&gt;</code>. Evenimentul <code>onChange</code> este declanșat.</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-center text-slate-400 pb-2">↓</div>
+                        
+                        <div class="p-3 bg-slate-50 border border-slate-200 rounded flex items-center">
+                            <span class="text-2xl mr-3">📞</span>
+                            <div>
+                                <span class="font-bold text-sm">2. Callback la Părinte</span>
+                                <div class="text-xs text-slate-500"><code>props.onSearch(e.target.value)</code> trimite textul "în sus" către componenta părinte.</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-center text-slate-400 pb-2">↓</div>
+
+                        <div class="p-3 bg-indigo-50 border border-indigo-200 rounded flex items-center">
+                            <span class="text-2xl mr-3">⚡</span>
+                            <div>
+                                <span class="font-bold text-sm">3. Filtrare & State Update</span>
+                                <div class="text-xs text-slate-500">Părintele execută <code>allBooks.filter(...)</code> și actualizează starea <code>filteredBooks</code>.</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-center text-slate-400 pb-2">↓</div>
+
+                        <div class="p-3 bg-slate-50 border border-slate-200 rounded flex items-center">
+                            <span class="text-2xl mr-3">🔄</span>
+                            <div>
+                                <span class="font-bold text-sm">4. Re-render UI</span>
+                                <div class="text-xs text-slate-500">DataGrid primește noua listă prin prop-ul <code>rows</code> și se redesenează automat.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Column -->
+                <div class="bg-gray-50 p-6 rounded-lg border-2 border-dashed border-gray-300">
+                    <h4 class="font-bold text-indigo-600 mb-4">Simulator Live (Hands-on)</h4>
+                    <p class="text-xs text-slate-500 mb-4">
+                        Testează mecanismul de filtrare. Aceasta este o replicare simplificată a logicii din laborator.
+                    </p>
+
+                    <!-- Interactive Elements -->
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Căutare (Input)</label>
+                        <input type="text" id="sim-input" placeholder="Caută tehnologie (ex: React)..." 
+                               class="w-full p-2 border border-slate-300 rounded focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+
+                    <div class="mb-2 flex justify-between items-end">
+                        <label class="block text-xs font-bold text-slate-700">Rezultat (DataGrid Rows)</label>
+                        <span id="result-count" class="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">5 itemi</span>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded h-48 overflow-y-auto p-2" id="sim-results">
+                        <!-- Results injected by JS -->
+                    </div>
+                    
+                    <div class="mt-4 p-2 bg-slate-900 text-green-400 font-mono text-xs rounded">
+                        <span class="text-slate-500">// Codul executat în spate:</span><br>
+                        const results = allData.filter(item => <br>
+                        &nbsp;&nbsp;item.title.toLowerCase().includes(query)<br>
+                        );
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. RECAP & ANALYSIS -->
+        <section id="recap" class="bg-white p-6 md:p-8 rounded-xl shadow-sm">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 border-b pb-2">Recapitulare & Analiză</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                
+                <!-- Chart Container -->
+                <div class="flex flex-col items-center">
+                    <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-4">DataGrid vs. Tabel Manual (HTML)</h3>
+                    <div class="chart-container">
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-slate-400 mt-2">Compararea efortului și funcționalității</p>
+                </div>
+
+                <!-- Pros/Cons Tabs -->
+                <div>
+                    <div class="flex space-x-2 mb-4">
+                        <button onclick="showTab('pros')" id="btn-pros" class="px-4 py-2 bg-indigo-600 text-white rounded text-sm font-bold transition">Ce am câștigat (PRO)</button>
+                        <button onclick="showTab('cons')" id="btn-cons" class="px-4 py-2 bg-slate-200 text-slate-600 rounded text-sm font-bold hover:bg-slate-300 transition">Ce am sacrificat (CONTRA)</button>
+                    </div>
+
+                    <div id="tab-pros" class="bg-green-50 border-l-4 border-green-500 p-4 min-h-[150px]">
+                        <ul class="space-y-2 text-sm text-green-900">
+                            <li class="flex items-start"><span class="mr-2">✅</span> <strong>Viteză de Dezvoltare:</strong> Sortarea, paginarea și selecția sunt incluse ("Out of the box").</li>
+                            <li class="flex items-start"><span class="mr-2">✅</span> <strong>Performanță:</strong> DataGrid virtualizează lista (randează doar ce e vizibil), crucial pentru seturi mari de date.</li>
+                            <li class="flex items-start"><span class="mr-2">✅</span> <strong>Consistență UI:</strong> Respectă principiile Material Design automat.</li>
+                        </ul>
+                    </div>
+
+                    <div id="tab-cons" class="bg-red-50 border-l-4 border-red-500 p-4 min-h-[150px] hidden">
+                        <ul class="space-y-2 text-sm text-red-900">
+                            <li class="flex items-start"><span class="mr-2">⚠️</span> <strong>Learning Curve:</strong> Trebuie să învățăm API-ul specific (GridColDef, Props specifice) în loc de HTML standard.</li>
+                            <li class="flex items-start"><span class="mr-2">⚠️</span> <strong>Bundle Size:</strong> Adăugarea unei librării externe crește dimensiunea aplicației finale.</li>
+                            <li class="flex items-start"><span class="mr-2">⚠️</span> <strong>Customizare:</strong> Modificarea aspectului poate fi mai dificilă decât la un tabel CSS scris de la zero.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="text-center text-slate-400 text-sm py-8">
+            <p>Laborator Tehnologii Web • ASE CSIE</p>
+            <p class="text-xs mt-1">Material didactic generat pentru suport de seminar.</p>
+        </footer>
+
+    </main>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- 1. STATE MANAGEMENT & DATA ---
+        const seminarData = [
+            { id: 1, title: 'Introducere în React', category: 'Frontend' },
+            { id: 2, title: 'Gestionarea Stării (State)', category: 'Core' },
+            { id: 3, title: 'Componente Externe (MUI)', category: 'UI Libraries' },
+            { id: 4, title: 'Hooks Avansate', category: 'Logic' },
+            { id: 5, title: 'Routing în SPA', category: 'Navigation' }
+        ];
+
+        // --- 2. INTERACTION HANDLERS ---
+
+        // A. Column Definition Tooltips
+        const tips = {
+            'field': '<strong>field:</strong> Cheia unică din obiectul de date (ex: "title"). Leagă coloana de proprietatea din JSON.',
+            'header': '<strong>headerName:</strong> Textul afișat utilizatorului în antetul tabelului (Human-readable).',
+            'width': '<strong>width:</strong> Lățimea fixă a coloanei în pixeli. Alternativ se poate folosi `flex: 1`.'
+        };
+
+        function showTip(key) {
+            const tipBox = document.getElementById('col-tip');
+            tipBox.innerHTML = tips[key];
+            tipBox.classList.remove('hidden');
+            tipBox.classList.add('block', 'animate-pulse');
+            setTimeout(() => tipBox.classList.remove('animate-pulse'), 500);
+        }
+
+        // B. Search Simulator Logic
+        const inputEl = document.getElementById('sim-input');
+        const resultsEl = document.getElementById('sim-results');
+        const countEl = document.getElementById('result-count');
+
+        function renderResults(items) {
+            resultsEl.innerHTML = '';
+            if (items.length === 0) {
+                resultsEl.innerHTML = '<div class="text-center text-slate-400 py-4 italic">Niciun rezultat găsit</div>';
+                return;
+            }
+            items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'flex justify-between items-center p-2 border-b border-slate-100 last:border-0 hover:bg-slate-50 transition';
+                div.innerHTML = `
+                    <span class="font-medium text-slate-700 text-sm">${item.title}</span>
+                    <span class="text-xs bg-slate-200 text-slate-600 px-2 py-0.5 rounded">${item.category}</span>
+                `;
+                resultsEl.appendChild(div);
+            });
+        }
+
+        // Initial render
+        renderResults(seminarData);
+
+        // Event Listener (The "onChange" part of the lab)
+        inputEl.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            // The Logic (The "Filter" part of the lab)
+            const filtered = seminarData.filter(item => 
+                item.title.toLowerCase().includes(query)
+            );
+            
+            // UI Update (The "Re-render" part of the lab)
+            renderResults(filtered);
+            countEl.textContent = `${filtered.length} itemi`;
+            
+            // Visual feedback logic
+            if (query.length > 0) {
+                countEl.className = "text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full transition-colors";
+            } else {
+                countEl.className = "text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full transition-colors";
+            }
+        });
+
+        // C. Tab Switching for Recap
+        function showTab(tabName) {
+            const prosDiv = document.getElementById('tab-pros');
+            const consDiv = document.getElementById('tab-cons');
+            const btnPros = document.getElementById('btn-pros');
+            const btnCons = document.getElementById('btn-cons');
+
+            if (tabName === 'pros') {
+                prosDiv.classList.remove('hidden');
+                consDiv.classList.add('hidden');
+                btnPros.classList.replace('bg-slate-200', 'bg-indigo-600');
+                btnPros.classList.replace('text-slate-600', 'text-white');
+                btnCons.classList.replace('bg-indigo-600', 'bg-slate-200');
+                btnCons.classList.replace('text-white', 'text-slate-600');
+            } else {
+                prosDiv.classList.add('hidden');
+                consDiv.classList.remove('hidden');
+                btnCons.classList.replace('bg-slate-200', 'bg-indigo-600');
+                btnCons.classList.replace('text-slate-600', 'text-white');
+                btnPros.classList.replace('bg-indigo-600', 'bg-slate-200');
+                btnPros.classList.replace('text-white', 'text-slate-600');
+            }
+        }
+
+        // --- 3. CHART VISUALIZATION ---
+        // Comparison Chart: Manual Implementation vs DataGrid
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Funcționalități "Gratuite"', 'Efort Implementare', 'Control Detaliat', 'Dependențe'],
+                    datasets: [
+                        {
+                            label: 'Tabel HTML Manual',
+                            data: [2, 9, 10, 1], // Low functionality, High effort, High control, Low deps
+                            backgroundColor: '#94a3b8', // slate-400
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'MUI DataGrid',
+                            data: [9, 3, 6, 8], // High functionality, Low effort, Medium control, High deps
+                            backgroundColor: '#4f46e5', // indigo-600
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    const val = context.raw;
+                                    let desc = '';
+                                    if(val < 4) desc = 'Scăzut';
+                                    else if(val < 7) desc = 'Mediu';
+                                    else desc = 'Ridicat';
+                                    return label + desc + ` (${val}/10)`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: {
+                                display: false // Hide numbers for cleaner conceptual look
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

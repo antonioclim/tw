@@ -1,0 +1,434 @@
+{
+  "info": {
+    "name": "Tehnologii Web – Seminar 13 (Paşii 1–4) – Books APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Pasul 1 – CRUD minimal (8081)",
+      "item": [
+        {
+          "name": "Ping (GET /)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8081/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": [""]
+            }
+          }
+        },
+        {
+          "name": "Listă cărţi (GET /books)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "http://localhost:8081/books",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["books"]
+            }
+          }
+        },
+        {
+          "name": "Adaugă carte (POST /books)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Carte demonstrativă\",\n  \"content\": \"Conţinut demonstrativ (Pasul 1).\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/books",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["books"]
+            }
+          }
+        },
+        {
+          "name": "Actualizează (PUT /books/1)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Titlu actualizat\",\n  \"content\": \"Conţinut actualizat.\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/books/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["books", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pasul 2 – Filtrare + paginare (8082)",
+      "item": [
+        {
+          "name": "Ping (GET /)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8082/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": [""]
+            }
+          }
+        },
+        {
+          "name": "Listă (GET /books?first=0&rows=5)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "http://localhost:8082/books?title=&content=&first=0&rows=5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["books"],
+              "query": [
+                { "key": "title", "value": "" },
+                { "key": "content", "value": "" },
+                { "key": "first", "value": "0" },
+                { "key": "rows", "value": "5" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Adaugă (POST /books)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Carte nouă (Pasul 2)\",\n  \"content\": \"Text de laborator.\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/books?first=0&rows=5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["books"],
+              "query": [
+                { "key": "first", "value": "0" },
+                { "key": "rows", "value": "5" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Actualizează (PUT /books/1)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Titlu editat (Pasul 2)\",\n  \"content\": \"Conţinut editat.\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/books/1?first=0&rows=5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["books", "1"],
+              "query": [
+                { "key": "first", "value": "0" },
+                { "key": "rows", "value": "5" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Şterge (DELETE /books/1)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "http://localhost:8082/books/1?first=0&rows=5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["books", "1"],
+              "query": [
+                { "key": "first", "value": "0" },
+                { "key": "rows", "value": "5" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pasul 3 – + sortare (8083)",
+      "item": [
+        {
+          "name": "Ping (GET /)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8083/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": [""]
+            }
+          }
+        },
+        {
+          "name": "Listă sortată (GET /books … pages desc)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "http://localhost:8083/books?title=&content=&first=0&rows=5&sortField=pages&sortOrder=-1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["books"],
+              "query": [
+                { "key": "title", "value": "" },
+                { "key": "content", "value": "" },
+                { "key": "first", "value": "0" },
+                { "key": "rows", "value": "5" },
+                { "key": "sortField", "value": "pages" },
+                { "key": "sortOrder", "value": "-1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Adaugă (POST /books)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Carte nouă (Pasul 3)\",\n  \"content\": \"Text de laborator.\",\n  \"pages\": 321\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/books?first=0&rows=5&sortField=title&sortOrder=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["books"],
+              "query": [
+                { "key": "first", "value": "0" },
+                { "key": "rows", "value": "5" },
+                { "key": "sortField", "value": "title" },
+                { "key": "sortOrder", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Actualizează (PUT /books/1)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Titlu editat (Pasul 3)\",\n  \"content\": \"Conţinut editat.\",\n  \"pages\": 222\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/books/1?first=0&rows=5&sortField=title&sortOrder=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["books", "1"],
+              "query": [
+                { "key": "first", "value": "0" },
+                { "key": "rows", "value": "5" },
+                { "key": "sortField", "value": "title" },
+                { "key": "sortOrder", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Şterge (DELETE /books/1)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "http://localhost:8083/books/1?first=0&rows=5&sortField=title&sortOrder=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["books", "1"],
+              "query": [
+                { "key": "first", "value": "0" },
+                { "key": "rows", "value": "5" },
+                { "key": "sortField", "value": "title" },
+                { "key": "sortOrder", "value": "1" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pasul 4 – + statistici (8084)",
+      "item": [
+        {
+          "name": "Ping (GET /)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8084/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": [""]
+            }
+          }
+        },
+        {
+          "name": "Listă (GET /books)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "http://localhost:8084/books?title=&content=&first=0&rows=5&sortField=title&sortOrder=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["books"],
+              "query": [
+                { "key": "title", "value": "" },
+                { "key": "content", "value": "" },
+                { "key": "first", "value": "0" },
+                { "key": "rows", "value": "5" },
+                { "key": "sortField", "value": "title" },
+                { "key": "sortOrder", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Statistici (GET /books/stats)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "http://localhost:8084/books/stats?title=&content=",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["books", "stats"],
+              "query": [
+                { "key": "title", "value": "" },
+                { "key": "content", "value": "" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Adaugă (POST /books)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Carte nouă (Pasul 4)\",\n  \"content\": \"Text de laborator.\",\n  \"pages\": 444\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8084/books?first=0&rows=5&sortField=title&sortOrder=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["books"],
+              "query": [
+                { "key": "first", "value": "0" },
+                { "key": "rows", "value": "5" },
+                { "key": "sortField", "value": "title" },
+                { "key": "sortOrder", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Actualizează (PUT /books/1)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Titlu editat (Pasul 4)\",\n  \"content\": \"Conţinut editat.\",\n  \"pages\": 333\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8084/books/1?first=0&rows=5&sortField=title&sortOrder=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["books", "1"],
+              "query": [
+                { "key": "first", "value": "0" },
+                { "key": "rows", "value": "5" },
+                { "key": "sortField", "value": "title" },
+                { "key": "sortOrder", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Şterge (DELETE /books/1)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "http://localhost:8084/books/1?first=0&rows=5&sortField=title&sortOrder=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["books", "1"],
+              "query": [
+                { "key": "first", "value": "0" },
+                { "key": "rows", "value": "5" },
+                { "key": "sortField", "value": "title" },
+                { "key": "sortOrder", "value": "1" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
